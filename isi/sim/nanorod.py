@@ -3,7 +3,7 @@
 Physics is fully 3D: the field is expanded as exp(i m phi); a dipole on the symmetry axis couples only to
 m = 0 (axial / longitudinal dipole, Ez source) or m = +-1 (transverse dipole, Er source).
 Outputs per wavelength:
-    Fp   = P_tot / P_0         (total decay-rate enhancement, from the LDOS at the dipole)
+    Fp   = P_tot / P_0         (total decay-rate enhancement, from power balance P_rad + P_abs; Fp_ldos = LDOS cross-check)
     T    = P_rad / P_0         (radiated power through a closed box, normalised by the same box in free space)
     eta  = T / Fp              (apparent quantum efficiency for intrinsic yield q0 = 1)
     coll = fraction of radiated power inside a cone of numerical aperture NA around +z (optional)
@@ -26,13 +26,13 @@ def geometry(shape, L=60.0, D=20.0, R_sph=15.874, material=Au_JC):
         objs = [mp.Cylinder(radius=r, height=h, center=mp.Vector3(), material=material),
                 mp.Sphere(radius=r, center=mp.Vector3(0, 0, +h / 2), material=material),
                 mp.Sphere(radius=r, center=mp.Vector3(0, 0, -h / 2), material=material)]
-        return objs, L / 2000.0
+        return objs, L / 2000.0, r
     if shape == 'sphere':
-        return [mp.Sphere(radius=R_sph / 1000.0, material=material)], R_sph / 1000.0
+        return [mp.Sphere(radius=R_sph / 1000.0, material=material)], R_sph / 1000.0, R_sph / 1000.0
     raise ValueError(shape)
 
 
-def _run_band(objs, z_top, gap, orient, res, n_host, band, nf, trun, dpml, pad, na_list):
+def _run_band(objs, z_top, r_part, gap, orient, res, n_host, band, nf, trun, dpml, pad, na_list):
     lo, hi = band
     fcen, df = 0.5 * (1 / lo + 1 / hi), 1 / lo - 1 / hi
     m = 0 if orient == 'z' else 1
@@ -54,9 +54,15 @@ def _run_band(objs, z_top, gap, orient, res, n_host, band, nf, trun, dpml, pad, 
                 mp.FluxRegion(center=mp.Vector3(rbox / 2, 0, -half_z), size=mp.Vector3(rbox, 0, 0), weight=-1),
                 mp.FluxRegion(center=mp.Vector3(rbox, 0, 0), size=mp.Vector3(0, 0, 2 * half_z), weight=+1)]
         flux = sim.add_flux(fcen, df, nf, *regs)
+        # closed surface around the particle only (top disk at mid-gap): net inflow = power absorbed in the metal
+        ra, zt, zb = r_part + 0.003, z_top + gap / 2000.0, -(z_top + 0.003)
+        absf = sim.add_flux(fcen, df, nf,
+                            mp.FluxRegion(center=mp.Vector3(ra / 2, 0, zt), size=mp.Vector3(ra, 0, 0), weight=+1),
+                            mp.FluxRegion(center=mp.Vector3(ra / 2, 0, zb), size=mp.Vector3(ra, 0, 0), weight=-1),
+                            mp.FluxRegion(center=mp.Vector3(ra, 0, (zt + zb) / 2), size=mp.Vector3(0, 0, zt - zb), weight=+1))
         n2f = sim.add_near2far(fcen, df, nf, *[mp.Near2FarRegion(center=r.center, size=r.size, weight=r.weight) for r in regs]) if na_list else None
         sim.run(mp.dft_ldos(fcen, df, nf), until_after_sources=trun)
-        rec = {'ldos': np.array(sim.ldos_data), 'flux': np.array(mp.get_fluxes(flux))}
+        rec = {'ldos': np.array(sim.ldos_data), 'flux': np.array(mp.get_fluxes(flux)), 'abs': -np.array(mp.get_fluxes(absf))}
         if n2f is not None:
             # far-field power density on a large circle in the r-z half plane; theta from +z axis
             th = np.linspace(0, np.pi, 181)
@@ -74,8 +80,11 @@ def _run_band(objs, z_top, gap, orient, res, n_host, band, nf, trun, dpml, pad, 
         sim.reset_meep()
     f = np.linspace(fcen - df / 2, fcen + df / 2, nf)
     lam = 1000.0 / f
-    res_ = {'lam': lam, 'Fp': out['struct']['ldos'] / out['free']['ldos'],
-            'T': out['struct']['flux'] / out['free']['flux']}
+    P0 = out['free']['flux']
+    res_ = {'lam': lam,
+            'Fp': (out['struct']['flux'] + out['struct']['abs']) / P0,   # power balance: (P_rad + P_abs) / P_0
+            'Fp_ldos': out['struct']['ldos'] / out['free']['ldos'],     # LDOS at the source (cross-check)
+            'T': out['struct']['flux'] / P0}
     if na_list:
         th, S = out['struct']['ff']
         w = np.sin(th)[:, None] * S                     # power per d(theta), axially symmetric
@@ -88,12 +97,12 @@ def _run_band(objs, z_top, gap, orient, res, n_host, band, nf, trun, dpml, pad, 
 
 
 def simulate(shape='rod', orient='z', gap=5.0, res=1.0, n_host=1.0, L=60.0, D=20.0, R_sph=15.874,
-             nf=31, trun=60, dpml=0.3, pad=0.04, na_list=()):
+             nf=31, trun=30, dpml=0.15, pad=0.04, na_list=()):
     """Return dict of arrays over 490-900 nm. res = grid points per nm (1 -> 1 nm grid)."""
-    objs, z_top = geometry(shape, L, D, R_sph)
+    objs, z_top, r_part = geometry(shape, L, D, R_sph)
     acc = {}
     for band, keep in zip(BANDS, KEEP):
-        r = _run_band(objs, z_top, gap, orient, res, n_host, band, nf, trun, dpml, pad, na_list)
+        r = _run_band(objs, z_top, r_part, gap, orient, res, n_host, band, nf, trun, dpml, pad, na_list)
         m = (r['lam'] >= 1000 * keep[0]) & (r['lam'] <= 1000 * keep[1])
         for k, v in r.items():
             acc.setdefault(k, []).extend(list(np.asarray(v)[m]))
@@ -104,6 +113,6 @@ def simulate(shape='rod', orient='z', gap=5.0, res=1.0, n_host=1.0, L=60.0, D=20
 
 
 def save_csv(path, out, meta=''):
-    keys = ['lam', 'Fp', 'T', 'eta'] + sorted(k for k in out if k.startswith('coll'))
+    keys = ['lam', 'Fp', 'Fp_ldos', 'T', 'eta'] + sorted(k for k in out if k.startswith('coll'))
     np.savetxt(path, np.column_stack([out[k] for k in keys]), delimiter=',', header=','.join(keys),
                comments='# ' + meta + '\n')

@@ -13,7 +13,7 @@ def res(p):
     r=(model(p,f)-eps)/abs(eps)**0.5
     return np.concatenate([r.real,r.imag])
 p0=[2,7,0.06,1,2.2,0.5,1,3.2,1,1]
-lb=[1,1,0,0.01,1.5,0.01,0.01,2.3,0.01,0.01]; ub=[12,15,2,10,2.3,3,20,6,6,20]
+lb=[1,1,0,0.01,1.5,0.2,0.01,2.3,0.2,0.01]; ub=[12,15,2,10,2.3,3,20,6,6,20]
 best=None
 for s in range(40):
     q=np.array(p0)*np.exp(np.random.default_rng(s).normal(0,0.3,10)); q=np.clip(q,lb,ub)

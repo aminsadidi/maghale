@@ -96,38 +96,52 @@ def pack():
     zp = shutil.make_archive(f'{BASE}/results', 'zip', OUT); return zp
 print(f'READY: {NP} CPU cores, results -> {OUT}' + ('  [quick test mode]' if QUICK else ''))'''.replace('__BRANCH__', BRANCH))
 code(r'''# ===== CELL 2: run everything (A -> B -> C), print results, zip =====
-STAGES = 'ABC'          # e.g. 'AB' to stop after the convergence study
+STAGES = 'AB'           # A: calibration, B: convergence. Add 'C' (design maps) only after Claude has checked A and B.
 q = lambda full, quick: quick if QUICK else full
 T0 = time.time()
 
 if 'A' in STAGES:
     print('\n=== Stage A: gold sphere vs exact Mie ===')
-    RES_A = q([1.0, 2.0], [0.25])
+    RES_A = q([0.5, 0.75, 1.0], [0.2, 0.25])          # grids 2, 1.33, 1 nm
     for res in RES_A:
         job(f'bench_sphere_res{res}', shape='sphere', orient='z', gap=5.0, res=res)
     for res in RES_A:
         d = load(f'bench_sphere_res{res}'); Fm, Tm = radial_dipole(d['lam'], 15.874, 5.0, eps_fit)
         e = 100 * (d['Fp'] / Fm - 1)
-        print(f"  grid {1/res:.2f} nm: median |err Fp| {np.median(abs(e)):.1f}%  max {abs(e).max():.1f}%  "
+        et = 100 * (d['T'] / Tm - 1)
+        print(f"  grid {1/res:.2f} nm: median |err Fp| {np.median(abs(e)):.1f}%  |err T| {np.median(abs(et)):.1f}%  "
               f"peak Meep {d['Fp'].max():.0f} @ {d['lam'][d['Fp'].argmax()]:.0f} nm vs Mie {Fm.max():.0f} @ {d['lam'][Fm.argmax()]:.0f} nm")
+    # Richardson-type extrapolation to zero grid spacing (linear fit in grid spacing), checked against exact Mie
+    G = np.array([1 / r for r in RES_A]); S = np.array([load(f'bench_sphere_res{r}')['Fp'] for r in RES_A])
+    F0 = np.polyfit(G, S, 1)[1]
+    d = load(f'bench_sphere_res{RES_A[-1]}'); Fm, Tm = radial_dipole(d['lam'], 15.874, 5.0, eps_fit)
+    e0 = 100 * (F0 / Fm - 1)
+    print(f"  extrapolated to 0 nm: median |err Fp| {np.median(abs(e0)):.1f}%  peak {F0.max():.0f} @ {d['lam'][F0.argmax()]:.0f} nm vs Mie {Fm.max():.0f}")
+    if not QUICK:   # PML-thickness check on the finest grid
+        job('bench_sphere_res1.0_pml0.3', shape='sphere', orient='z', gap=5.0, res=1.0, dpml=0.3)
+        a, b = load('bench_sphere_res1.0'), load('bench_sphere_res1.0_pml0.3')
+        print(f"  PML 0.15 vs 0.30 um at 1-nm grid: median |dFp| {100*np.median(abs(a['Fp']/b['Fp']-1)):.1f}%, |dT| {100*np.median(abs(a['T']/b['T']-1)):.1f}%")
     pack()
 
 if 'B' in STAGES:
     print('\n=== Stage B: mesh convergence (rod, axial dipole, 5 nm) + transverse cases ===')
-    RES_B = q([1.0, 1.5, 2.0], [0.25])
+    RES_B = q([0.5, 0.75, 1.0], [0.2, 0.25])
     for res in RES_B:
         job(f'rodA_z_gap5_res{res}', shape='rod', orient='z', gap=5.0, res=res, na_list=[0.5, 0.9, 1.3])
-    for res in q([1.0, 2.0], [0.25]):
+    for res in q([1.0], [0.25]):
         job(f'rodC_x_gap5_res{res}', shape='rod', orient='x', gap=5.0, res=res)
         job(f'sphereDp_x_gap5_res{res}', shape='sphere', orient='x', gap=5.0, res=res)
     for res in RES_B:
         d = load(f'rodA_z_gap5_res{res}'); i, k = d['Fp'].argmax(), d['T'].argmax()
         print(f"  grid {1/res:.2f} nm: Fp {d['Fp'][i]:.0f} @ {d['lam'][i]:.0f} nm | T {d['T'][k]:.1f} @ {d['lam'][k]:.0f} nm | eta@T {100*d['eta'][k]:.1f}%")
+    G = np.array([1 / r for r in RES_B]); S = np.array([load(f'rodA_z_gap5_res{r}')['Fp'] for r in RES_B])
+    F0 = np.polyfit(G, S, 1)[1]; lam = load(f'rodA_z_gap5_res{RES_B[-1]}')['lam']
+    print(f"  extrapolated to 0 nm: Fp peak {F0.max():.0f} @ {lam[F0.argmax()]:.0f} nm")
     pack()
 
 if 'C' in STAGES:
     print('\n=== Stage C: design maps (gap x aspect ratio, air and water) ===')
-    RES = q(1.0, 0.25)
+    RES = q(1.0, 0.25)          # Claude will adjust after checking stages A and B
     for n_host, tag in q([(1.0, 'air'), (1.33, 'water')], [(1.0, 'air')]):
         for L in q([40, 50, 60, 80, 100], [60]):
             for g in q([3, 5, 7, 10, 15, 20], [5]):
