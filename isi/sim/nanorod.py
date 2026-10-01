@@ -14,8 +14,8 @@ import meep as mp
 from gold_jc import Au_JC
 
 # Sub-bands: each gets its own Gaussian pulse; only the central part of each band is kept (band edges are noisy).
-BANDS = [(0.47, 0.59), (0.55, 0.73), (0.68, 0.95)]
-KEEP = [(0.49, 0.57), (0.57, 0.70), (0.70, 0.91)]
+BANDS = [(0.46, 0.61), (0.54, 0.76), (0.63, 0.99)]
+KEEP = [(0.49, 0.57), (0.57, 0.70), (0.70, 0.90)]
 
 
 def geometry(shape, L=60.0, D=20.0, R_sph=15.874, material=Au_JC):
@@ -89,7 +89,7 @@ def _run_band(objs, z_top, gap, orient, res, n_host, band, nf, trun, dpml, pad, 
 
 def simulate(shape='rod', orient='z', gap=5.0, res=1.0, n_host=1.0, L=60.0, D=20.0, R_sph=15.874,
              nf=31, trun=60, dpml=0.3, pad=0.04, na_list=()):
-    """Return dict of arrays over 490-910 nm. res = grid points per nm (1 -> 1 nm grid)."""
+    """Return dict of arrays over 490-900 nm. res = grid points per nm (1 -> 1 nm grid)."""
     objs, z_top = geometry(shape, L, D, R_sph)
     acc = {}
     for band, keep in zip(BANDS, KEEP):

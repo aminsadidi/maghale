@@ -8,7 +8,7 @@ if which=='diel': mat=mp.Medium(epsilon=4.0); eps=lambda l:4.0+0j
 else:
     from gold_jc import Au_JC, eps_jc; mat=Au_JC; eps=eps_jc
 sr=0.15; sz=0.30
-BANDS=[(0.47,0.59),(0.55,0.73),(0.68,0.95)]; KEEP=[(0.49,0.57),(0.57,0.70),(0.70,0.91)]
+BANDS=[(0.46,0.61),(0.54,0.76),(0.63,0.99)]; KEEP=[(0.49,0.57),(0.57,0.70),(0.70,0.90)]
 def run(geo,fcen,df,nf):
     sim=mp.Simulation(cell_size=mp.Vector3(sr+dpml,0,sz+2*dpml),dimensions=mp.CYLINDRICAL,m=0,boundary_layers=[mp.PML(dpml)],geometry=geo,
         sources=[mp.Source(mp.GaussianSource(fcen,fwidth=df),component=mp.Ez,center=pt)],resolution=res*1000)
