@@ -21,13 +21,14 @@ const num = (k) => {
   if (!order.includes(k)) order.push(k);
   return order.indexOf(k) + 1;
 };
+const a = (n) => `<a href="#ref-${n}">${n}</a>`;
 const compress = (ns) => {
-  ns = [...new Set(ns)].sort((a, b) => a - b);
+  ns = [...new Set(ns)].sort((x, y) => x - y);
   const parts = [];
   for (let i = 0; i < ns.length; ) {
     let j = i;
     while (j + 1 < ns.length && ns[j + 1] === ns[j] + 1) j++;
-    parts.push(j - i >= 2 ? `${ns[i]}–${ns[j]}` : ns.slice(i, j + 1).join(', '));
+    parts.push(j - i >= 2 ? `${a(ns[i])}–${a(ns[j])}` : ns.slice(i, j + 1).map(a).join(', '));
     i = j + 1;
   }
   return parts.join(', ');
@@ -40,13 +41,41 @@ const unused = Object.keys(refs).filter((k) => !order.includes(k));
 if (unused.length) console.warn('unused references:', unused.join(', '));
 
 const bib = '<ol class="refs">\n' + order.map((k, i) => {
-  const html = refs[k].replace(/doi:(\S+)$/, '<span class="doi">doi:$1</span>');
+  const html = refs[k].replace(/doi:(\S+)$/, '<a class="doi" href="https://doi.org/$1">doi:$1</a>');
   return `<li id="ref-${i + 1}"><span class="n">[${i + 1}]</span><span>${html}</span></li>`;
 }).join('\n') + '\n</ol>';
-body = body.replace('<!--BIBLIOGRAPHY-->', bib);
+body = body.replace('<!--BIBLIOGRAPHY-->', bib).replace(/<!--[\s\S]*?-->/g, '');
+
+// ---------- headings: numbers in Persian digits, ids for linking ----------
+const fa = (t) => String(t).replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[d]);
+const secId = {};
+let h2n = 0, h3n = 0;
+body = body.replace(/<h([23])((?: [^>]*)?)>([\s\S]*?)<\/h\1>/g, (m, lvl, attrs, text) => {
+  if (/class="(unnum|appendix)"/.test(attrs)) return m;
+  let label;
+  if (lvl === '2') { h2n++; h3n = 0; label = `${h2n}`; } else { h3n++; label = `${h2n}.${h3n}`; }
+  const id = 'sec-' + label.replace('.', '-');
+  secId[fa(label)] = id;
+  attrs = attrs.replace(/ id="[^"]*"/, '');
+  return `<h${lvl}${attrs} id="${id}"><span class="secnum">${fa(label)}</span>${text}</h${lvl}>`;
+});
+
+// ---------- display equations get anchors ----------
+body = body.replace(/\\\[([\s\S]*?)\\tag\{(\d+)\}\s*\\\]/g,
+  (_, tex, n) => `<div class="eq" id="eq-${n}">\\[${tex}\\tag{${n}}\\]</div>`);
+
+// ---------- cross-references become links ----------
+body = body.replace(/(?<!<b>)(شکل|جدول) ([۰-۹]+)(?![۰-۹])/g, (m, kind, n) => {
+  const d = n.replace(/[۰-۹]/g, (c) => '۰۱۲۳۴۵۶۷۸۹'.indexOf(c));
+  return `<a class="xref" href="#${kind === 'شکل' ? 'fig' : 'tab'}${d}">${kind}\u00a0${n}</a>`;
+});
+body = body.replace(/(رابطه‌ی|روابط|رابطه‌های) \((\d+)\)(?: و \((\d+)\))?/g, (m, w, x, y) =>
+  `${w} <a class="xref" href="#eq-${x}">(${x})</a>` + (y ? ` و <a class="xref" href="#eq-${y}">(${y})</a>` : ''));
+body = body.replace(/(زیربخش|بخش) ([۰-۹](?:\.[۰-۹])?)(?![۰-۹])/g, (m, w, n) =>
+  secId[n] ? `<a class="xref" href="#${secId[n]}">${w}\u00a0${n}</a>` : m);
 
 // ---------- keep parentheses glued to inline math (word joiner) ----------
-body = body.replace(/\(\\\(/g, '(\u2060\\(').replace(/\\\)\)/g, '\\)\u2060)');
+body = body.replace(/\((\\\((?:(?!\\[()]|<)[\s\S])*?\\\))\)/g, '<span class="nw">($1)</span>');
 
 // ---------- figures as data URIs ----------
 body = body.replace(/src="fig\/([^"]+)"/g, (_, f) =>

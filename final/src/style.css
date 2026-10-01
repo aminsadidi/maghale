@@ -63,12 +63,10 @@ h2 {
   font-size: 15pt; margin: 1.8em 0 .8em; padding-bottom: .3em;
   border-bottom: 1px solid var(--rule); counter-increment: sec; counter-reset: sub;
 }
-h2::before { content: counter(sec) "\2002"; color: var(--accent); }
-h2.unnum, h2.appendix { counter-increment: none; }
-h2.unnum::before, h2.appendix::before { content: none; }
+
 .abstract h2 { margin-top: 0; }
 h3 { font-size: 12.5pt; margin: 1.5em 0 .6em; counter-increment: sub; }
-h3::before { content: counter(sec) "." counter(sub) "\2002"; color: var(--accent); }
+
 .lead { color: var(--accent); }
 
 /* ---------- math ---------- */
@@ -102,8 +100,8 @@ ol.refs .doi { color: var(--muted); white-space: nowrap; }
 .endnote { margin-top: 2.5em; padding-top: .8em; border-top: 1px solid var(--rule); text-align: center; color: var(--muted); font-size: 10pt; }
 
 /* ---------- print ---------- */
-@page { size: A4; margin: 20mm 19mm 22mm; @bottom-center { content: counter(page); font-family: "Vazirmatn", sans-serif; font-size: 9pt; color: #777; } }
-@page :first { @bottom-center { content: none; } }
+@page { size: A4; margin: 20mm 19mm 22mm; @top-left { content: "تقویت گسیل خودبه‌خودی نزدیک نانومیله‌ی طلا"; font-family: "Vazirmatn", sans-serif; font-size: 8pt; color: #999; } @bottom-center { content: counter(page); font-family: "Vazirmatn", sans-serif; font-size: 9pt; color: #777; } }
+@page :first { @top-left { content: none; } @bottom-center { content: none; } }
 @media print {
   html, body { background: #fff; }
   .page { margin: 0; padding: 0; max-width: none; box-shadow: none; }
@@ -123,3 +121,21 @@ ol.refs .doi { color: var(--muted); white-space: nowrap; }
 
 .lat { direction: ltr; unicode-bidi: isolate; white-space: nowrap; }
 .endnote { break-before: avoid; page-break-before: avoid; margin-top: 1.2em; }
+
+/* ---------- numbering, links, extras ---------- */
+.secnum { color: var(--accent); margin-left: .55em; }
+a { color: inherit; text-decoration: none; }
+a.xref, .cite a { color: #2a4a7a; }
+a.xref:hover, .cite a:hover, a.doi:hover { text-decoration: underline; }
+a.doi { color: var(--muted); white-space: nowrap; }
+:target { scroll-margin-top: 16px; }
+ol.refs li:target { background: #fbf3d9; }
+.eq { break-inside: avoid; }
+tr.grp td { border-top: 1px solid #9c9890; }
+.highlights { margin: 1.2em 0 0; padding: .8em 1.1em .5em; background: #f7f5f0; border-right: 3px solid var(--accent); border-radius: 2px; break-inside: avoid; }
+.hl-title { font-weight: 700; color: var(--accent); margin-bottom: .3em; }
+.highlights ul { margin: 0; padding-right: 1.2em; font-size: 10.5pt; line-height: 1.9; }
+.highlights li { margin-bottom: .25em; }
+svg.schem { width: 78%; height: auto; display: block; margin: 0 auto .6em; }
+@media print { a.xref, .cite a { color: #2a4a7a; } }
+.nw { white-space: nowrap; }
