@@ -36,10 +36,10 @@ Purcell factor $\Fp\approx\num{1.5e3}$ at \SI{610}{nm} and a radiative enhanceme
 radial-to-tangential ratio stays between 2.2 and 2.7 over the whole \SIrange{500}{900}{nm} band, consistent
 with the quasi-static near-surface limit of 2, and the nanorod shows the same ratio away from resonance; at
 the longitudinal resonance the nanorod ratio rises to 41 for $\Fp$ and to 358 for $T$. The orientational
-anisotropy of the nanorod is therefore predominantly resonant, and it is removed by any scalar or
-orientation-averaged description. Including the intrinsic quantum yield $q_0$ of the emitter, we find that
+anisotropy of the nanorod is therefore predominantly resonant; it cannot be represented by a scalar Purcell factor
+and is diluted by orientation averaging. Including the intrinsic quantum yield $q_0$ of the emitter, we find that
 the optimal tip--emitter gap depends on $q_0$: for poor emitters ($q_0=0.01$) a \SIrange{5}{10}{nm} gap raises
-the quantum efficiency eightfold, whereas for $q_0\to1$ the \SI{20}{nm} gap performs best. Mesh-convergence
+the quantum efficiency up to eightfold, whereas for $q_0\to1$ the \SI{20}{nm} gap performs best. Mesh-convergence
 analysis with a body-of-revolution solver gives peak values converged to \TBD{x\,\%}.
 \end{abstract}
 
@@ -73,9 +73,9 @@ efficiency falls in nanometre gaps~\cite{mohammadi}.
 A consequence of the nanorod's elongated shape is a strong dependence of the response on the orientation of the
 emitter's transition dipole. In the language of Eq.~\eqref{eq:ldos}, the Green tensor at the emitter position is
 anisotropic, and the decay rate is the projection of that tensor on the dipole direction~\cite{novotny}. Yet a
-dipole close to any metal surface---a sphere or a plane---also shows an orientation dependence, because the
-image dipole of a perpendicular dipole adds in phase whereas that of a parallel dipole subtracts; in the
-quasi-static limit the ratio of perpendicular to parallel decay rates near a surface tends to two~\cite{ford}. It
+dipole close to any metal surface---a sphere or a plane---also shows an orientation dependence: in the quasi-static
+near field, energy transfer to the metal is twice as strong for a dipole perpendicular to the surface as for a
+parallel one, so the ratio of the two decay rates tends to two~\cite{ford}. It
 is therefore not obvious how much of the anisotropy observed near a nanorod tip is generic and how much is caused
 by the longitudinal resonance that distinguishes the nanorod from a compact particle. This distinction matters
 in practice: emitters such as colloidal quantum dots or dye molecules are often randomly oriented, and
@@ -134,8 +134,10 @@ B, free space; plus gap (3--\SI{20}{nm}) and mesh variations of case~A. The host
 \subsection{Gold permittivity}
 We use the Johnson--Christy data~\cite{johnson}. For the time-domain solvers it is represented by a Drude term
 plus two Lorentz poles fitted over \SIrange{440}{1000}{nm} (root-mean-square relative error \SI{1.6}{\percent},
-maximum \SI{3.4}{\percent}); the fit parameters are given in the Supplementary Information. The same fitted
-permittivity is used in the Mie reference calculations so that the comparison isolates discretisation errors.
+maximum \SI{3.4}{\percent}); the fit parameters are given in the Supplementary Information. Benchmarks of
+the body-of-revolution solver use the same fitted permittivity in the Mie reference, so that the comparison isolates
+discretisation errors; comparisons with the three-dimensional solver use the tabulated data, which that solver
+fits with its own multi-coefficient model~\cite{lumerical}.
 
 \subsection{Numerical methods}
 \emph{Full three-dimensional FDTD.} Cases A--D$_\perp$ were first computed with a commercial FDTD solver
@@ -155,7 +157,7 @@ To avoid normalisation errors at the edges of a broadband pulse, the \SIrange{49
 three overlapping sub-band simulations of which only the central parts are retained.
 
 \subsection{Validation}
-For case D, the exact Mie solution~\cite{ruppin,kim} gives $\Fp=772$ at \SI{506}{nm} and $T=6.58$ at
+For case D, the exact Mie solution~\cite{ruppin,kim} with tabulated Johnson--Christy data gives $\Fp=772$ at \SI{506}{nm} and $T=6.58$ at
 \SI{530}{nm}. The \SI{2}{nm}-mesh three-dimensional FDTD reproduces both peak positions within \SI{2}{nm} but
 underestimates the peak heights by \SI{15}{\percent} and \SI{8}{\percent} (Fig.~\ref{fig:mie}). The
 body-of-revolution solver reproduces the Mie result for a dielectric sphere to within \SI{1}{\percent} in the
@@ -190,13 +192,16 @@ The equal-volume sphere answers whether this anisotropy is specific to the rod (
 For the sphere, the radial-to-tangential ratio of $\Fp$ lies between 2.2 and 2.7 throughout
 \SIrange{500}{900}{nm}, close to the quasi-static near-surface value of two~\cite{ford}, and shows no resonant
 structure. For the nanorod, the same ratio is 2.6--2.8 below the resonance (\SIrange{500}{530}{nm})---the
-sphere value---but rises steeply to 41 at the longitudinal resonance. The radiative ratio behaves alike:
-\numrange{10}{50} for the sphere, from about 4 off resonance to 358 on resonance for the rod.
+sphere value---but rises steeply to 41 at the longitudinal resonance. For the radiated power the geometric ratio is larger,
+because a tangential dipole close to a metal surface radiates poorly: the sphere gives \numrange{10}{50}, varying slowly
+with wavelength. The rod's radiative ratio is about 4 below the resonance, i.e.\ not larger than the sphere's, but
+reaches 358 on resonance, an order of magnitude above any value found for the sphere.
 
 The anisotropy of the nanorod Green tensor therefore splits into two contributions: a geometric,
 near-surface factor of order two that any metal body produces, and a resonant factor of order
 \numrange{10}{e2} that belongs exclusively to the longitudinal ($m=0$) mode of the elongated particle. A scalar
-or orientation-averaged description removes the second contribution entirely. The comparison with the sphere at
+description cannot represent the second contribution, and orientation averaging dilutes it by mixing an
+efficient axial channel with a strongly quenched transverse one. The comparison with the sphere at
 equal volume further shows that the enhancement near \SI{610}{nm} is not a volume effect: there the rod exceeds the
 sphere by factors of 15.6 in $\Fp$ and 24 in $T$, while at their respective maxima the ratios are 2.3 and 20.
 
@@ -245,7 +250,7 @@ near-to-far-field transformation, gap and aspect-ratio maps in air and water.}
 \subsection{Numerical accuracy}
 In the three-dimensional solver, the resonance position (\SI{616 \pm 4}{nm}) and the efficiency at the radiative
 peak are stable when the override mesh is changed between 3, 2 and \SI{1.5}{nm}, but the peak heights are not
-monotonic (Fig.~S\TBD{x}): the peak $T$ is 184, 119 and 165, and at \SI{1.5}{nm} a spurious non-radiative feature
+monotonic (Fig.~S2): the peak $T$ is 184, 119 and 165, and at \SI{1.5}{nm} a spurious non-radiative feature
 appears. The cause is the sub-cell position of the source in a \SI{5}{nm} gap together with the staircased
 cap: with a non-radiative rate scaling as $d^{-3}$~\cite{ford,novotny}, a one-nanometre effective displacement
 changes the loss channel by up to a factor of two. All ratios reported above are computed with an identical
@@ -256,12 +261,15 @@ source lies exactly on the axis and the grid can be refined to \TBD{0.5}\,nm, gi
 % ---------------------------------------------------------------------------------------------
 \section{Discussion}
 The central result is that the strong orientation dependence of emission near a nanorod tip is mostly resonant.
-For randomly oriented emitters, the orientation-averaged rate is
-$\langle\Fp\rangle=(\Fp^{\parallel}+2\Fp^{\perp})/3$; at the resonance the axial contribution dominates and
-$\langle\Fp\rangle\approx\Fp^{\parallel}/3$, but the averaged efficiency mixes a moderately efficient axial channel
-with a strongly quenched transverse one. Experiments that report a single enhancement factor for an ensemble of
-orientations~\cite{yuan,khatua} thus measure a quantity that depends on the orientation distribution, and our
-decomposition indicates how to translate between them.
+For randomly oriented emitters on the axis, the averages are
+$\langle\Fp\rangle=(\Fp^{\parallel}+2\Fp^{\perp})/3$ and likewise for $T$. At \SI{610}{nm} this gives
+$\langle\Fp\rangle=523$ and $\langle T\rangle=37.9$, three times below the axial values, while the averaged
+efficiency $\langle T\rangle/\langle\Fp\rangle=\SI{7.2}{\percent}$ is almost the axial one (\SI{7.6}{\percent})
+because the axial channel dominates both averages. The ensemble is in fact bimodal: one third of the orientations
+is bright, while the transverse two thirds are quenched ($\eta_a=\SI{0.9}{\percent}$) and radiate less than in free
+space ($T=0.33$). A single enhancement factor measured on an orientation ensemble~\cite{yuan,khatua} therefore
+hides a population of nearly dark emitters, which matters for single-emitter applications where each emitter's
+orientation is fixed.
 
 The equal-volume comparison also clarifies the role of shape. A compact particle of the same volume provides
 only the near-surface factor of order two and a weak, interband-dominated response; the elongated geometry adds a
