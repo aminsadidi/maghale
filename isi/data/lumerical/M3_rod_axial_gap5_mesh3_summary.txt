@@ -1,0 +1,8 @@
+G_mesh3
+Fp_max = 2026.62  at 644 nm
+T_max  = 183.848  at 648 nm
+peak shift T-Fp = 4 nm
+eta at Fp-peak = 8.70574 %
+eta at T-peak  = 9.32092 %
+eta_max = 18.2775 %  at 810 nm
+Fp(500nm) = 538.377   T(500nm) = 1.8937

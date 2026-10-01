@@ -1,0 +1,8 @@
+B_freespace
+Fp_max = 1.13251  at 848 nm
+T_max  = 1.003  at 900 nm
+peak shift T-Fp = 52 nm
+eta at Fp-peak = 88.54 %
+eta at T-peak  = 99.6794 %
+eta_max = 108.045 %  at 748 nm
+Fp(500nm) = 0.960386   T(500nm) = 0.992806

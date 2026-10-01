@@ -1,0 +1,8 @@
+A_baseline
+Fp_max = 1496.22  at 610 nm
+T_max  = 119.219  at 616 nm
+peak shift T-Fp = 6 nm
+eta at Fp-peak = 7.55634 %
+eta at T-peak  = 8.55728 %
+eta_max = 19.4379 %  at 784 nm
+Fp(500nm) = 607.518   T(500nm) = 2.01976

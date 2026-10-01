@@ -1,0 +1,8 @@
+C_tip_transverse
+Fp_max = 239.235  at 508 nm
+T_max  = 0.482355  at 500 nm
+peak shift T-Fp = -8 nm
+eta at Fp-peak = 0.183392 %
+eta at T-peak  = 0.20709 %
+eta_max = 5.7143 %  at 812 nm
+Fp(500nm) = 232.92   T(500nm) = 0.482355

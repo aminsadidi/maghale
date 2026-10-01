@@ -1,0 +1,8 @@
+F_gap3
+Fp_max = 7198.18  at 516 nm
+T_max  = 252.11  at 614 nm
+peak shift T-Fp = 98 nm
+eta at Fp-peak = 0.0535316 %
+eta at T-peak  = 6.44276 %
+eta_max = 7.68967 %  at 650 nm
+Fp(500nm) = 6424.7   T(500nm) = 3.91909

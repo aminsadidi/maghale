@@ -1,0 +1,311 @@
+# =============================================================================
+#   NANOROD_RUN_CASES.lsf      (Lumerical FDTD 2024)
+#
+#   بر پایه‌ی همان کد NANOROD_GEOMETRY_BUILDER که قبلاً بدون خطا اجرا شد.
+#   فقط سه چیز اضافه شده: انتخاب حالت، Run خودکار، و ذخیره‌ی خروجی txt.
+#
+#   ------------------------- راهنمای اجرا (۳ گام) ---------------------------
+#   1) Lumerical را باز کن -> File -> New -> File -> Save As
+#      در یک پوشه‌ی خالی، مثلاً   D:\nanorod\work.fsp
+#      (همه‌ی خروجی‌ها کنار همین فایل ذخیره می‌شوند)
+#   2) خط CASES پایین را تنظیم کن. مثال:   CASES = [1,2,3,4];
+#   3) Script File Editor -> Open این فایل -> Run.   منتظر بمان تا "ALL CASES DONE".
+#
+#   حالت‌ها (ترتیب اهمیت):
+#     1  A_baseline          میله، دوقطبی طولی، گاف 5، مش 2       + میدان نزدیک
+#     2  C_tip_transverse    میله، دوقطبی عرضی (x) روی نوک          + میدان نزدیک
+#     3  D_sphere_R15.9      کره‌ی هم‌حجم، دوقطبی شعاعی             + میدان نزدیک
+#     4  B_freespace         بدون ساختار  (باید Fp = T = 1 شود)
+#     5  C_side_radial       میله، دوقطبی کنار بدنه، قطبش x
+#     6  D_sphere_R10        کره‌ی R=10 nm
+#     7  G_mesh3             میله، مش 3 nm      (همگرایی)
+#     8  G_mesh1.5           میله، مش 1.5 nm    (همگرایی، سنگین)
+#     9  F_gap10             میله، گاف 10 nm
+#    10  F_gap20             میله، گاف 20 nm
+#    11  F_gap3              میله، گاف 3 nm، مش 1 nm  (سنگین)
+#    12  D_sphere_R15.9_tan  کره، دوقطبی مماسی
+#
+#   هر حالت که فایل  <نام>_spectra.txt  آن موجود باشد رد می‌شود
+#   (اگر وسط کار قطع شد، دوباره Run کن).
+#
+#   خروجی هر حالت:   <نام>_spectra.txt   (lambda_nm  Fp  T  eta  Ploss)
+#                    <نام>_summary.txt   (قله‌ها)
+#                    <نام>_nearfield.txt (فقط حالت‌های 1،2،3)
+#                    <نام>.fsp           (حجیم؛ لازم نیست فرستاده شود)
+#   در پایان پوشه را زیپ کن (بدون .fsp) و بفرست.
+# =============================================================================
+
+CASES = [1, 2, 3, 4];        # <<<<<<<<<<<<  اینجا را تنظیم کن  >>>>>>>>>>>>
+
+# ----------------------------- ثابت‌های مشترک ---------------------------------
+ROD_D     = 20e-9;
+ROD_LCYL  = 40e-9;      # طول کل میله = 60 nm
+FDTD_SPAN = 600e-9;
+BOX_SPAN  = 400e-9;
+LAM_MIN   = 500e-9;
+LAM_MAX   = 900e-9;
+NFREQ     = 201;
+SIM_TIME  = 300e-15;
+SHUTOFF   = 1e-5;
+MESH_ACC  = 3;
+MAT_AU    = "Au (Gold) - Johnson and Christy";
+
+for (ci = 1:length(CASES)) {
+
+    CASE = CASES(ci);
+
+    # ------------------------- پیش‌فرض‌ها -------------------------------------
+    GEOM      = "rod";
+    DIP_SIDE  = 0;
+    DIP_THETA = 0;
+    GAP       = 5e-9;
+    MESH_DX   = 2e-9;
+    SPH_R     = 15.874e-9;
+    NF_ON     = 0;
+    NF_LAM    = 610e-9;
+    TAG       = "case";
+
+    if (CASE == 1)  { TAG = "A_baseline";               NF_ON = 1; }
+    if (CASE == 2)  { TAG = "C_tip_transverse";         DIP_THETA = 90; NF_ON = 1; }
+    if (CASE == 3)  { TAG = "D_sphere_R15.9";           GEOM = "sphere"; NF_ON = 1; NF_LAM = 530e-9; }
+    if (CASE == 4)  { TAG = "B_freespace";              GEOM = "none"; }
+    if (CASE == 5)  { TAG = "C_side_radial";            DIP_SIDE = 1; DIP_THETA = 90; }
+    if (CASE == 6)  { TAG = "D_sphere_R10";             GEOM = "sphere"; SPH_R = 10e-9; }
+    if (CASE == 7)  { TAG = "G_mesh3";                  MESH_DX = 3e-9; }
+    if (CASE == 8)  { TAG = "G_mesh1.5";                MESH_DX = 1.5e-9; }
+    if (CASE == 9)  { TAG = "F_gap10";                  GAP = 10e-9; }
+    if (CASE == 10) { TAG = "F_gap20";                  GAP = 20e-9; }
+    if (CASE == 11) { TAG = "F_gap3";                   GAP = 3e-9; MESH_DX = 1e-9; }
+    if (CASE == 12) { TAG = "D_sphere_R15.9_tan";       GEOM = "sphere"; DIP_THETA = 90; }
+
+    outname = TAG + "_spectra.txt";
+
+    ?"";
+    ?"==================================================================";
+    ?"  CASE " + num2str(CASE) + "  :  " + TAG;
+    ?"==================================================================";
+
+    if (fileexists(outname)) {
+        ?"  already done -> skipped";
+    } else {
+
+    # =========================================================================
+    #                    ساخت مدل  (همان کد تست‌شده)
+    # =========================================================================
+    switchtolayout;
+    selectall;
+    delete;
+
+    R = ROD_D / 2;
+    z_tip = ROD_LCYL / 2 + R;
+    if (GEOM == "sphere") { z_tip = SPH_R; }
+    if (GEOM == "none")   { z_tip = 0; }
+
+    if (DIP_SIDE == 0) {
+        dip_x = 0;
+        dip_z = z_tip + GAP;
+    } else {
+        dip_z = 0;
+        dip_x = R + GAP;
+        if (GEOM == "sphere") { dip_x = SPH_R + GAP; }
+    }
+
+    sx = 0;
+    sz = 0;
+    if (GEOM == "rod") {
+        addcircle;
+        set("name", "body");
+        set("x", 0); set("y", 0); set("z", 0);
+        set("radius", R);
+        set("z span", ROD_LCYL);
+        set("material", MAT_AU);
+
+        addsphere;
+        set("name", "cap_top");
+        set("x", 0); set("y", 0); set("z", ROD_LCYL / 2);
+        set("radius", R);
+        set("material", MAT_AU);
+
+        addsphere;
+        set("name", "cap_bot");
+        set("x", 0); set("y", 0); set("z", -ROD_LCYL / 2);
+        set("radius", R);
+        set("material", MAT_AU);
+
+        sx = ROD_D;
+        sz = ROD_LCYL + ROD_D;
+    }
+    if (GEOM == "sphere") {
+        addsphere;
+        set("name", "nanosphere");
+        set("x", 0); set("y", 0); set("z", 0);
+        set("radius", SPH_R);
+        set("material", MAT_AU);
+        sx = 2 * SPH_R;
+        sz = 2 * SPH_R;
+    }
+
+    addfdtd;
+    set("dimension", "3D");
+    set("x", 0); set("y", 0); set("z", 0);
+    set("x span", FDTD_SPAN);
+    set("y span", FDTD_SPAN);
+    set("z span", FDTD_SPAN);
+    set("mesh accuracy", MESH_ACC);
+    set("simulation time", SIM_TIME);
+    set("auto shutoff min", SHUTOFF);
+    set("index", 1.0);
+    set("x min bc", "PML"); set("x max bc", "PML");
+    set("y min bc", "PML"); set("y max bc", "PML");
+    set("z min bc", "PML"); set("z max bc", "PML");
+    set("pml layers", 12);
+
+    MRG = 6e-9;
+    mx = sx / 2 + MRG;
+    mzmin = -sz / 2 - MRG;
+    mzmax = sz / 2 + MRG;
+    if (dip_x + MRG > mx)    { mx = dip_x + MRG; }
+    if (dip_z + MRG > mzmax) { mzmax = dip_z + MRG; }
+    if (GEOM == "none")      { mx = 20e-9; mzmin = -20e-9; mzmax = 20e-9; }
+
+    addmesh;
+    set("name", "mesh_fine");
+    set("x min", -mx); set("x max", mx);
+    set("y min", -mx); set("y max", mx);
+    set("z min", mzmin); set("z max", mzmax);
+    set("override x mesh", 1);
+    set("override y mesh", 1);
+    set("override z mesh", 1);
+    set("dx", MESH_DX);
+    set("dy", MESH_DX);
+    set("dz", MESH_DX);
+
+    adddipole;
+    set("name", "dipole");
+    set("dipole type", "Electric dipole");
+    set("x", dip_x); set("y", 0); set("z", dip_z);
+    set("theta", DIP_THETA);
+    set("phi", 0);
+    set("wavelength start", LAM_MIN);
+    set("wavelength stop", LAM_MAX);
+
+    setglobalmonitor("use source limits", 1);
+    setglobalmonitor("use wavelength spacing", 1);
+    setglobalmonitor("frequency points", NFREQ);
+
+    h_box = BOX_SPAN / 2;
+    addpower; set("name", "box_x1"); set("monitor type", "2D X-normal"); set("x", -h_box);
+      set("y", 0); set("y span", BOX_SPAN); set("z", 0); set("z span", BOX_SPAN);
+    addpower; set("name", "box_x2"); set("monitor type", "2D X-normal"); set("x",  h_box);
+      set("y", 0); set("y span", BOX_SPAN); set("z", 0); set("z span", BOX_SPAN);
+    addpower; set("name", "box_y1"); set("monitor type", "2D Y-normal"); set("y", -h_box);
+      set("x", 0); set("x span", BOX_SPAN); set("z", 0); set("z span", BOX_SPAN);
+    addpower; set("name", "box_y2"); set("monitor type", "2D Y-normal"); set("y",  h_box);
+      set("x", 0); set("x span", BOX_SPAN); set("z", 0); set("z span", BOX_SPAN);
+    addpower; set("name", "box_z1"); set("monitor type", "2D Z-normal"); set("z", -h_box);
+      set("x", 0); set("x span", BOX_SPAN); set("y", 0); set("y span", BOX_SPAN);
+    addpower; set("name", "box_z2"); set("monitor type", "2D Z-normal"); set("z",  h_box);
+      set("x", 0); set("x span", BOX_SPAN); set("y", 0); set("y span", BOX_SPAN);
+    bn = {"box_x1", "box_x2", "box_y1", "box_y2", "box_z1", "box_z2"};
+    for (i = 1:6) {
+        select(bn{i});
+        set("output Ex", 0); set("output Ey", 0); set("output Ez", 0);
+        set("output Hx", 0); set("output Hy", 0); set("output Hz", 0);
+        set("output power", 1);
+    }
+
+    if (NF_ON == 1) {
+        addprofile;
+        set("name", "nf_xz");
+        set("monitor type", "2D Y-normal");
+        set("y", 0);
+        set("x", 0); set("x span", 160e-9);
+        set("z", (mzmin + mzmax) / 2); set("z span", 160e-9);
+        set("override global monitor settings", 1);
+        set("use source limits", 0);
+        set("frequency points", 1);
+        set("wavelength center", NF_LAM);
+        set("wavelength span", 0);
+    }
+
+    ?"  model built:  geom=" + GEOM + "  gap=" + num2str(GAP*1e9) + " nm  theta=" + num2str(DIP_THETA)
+      + "  side=" + num2str(DIP_SIDE) + "  mesh=" + num2str(MESH_DX*1e9) + " nm";
+
+    # =========================================================================
+    #                              اجرا
+    # =========================================================================
+    save(TAG + ".fsp");
+    ?"  running ...";
+    run;
+
+    # =========================================================================
+    #                    تحلیل و ذخیره‌ی خروجی
+    # =========================================================================
+    f   = getdata("box_x2", "f");
+    lam = c / f;
+    P0  = sourcepower(f);
+    Fp  = dipolepower(f) / P0;
+    T   = -transmission("box_x1") + transmission("box_x2")
+          -transmission("box_y1") + transmission("box_y2")
+          -transmission("box_z1") + transmission("box_z2");
+    eta   = T / Fp;
+    Ploss = Fp - T;
+
+    iFp = find(Fp, max(Fp));
+    iT  = find(T,  max(T));
+    iE  = find(eta, max(eta));
+
+    # --- جدول طیفی ---
+    write(outname, "lambda_nm\tFp\tT\teta\tPloss");
+    for (i = 1:length(lam)) {
+        write(outname, num2str(lam(i)*1e9) + "\t" + num2str(Fp(i)) + "\t" + num2str(T(i))
+                     + "\t" + num2str(eta(i)) + "\t" + num2str(Ploss(i)));
+    }
+
+    # --- خلاصه ---
+    sumname = TAG + "_summary.txt";
+    if (fileexists(sumname)) { rm(sumname); }
+    s1 = "Fp_max = " + num2str(max(Fp)) + "  at " + num2str(lam(iFp)*1e9) + " nm";
+    s2 = "T_max  = " + num2str(max(T))  + "  at " + num2str(lam(iT)*1e9)  + " nm";
+    s3 = "peak shift T-Fp = " + num2str((lam(iT)-lam(iFp))*1e9) + " nm";
+    s4 = "eta at Fp-peak = " + num2str(100*eta(iFp)) + " %";
+    s5 = "eta at T-peak  = " + num2str(100*eta(iT))  + " %";
+    s6 = "eta_max = " + num2str(100*max(eta)) + " %  at " + num2str(lam(iE)*1e9) + " nm";
+    s7 = "Fp(500nm) = " + num2str(Fp(1)) + "   T(500nm) = " + num2str(T(1));
+    write(sumname, TAG);
+    write(sumname, s1); write(sumname, s2); write(sumname, s3);
+    write(sumname, s4); write(sumname, s5); write(sumname, s6); write(sumname, s7);
+    ?"  " + s1;
+    ?"  " + s2;
+    ?"  " + s3;
+    ?"  " + s4;
+    ?"  " + s5;
+    ?"  " + s6;
+
+    # --- میدان نزدیک ---
+    if (NF_ON == 1) {
+        E2 = pinch(getelectric("nf_xz"));
+        x  = getdata("nf_xz", "x");
+        z  = getdata("nf_xz", "z");
+        nfname = TAG + "_nearfield.txt";
+        if (fileexists(nfname)) { rm(nfname); }
+        line = "x_nm";
+        for (k = 1:length(z)) { line = line + "\t" + num2str(z(k)*1e9); }
+        write(nfname, line);
+        for (i = 1:length(x)) {
+            line = num2str(x(i)*1e9);
+            for (k = 1:length(z)) { line = line + "\t" + num2str(E2(i,k)); }
+            write(nfname, line);
+        }
+        ?"  near-field saved: " + nfname;
+    }
+
+    ?"  saved: " + outname + "   " + sumname;
+
+    }   # end else (not skipped)
+}       # end for cases
+
+?"";
+?"##########################  ALL CASES DONE  ##########################";
+?"  Zip all *_spectra.txt , *_summary.txt , *_nearfield.txt and send.";
+?"  (The .fsp files are large and NOT needed.)";

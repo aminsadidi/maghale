@@ -3,7 +3,7 @@
 module.exports = {
   purcell: 'Purcell E. M. Spontaneous emission probabilities at radio frequencies. <i>Physical Review</i> <b>69</b>, 681 (1946). doi:10.1103/PhysRev.69.674.2',
   maier: 'Maier S. A. <i>Plasmonics: Fundamentals and Applications</i>. Springer, New York (2007). doi:10.1007/0-387-37825-1',
-  chen: 'Chen J., Deng S. Z., Chen J., Li Z. L., Xu N. S. Subwavelength localized plasmon resonance properties of isolated gold nanorods. <i>Optics Express</i> <b>17</b>, 15998–16008 (2009). doi:10.1364/OE.17.015998',
+  ni2008: 'Ni W., Kou X., Yang Z., Wang J. Tailoring longitudinal surface plasmon wavelengths, scattering and absorption cross sections of gold nanorods. <i>ACS Nano</i> <b>2</b>, 677–686 (2008). doi:10.1021/nn7003603',
   anger: 'Anger P., Bharadwaj P., Novotny L. Enhancement and quenching of single-molecule fluorescence. <i>Physical Review Letters</i> <b>96</b>, 113002 (2006). doi:10.1103/PhysRevLett.96.113002',
   koenderink: 'Koenderink A. F. Single-photon nanoantennas. <i>ACS Photonics</i> <b>4</b>, 710–722 (2017). doi:10.1021/acsphotonics.7b00061',
   ford: 'Ford G. W., Weber W. H. Electromagnetic interactions of molecules with metal surfaces. <i>Physics Reports</i> <b>113</b>, 195–287 (1984). doi:10.1016/0370-1573(84)90098-X',

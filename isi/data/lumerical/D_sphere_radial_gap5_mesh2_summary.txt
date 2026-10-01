@@ -1,0 +1,8 @@
+D_sphere_R15.9
+Fp_max = 658.738  at 508 nm
+T_max  = 6.03331  at 532 nm
+peak shift T-Fp = 24 nm
+eta at Fp-peak = 0.764406 %
+eta at T-peak  = 1.11833 %
+eta_max = 11.7948 %  at 884 nm
+Fp(500nm) = 636.331   T(500nm) = 4.41818
