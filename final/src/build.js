@@ -123,5 +123,8 @@ if (errs.length) errs.forEach((e) => console.error('TeX error:', adaptor.getAttr
 let html = adaptor.doctype(doc.document) + '\n' + adaptor.outerHTML(adaptor.root(doc.document));
 const sheet = adaptor.textContent(doc.outputJax.styleSheet(doc));
 html = html.replace('</head>', `<style>${sheet}</style>\n</head>`);
+// MathJax glyphs carry stroke-width="0", which PDF treats as a 1-device-pixel hairline:
+// at thumbnail and low print resolutions it swells into black blobs. Fill only.
+html = html.replace(/ stroke="currentColor"/g, ' stroke="none"').replace(/ stroke-width="0"/g, '');
 fs.writeFileSync(out, html);
 console.log(`wrote ${path.relative(process.cwd(), out)}  (${(html.length / 1024).toFixed(0)} KB, ${order.length} references, ${errs.length} TeX errors)`);

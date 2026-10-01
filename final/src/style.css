@@ -139,3 +139,6 @@ tr.grp td { border-top: 1px solid #9c9890; }
 svg.schem { width: 78%; height: auto; display: block; margin: 0 auto .6em; }
 @media print { a.xref, .cite a { color: #2a4a7a; } }
 .nw { white-space: nowrap; }
+p { orphans: 2; widows: 2; }
+.keep-next { break-after: avoid; page-break-after: avoid; }
+@media print { h2.appendix { break-before: page; page-break-before: always; } }
