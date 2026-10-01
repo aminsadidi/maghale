@@ -1,0 +1,7 @@
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.fls
+paper/*.fdb_latexmk
+sim/*.log
+sim/__pycache__/
