@@ -1,0 +1,11 @@
+# Reproducible environment for the ISI version (Meep + analysis).
+# Install:  micromamba create -f isi/environment.yml   (about 5 minutes)
+name: meep
+channels: [conda-forge]
+dependencies:
+  - python=3.11
+  - pymeep=*=mpi_mpich_*
+  - numpy
+  - scipy
+  - matplotlib
+  - h5py
