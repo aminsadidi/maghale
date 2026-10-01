@@ -33,6 +33,9 @@ def load(name):
     hdr = L[i].lstrip('# ').strip().split(',')
     d = np.loadtxt(p, delimiter=',', skiprows=i + 1, ndmin=2)
     return {k: d[:, i] for i, k in enumerate(hdr)}
+def resolutions(prefix):
+    rs = sorted({float(re.search(r'_res([\d.]+)\.csv$', f).group(1)) for f in glob.glob(os.path.join(folder, prefix + '_res*.csv'))})
+    return rs
 def peak(o, k):
     i = np.nanargmax(o[k]); return o[k][i], o['lam'][i]
 
@@ -40,7 +43,7 @@ lines = ['# Colab results summary', '']
 # ---- Stage A: benchmark
 lines += ['## Stage A: gold sphere vs exact Mie (radial dipole, 5 nm gap)', '',
           '| grid (nm) | median abs err Fp | max abs err Fp | Fp peak Meep | Fp peak Mie |', '|---|---|---|---|---|']
-for res in [1.0, 2.0, 3.0]:
+for res in resolutions('bench_sphere'):
     o = load(f'bench_sphere_res{res}')
     if o is None: continue
     Fm, Tm = radial_dipole(o['lam'], 15.874, 5.0, eps_fit)
@@ -51,7 +54,7 @@ lines += ['', '## Stage B: mesh convergence, rod, axial dipole, 5 nm gap', '',
           '| grid (nm) | Fp max | lambda_Fp | T max | lambda_T | eta at T peak | coll NA0.9 at T peak |', '|---|---|---|---|---|---|---|']
 conv = []
 fig, ax = plt.subplots(1, 3, figsize=(7.0, 2.3))
-for res in [1.0, 1.5, 2.0, 3.0]:
+for res in resolutions('rodA_z_gap5'):
     o = load(f'rodA_z_gap5_res{res}')
     if o is None: continue
     (F, lF), (T, lT) = peak(o, 'Fp'), peak(o, 'T'); j = np.nanargmax(o['T'])
@@ -68,7 +71,7 @@ if conv:
                      f'lambda_T {abs(b[4]-a[4]):.0f} nm.')
 plt.close(fig)
 # ---- orientation ratios
-for res in [2.0, 1.0]:
+for res in sorted(set(resolutions('rodA_z_gap5')) & set(resolutions('rodC_x_gap5')), reverse=True):
     A, C = load(f'rodA_z_gap5_res{res}'), load(f'rodC_x_gap5_res{res}')
     Dz, Dx = load(f'bench_sphere_res{res}'), load(f'sphereDp_x_gap5_res{res}')
     if A is not None and C is not None:
