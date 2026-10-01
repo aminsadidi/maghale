@@ -149,9 +149,14 @@ to the same dipole in a homogeneous medium.
 \emph{Body-of-revolution FDTD.} Because the dipole lies on the symmetry axis, the fields can be expanded as
 $e^{im\varphi}$ and an axial dipole couples only to $m=0$ and a transverse dipole only to $m=\pm1$. The
 three-dimensional problem then reduces to a two-dimensional one in the $(r,z)$ half-plane without approximation.
-We exploit this with the open-source solver Meep~\cite{meep} in cylindrical coordinates, which allows grid
-spacings down to \TBD{0.5}\,nm. $\Fp$ is computed from the local density of states at the dipole, $T$ from the
-flux through a closed surface around the particle, and the angular emission pattern from a near-to-far-field
+We exploit this with the open-source solver Meep~\cite{meep} in cylindrical coordinates. $T$ is the flux through
+a closed surface around the particle and $\Fp=(P_{\rm rad}+P_{\rm abs})/P_0$, with the absorbed power obtained as
+the net flux into a closed surface that encloses only the particle and crosses the gap at mid-distance; this
+power-balance estimate is smoother than the local density of states sampled at the source cell, which is retained as
+a cross-check. Because the metal surface is staircased, $\Fp$ in a \SI{5}{nm} gap converges slowly with grid
+spacing; we therefore compute grids of 2, 1.33 and \SI{1}{nm} and extrapolate linearly to zero spacing, and
+validate this procedure against the exact solution for the sphere. $T$ and the angular emission pattern are
+obtained in the same runs, and the angular emission pattern from a near-to-far-field
 transformation, from which the fraction of radiated power collected within a numerical aperture NA is obtained.
 To avoid normalisation errors at the edges of a broadband pulse, the \SIrange{490}{900}{nm} band is covered by
 three overlapping sub-band simulations of which only the central parts are retained.
@@ -159,10 +164,12 @@ three overlapping sub-band simulations of which only the central parts are retai
 \subsection{Validation}
 For case D, the exact Mie solution~\cite{ruppin,kim} with tabulated Johnson--Christy data gives $\Fp=772$ at \SI{506}{nm} and $T=6.58$ at
 \SI{530}{nm}. The \SI{2}{nm}-mesh three-dimensional FDTD reproduces both peak positions within \SI{2}{nm} but
-underestimates the peak heights by \SI{15}{\percent} and \SI{8}{\percent} (Fig.~\ref{fig:mie}). The
-body-of-revolution solver reproduces the Mie result for a dielectric sphere to within \SI{1}{\percent} in the
-centre of each sub-band at a \SI{2}{nm} grid, and for gold to within \TBD{x\,\%} at \TBD{0.5}\,nm
-(Supplementary Information). The free-space reference yields $\Fp^{B}$ between 0.93 and 1.13 and $T^{B}$
+underestimates the peak heights by \SI{15}{\percent} and \SI{8}{\percent} (Fig.~\ref{fig:mie}). For the
+body-of-revolution solver, a dielectric sphere is reproduced within \SI{1}{\percent} at a \SI{2}{nm} grid. For
+gold at a \SI{5}{nm} gap, $T$ is already within about \SI{10}{\percent} of the exact result at \SI{2}{nm}, whereas
+$\Fp$ is overestimated by a factor of about three at that grid and by \SI{24}{\percent} at a \SI{20}{nm} gap,
+showing that the error is confined to the near field of the staircased surface; the extrapolated $\Fp$ agrees
+with Mie theory to within \TBD{x\,\%} (Supplementary Information). The free-space reference yields $\Fp^{B}$ between 0.93 and 1.13 and $T^{B}$
 between 0.993 and 1.003 in the three-dimensional solver, which bounds the normalisation uncertainty of the
 three-dimensional results.
 

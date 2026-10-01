@@ -72,18 +72,24 @@ meshes of 3, 2 and 1.5~nm.}\label{fig:mesh}\end{figure}
 
 \section*{S4. Body-of-revolution solver: method and benchmarks}
 Cylindrical-coordinate FDTD (Meep~[2]) with field dependence $e^{im\varphi}$; axial dipole: $E_z$ source, $m=0$;
-transverse dipole: $E_r$ source, $m=1$. $F_p$ is the ratio of the local density of states at the source with and
-without the particle, computed at identical grid and source position; $T$ is the ratio of the fluxes through a
-closed surface (top and bottom discs and a cylindrical side wall) around the particle. The band
+transverse dipole: $E_r$ source, $m=1$. $T$ is the ratio of the fluxes through a closed surface (top and bottom discs and a cylindrical side wall) around
+the particle with and without it. $F_p=(P_{\rm rad}+P_{\rm abs})/P_0$, where $P_{\rm abs}$ is the net inflow through a
+second closed surface that encloses only the particle, its top disc lying at mid-gap. The local density of states
+at the source cell gives the same order of magnitude but is spiky near the metal and is used only as a cross-check. The band
 \SIrange{490}{900}{nm} is assembled from three runs with pulses covering \SIrange{460}{610}{}, \SIrange{540}{760}{}
 and \SIrange{630}{990}{nm}, of which only \SIrange{490}{570}{}, \SIrange{570}{700}{} and \SIrange{700}{900}{nm} are
 kept: a broadband single run produced errors up to \SI{37}{\percent} at the band edges, where the source spectrum
-is weak. Run time \SI{60}{}~\si{\micro\metre}/$c$ after the source; PML thickness \SI{0.3}{\micro\metre}.
+is weak. Run time 30~\si{\micro\metre}/$c$ after the source (identical $F_p$ to 60); PML thickness
+\SI{0.15}{\micro\metre}, with a \SI{0.3}{\micro\metre} check at the finest grid. To avoid long-lived numerical ringing,
+the Lorentz-pole damping in the gold fit is bounded below by \SI{0.2}{\micro\metre^{-1}} (same fit accuracy).
 
 Benchmark against the exact Mie solution for a dielectric sphere ($\varepsilon=4$, $R=\SI{15.874}{nm}$, radial dipole
 at \SI{5}{nm}): a grid of \SI{2}{nm} reproduces $F_p$ within \SI{1}{\percent} in the band centres; a \SI{4}{nm} grid
-gives a uniform \SIrange{4}{5}{\percent} overestimate with a maximum deviation of \SI{12}{\percent}. Gold sphere and
-nanorod convergence: \TBD{Table from isi/results/summary.md after the Colab runs}.
+gives a uniform \SIrange{4}{5}{\percent} overestimate with a maximum deviation of \SI{12}{\percent}. For gold (radial dipole, \SI{5}{nm} gap) at a \SI{2}{nm} grid, $T$ deviates from Mie by about
+\SI{10}{\percent} while the power-balance $F_p$ is about three times too large; at a \SI{20}{nm} gap the $F_p$
+error drops to \SI{24}{\percent} and $T$ agrees within \SI{5}{\percent}. The $F_p$ error is therefore a near-field
+discretisation error of the staircased metal surface. Grids of 2, 1.33 and \SI{1}{nm} with linear extrapolation to
+zero spacing: \TBD{table from isi/results/summary.md}.
 
 \section*{References}
 \noindent[1] P. B. Johnson and R. W. Christy, Phys. Rev. B \textbf{6}, 4370 (1972).\\
