@@ -9,22 +9,31 @@ p = comparticle(epstab, {p0}, [2, 1], 1, op);
 s = sscanf(spec, 's%d');
 th = (0:10:90) * pi / 180;  np = numel(th);
 c = [0, 0, ztop - R];
-pos = zeros(np, 3);  dd = zeros(np, 3, 3);
-for i = 1:np
-    n = [sin(th(i)), 0, cos(th(i))];  t = [cos(th(i)), 0, -sin(th(i))];
-    pos(i, :) = c + (R + s) * n;
-    dd(i, :, 1) = n;  dd(i, :, 2) = t;  dd(i, :, 3) = [0, 1, 0];
-end
+pos = zeros(np, 3);
+for i = 1:np, pos(i, :) = c + (R + s) * [sin(th(i)), 0, cos(th(i))]; end
 pt = compoint(p, pos, op);
 if pt.n ~= np, error('compoint kept %d of %d points', pt.n, np); end
-dip = dipole(pt, dd, 'full', op);
+%  rates are quadratic forms in the (real) dipole direction u: rate(u) - 1 = u' G u, so five fixed directions
+%  x, y, z, (x+z)/sqrt2, (x-z)/sqrt2 give the normal (n) and tangential (t) rates exactly
+dip = dipole(pt, [1 0 0; 0 1 0; 0 0 1; [1 0 1] / sqrt(2); [1 0 -1] / sqrt(2)], op);
 bem = bemsolver(p, op);
 lam = 500:5:900;  M = zeros(numel(lam), 1 + 6 * np);
 for il = 1:numel(lam)
     sig = bem \ dip(p, lam(il));
-    [tot, rad] = decayrate(dip, sig);                     % [np, 3]
+    [tot, rad] = decayrate(dip, sig);                     % [np, 5]
     row = lam(il);
-    for i = 1:np, row = [row, tot(i, 1), rad(i, 1), tot(i, 2), rad(i, 2), tot(i, 3), rad(i, 3)]; end %#ok<AGROW>
+    for i = 1:np
+        sn = sin(th(i));  cs = cos(th(i));
+        Q = {tot(i, :) - 1, rad(i, :)};  out = zeros(1, 6);
+        for q = 1:2
+            v = Q{q};  gxz = (v(4) - v(5)) / 2;
+            vn = sn^2 * v(1) + cs^2 * v(3) + 2 * sn * cs * gxz;
+            vt = cs^2 * v(1) + sn^2 * v(3) - 2 * sn * cs * gxz;
+            out([q, q + 2, q + 4]) = [vn, vt, v(2)];
+        end
+        out([1 3 5]) = out([1 3 5]) + 1;                  % back from (rate - 1) to rate for tot
+        row = [row, out]; %#ok<AGROW>
+    end
     M(il, :) = row;
 end
 hdr = 'lambda_nm';
