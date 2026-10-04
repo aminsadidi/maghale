@@ -22,9 +22,11 @@ md("""# شبیه‌سازی نانومیله‌ی طلا با Meep — فقط د
 """)
 code(r'''# ===== CELL 1: setup (install Meep, Drive, sources, helpers) =====
 import os, subprocess, sys, time, json, multiprocessing, urllib.request
-BASE = os.environ.get('NB_BASE', '/content')
-MM = f'{BASE}/mm'; ENV = f'{MM}/envs/meep'; PY = f'{ENV}/bin/python'; MPIRUN = f'{ENV}/bin/mpirun'
-SIMDIR = f'{BASE}/sim'; os.makedirs(SIMDIR, exist_ok=True)
+KAGGLE = os.path.exists('/kaggle/working')          # Kaggle "Save & Run All" runs headless, no browser needed
+BASE = os.environ.get('NB_BASE', '/kaggle/working' if KAGGLE else '/content')
+WORK = '/tmp/meepwork' if KAGGLE else BASE           # large install files stay out of Kaggle's saved output
+MM = f'{WORK}/mm'; ENV = f'{MM}/envs/meep'; PY = f'{ENV}/bin/python'; MPIRUN = f'{ENV}/bin/mpirun'
+SIMDIR = f'{WORK}/sim'; os.makedirs(SIMDIR, exist_ok=True)
 QUICK = os.environ.get('NB_QUICK') == '1'
 # Jupyter/Colab variables (MPLBACKEND, PYTHONPATH, ...) must not leak into the separate Meep environment
 CLEAN_ENV = {k: v for k, v in os.environ.items() if not k.startswith(('PYTHON', 'MPL', 'JPY', 'CONDA', 'MAMBA'))}
@@ -38,8 +40,8 @@ def sh(cmd):
 # 1) Meep in its own environment
 if not os.path.exists(PY):
     print('installing Meep (about 5 min) ...', flush=True); t = time.time()
-    sh(f'mkdir -p {BASE}/mmbin && curl -sSL https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xj -C {BASE}/mmbin bin/micromamba')
-    sh(f'MAMBA_ROOT_PREFIX={MM} {BASE}/mmbin/bin/micromamba create -y -q -n meep -c conda-forge '
+    sh(f'mkdir -p {WORK}/mmbin && curl -sSL https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xj -C {WORK}/mmbin bin/micromamba')
+    sh(f'MAMBA_ROOT_PREFIX={MM} {WORK}/mmbin/bin/micromamba create -y -q -n meep -c conda-forge '
        f'python=3.11 "pymeep=*=mpi_mpich_*" numpy scipy h5py')
     print(f'installed in {(time.time()-t)/60:.1f} min')
 print(sh(f"{PY} -c \"import meep; print('Meep', meep.__version__)\"").strip().splitlines()[-1])
