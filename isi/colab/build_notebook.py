@@ -16,7 +16,7 @@ md("""# شبیه‌سازی نانومیله‌ی طلا با Meep — فقط د
 
 یا ساده‌تر: منوی **Runtime → Run all** (یا `Ctrl+F9`).
 
-- نتایج در `MyDrive/maghale_meep` ذخیره می‌شوند. اگر کولب قطع شد، دوباره **Run all** بزنید؛ کارهای تمام‌شده تکرار نمی‌شوند.
+- نتایج در `MyDrive/maghale_meep_v2` ذخیره می‌شوند. اگر کولب قطع شد، دوباره **Run all** بزنید؛ کارهای تمام‌شده تکرار نمی‌شوند.
 - بعد از هر مرحله فایل `results.zip` به‌روز می‌شود و در پایان دانلود می‌شود؛ آن را برای Claude بفرستید.
 - اگر خطا دیدید، ۲۰ خط آخر خروجی را برای Claude بفرستید.
 """)
@@ -29,6 +29,7 @@ QUICK = os.environ.get('NB_QUICK') == '1'
 # Jupyter/Colab variables (MPLBACKEND, PYTHONPATH, ...) must not leak into the separate Meep environment
 CLEAN_ENV = {k: v for k, v in os.environ.items() if not k.startswith(('PYTHON', 'MPL', 'JPY', 'CONDA', 'MAMBA'))}
 CLEAN_ENV['MPLBACKEND'] = 'Agg'
+CLEAN_ENV['OMP_NUM_THREADS'] = '1'           # one core per run; parallelism comes from running many runs at once
 def sh(cmd):
     r = subprocess.run(cmd, shell=True, capture_output=True, text=True, env=CLEAN_ENV)
     if r.returncode != 0:
@@ -45,7 +46,7 @@ print(sh(f"{PY} -c \"import meep; print('Meep', meep.__version__)\"").strip().sp
 # 2) results folder
 try:
     from google.colab import drive
-    drive.mount('/content/drive'); OUT = '/content/drive/MyDrive/maghale_meep'
+    drive.mount('/content/drive'); OUT = '/content/drive/MyDrive/maghale_meep_v2'
 except ImportError:
     OUT = f'{BASE}/results'
 os.makedirs(OUT, exist_ok=True)
@@ -60,23 +61,50 @@ for f in FILES:
 open(f'{SIMDIR}/runner.py', 'w').write(
     "import sys, json\n"
     f"sys.path.insert(0, {SIMDIR!r})\n"
-    "import meep as mp\n"
-    "from nanorod import simulate, save_csv\n"
-    "a = json.loads(sys.argv[1]); out = a.pop('out')\n"
-    "o = simulate(**a)\n"
-    "if mp.am_master(): save_csv(out, o, json.dumps(a))\n")
-# 4) helpers
+    "from nanorod import run_task, combine_tasks, save_csv\n"
+    "a = json.loads(sys.argv[1])\n"
+    "if a['mode'] == 'task':\n"
+    "    run_task(a['p'], a['b'], a['t'], a['out'])\n"
+    "else:\n"
+    "    paths = {(b, t): f for b, t, f in a['paths']}\n"
+    "    save_csv(a['out'], combine_tasks(a['p'], paths), json.dumps(a['p']))\n")
+# 4) parallel scheduler: every case = 6 independent runs (3 sub-bands x structure/free space);
+#    all pending runs of a stage execute simultaneously, one CPU core each (identical results to the serial code)
+from concurrent.futures import ThreadPoolExecutor, as_completed
 NP = multiprocessing.cpu_count()
+TASKS = [(b, t) for b in range(3) for t in ('struct', 'free')]
+os.makedirs(f'{OUT}/tasks', exist_ok=True)
+QUEUE = []
 def job(name, **kw):
-    path = f'{OUT}/{name}.csv'
-    if os.path.exists(path):
-        print(f'  [skip] {name} (already done)'); return
-    kw['out'] = path; t = time.time(); print(f'  [run ] {name} ...', flush=True)
-    r = subprocess.run([MPIRUN, '-np', str(NP), PY, f'{SIMDIR}/runner.py', json.dumps(kw)],
-                       capture_output=True, text=True, cwd=SIMDIR, env=CLEAN_ENV)
-    if r.returncode != 0 or not os.path.exists(path):
-        print(r.stdout[-2000:]); print(r.stderr[-3000:]); raise RuntimeError('job failed: ' + name)
-    print(f'  [done] {name} in {(time.time()-t)/60:.1f} min', flush=True)
+    """register a case; run_all() executes every registered case in parallel"""
+    QUEUE.append((name, kw))
+def _sub(args):
+    r = subprocess.run([PY, f'{SIMDIR}/runner.py', json.dumps(args)], capture_output=True, text=True, cwd=SIMDIR, env=CLEAN_ENV)
+    if r.returncode != 0 or not os.path.exists(args['out']):
+        print(r.stdout[-1500:]); print(r.stderr[-2500:]); raise RuntimeError('run failed: ' + args['out'])
+def run_all():
+    cases = [(n, kw) for n, kw in QUEUE if not os.path.exists(f'{OUT}/{n}.csv')]
+    for n, _ in QUEUE:
+        if os.path.exists(f'{OUT}/{n}.csv'): print(f'  [skip] {n} (already done)')
+    QUEUE.clear()
+    if not cases: return
+    todo = []
+    for n, kw in cases:
+        for b, t in TASKS:
+            f = f'{OUT}/tasks/{n}__{b}_{t}.npz'
+            if not os.path.exists(f): todo.append(dict(mode='task', p=kw, b=b, t=t, out=f))
+    todo.sort(key=lambda a: -a['p'].get('res', 1.0))      # finest grids first: better load balance
+    t0 = time.time(); print(f'  running {len(todo)} independent runs for {len(cases)} cases on {NP} cores ...', flush=True)
+    with ThreadPoolExecutor(max_workers=NP) as ex:
+        futs = [ex.submit(_sub, a) for a in todo]
+        for k, fu in enumerate(as_completed(futs), 1):
+            fu.result()
+            if k % max(1, len(todo) // 10) == 0 or k == len(todo):
+                print(f'    {k}/{len(todo)} runs done, {(time.time()-t0)/60:.1f} min', flush=True)
+    for n, kw in cases:
+        _sub(dict(mode='combine', p=kw, out=f'{OUT}/{n}.csv',
+                  paths=[(b, t, f'{OUT}/tasks/{n}__{b}_{t}.npz') for b, t in TASKS]))
+        print(f'  [done] {n}', flush=True)
 sys.path.insert(0, SIMDIR)
 import numpy as np
 from mie import radial_dipole
@@ -105,6 +133,9 @@ if 'A' in STAGES:
     RES_A = q([0.5, 0.75, 1.0], [0.2, 0.25])          # grids 2, 1.33, 1 nm
     for res in RES_A:
         job(f'bench_sphere_res{res}', shape='sphere', orient='z', gap=5.0, res=res)
+    if not QUICK:   # PML-thickness check on the finest grid (runs in the same parallel batch)
+        job('bench_sphere_res1.0_pml0.3', shape='sphere', orient='z', gap=5.0, res=1.0, dpml=0.3)
+    run_all()
     for res in RES_A:
         d = load(f'bench_sphere_res{res}'); Fm, Tm = radial_dipole(d['lam'], 15.874, 5.0, eps_fit)
         e = 100 * (d['Fp'] / Fm - 1)
@@ -117,8 +148,7 @@ if 'A' in STAGES:
     d = load(f'bench_sphere_res{RES_A[-1]}'); Fm, Tm = radial_dipole(d['lam'], 15.874, 5.0, eps_fit)
     e0 = 100 * (F0 / Fm - 1)
     print(f"  extrapolated to 0 nm: median |err Fp| {np.median(abs(e0)):.1f}%  peak {F0.max():.0f} @ {d['lam'][F0.argmax()]:.0f} nm vs Mie {Fm.max():.0f}")
-    if not QUICK:   # PML-thickness check on the finest grid
-        job('bench_sphere_res1.0_pml0.3', shape='sphere', orient='z', gap=5.0, res=1.0, dpml=0.3)
+    if not QUICK:
         a, b = load('bench_sphere_res1.0'), load('bench_sphere_res1.0_pml0.3')
         print(f"  PML 0.15 vs 0.30 um at 1-nm grid: median |dFp| {100*np.median(abs(a['Fp']/b['Fp']-1)):.1f}%, |dT| {100*np.median(abs(a['T']/b['T']-1)):.1f}%")
     pack()
@@ -131,6 +161,7 @@ if 'B' in STAGES:
     for res in q([1.0], [0.25]):
         job(f'rodC_x_gap5_res{res}', shape='rod', orient='x', gap=5.0, res=res)
         job(f'sphereDp_x_gap5_res{res}', shape='sphere', orient='x', gap=5.0, res=res)
+    run_all()
     for res in RES_B:
         d = load(f'rodA_z_gap5_res{res}'); i, k = d['Fp'].argmax(), d['T'].argmax()
         print(f"  grid {1/res:.2f} nm: Fp {d['Fp'][i]:.0f} @ {d['lam'][i]:.0f} nm | T {d['T'][k]:.1f} @ {d['lam'][k]:.0f} nm | eta@T {100*d['eta'][k]:.1f}%")
@@ -147,7 +178,8 @@ if 'C' in STAGES:
             for g in q([3, 5, 7, 10, 15, 20], [5]):
                 job(f'map_{tag}_L{L}_gap{g}_res{RES}', shape='rod', orient='z', gap=float(g), L=float(L), D=20.0,
                     res=RES, n_host=n_host, na_list=[0.9, 1.2])
-                pack()
+    run_all()
+    pack()
 
 zp = pack()
 print(f'\nALL DONE in {(time.time()-T0)/3600:.1f} h -> {zp}')
