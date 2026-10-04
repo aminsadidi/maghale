@@ -194,5 +194,63 @@ if rods:
             lines.append(f'| {name} | {le} | {q0} | {L} | {g} | {T:.1f} | {F:.0f} | {q0*F+1-q0:.0f} | {100*e:.1f}% | {e/q0:.2f} |')
     lines += ['', 'Sources: ' + '; '.join(sorted({e[3] for e in EMIT}))]
 
+# ------------------------------------------------------------------ collection efficiency (BEM far field)
+def bare_dipole_fraction(alpha, axial):
+    """Fraction of a bare dipole's power inside a cone of half-angle alpha; axial: dipole along the cone axis."""
+    th = np.linspace(0, alpha, 4001); ph = np.linspace(0, 2 * np.pi, 721)
+    T, P = np.meshgrid(th, ph, indexing='ij')
+    I = np.sin(T)**2 if axial else 1 - (np.sin(T) * np.cos(P))**2
+    num = np.trapezoid(np.trapezoid(I * np.sin(T), ph, axis=1), th)
+    return num / (8 * np.pi / 3)
+cf, cg = load(f'{EX}/collection_free.csv'), load(f'{EX}/collection_glass.csv')
+if cf is not None:
+    lines += ['', '## Collection efficiency (BEM far field), rod in air, at the radiative peak', '',
+              '| dipole | gap | lambda | rod along optical axis NA0.5 | NA0.9 | rod in focal plane NA0.5 | NA0.9 | bare dipole (axis/plane) NA0.9 |', '|---|---|---|---|---|---|---|---|']
+    for dn in ('z', 'x'):
+        for g in (5, 10, 20):
+            j = np.argmax(cf[f'Prad_{dn}_g{g}'])
+            lines.append(f'| {dn} | {g} | {cf["lambda_nm"][j]:.0f} | {100*cf[f"f_up_NA0.5_{dn}_g{g}"][j]:.1f}% | {100*cf[f"f_up_NA0.9_{dn}_g{g}"][j]:.1f}% | '
+                         f'{100*cf[f"f_side_NA0.5_{dn}_g{g}"][j]:.1f}% | {100*cf[f"f_side_NA0.9_{dn}_g{g}"][j]:.1f}% | '
+                         f'{100*bare_dipole_fraction(np.arcsin(0.9), True):.1f}% / {100*bare_dipole_fraction(np.arcsin(0.9), False):.1f}% |')
+if cg is not None:
+    lines += ['', '## Collection efficiency, rod on glass (axis x), at the radiative peak of the axial dipole', '',
+              '| dipole | gap | lambda | into glass (total) | oil NA1.3 | oil NA1.45 | air hemisphere | dry NA0.9 from top |', '|---|---|---|---|---|---|---|---|']
+    for dn in ('x', 'y', 'z'):
+        for g in (5, 10, 20):
+            j = np.argmax(cg[f'Prad_x_g{g}'])
+            lines.append(f'| {dn} | {g} | {cg["lambda_nm"][j]:.0f} | {100*cg[f"f_glass_hemisphere_{dn}_g{g}"][j]:.1f}% | {100*cg[f"f_glass_NA1.3_{dn}_g{g}"][j]:.1f}% | '
+                         f'{100*cg[f"f_glass_NA1.45_{dn}_g{g}"][j]:.1f}% | {100*cg[f"f_air_hemisphere_{dn}_g{g}"][j]:.1f}% | {100*cg[f"f_air_NA0.9_{dn}_g{g}"][j]:.1f}% |')
+
+# ------------------------------------------------------------------ comparison with Khatua et al. (2014)
+kh = sorted(glob.glob(f'{EX}/khatua_L*.csv'), key=lambda f: int(re.search(r'_L(\d+)', f).group(1)))
+if kh:
+    q0 = 0.0228; lines += ['', '## Comparison with Khatua et al., ACS Nano 8, 4440 (2014): crystal violet, D = 25 nm rods in n = 1.47', '',
+        'xi = E_exc(laser) x E_em; E_em = <eta(q0)>/q0 averaged over a Gaussian CV emission band (640 nm, FWHM 60 nm); speed-up = <q0 Fp + 1 - q0>', '',
+        '| L (nm) | SPR (nm) | gap | E_exc 594 | E_exc 633 | E_em | xi(594) | xi(633) | speed-up |', '|---|---|---|---|---|---|---|---|---|']
+    KH = []
+    for f in kh:
+        d = load(f); L = int(re.search(r'_L(\d+)', f).group(1))
+        meta = open(f).readline()
+        e594 = [float(x) for x in re.search(r'594 nm: ([\d.e+\- ]+);', meta).group(1).split()]
+        e633 = [float(x) for x in re.search(r'633 nm: ([\d.e+\- ]+)', meta).group(1).split()]
+        spr = d['lambda_nm'][np.argmax(d['ext_nm2'])]
+        w = np.exp(-0.5 * ((d['lambda_nm'] - 640) / (60 / 2.355))**2); w /= w.sum()
+        for gi, g in enumerate((3, 5, 7, 10)):
+            F, T = d[f'Fp_g{g}'], d[f'T_g{g}']
+            Eem = np.sum(w * T / (F + (1 - q0) / q0)) / q0
+            sp = np.sum(w * (q0 * F + 1 - q0))
+            KH.append((L, spr, g, e594[gi], e633[gi], Eem, e594[gi] * Eem, e633[gi] * Eem, sp))
+            if g in (5, 3):
+                lines.append(f'| {L} | {spr:.0f} | {g} | {e594[gi]:.0f} | {e633[gi]:.0f} | {Eem:.1f} | {e594[gi]*Eem:.0f} | {e633[gi]*Eem:.0f} | {sp:.1f} |')
+    K = np.array(KH)
+    fig, ax = plt.subplots(figsize=(3.4, 2.5))
+    for g, mk in ((3, 's'), (5, 'o'), (10, '^')):
+        m = K[:, 2] == g
+        ax.semilogy(K[m, 1], K[m, 7], mk + '-', c=C[0], ms=3, lw=1, label=f'633 nm, {g} nm gap')
+        ax.semilogy(K[m, 1], K[m, 6], mk + '--', c=C[1], ms=3, lw=1, label=f'594 nm, {g} nm gap')
+    ax.axhspan(1000, 1300, color='0.85', zorder=0); ax.text(565, 1100, 'measured max. (633 nm)', fontsize=6, va='center')
+    ax.set_xlabel('SPR wavelength (nm)'); ax.set_ylabel(r'Fluorescence enhancement $\xi$'); ax.legend(fontsize=5, ncol=2, loc='lower center')
+    fig.savefig(f'{FIG}/fig_khatua.pdf'); plt.close(fig)
+
 open(OUT, 'w').write('\n'.join(lines) + '\n')
 print('\n'.join(lines))
