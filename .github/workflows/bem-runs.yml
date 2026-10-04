@@ -13,7 +13,8 @@ on:
         default: ''
   push:
     paths:
-      - 'isi/bem/**'
+      - 'isi/bem/run_mnpbem.m'
+      - 'isi/bem/ci_mock/**'
       - '.github/workflows/bem-runs.yml'
 
 permissions:

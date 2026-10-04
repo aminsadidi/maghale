@@ -1,0 +1,91 @@
+# Additional MNPBEM17 (BEM) studies for the manuscript: plasmon-mode decomposition, emitter-position tolerance,
+# other shapes/metals, excitation enhancement, glass substrate, nonlocal correction.
+# Each line of isi/bem/extra/jobs.txt ("job spec output.csv") is one matrix job; jobs whose output already exists in
+# isi/results/bem_extra/ are skipped. Results are committed to isi/results/bem_extra/.
+name: bem-extra
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'isi/bem/extra/**'
+      - '.github/workflows/bem-extra.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bem-extra-${{ github.sha }}
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.m.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: m
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import os, json
+          inc = []
+          for l in open('isi/bem/extra/jobs.txt'):
+              if not l.strip() or l.startswith('#'): continue
+              job, spec, out = l.split()
+              if not os.path.exists(f'isi/results/bem_extra/{out}'):
+                  inc.append({'job': job, 'spec': spec})
+          print('matrix=' + json.dumps({'include': inc or [{'job': 'none', 'spec': 'none'}]}))
+          PY
+
+  run:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        if: matrix.job != 'none'
+      - name: fetch MNPBEM17 (GPL-2.0)
+        if: matrix.job != 'none'
+        run: git clone --depth 1 https://github.com/Nikolaos-Matthaiakakis/MNPBEM.git isi/bem/MNPBEM17
+      - uses: matlab-actions/setup-matlab@v2
+        if: matrix.job != 'none'
+        with:
+          release: latest
+      - name: ${{ matrix.job }} ${{ matrix.spec }}
+        if: matrix.job != 'none'
+        uses: matlab-actions/run-command@v2
+        with:
+          command: addpath(genpath('isi/bem/MNPBEM17')); addpath('isi/bem/extra'); mkdir('out'); tic; job_${{ matrix.job }}('${{ matrix.spec }}', 'out'); fprintf('elapsed %.1f min\n', toc/60)
+      - uses: actions/upload-artifact@v4
+        if: matrix.job != 'none'
+        with:
+          name: extra_${{ matrix.job }}_${{ matrix.spec }}
+          path: out/
+
+  combine:
+    needs: run
+    if: always() && needs.run.result != 'skipped'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: extra_*
+      - name: commit results
+        run: |
+          mkdir -p isi/results/bem_extra
+          find artifacts -name '*.csv' -exec cp {} isi/results/bem_extra/ \; || true
+          git config user.name "bem-extra bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add isi/results/bem_extra
+          if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
+          git commit -m "CI: MNPBEM extra results ($(ls isi/results/bem_extra/*.csv | wc -l) files)"
+          for i in 1 2 3 4; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; then exit 0; fi
+            sleep $((i*5))
+          done
+          echo "push failed"; exit 1

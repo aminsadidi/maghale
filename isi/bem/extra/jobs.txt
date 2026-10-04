@@ -1,0 +1,17 @@
+modes rodL60 modes_rodL60.csv
+modes rodL40 modes_rodL40.csv
+modes rodL80 modes_rodL80.csv
+modes rodL100 modes_rodL100.csv
+modes sphere modes_sphere.csv
+offset s5 offset_s5.csv
+offset s10 offset_s10.csv
+shapes Ag60 shape_Ag60.csv
+shapes D15 shape_D15.csv
+shapes D25 shape_D25.csv
+shapes D30 shape_D30.csv
+shapes spheroid60 shape_spheroid60.csv
+excitation rod excitation_rod.csv
+excitation sphere excitation_sphere.csv
+substrate glass substrate_glass.csv
+nonlocal local nonlocal_local.csv
+nonlocal nonlocal nonlocal_nonlocal.csv
