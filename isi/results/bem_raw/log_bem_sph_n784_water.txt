@@ -1,0 +1,37 @@
+
+=== run_mnpbem  mode=full  04-Oct-2026 09:55:56 ===
+MATLAB 26.2.0.3386108 (R2026b) | GLNXA64 | cores: 2 | RAM: 16.4 GB
+
+--- sph_n784_water: 1564 boundary elements, apex at z = 15.874 nm, est. memory 0.6 GB, 101 wavelengths to do
+[Warning: Matlab statistics toolbox not available - use substitute for KNNSEARCH] 
+[> In distmin3 (line 23)
+In compoint/init (line 21)
+In compoint (line 35)
+In run_mnpbem>run_case (line 110)
+In run_mnpbem (line 37)
+In run (line 100)
+In command_f4d0b07f_ced6_4fa5_a478_480aabd37e46 (line 1)] 
+    sph_n784_water  lambda= 500.0 nm  Fp_z(10 nm)=     73.8  T_z=   2.00  |   4.0 s/lambda,   1/101, case done in ~7 min
+    sph_n784_water  lambda= 516.0 nm  Fp_z(10 nm)=    100.0  T_z=   2.96  |   3.7 s/lambda,   5/101, case done in ~6 min
+    sph_n784_water  lambda= 536.0 nm  Fp_z(10 nm)=     90.8  T_z=   4.93  |   3.6 s/lambda,  10/101, case done in ~6 min
+    sph_n784_water  lambda= 556.0 nm  Fp_z(10 nm)=     56.9  T_z=   4.92  |   3.7 s/lambda,  15/101, case done in ~5 min
+    sph_n784_water  lambda= 576.0 nm  Fp_z(10 nm)=     34.1  T_z=   4.40  |   3.6 s/lambda,  20/101, case done in ~5 min
+    sph_n784_water  lambda= 596.0 nm  Fp_z(10 nm)=     21.6  T_z=   3.89  |   3.6 s/lambda,  25/101, case done in ~5 min
+    sph_n784_water  lambda= 616.0 nm  Fp_z(10 nm)=     15.2  T_z=   3.51  |   3.6 s/lambda,  30/101, case done in ~4 min
+    sph_n784_water  lambda= 636.0 nm  Fp_z(10 nm)=     11.3  T_z=   3.27  |   3.7 s/lambda,  35/101, case done in ~4 min
+    sph_n784_water  lambda= 656.0 nm  Fp_z(10 nm)=      8.9  T_z=   3.10  |   3.6 s/lambda,  40/101, case done in ~4 min
+    sph_n784_water  lambda= 676.0 nm  Fp_z(10 nm)=      7.6  T_z=   2.97  |   3.6 s/lambda,  45/101, case done in ~3 min
+    sph_n784_water  lambda= 696.0 nm  Fp_z(10 nm)=      7.0  T_z=   2.87  |   3.6 s/lambda,  50/101, case done in ~3 min
+    sph_n784_water  lambda= 716.0 nm  Fp_z(10 nm)=      6.7  T_z=   2.79  |   3.6 s/lambda,  55/101, case done in ~3 min
+    sph_n784_water  lambda= 736.0 nm  Fp_z(10 nm)=      6.5  T_z=   2.72  |   3.6 s/lambda,  60/101, case done in ~2 min
+    sph_n784_water  lambda= 756.0 nm  Fp_z(10 nm)=      6.3  T_z=   2.67  |   3.6 s/lambda,  65/101, case done in ~2 min
+    sph_n784_water  lambda= 776.0 nm  Fp_z(10 nm)=      6.2  T_z=   2.62  |   3.7 s/lambda,  70/101, case done in ~2 min
+    sph_n784_water  lambda= 796.0 nm  Fp_z(10 nm)=      6.2  T_z=   2.58  |   3.7 s/lambda,  75/101, case done in ~2 min
+    sph_n784_water  lambda= 816.0 nm  Fp_z(10 nm)=      6.1  T_z=   2.54  |   3.6 s/lambda,  80/101, case done in ~77 s
+    sph_n784_water  lambda= 836.0 nm  Fp_z(10 nm)=      6.0  T_z=   2.51  |   3.6 s/lambda,  85/101, case done in ~58 s
+    sph_n784_water  lambda= 856.0 nm  Fp_z(10 nm)=      5.9  T_z=   2.48  |   3.6 s/lambda,  90/101, case done in ~40 s
+    sph_n784_water  lambda= 876.0 nm  Fp_z(10 nm)=      5.8  T_z=   2.45  |   3.6 s/lambda,  95/101, case done in ~22 s
+    sph_n784_water  lambda= 896.0 nm  Fp_z(10 nm)=      5.8  T_z=   2.43  |   3.6 s/lambda, 100/101, case done in ~4 s
+    sph_n784_water  lambda= 900.0 nm  Fp_z(10 nm)=      5.8  T_z=   2.43  |   3.6 s/lambda, 101/101, case done in ~0 s
+
+=== finished 04-Oct-2026 10:02:15.  Send this file back:  /home/runner/work/maghale/maghale/isi/bem/results_bem_full.zip ===

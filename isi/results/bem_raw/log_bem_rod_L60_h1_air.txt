@@ -1,0 +1,30 @@
+
+=== run_mnpbem  mode=full  04-Oct-2026 09:55:32 ===
+MATLAB 26.2.0.3386108 (R2026b) | GLNXA64 | cores: 2 | RAM: 16.4 GB
+    rod mesh n = [63 32 41]: length 60.00 nm, diameter 20.00 nm
+
+--- rod_L60_h1_air: 6324 boundary elements, apex at z = 30.000 nm, est. memory 10.0 GB, 101 wavelengths to do
+[Warning: Matlab statistics toolbox not available - use substitute for KNNSEARCH] 
+[> In distmin3 (line 23)
+In compoint/init (line 21)
+In compoint (line 35)
+In run_mnpbem>run_case (line 110)
+In run_mnpbem (line 37)
+In run (line 100)
+In command_39c6296e_256b_4576_abdf_538c743cf458 (line 1)] 
+    rod_L60_h1_air  lambda= 500.0 nm  Fp_z(5 nm)=    795.7  T_z=   2.23  | 267.2 s/lambda,   1/101, case done in ~7.4 h
+    rod_L60_h1_air  lambda= 516.0 nm  Fp_z(5 nm)=    828.8  T_z=   1.94  | 264.6 s/lambda,   5/101, case done in ~7.1 h
+    rod_L60_h1_air  lambda= 536.0 nm  Fp_z(5 nm)=    631.6  T_z=   2.04  | 269.9 s/lambda,  10/101, case done in ~6.7 h
+    rod_L60_h1_air  lambda= 556.0 nm  Fp_z(5 nm)=    552.2  T_z=   4.77  | 265.0 s/lambda,  15/101, case done in ~6.4 h
+    rod_L60_h1_air  lambda= 576.0 nm  Fp_z(5 nm)=    699.9  T_z=  17.15  | 265.5 s/lambda,  20/101, case done in ~6.0 h
+    rod_L60_h1_air  lambda= 596.0 nm  Fp_z(5 nm)=   1396.7  T_z=  74.70  | 264.5 s/lambda,  25/101, case done in ~5.6 h
+    rod_L60_h1_air  lambda= 616.0 nm  Fp_z(5 nm)=   1277.7  T_z= 108.79  | 264.7 s/lambda,  30/101, case done in ~5.2 h
+    rod_L60_h1_air  lambda= 636.0 nm  Fp_z(5 nm)=    547.4  T_z=  64.03  | 265.0 s/lambda,  35/101, case done in ~4.9 h
+    rod_L60_h1_air  lambda= 656.0 nm  Fp_z(5 nm)=    277.1  T_z=  41.13  | 264.9 s/lambda,  40/101, case done in ~4.5 h
+    rod_L60_h1_air  lambda= 676.0 nm  Fp_z(5 nm)=    177.8  T_z=  30.00  | 267.5 s/lambda,  45/101, case done in ~4.1 h
+    rod_L60_h1_air  lambda= 696.0 nm  Fp_z(5 nm)=    136.5  T_z=  23.88  | 265.5 s/lambda,  50/101, case done in ~3.8 h
+    rod_L60_h1_air  lambda= 716.0 nm  Fp_z(5 nm)=    114.9  T_z=  20.16  | 267.3 s/lambda,  55/101, case done in ~3.4 h
+    rod_L60_h1_air  lambda= 736.0 nm  Fp_z(5 nm)=    101.3  T_z=  17.69  | 266.0 s/lambda,  60/101, case done in ~3.0 h
+    rod_L60_h1_air  lambda= 756.0 nm  Fp_z(5 nm)=     92.6  T_z=  15.93  | 266.4 s/lambda,  65/101, case done in ~2.7 h
+    rod_L60_h1_air  lambda= 776.0 nm  Fp_z(5 nm)=     87.0  T_z=  14.62  | 266.2 s/lambda,  70/101, case done in ~2.3 h
+    rod_L60_h1_air  lambda= 796.0 nm  Fp_z(5 nm)=     83.1  T_z=  13.60  | 265.3 s/lambda,  75/101, case done in ~1.9 h

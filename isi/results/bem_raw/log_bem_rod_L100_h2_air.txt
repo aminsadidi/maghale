@@ -1,0 +1,42 @@
+
+=== run_mnpbem  mode=full  04-Oct-2026 09:55:32 ===
+MATLAB 26.2.0.3386108 (R2026b) | GLNXA64 | cores: 2 | RAM: 16.4 GB
+    rod mesh n = [32 16 41]: length 100.00 nm, diameter 20.00 nm
+
+--- rod_L100_h2_air: 2170 boundary elements, apex at z = 50.000 nm, est. memory 1.2 GB, 121 wavelengths to do
+[Warning: Matlab statistics toolbox not available - use substitute for KNNSEARCH] 
+[> In distmin3 (line 23)
+In compoint/init (line 21)
+In compoint (line 35)
+In run_mnpbem>run_case (line 110)
+In run_mnpbem (line 37)
+In run (line 100)
+In command_39d26689_37b2_4f6e_a8df_2b7fa5571d81 (line 1)] 
+    rod_L100_h2_air  lambda= 500.0 nm  Fp_z(10 nm)=     92.1  T_z=   1.12  |  13.7 s/lambda,   1/121, case done in ~27 min
+    rod_L100_h2_air  lambda= 520.0 nm  Fp_z(10 nm)=    109.4  T_z=   1.01  |  13.5 s/lambda,   5/121, case done in ~26 min
+    rod_L100_h2_air  lambda= 545.0 nm  Fp_z(10 nm)=    117.6  T_z=   0.83  |  13.3 s/lambda,  10/121, case done in ~25 min
+    rod_L100_h2_air  lambda= 570.0 nm  Fp_z(10 nm)=    106.9  T_z=   0.65  |  13.3 s/lambda,  15/121, case done in ~24 min
+    rod_L100_h2_air  lambda= 595.0 nm  Fp_z(10 nm)=     54.9  T_z=   0.40  |  13.3 s/lambda,  20/121, case done in ~23 min
+    rod_L100_h2_air  lambda= 620.0 nm  Fp_z(10 nm)=     37.1  T_z=   0.43  |  13.3 s/lambda,  25/121, case done in ~21 min
+    rod_L100_h2_air  lambda= 645.0 nm  Fp_z(10 nm)=     34.6  T_z=   1.14  |  13.3 s/lambda,  30/121, case done in ~20 min
+    rod_L100_h2_air  lambda= 670.0 nm  Fp_z(10 nm)=     45.3  T_z=   3.57  |  13.3 s/lambda,  35/121, case done in ~19 min
+    rod_L100_h2_air  lambda= 695.0 nm  Fp_z(10 nm)=     89.0  T_z=  11.62  |  13.4 s/lambda,  40/121, case done in ~18 min
+    rod_L100_h2_air  lambda= 720.0 nm  Fp_z(10 nm)=    248.7  T_z=  43.47  |  13.3 s/lambda,  45/121, case done in ~17 min
+    rod_L100_h2_air  lambda= 745.0 nm  Fp_z(10 nm)=    969.3  T_z= 204.10  |  13.3 s/lambda,  50/121, case done in ~16 min
+    rod_L100_h2_air  lambda= 770.0 nm  Fp_z(10 nm)=   1045.5  T_z= 246.84  |  13.3 s/lambda,  55/121, case done in ~15 min
+    rod_L100_h2_air  lambda= 795.0 nm  Fp_z(10 nm)=    385.0  T_z=  97.68  |  13.4 s/lambda,  60/121, case done in ~14 min
+    rod_L100_h2_air  lambda= 820.0 nm  Fp_z(10 nm)=    194.0  T_z=  52.09  |  13.4 s/lambda,  65/121, case done in ~12 min
+    rod_L100_h2_air  lambda= 845.0 nm  Fp_z(10 nm)=    121.2  T_z=  34.44  |  13.3 s/lambda,  70/121, case done in ~11 min
+    rod_L100_h2_air  lambda= 870.0 nm  Fp_z(10 nm)=     86.6  T_z=  25.78  |  13.3 s/lambda,  75/121, case done in ~10 min
+    rod_L100_h2_air  lambda= 895.0 nm  Fp_z(10 nm)=     68.6  T_z=  20.86  |  13.3 s/lambda,  80/121, case done in ~9 min
+    rod_L100_h2_air  lambda= 920.0 nm  Fp_z(10 nm)=     58.9  T_z=  17.77  |  13.3 s/lambda,  85/121, case done in ~8 min
+    rod_L100_h2_air  lambda= 945.0 nm  Fp_z(10 nm)=     53.3  T_z=  15.65  |  13.3 s/lambda,  90/121, case done in ~7 min
+    rod_L100_h2_air  lambda= 970.0 nm  Fp_z(10 nm)=     49.5  T_z=  14.09  |  13.4 s/lambda,  95/121, case done in ~6 min
+    rod_L100_h2_air  lambda= 995.0 nm  Fp_z(10 nm)=     46.5  T_z=  12.89  |  13.4 s/lambda, 100/121, case done in ~5 min
+    rod_L100_h2_air  lambda=1020.0 nm  Fp_z(10 nm)=     43.8  T_z=  11.94  |  13.4 s/lambda, 105/121, case done in ~4 min
+    rod_L100_h2_air  lambda=1045.0 nm  Fp_z(10 nm)=     41.6  T_z=  11.16  |  13.4 s/lambda, 110/121, case done in ~2 min
+    rod_L100_h2_air  lambda=1070.0 nm  Fp_z(10 nm)=     39.8  T_z=  10.53  |  13.5 s/lambda, 115/121, case done in ~80 s
+    rod_L100_h2_air  lambda=1095.0 nm  Fp_z(10 nm)=     38.6  T_z=  10.00  |  13.6 s/lambda, 120/121, case done in ~13 s
+    rod_L100_h2_air  lambda=1100.0 nm  Fp_z(10 nm)=     38.4  T_z=   9.91  |  13.5 s/lambda, 121/121, case done in ~0 s
+
+=== finished 04-Oct-2026 10:22:41.  Send this file back:  /home/runner/work/maghale/maghale/isi/bem/results_bem_full.zip ===

@@ -1,0 +1,42 @@
+
+=== run_mnpbem  mode=full  04-Oct-2026 09:55:42 ===
+MATLAB 26.2.0.3386108 (R2026b) | GLNXA64 | cores: 2 | RAM: 16.4 GB
+    rod mesh n = [32 16 21]: length 60.00 nm, diameter 20.00 nm
+
+--- rod_L60_h2_water: 1550 boundary elements, apex at z = 30.000 nm, est. memory 0.6 GB, 121 wavelengths to do
+[Warning: Matlab statistics toolbox not available - use substitute for KNNSEARCH] 
+[> In distmin3 (line 23)
+In compoint/init (line 21)
+In compoint (line 35)
+In run_mnpbem>run_case (line 110)
+In run_mnpbem (line 37)
+In run (line 100)
+In command_3b53fbc9_9bfd_4ba9_abb8_53115b5f5b79 (line 1)] 
+    rod_L60_h2_water  lambda= 500.0 nm  Fp_z(10 nm)=     55.0  T_z=   0.93  |   5.8 s/lambda,   1/121, case done in ~12 min
+    rod_L60_h2_water  lambda= 520.0 nm  Fp_z(10 nm)=     75.7  T_z=   0.87  |   5.6 s/lambda,   5/121, case done in ~11 min
+    rod_L60_h2_water  lambda= 545.0 nm  Fp_z(10 nm)=     73.2  T_z=   0.74  |   5.6 s/lambda,  10/121, case done in ~10 min
+    rod_L60_h2_water  lambda= 570.0 nm  Fp_z(10 nm)=     50.8  T_z=   0.50  |   5.3 s/lambda,  15/121, case done in ~10 min
+    rod_L60_h2_water  lambda= 595.0 nm  Fp_z(10 nm)=     30.3  T_z=   0.27  |   5.4 s/lambda,  20/121, case done in ~9 min
+    rod_L60_h2_water  lambda= 620.0 nm  Fp_z(10 nm)=     27.5  T_z=   0.39  |   5.3 s/lambda,  25/121, case done in ~9 min
+    rod_L60_h2_water  lambda= 645.0 nm  Fp_z(10 nm)=     36.5  T_z=   1.67  |   5.3 s/lambda,  30/121, case done in ~8 min
+    rod_L60_h2_water  lambda= 670.0 nm  Fp_z(10 nm)=     77.1  T_z=   8.16  |   5.3 s/lambda,  35/121, case done in ~8 min
+    rod_L60_h2_water  lambda= 695.0 nm  Fp_z(10 nm)=    307.1  T_z=  50.65  |   5.3 s/lambda,  40/121, case done in ~7 min
+    rod_L60_h2_water  lambda= 720.0 nm  Fp_z(10 nm)=    587.0  T_z= 123.48  |   5.3 s/lambda,  45/121, case done in ~7 min
+    rod_L60_h2_water  lambda= 745.0 nm  Fp_z(10 nm)=    193.3  T_z=  47.37  |   5.3 s/lambda,  50/121, case done in ~6 min
+    rod_L60_h2_water  lambda= 770.0 nm  Fp_z(10 nm)=     91.1  T_z=  24.50  |   5.3 s/lambda,  55/121, case done in ~6 min
+    rod_L60_h2_water  lambda= 795.0 nm  Fp_z(10 nm)=     57.1  T_z=  16.26  |   5.3 s/lambda,  60/121, case done in ~5 min
+    rod_L60_h2_water  lambda= 820.0 nm  Fp_z(10 nm)=     41.2  T_z=  12.31  |   5.3 s/lambda,  65/121, case done in ~5 min
+    rod_L60_h2_water  lambda= 845.0 nm  Fp_z(10 nm)=     32.1  T_z=  10.07  |   5.3 s/lambda,  70/121, case done in ~5 min
+    rod_L60_h2_water  lambda= 870.0 nm  Fp_z(10 nm)=     26.5  T_z=   8.66  |   5.3 s/lambda,  75/121, case done in ~4 min
+    rod_L60_h2_water  lambda= 895.0 nm  Fp_z(10 nm)=     23.1  T_z=   7.72  |   5.4 s/lambda,  80/121, case done in ~4 min
+    rod_L60_h2_water  lambda= 920.0 nm  Fp_z(10 nm)=     21.3  T_z=   7.04  |   5.5 s/lambda,  85/121, case done in ~3 min
+    rod_L60_h2_water  lambda= 945.0 nm  Fp_z(10 nm)=     20.3  T_z=   6.54  |   5.3 s/lambda,  90/121, case done in ~3 min
+    rod_L60_h2_water  lambda= 970.0 nm  Fp_z(10 nm)=     19.6  T_z=   6.14  |   5.3 s/lambda,  95/121, case done in ~2 min
+    rod_L60_h2_water  lambda= 995.0 nm  Fp_z(10 nm)=     19.0  T_z=   5.82  |   5.3 s/lambda, 100/121, case done in ~2 min
+    rod_L60_h2_water  lambda=1020.0 nm  Fp_z(10 nm)=     18.4  T_z=   5.55  |   5.3 s/lambda, 105/121, case done in ~85 s
+    rod_L60_h2_water  lambda=1045.0 nm  Fp_z(10 nm)=     17.9  T_z=   5.32  |   5.3 s/lambda, 110/121, case done in ~59 s
+    rod_L60_h2_water  lambda=1070.0 nm  Fp_z(10 nm)=     17.4  T_z=   5.12  |   5.3 s/lambda, 115/121, case done in ~32 s
+    rod_L60_h2_water  lambda=1095.0 nm  Fp_z(10 nm)=     17.2  T_z=   4.96  |   5.3 s/lambda, 120/121, case done in ~5 s
+    rod_L60_h2_water  lambda=1100.0 nm  Fp_z(10 nm)=     17.1  T_z=   4.93  |   5.3 s/lambda, 121/121, case done in ~0 s
+
+=== finished 04-Oct-2026 10:06:38.  Send this file back:  /home/runner/work/maghale/maghale/isi/bem/results_bem_full.zip ===

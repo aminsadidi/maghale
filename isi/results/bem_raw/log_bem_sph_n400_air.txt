@@ -1,0 +1,37 @@
+
+=== run_mnpbem  mode=full  04-Oct-2026 09:55:28 ===
+MATLAB 26.2.0.3386108 (R2026b) | GLNXA64 | cores: 2 | RAM: 16.4 GB
+
+--- sph_n400_air: 796 boundary elements, apex at z = 15.874 nm, est. memory 0.2 GB, 101 wavelengths to do
+[Warning: Matlab statistics toolbox not available - use substitute for KNNSEARCH] 
+[> In distmin3 (line 23)
+In compoint/init (line 21)
+In compoint (line 35)
+In run_mnpbem>run_case (line 110)
+In run_mnpbem (line 37)
+In run (line 100)
+In command_66177fd8_bd09_4713_9363_6c8de2b7980f (line 1)] 
+    sph_n400_air  lambda= 500.0 nm  Fp_z(10 nm)=     93.1  T_z=   2.50  |   1.3 s/lambda,   1/101, case done in ~2 min
+    sph_n400_air  lambda= 516.0 nm  Fp_z(10 nm)=     95.4  T_z=   3.08  |   1.0 s/lambda,   5/101, case done in ~2 min
+    sph_n400_air  lambda= 536.0 nm  Fp_z(10 nm)=     63.1  T_z=   3.31  |   0.9 s/lambda,  10/101, case done in ~89 s
+    sph_n400_air  lambda= 556.0 nm  Fp_z(10 nm)=     40.3  T_z=   3.12  |   0.9 s/lambda,  15/101, case done in ~82 s
+    sph_n400_air  lambda= 576.0 nm  Fp_z(10 nm)=     26.2  T_z=   2.95  |   0.9 s/lambda,  20/101, case done in ~76 s
+    sph_n400_air  lambda= 596.0 nm  Fp_z(10 nm)=     18.1  T_z=   2.81  |   0.9 s/lambda,  25/101, case done in ~71 s
+    sph_n400_air  lambda= 616.0 nm  Fp_z(10 nm)=     13.5  T_z=   2.69  |   0.9 s/lambda,  30/101, case done in ~66 s
+    sph_n400_air  lambda= 636.0 nm  Fp_z(10 nm)=     10.4  T_z=   2.61  |   0.9 s/lambda,  35/101, case done in ~61 s
+    sph_n400_air  lambda= 656.0 nm  Fp_z(10 nm)=      8.4  T_z=   2.55  |   0.9 s/lambda,  40/101, case done in ~56 s
+    sph_n400_air  lambda= 676.0 nm  Fp_z(10 nm)=      7.4  T_z=   2.51  |   0.9 s/lambda,  45/101, case done in ~52 s
+    sph_n400_air  lambda= 696.0 nm  Fp_z(10 nm)=      7.0  T_z=   2.47  |   0.9 s/lambda,  50/101, case done in ~47 s
+    sph_n400_air  lambda= 716.0 nm  Fp_z(10 nm)=      6.8  T_z=   2.43  |   0.9 s/lambda,  55/101, case done in ~42 s
+    sph_n400_air  lambda= 736.0 nm  Fp_z(10 nm)=      6.6  T_z=   2.40  |   0.9 s/lambda,  60/101, case done in ~38 s
+    sph_n400_air  lambda= 756.0 nm  Fp_z(10 nm)=      6.6  T_z=   2.38  |   0.9 s/lambda,  65/101, case done in ~33 s
+    sph_n400_air  lambda= 776.0 nm  Fp_z(10 nm)=      6.6  T_z=   2.36  |   0.9 s/lambda,  70/101, case done in ~29 s
+    sph_n400_air  lambda= 796.0 nm  Fp_z(10 nm)=      6.6  T_z=   2.34  |   0.9 s/lambda,  75/101, case done in ~24 s
+    sph_n400_air  lambda= 816.0 nm  Fp_z(10 nm)=      6.6  T_z=   2.32  |   0.9 s/lambda,  80/101, case done in ~19 s
+    sph_n400_air  lambda= 836.0 nm  Fp_z(10 nm)=      6.6  T_z=   2.31  |   0.9 s/lambda,  85/101, case done in ~15 s
+    sph_n400_air  lambda= 856.0 nm  Fp_z(10 nm)=      6.5  T_z=   2.30  |   0.9 s/lambda,  90/101, case done in ~10 s
+    sph_n400_air  lambda= 876.0 nm  Fp_z(10 nm)=      6.5  T_z=   2.28  |   0.9 s/lambda,  95/101, case done in ~6 s
+    sph_n400_air  lambda= 896.0 nm  Fp_z(10 nm)=      6.5  T_z=   2.27  |   0.9 s/lambda, 100/101, case done in ~1 s
+    sph_n400_air  lambda= 900.0 nm  Fp_z(10 nm)=      6.5  T_z=   2.27  |   0.9 s/lambda, 101/101, case done in ~0 s
+
+=== finished 04-Oct-2026 09:57:08.  Send this file back:  /home/runner/work/maghale/maghale/isi/bem/results_bem_full.zip ===
