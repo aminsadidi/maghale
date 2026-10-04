@@ -50,11 +50,11 @@ jobs:
       - name: check CSVs
         run: |
           python3 - <<'EOF'
-          import numpy as np
           for n, m in [('sph_n400_air', 101), ('rod_L60_h2_air', 101), ('rod_L80_h2_air', 121)]:
-              d = np.loadtxt(f'isi/bem/results_bem/{n}.csv', delimiter=',', skiprows=2, ndmin=2)
-              assert d.shape[0] == m and len(set(d[:, 0])) == m, (n, d.shape)
-              print(n, d.shape, 'ok')
+              rows = [l.split(',') for l in open(f'isi/bem/results_bem/{n}.csv').read().splitlines()[2:] if l]
+              lam = [float(r[0]) for r in rows]
+              assert len(rows) == m and len(set(lam)) == m and lam == sorted(lam), (n, len(rows))
+              print(n, len(rows), 'rows ok')
           EOF
       - uses: actions/upload-artifact@v4
         if: always()
