@@ -17,6 +17,7 @@ MODE       = 'test';     % 'test' first, then 'full'
 MNPBEM_DIR = '';         % folder of MNPBEM17, e.g. 'C:\Users\name\Documents\MNPBEM17'  ('' = search automatically)
 %% =========================================================================================================
 
+if ~isempty(getenv('BEM_MODE')), MODE = getenv('BEM_MODE'); end      % overrides for automated (CI) runs
 here = fileparts(mfilename('fullpath'));
 if isempty(here), here = pwd; end
 setup_mnpbem(MNPBEM_DIR, here);
@@ -27,6 +28,9 @@ fprintf('\n=== run_mnpbem  mode=%s  %s ===\n', MODE, datestr(now));
 fprintf('MATLAB %s | %s | cores: %d | RAM: %.1f GB\n', version, computer, num_cores(), ram_gb());
 
 cases = define_cases(MODE);
+if ~isempty(getenv('BEM_CASES'))                                     % comma-separated subset of case names
+    cases = cases(ismember({cases.name}, strsplit(getenv('BEM_CASES'), ',')));
+end
 stats = struct('name', {}, 'nfaces', {}, 'sec_per_lambda', {});
 for k = 1:numel(cases)
     try
@@ -121,7 +125,7 @@ function s = run_case(c, outdir)
         t0 = tic;
         enei = todo(i);
         sig = bem \ dip(p, enei);
-        [tot, rad] = dip.decayrate(sig);                         % size [n_gaps, 2]: column 1 = z, column 2 = x
+        [tot, rad] = decayrate(dip, sig);                        % size [n_gaps, 2]: column 1 = z, column 2 = x
         row = zeros(1, 4 * numel(c.gaps));
         for g = 1:numel(c.gaps)
             row(4*g-3:4*g) = [tot(g, 1), rad(g, 1), tot(g, 2), rad(g, 2)];

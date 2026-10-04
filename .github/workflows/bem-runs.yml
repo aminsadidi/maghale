@@ -1,0 +1,158 @@
+# BEM (MNPBEM17) runs on free GitHub-hosted runners with MATLAB (free for public repositories via matlab-actions).
+#  - job 'mock'  : runs isi/bem/run_mnpbem.m in real MATLAB against stand-in MNPBEM functions (logic test, always).
+#  - job 'bem'   : the real runs, one matrix job per case; needs MNPBEM17 (secret MNPBEM_URL = download link of
+#                  mnpbem17.zip, or a copy cached by a previous run). Results are committed to isi/results/bem_raw/.
+# Trigger: push to isi/bem/** or isi/bem/trigger.txt, or run manually from the Actions tab.
+name: bem-runs
+
+on:
+  workflow_dispatch:
+    inputs:
+      cases:
+        description: 'comma-separated case names (empty = all full-mode cases)'
+        default: ''
+  push:
+    paths:
+      - 'isi/bem/**'
+      - '.github/workflows/bem-runs.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bem-runs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: matlab-actions/setup-matlab@v2
+        with:
+          release: latest
+      - name: test mode
+        uses: matlab-actions/run-command@v2
+        env: { BEM_MODE: test }
+        with:
+          command: cd isi/bem; addpath('ci_mock'); run('run_mnpbem.m')
+      - name: full mode, crash at 700 nm
+        uses: matlab-actions/run-command@v2
+        env: { BEM_MODE: full, MOCK_FAIL: '700', BEM_CASES: 'sph_n400_air,rod_L60_h2_air,rod_L80_h2_air' }
+        with:
+          command: cd isi/bem; addpath('ci_mock'); run('run_mnpbem.m')
+      - name: full mode, resume
+        uses: matlab-actions/run-command@v2
+        env: { BEM_MODE: full, BEM_CASES: 'sph_n400_air,rod_L60_h2_air,rod_L80_h2_air' }
+        with:
+          command: cd isi/bem; addpath('ci_mock'); run('run_mnpbem.m')
+      - name: check CSVs
+        run: |
+          python3 - <<'EOF'
+          import numpy as np
+          for n, m in [('sph_n400_air', 101), ('rod_L60_h2_air', 101), ('rod_L80_h2_air', 121)]:
+              d = np.loadtxt(f'isi/bem/results_bem/{n}.csv', delimiter=',', skiprows=2, ndmin=2)
+              assert d.shape[0] == m and len(set(d[:, 0])) == m, (n, d.shape)
+              print(n, d.shape, 'ok')
+          EOF
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mock_results
+          path: isi/bem/results_bem/
+
+  plan:
+    needs: mock
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.m.outputs.matrix }}
+      ready: ${{ steps.m.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: m
+        env:
+          MNPBEM_URL: ${{ secrets.MNPBEM_URL }}
+        run: |
+          if [ -z "$MNPBEM_URL" ] && [ ! -f isi/bem/mnpbem_url.txt ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"; echo "No MNPBEM17 source configured: real runs skipped."; exit 0
+          fi
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+          python3 - <<'EOF' >> "$GITHUB_OUTPUT"
+          import re, os, json
+          src = open('isi/bem/run_mnpbem.m').read()
+          full = src.split("lam  = 500:4:900")[1].split('\nend')[0]
+          names = re.findall(r"mk\('([^']+)'", full) + [f'rod_L{L}_h2_air' for L in (40, 50, 80, 100)]
+          want = [c for c in "${{ github.event.inputs.cases }}".split(',') if c]
+          if want: names = [n for n in names if n in want]
+          done = {f[:-4] for f in os.listdir('isi/results/bem_raw')} if os.path.isdir('isi/results/bem_raw') else set()
+          names = [n for n in names if n not in done or want]
+          print('matrix=' + json.dumps({'case': names}))
+          EOF
+
+  bem:
+    needs: plan
+    if: ${{ needs.plan.outputs.ready == 'true' && !contains(needs.plan.outputs.matrix, '[]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: isi/bem/MNPBEM17
+          key: mnpbem17-v1
+      - name: fetch MNPBEM17
+        if: steps.cache.outputs.cache-hit != 'true'
+        env:
+          MNPBEM_URL: ${{ secrets.MNPBEM_URL }}
+        run: |
+          URL="${MNPBEM_URL:-$(cat isi/bem/mnpbem_url.txt)}"
+          pip install -q gdown
+          if echo "$URL" | grep -q drive.google; then gdown --fuzzy -O mnpbem.zip "$URL"; else curl -sSL -o mnpbem.zip "$URL"; fi
+          mkdir -p tmp_mnp && unzip -q mnpbem.zip -d tmp_mnp
+          D=$(dirname "$(find tmp_mnp -name bemoptions.m | head -1)")
+          D=$(cd "$D/.." && pwd)                 # bemoptions.m lives in a subfolder of the toolbox root
+          mv "$D" isi/bem/MNPBEM17 && ls isi/bem/MNPBEM17
+      - uses: matlab-actions/setup-matlab@v2
+        with:
+          release: latest
+      - name: run ${{ matrix.case }}
+        uses: matlab-actions/run-command@v2
+        env: { BEM_MODE: full, BEM_CASES: '${{ matrix.case }}' }
+        with:
+          command: cd isi/bem; run('run_mnpbem.m')
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bem_${{ matrix.case }}
+          path: isi/bem/results_bem/
+
+  combine:
+    needs: bem
+    if: always() && needs.bem.result != 'skipped'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: bem_*
+      - name: commit results
+        run: |
+          mkdir -p isi/results/bem_raw
+          find artifacts -name '*.csv' -exec cp {} isi/results/bem_raw/ \;
+          find artifacts -name 'log_full.txt' | while read f; do cp "$f" "isi/results/bem_raw/log_$(basename $(dirname $f)).txt"; done
+          git config user.name "bem-runs bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add isi/results/bem_raw
+          if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
+          git commit -m "CI: MNPBEM results ($(ls isi/results/bem_raw/*.csv | wc -l) cases)"
+          for i in 1 2 3 4; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; then exit 0; fi
+            sleep $((i*5))
+          done
+          echo "push failed"; exit 1
