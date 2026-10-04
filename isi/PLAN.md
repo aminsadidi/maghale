@@ -19,7 +19,7 @@
 - [x] Fp in a 5-nm gap NOT converged in staircased FDTD at 1 nm -> Fp taken from Lumerical (conformal), BEM recommended
 
 ## Waiting on the user
-- [ ] MATLAB access? (MNPBEM boundary-element run for converged Fp)
+- [~] MNPBEM run: script isi/bem/run_mnpbem.m + guide isi/bem/README_fa.md ready; waiting for results_bem_full.zip from friend laptop -> python isi/analysis/ingest_bem.py
 - [ ] Supervisor approval + corresponding-author e-mail
 - [ ] Target journal (template, word limit, reference style)
 

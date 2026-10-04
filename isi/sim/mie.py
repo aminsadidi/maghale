@@ -30,3 +30,31 @@ def radial_dipole(lam_nm, R, d, eps_sphere, n_host=1.0, nmax=60):
         Fp.append(1 + 1.5 * np.real(st))
         T.append(1.5 / x**2 * sr)
     return np.array(Fp), np.array(T)
+
+
+def mie_bn(n, x, m):
+    mx = m * x
+    psi = lambda z: z * jn(n, z)
+    dpsi = lambda z: jn(n, z) + z * jn(n, z, True)
+    xi = lambda z: z * _h(n, z)
+    dxi = lambda z: _h(n, z) + z * _h(n, z, True)
+    return (psi(mx) * dpsi(x) - m * psi(x) * dpsi(mx)) / (psi(mx) * dxi(x) - m * xi(x) * dpsi(mx))
+
+
+def tangential_dipole(lam_nm, R, d, eps_sphere, n_host=1.0, nmax=60):
+    """Return (F_p, T) for a dipole parallel to the sphere surface at distance d [Kim et al. 1988]."""
+    Fp, T = [], []
+    for lam in np.atleast_1d(lam_nm):
+        k = 2 * np.pi * n_host / lam
+        xs, x = k * R, k * (R + d)
+        m = np.sqrt(eps_sphere(lam) + 0j) / n_host
+        st = sr = 0
+        for n in range(1, nmax):
+            A, B = -mie_bn(n, xs, m), -mie_an(n, xs, m)
+            h, dxh = _h(n, x), (_h(n, x) + x * _h(n, x, True)) / x       # h_n, (x h_n)'/x
+            j, dxj = jn(n, x), (jn(n, x) + x * jn(n, x, True)) / x
+            st += (2 * n + 1) * (B * dxh**2 + A * h**2)
+            sr += (2 * n + 1) * (abs(j + A * h)**2 + abs(dxj + B * dxh)**2)
+        Fp.append(1 + 0.75 * np.real(st))
+        T.append(0.75 * sr)
+    return np.array(Fp), np.array(T)
