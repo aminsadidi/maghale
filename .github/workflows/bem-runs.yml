@@ -1,7 +1,7 @@
 # BEM (MNPBEM17) runs on free GitHub-hosted runners with MATLAB (free for public repositories via matlab-actions).
 #  - job 'mock'  : runs isi/bem/run_mnpbem.m in real MATLAB against stand-in MNPBEM functions (logic test, always).
-#  - job 'bem'   : the real runs, one matrix job per case; needs MNPBEM17 (secret MNPBEM_URL = download link of
-#                  mnpbem17.zip, or a copy cached by a previous run). Results are committed to isi/results/bem_raw/.
+#  - job 'bem'   : the real runs, one matrix job per case, with MNPBEM17 (GPL-2.0) cloned from
+#                  github.com/Nikolaos-Matthaiakakis/MNPBEM. Results are committed to isi/results/bem_raw/.
 # Trigger: push to isi/bem/** or isi/bem/trigger.txt, or run manually from the Actions tab.
 name: bem-runs
 
@@ -71,12 +71,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: m
-        env:
-          MNPBEM_URL: ${{ secrets.MNPBEM_URL }}
         run: |
-          if [ -z "$MNPBEM_URL" ] && [ ! -f isi/bem/mnpbem_url.txt ]; then
-            echo "ready=false" >> "$GITHUB_OUTPUT"; echo "No MNPBEM17 source configured: real runs skipped."; exit 0
-          fi
           echo "ready=true" >> "$GITHUB_OUTPUT"
           python3 - <<'EOF' >> "$GITHUB_OUTPUT"
           import re, os, json
@@ -100,23 +95,11 @@ jobs:
       matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/cache@v4
-        id: cache
-        with:
-          path: isi/bem/MNPBEM17
-          key: mnpbem17-v1
-      - name: fetch MNPBEM17
-        if: steps.cache.outputs.cache-hit != 'true'
-        env:
-          MNPBEM_URL: ${{ secrets.MNPBEM_URL }}
+      - name: fetch MNPBEM17 (GPL-2.0)
         run: |
-          URL="${MNPBEM_URL:-$(cat isi/bem/mnpbem_url.txt)}"
-          pip install -q gdown
-          if echo "$URL" | grep -q drive.google; then gdown --fuzzy -O mnpbem.zip "$URL"; else curl -sSL -o mnpbem.zip "$URL"; fi
-          mkdir -p tmp_mnp && unzip -q mnpbem.zip -d tmp_mnp
-          D=$(dirname "$(find tmp_mnp -name bemoptions.m | head -1)")
-          D=$(cd "$D/.." && pwd)                 # bemoptions.m lives in a subfolder of the toolbox root
-          mv "$D" isi/bem/MNPBEM17 && ls isi/bem/MNPBEM17
+          git clone --depth 1 https://github.com/Nikolaos-Matthaiakakis/MNPBEM.git isi/bem/MNPBEM17
+          echo "MNPBEM commit: $(git -C isi/bem/MNPBEM17 rev-parse HEAD)"
+          find isi/bem/MNPBEM17 -name bemoptions.m -o -name gold.dat -o -name trirod.m
       - uses: matlab-actions/setup-matlab@v2
         with:
           release: latest

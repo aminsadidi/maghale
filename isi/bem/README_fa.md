@@ -22,9 +22,8 @@
 
 ## ۲. نصب (فقط یک بار)
 
-1. **دانلود MNPBEM17** (رایگان): به صفحه‌ی
-   <https://homepage.uni-graz.at/de/ulrich.hohenester/research/software/mnpbem>
-   بروید. نام و ایمیل را در فرم وارد کنید و فایل `mnpbem17.zip` را بگیرید.
+1. **دانلود MNPBEM17** (رایگان، مجوز GPL): به <https://github.com/Nikolaos-Matthaiakakis/MNPBEM> بروید،
+   دکمه‌ی سبز **Code** و بعد **Download ZIP** را بزنید و پوشه‌ی داخل zip را `MNPBEM17` نام‌گذاری کنید.
 2. یک پوشه بسازید، مثلاً `C:\bem`، و این دو چیز را داخلش بگذارید:
    - فایل **`run_mnpbem.m`** (از همین پوشه‌ی گیت‌هاب، یا با فلش)
    - محتوای `mnpbem17.zip` را همین‌جا Extract کنید تا پوشه‌ای به نام **`MNPBEM17`** ساخته شود
