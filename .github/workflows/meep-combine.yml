@@ -1,0 +1,47 @@
+# Re-combine the task outputs of an earlier meep-runs workflow run (no new simulations).
+# Trigger: write the run id into isi/ci/combine_from.txt and push.
+name: meep-combine
+
+on:
+  push:
+    paths:
+      - 'isi/ci/combine_from.txt'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  combine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: r
+        run: echo "run_id=$(tr -dc '0-9' < isi/ci/combine_from.txt)" >> "$GITHUB_OUTPUT"
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: isi/ci/environment-ci.yml
+          cache-environment: true
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          run-id: ${{ steps.r.outputs.run_id }}
+          github-token: ${{ github.token }}
+      - name: combine runs into one CSV per case
+        shell: bash -el {0}
+        env:
+          MPLBACKEND: Agg
+        run: python isi/ci/combine.py artifacts
+      - name: commit results
+        run: |
+          git status --short | head -20
+          git config user.name "meep-runs bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add isi/results/ci
+          if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
+          git commit -m "CI: Meep results ($(ls isi/results/ci/*.csv | wc -l) cases) from run ${{ steps.r.outputs.run_id }}"
+          for i in 1 2 3 4; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; then exit 0; fi
+            sleep $((i*5))
+          done
+          echo "push failed"; exit 1

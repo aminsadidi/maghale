@@ -88,4 +88,8 @@ jobs:
           git add isi/results/ci
           if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
           git commit -m "CI: Meep results ($(ls isi/results/ci/*.csv | wc -l) cases)"
-          for i in 1 2 3 4; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep $((i*5)); done
+          for i in 1 2 3 4; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; then exit 0; fi
+            sleep $((i*5))
+          done
+          echo "push failed"; exit 1
