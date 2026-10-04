@@ -34,21 +34,42 @@ def load(name):
     d = np.loadtxt(p, delimiter=',', skiprows=i + 1, ndmin=2)
     return {k: d[:, i] for i, k in enumerate(hdr)}
 def resolutions(prefix):
-    rs = sorted({float(re.search(r'_res([\d.]+)\.csv$', f).group(1)) for f in glob.glob(os.path.join(folder, prefix + '_res*.csv'))})
-    return rs
+    rs = set()
+    for f in glob.glob(os.path.join(folder, prefix + '_res*.csv')):
+        m = re.search(re.escape(prefix) + r'_res([\d.]+)\.csv$', os.path.basename(f))
+        if m: rs.add(float(m.group(1)))
+    return sorted(rs)
+def extrapolate(prefix):
+    """Linear extrapolation of Fp and T to zero grid spacing from all available grids."""
+    rs = resolutions(prefix)
+    if len(rs) < 2: return None
+    G = np.array([1 / r for r in rs]); O = [load(f'{prefix}_res{r}') for r in rs]
+    return {'lam': O[-1]['lam'], 'grids': G,
+            'Fp': np.polyfit(G, np.array([o['Fp'] for o in O]), 1)[1],
+            'T': np.polyfit(G, np.array([o['T'] for o in O]), 1)[1]}
 def peak(o, k):
     i = np.nanargmax(o[k]); return o[k][i], o['lam'][i]
 
 lines = ['# Colab results summary', '']
 # ---- Stage A: benchmark
 lines += ['## Stage A: gold sphere vs exact Mie (radial dipole, 5 nm gap)', '',
-          '| grid (nm) | median abs err Fp | max abs err Fp | Fp peak Meep | Fp peak Mie |', '|---|---|---|---|---|']
+          '| grid (nm) | median abs err Fp | max abs err Fp | median abs err T | Fp peak Meep | Fp peak Mie |', '|---|---|---|---|---|---|']
 for res in resolutions('bench_sphere'):
     o = load(f'bench_sphere_res{res}')
     if o is None: continue
     Fm, Tm = radial_dipole(o['lam'], 15.874, 5.0, eps_fit)
-    e = 100 * (o['Fp'] / Fm - 1)
-    lines.append(f'| {1/res:.2f} | {np.median(abs(e)):.1f}% | {abs(e).max():.1f}% | {o["Fp"].max():.0f} @ {o["lam"][o["Fp"].argmax()]:.0f} | {Fm.max():.0f} @ {o["lam"][Fm.argmax()]:.0f} |')
+    e = 100 * (o['Fp'] / Fm - 1); et = 100 * (o['T'] / Tm - 1)
+    lines.append(f'| {1/res:.2f} | {np.median(abs(e)):.1f}% | {abs(e).max():.1f}% | {np.median(abs(et)):.1f}% | {o["Fp"].max():.0f} @ {o["lam"][o["Fp"].argmax()]:.0f} | {Fm.max():.0f} @ {o["lam"][Fm.argmax()]:.0f} |')
+X = extrapolate('bench_sphere')
+if X is not None:
+    Fm, Tm = radial_dipole(X['lam'], 15.874, 5.0, eps_fit)
+    e = 100 * (X['Fp'] / Fm - 1); et = 100 * (X['T'] / Tm - 1)
+    lines.append(f'| extrapolated (0) | {np.median(abs(e)):.1f}% | {abs(e).max():.1f}% | {np.median(abs(et)):.1f}% | {X["Fp"].max():.0f} @ {X["lam"][X["Fp"].argmax()]:.0f} | {Fm.max():.0f} @ {X["lam"][Fm.argmax()]:.0f} |')
+a, b = load('bench_sphere_res1.0') if os.path.exists(os.path.join(folder, 'bench_sphere_res1.0.csv')) else None, \
+       load('bench_sphere_res1.0_pml0.3') if os.path.exists(os.path.join(folder, 'bench_sphere_res1.0_pml0.3.csv')) else None
+if a is not None and b is not None:
+    lines.append(f'\nPML check (1-nm grid, 0.15 vs 0.30 um): median |dFp| {100*np.median(abs(a["Fp"]/b["Fp"]-1)):.1f}%, '
+                 f'max {100*np.max(abs(a["Fp"]/b["Fp"]-1)):.1f}%; median |dT| {100*np.median(abs(a["T"]/b["T"]-1)):.1f}%')
 # ---- Stage B: convergence of case A
 lines += ['', '## Stage B: mesh convergence, rod, axial dipole, 5 nm gap', '',
           '| grid (nm) | Fp max | lambda_Fp | T max | lambda_T | eta at T peak | coll NA0.9 at T peak |', '|---|---|---|---|---|---|---|']
@@ -70,6 +91,11 @@ if conv:
         lines.append(f'\nChange between the two finest grids: Fp {100*abs(b[1]/a[1]-1):.1f}%, T {100*abs(b[3]/a[3]-1):.1f}%, '
                      f'lambda_T {abs(b[4]-a[4]):.0f} nm.')
 plt.close(fig)
+X = extrapolate('rodA_z_gap5')
+if X is not None:
+    i, j = X['Fp'].argmax(), X['T'].argmax()
+    lines.append(f'Extrapolated to zero grid spacing: Fp {X["Fp"][i]:.0f} @ {X["lam"][i]:.0f} nm, T {X["T"][j]:.1f} @ {X["lam"][j]:.0f} nm, '
+                 f'eta at T peak {100*X["T"][j]/X["Fp"][j]:.1f}%')
 # ---- orientation ratios
 for res in sorted(set(resolutions('rodA_z_gap5')) & set(resolutions('rodC_x_gap5')), reverse=True):
     A, C = load(f'rodA_z_gap5_res{res}'), load(f'rodC_x_gap5_res{res}')
