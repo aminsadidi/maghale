@@ -12,8 +12,14 @@
 - [x] Ingest script for Colab results (`isi/analysis/ingest_colab.py results.zip` -> `isi/results/summary.md`)
 - [x] Raw data with clean names for Zenodo (`isi/data/`)
 
+## Done (heavy runs)
+- [x] 54 Meep runs on GitHub Actions (stages A, B), results in `isi/results/ci`, summary in `isi/results/summary.md`
+- [x] T validated vs Mie: 7.2% at 1 nm, 4.4% extrapolated; rod radiative peak 125 @ 611 nm vs Lumerical 119 @ 616 nm
+- [x] Collection efficiency converged (NA 0.9: 18.0%); antenna keeps the dipolar pattern -> lay rods in the focal plane
+- [x] Fp in a 5-nm gap NOT converged in staircased FDTD at 1 nm -> Fp taken from Lumerical (conformal), BEM recommended
+
 ## Waiting on the user
-- [ ] Run the Colab notebook (stages A, B, then C) and send `results.zip`
+- [ ] MATLAB access? (MNPBEM boundary-element run for converged Fp)
 - [ ] Supervisor approval + corresponding-author e-mail
 - [ ] Target journal (template, word limit, reference style)
 

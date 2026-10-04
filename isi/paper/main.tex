@@ -1,5 +1,5 @@
 % ISI manuscript draft -- journal-neutral article class; switch to the target journal's template at submission.
-% Numbers marked \TBD{...} come from the converged Meep runs (isi/colab notebook) and must be filled in.
+% Remaining \TBD{...} markers are author information only. Meep results: isi/results/ci (GitHub Actions run 37189919719).
 \documentclass[11pt,a4paper]{article}
 \usepackage[margin=2.4cm]{geometry}
 \usepackage{amsmath,amssymb,graphicx,booktabs,siunitx,xcolor}
@@ -39,8 +39,9 @@ the longitudinal resonance the nanorod ratio rises to 41 for $\Fp$ and to 358 fo
 anisotropy of the nanorod is therefore predominantly resonant; it cannot be represented by a scalar Purcell factor
 and is diluted by orientation averaging. Including the intrinsic quantum yield $q_0$ of the emitter, we find that
 the optimal tip--emitter gap depends on $q_0$: for poor emitters ($q_0=0.01$) a \SIrange{5}{10}{nm} gap raises
-the quantum efficiency up to eightfold, whereas for $q_0\to1$ the \SI{20}{nm} gap performs best. Mesh-convergence
-analysis with a body-of-revolution solver gives peak values converged to \TBD{x\,\%}.
+the quantum efficiency up to eightfold, whereas for $q_0\to1$ the \SI{20}{nm} gap performs best. An independent
+body-of-revolution FDTD calculation, validated against Mie theory to \SI{4}{\percent} for the radiated power,
+reproduces the radiative peak of the nanorod to within \SI{5}{\percent}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Purcell effect; local density of optical states; gold nanorod; plasmonic nanoantenna;
@@ -168,8 +169,14 @@ underestimates the peak heights by \SI{15}{\percent} and \SI{8}{\percent} (Fig.~
 body-of-revolution solver, a dielectric sphere is reproduced within \SI{1}{\percent} at a \SI{2}{nm} grid. For
 gold at a \SI{5}{nm} gap, $T$ is already within about \SI{10}{\percent} of the exact result at \SI{2}{nm}, whereas
 $\Fp$ is overestimated by a factor of about three at that grid and by \SI{24}{\percent} at a \SI{20}{nm} gap,
-showing that the error is confined to the near field of the staircased surface; the extrapolated $\Fp$ agrees
-with Mie theory to within \TBD{x\,\%} (Supplementary Information). The free-space reference yields $\Fp^{B}$ between 0.93 and 1.13 and $T^{B}$
+showing that the error is confined to the near field of the staircased surface. Refining the grid to 1.33 and
+\SI{1}{nm} reduces the median error of $T$ to \SI{8.4}{\percent} and \SI{7.2}{\percent} and, after linear
+extrapolation to zero spacing, to \SI{4.4}{\percent}; the same refinement leaves the median $\Fp$ error at
+\SI{93}{\percent} at \SI{1}{nm} (\SI{48}{\percent} extrapolated), and $\Fp$ also depends on the PML thickness
+at the \SI{9}{\percent} level whereas $T$ does not (\SI{0.1}{\percent}) (Supplementary Information). In this work the
+body-of-revolution solver is therefore used only for radiative quantities---$T$, the emission pattern and the
+collection efficiency---and all $\Fp$ values are taken from the three-dimensional solver, whose conformal treatment
+of the metal surface underestimates the exact sphere result by \SI{15}{\percent} at a \SI{2}{nm} mesh. The free-space reference yields $\Fp^{B}$ between 0.93 and 1.13 and $T^{B}$
 between 0.993 and 1.003 in the three-dimensional solver, which bounds the normalisation uncertainty of the
 three-dimensional results.
 
@@ -186,8 +193,10 @@ At the Purcell peak $\eta_a=\SI{7.6}{\percent}$, i.e.\ $P_{\rm loss}/P_0=\Fp-T=1
 \SI{784}{nm}, far from resonance, where $\Fp$ has dropped to 69. A second, weaker $\Fp$ maximum at
 \SI{512}{nm} ($\Fp=645$, $T\approx1.8$) coincides with the onset of interband absorption in gold and is almost
 purely non-radiative. These magnitudes agree with earlier calculations for comparable rods and
-gaps~\cite{mohammadi}. The mesh-converged body-of-revolution values are $\Fp=\TBD{x}$ at \TBD{x}\,nm and
-$T=\TBD{x}$ at \TBD{x}\,nm.
+gaps~\cite{mohammadi}. The radiative peak is confirmed independently by the body-of-revolution solver, in which the
+dipole lies exactly on the axis: on grids of 2, 1.33 and \SI{1}{nm} its height decreases monotonically from 149 to
+134 and 125 and its position moves from 631 to 617 and \SI{611}{nm}, so that the \SI{1}{nm} result lies within
+\SI{5}{\percent} and \SI{5}{nm} of the three-dimensional value (119 at \SI{616}{nm}).
 
 \subsection{Orientation anisotropy: nanorod versus equal-volume sphere}
 Rotating the dipole to the transverse direction at the same position (case C) reduces $\Fp$ at \SI{610}{nm}
@@ -250,9 +259,16 @@ gap (nm) & $\lambda_T$ (nm) & $\Fp(\lambda_T)$ & $T_{\max}$ & $q_0=0.01$ & $0.1$
 \end{table}
 
 \subsection{Collection efficiency}
-The axial dipole and the longitudinal mode radiate with a dipolar pattern oriented along the rod, which sets the
-fraction of the radiated power that a lens can collect. \TBD{Fraction within NA = 0.9 / 1.3 from the
-near-to-far-field transformation, gap and aspect-ratio maps in air and water.}
+The near-to-far-field transformation of the body-of-revolution runs gives the fraction of the radiated power
+emitted into a cone around the rod axis. At the radiative peak this fraction is \SI{1.2}{\percent} for
+$\mathrm{NA}=0.5$, \SI{18.0}{\percent} for $\mathrm{NA}=0.9$ and \SI{48.3}{\percent} for the full hemisphere,
+identical to three decimals on all three grids. These values coincide within \SI{7}{\percent} with those of a bare
+axial dipole (\SI{1.3}{\percent} and \SI{19.4}{\percent}): the antenna multiplies the radiated power by two orders of
+magnitude but does not redirect it, and the emission remains a dipole pattern with a node along the rod axis. For a
+single-photon source this has a direct practical consequence. A rod standing along the optical axis of the
+collection objective wastes most of its enhancement, whereas a rod lying in the focal plane presents its dipole
+perpendicular to the optical axis, for which the dipolar pattern gives about \SI{33}{\percent} at
+$\mathrm{NA}=0.9$---almost twice as much.
 
 \subsection{Numerical accuracy}
 In the three-dimensional solver, the resonance position (\SI{616 \pm 4}{nm}) and the efficiency at the radiative
@@ -262,8 +278,14 @@ appears. The cause is the sub-cell position of the source in a \SI{5}{nm} gap to
 cap: with a non-radiative rate scaling as $d^{-3}$~\cite{ford,novotny}, a one-nanometre effective displacement
 changes the loss channel by up to a factor of two. All ratios reported above are computed with an identical
 mesh and source position and are insensitive to this error. The body-of-revolution solver, in which the
-source lies exactly on the axis and the grid can be refined to \TBD{0.5}\,nm, gives converged peak values of
-\TBD{x} with a residual change of \TBD{x\,\%} between the two finest grids.
+source lies exactly on the axis, gives a monotonically converging radiative peak (149, 134, 125 for grids of 2, 1.33
+and \SI{1}{nm}; \SI{7}{\percent} change between the two finest grids) and collection efficiencies that do not
+change at all with the grid; we therefore quote radiative quantities with an uncertainty of about
+\SI{10}{\percent}. The total rate $\Fp$ remains the least certain quantity: the comparison with Mie theory bounds its
+error in the three-dimensional solver at about \SI{15}{\percent} for the sphere, and the mesh study suggests up to
+\SI{40}{\percent} for the sharper nanorod tip, which is why the conclusions rest on ratios, positions and the
+radiative channel. A boundary-element calculation, which discretises only the particle surface, would remove this
+limitation and is planned.
 
 % ---------------------------------------------------------------------------------------------
 \section{Discussion}
@@ -286,8 +308,9 @@ rod's radiative enhancement exceeds the sphere's by an order of magnitude even t
 For single-photon sources, a short lifetime (large $\Fp$) and a high quantum efficiency are both required. Our
 results show that a \SIrange{5}{10}{nm} gap is preferable for emitters with low intrinsic yield, such as many
 colloidal quantum dots at room temperature, while near-unity emitters benefit more from larger gaps; tuning the
-longitudinal resonance through the aspect ratio provides an independent handle on the emission wavelength.
-\TBD{Collection-efficiency and aqueous-environment maps (Colab runs) to be summarised here.}
+longitudinal resonance through the aspect ratio provides an independent handle on the emission wavelength. Because
+the antenna leaves the dipolar emission pattern intact, the rod should lie in the focal plane of the collection
+optics rather than along its axis, which nearly doubles the collected fraction at $\mathrm{NA}=0.9$.
 
 The limitations of the present study are the local-response description of gold, which is adequate at
 \SI{5}{nm} but not in sub-nanometre gaps where tunnelling and nonlocality matter~\cite{xu,ciraci}; the
@@ -304,7 +327,7 @@ and analysis code are openly available.
 
 \section*{Data availability}
 All raw spectra, simulation scripts (Lumerical and Meep) and analysis code are available at
-\TBD{Zenodo DOI / GitHub URL}.
+\url{https://github.com/aminsadidi/maghale} (a Zenodo DOI will be assigned at publication).
 
 \section*{Author contributions}
 \TBD{to be completed by the authors.}

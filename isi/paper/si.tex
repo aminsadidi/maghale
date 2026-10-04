@@ -89,7 +89,26 @@ gives a uniform \SIrange{4}{5}{\percent} overestimate with a maximum deviation o
 \SI{10}{\percent} while the power-balance $F_p$ is about three times too large; at a \SI{20}{nm} gap the $F_p$
 error drops to \SI{24}{\percent} and $T$ agrees within \SI{5}{\percent}. The $F_p$ error is therefore a near-field
 discretisation error of the staircased metal surface. Grids of 2, 1.33 and \SI{1}{nm} with linear extrapolation to
-zero spacing: \TBD{table from isi/results/summary.md}.
+zero spacing are summarised in Table~\ref{tab:bor}.
+
+\begin{table}[h]\centering
+\caption{Body-of-revolution solver against exact Mie theory (gold sphere, radial dipole, \SI{5}{nm} gap) and grid
+convergence of the nanorod (axial dipole, \SI{5}{nm} gap). Errors are medians over \SIrange{490}{900}{nm}.}\label{tab:bor}
+\begin{tabular}{lcccc}\toprule
+grid (nm) & sphere: $|\Delta F_p|$ & sphere: $|\Delta T|$ & rod: $T_{\max}$ ($\lambda_T$) & rod: NA 0.9 fraction\\\midrule
+2.00 & 215\% & 10.2\% & 149 (631 nm) & 0.181\\
+1.33 & 108\% & 8.4\% & 134 (617 nm) & 0.181\\
+1.00 & 93\% & 7.2\% & 125 (611 nm) & 0.180\\
+extrapolated & 48\% & 4.4\% & -- & --\\\bottomrule
+\end{tabular}\end{table}
+
+PML thickness 0.15 versus \SI{0.3}{\micro\metre} at the \SI{1}{nm} grid changes $T$ by \SI{0.1}{\percent} (median)
+but $F_p$ by \SI{9}{\percent}. The radiative quantities are therefore converged to the level quoted in the main text,
+whereas $F_p$ in a \SI{5}{nm} gap is not converged at grids of \SI{1}{nm} with a staircased surface and is not used.
+The transverse ($m=\pm1$) configuration with a single $E_r$ source on the axis gave unphysical (negative) total
+rates and is likewise not used; transverse results are taken from the three-dimensional solver. All runs were
+executed on GitHub-hosted runners (workflow \texttt{.github/workflows/meep-runs.yml}); raw outputs are in
+\texttt{isi/results/ci}.
 
 \section*{References}
 \noindent[1] P. B. Johnson and R. W. Christy, Phys. Rev. B \textbf{6}, 4370 (1972).\\
