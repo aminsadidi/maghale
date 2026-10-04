@@ -101,8 +101,12 @@ if any(v is not None for v in off.values()):
             x = (10 + s) * np.sin(np.radians(t))
             lines.append(f'| {s} | {t} | {x:.1f} | {d[f"Fp_n_th{t}"][j]:.0f} | {d[f"T_n_th{t}"][j]:.1f} | {100*d[f"T_n_th{t}"][j]/d[f"Fp_n_th{t}"][j]:.1f}% | '
                          f'{d[f"Fp_t_th{t}"][j]:.0f} | {d[f"T_t_th{t}"][j]:.2f} | {d[f"T_y_th{t}"][j]:.2f} |')
-        half = np.interp(0.5, (Tn / Tn[0])[::-1], np.array(th)[::-1])
-        lines.append(f'- s = {s} nm (lambda {lr:.0f} nm): T_n falls to half at theta = {half:.0f} deg, i.e. lateral offset {(10+s)*np.sin(np.radians(half)):.1f} nm')
+        rr = Tn / Tn[0]
+        if rr.min() < 0.5:
+            half = np.interp(0.5, rr[::-1], np.array(th)[::-1])
+            lines.append(f'- s = {s} nm (lambda {lr:.0f} nm): T_n falls to half at theta = {half:.0f} deg, i.e. lateral offset {(10+s)*np.sin(np.radians(half)):.1f} nm')
+        else:
+            lines.append(f'- s = {s} nm (lambda {lr:.0f} nm): T_n stays above half over the whole cap; at theta = {th[-1]} deg it is {100*rr[-1]:.0f}% of the on-axis value, eta {100*Tn[-1]/Fn[-1]:.1f}% vs {100*Tn[0]/Fn[0]:.1f}%')
         ax[0].plot(th, Tn / Tn[0], 'o-', ms=3, color=C[ci], label=f'spacer {s} nm')
         ax[1].plot(th, 100 * Tn / Fn, 'o-', ms=3, color=C[ci], label=f'spacer {s} nm')
     ax[0].set_xlabel(r'Polar angle $\theta$ (deg)'); ax[0].set_ylabel(r'$T_n(\theta)/T_n(0)$'); ax[0].legend(fontsize=6, frameon=False)

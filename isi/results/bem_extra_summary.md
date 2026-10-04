@@ -1,0 +1,126 @@
+# Additional BEM studies
+
+## Plasmon-mode decomposition (quasistatic)
+
+At the peak of the axial Fp: share of Fp-1 carried by the longitudinal dipolar mode; background = full - mode;
+geometric ratio = background_axial / Fp_transverse; total ratio = Fp_axial / Fp_transverse.
+
+| particle | gap | lambda_peak | Fp_z | mode share | background_z | Fp_x | geometric ratio | total ratio |
+|---|---|---|---|---|---|---|---|---|
+| rodL40 | 3 | 540 | 2776 | 35% | 1814.9 | 724.1 | 2.51 | 4 |
+| rodL40 | 5 | 540 | 859 | 57% | 368.1 | 135.5 | 2.72 | 6 |
+| rodL40 | 10 | 540 | 154 | 80% | 31.7 | 12.1 | 2.61 | 13 |
+| rodL40 | 20 | 540 | 19 | 92% | 2.5 | 1.6 | 1.56 | 12 |
+| rodL60 | 3 | 595 | 2936 | 80% | 592.5 | 222.6 | 2.66 | 13 |
+| rodL60 | 5 | 595 | 1374 | 91% | 129.2 | 41.4 | 3.12 | 33 |
+| rodL60 | 10 | 595 | 352 | 96% | 14.0 | 4.3 | 3.27 | 82 |
+| rodL60 | 20 | 595 | 55 | 98% | 1.9 | 1.2 | 1.58 | 47 |
+| rodL80 | 3 | 655 | 5864 | 96% | 245.4 | 88.2 | 2.78 | 66 |
+| rodL80 | 5 | 655 | 3095 | 98% | 57.1 | 16.7 | 3.41 | 185 |
+| rodL80 | 10 | 655 | 861 | 99% | 7.5 | 2.3 | 3.33 | 382 |
+| rodL80 | 20 | 655 | 148 | 100% | 1.5 | 1.1 | 1.43 | 138 |
+| rodL100 | 3 | 725 | 8652 | 98% | 188.1 | 65.0 | 2.89 | 133 |
+| rodL100 | 5 | 725 | 4661 | 99% | 46.1 | 12.5 | 3.70 | 374 |
+| rodL100 | 10 | 725 | 1322 | 100% | 6.8 | 1.9 | 3.57 | 693 |
+| rodL100 | 20 | 725 | 239 | 100% | 1.5 | 1.1 | 1.47 | 227 |
+| sphere | 3 | 510 | 3285 | 4% | 3162.4 | 1395.8 | 2.27 | 2 |
+| sphere | 5 | 510 | 761 | 9% | 693.1 | 284.3 | 2.44 | 3 |
+| sphere | 10 | 510 | 89 | 21% | 70.1 | 29.0 | 2.42 | 3 |
+| sphere | 20 | 510 | 9 | 35% | 5.9 | 3.1 | 1.88 | 3 |
+- rodL40: dipolar mode carries half of Fp-1 at a gap of 4.3 nm; total ratio max 15 at 15 nm
+- rodL40: rodL40 faces=1240 kL=2 kT=6
+- rodL60: rodL60 faces=1550 kL=2 kT=7
+- rodL80: rodL80 faces=1860 kL=2 kT=8
+- rodL100: rodL100 faces=2170 kL=2 kT=10
+- sphere: sphere faces=1564 kL=3 kT=2
+
+## Emitter position on a spacer shell around the tip (rod L60)
+
+| shell s | theta | lateral offset (nm) | Fp_n | T_n | eta_n | Fp_t | T_t | T_y |
+|---|---|---|---|---|---|---|---|---|
+| 5 | 0 | 0.0 | 1544 | 117.5 | 7.6% | 32 | 0.36 | 0.36 |
+| 5 | 10 | 2.6 | 1538 | 116.8 | 7.6% | 32 | 0.37 | 0.36 |
+| 5 | 20 | 5.1 | 1520 | 114.8 | 7.6% | 33 | 0.39 | 0.35 |
+| 5 | 30 | 7.5 | 1496 | 112.0 | 7.5% | 34 | 0.44 | 0.35 |
+| 5 | 40 | 9.6 | 1464 | 108.5 | 7.4% | 36 | 0.51 | 0.35 |
+| 5 | 50 | 11.5 | 1423 | 104.0 | 7.3% | 39 | 0.62 | 0.35 |
+| 5 | 60 | 13.0 | 1372 | 98.6 | 7.2% | 43 | 0.78 | 0.34 |
+| 5 | 70 | 14.1 | 1309 | 92.3 | 7.1% | 48 | 0.98 | 0.33 |
+| 5 | 80 | 14.8 | 1236 | 85.3 | 6.9% | 55 | 1.16 | 0.31 |
+| 5 | 90 | 15.0 | 1173 | 79.5 | 6.8% | 65 | 1.23 | 0.29 |
+- s = 5 nm (lambda 610 nm): T_n stays above half over the whole cap; at theta = 90 deg it is 68% of the on-axis value, eta 6.8% vs 7.6%
+| 10 | 0 | 0.0 | 428 | 36.3 | 8.5% | 3 | 0.67 | 0.67 |
+| 10 | 10 | 3.5 | 426 | 36.1 | 8.5% | 3 | 0.67 | 0.67 |
+| 10 | 20 | 6.8 | 422 | 35.5 | 8.4% | 4 | 0.66 | 0.67 |
+| 10 | 30 | 10.0 | 415 | 34.6 | 8.4% | 4 | 0.64 | 0.67 |
+| 10 | 40 | 12.9 | 405 | 33.4 | 8.3% | 5 | 0.62 | 0.66 |
+| 10 | 50 | 15.3 | 393 | 31.9 | 8.1% | 6 | 0.60 | 0.66 |
+| 10 | 60 | 17.3 | 379 | 30.2 | 8.0% | 7 | 0.60 | 0.65 |
+| 10 | 70 | 18.8 | 364 | 28.4 | 7.8% | 9 | 0.63 | 0.64 |
+| 10 | 80 | 19.7 | 350 | 26.7 | 7.6% | 12 | 0.69 | 0.62 |
+| 10 | 90 | 20.0 | 340 | 25.2 | 7.4% | 15 | 0.81 | 0.59 |
+- s = 10 nm (lambda 610 nm): T_n stays above half over the whole cap; at theta = 90 deg it is 70% of the on-axis value, eta 7.4% vs 8.5%
+
+## Other shapes and metals (axial / transverse dipole)
+
+| case | gap | lambda_T | T_z max | Fp_z there | eta_a | Fp_z/Fp_x there | T_z/T_x there | Fp_z/Fp_x at 500 nm |
+|---|---|---|---|---|---|---|---|---|
+| Ag60 | 5 | 505 | 1131.0 | 2974 | 38.0% | 677 | 3196 | 575.07 |
+| Ag60 | 10 | 505 | 331.8 | 866 | 38.3% | 863 | 493 | 742.01 |
+| D15 | 5 | 605 | 68.7 | 2073 | 3.3% | 70 | 142 | 3.77 |
+| D15 | 10 | 605 | 18.0 | 462 | 3.9% | 164 | 23 | 5.46 |
+| D25 | 5 | 615 | 172.1 | 1233 | 14.0% | 39 | 649 | 3.08 |
+| D25 | 10 | 615 | 60.8 | 400 | 15.2% | 120 | 104 | 4.27 |
+| D30 | 5 | 625 | 227.2 | 957 | 23.7% | 34 | 1109 | 2.90 |
+| D30 | 10 | 625 | 90.1 | 351 | 25.7% | 111 | 178 | 3.94 |
+| spheroid60 | 5 | 600 | 105.5 | 1984 | 5.3% | 109 | 177 | 7.72 |
+| spheroid60 | 10 | 600 | 24.5 | 386 | 6.3% | 200 | 30 | 11.23 |
+
+## Excitation (local-field intensity) enhancement on the axis
+
+| particle | gap | max |E_z|^2 (pol. axial) | at lambda | 405 nm | 450 nm | 532 nm | 633 nm |
+|---|---|---|---|---|---|---|---|---|
+| rod | 5 | 119 | 610 | 3.2 | 3.0 | 1.8 | 70.6 |
+| rod | 10 | 37 | 610 | 1.7 | 1.6 | 0.8 | 23.8 |
+| rod | 20 | 8 | 615 | 1.1 | 1.1 | 0.7 | 6.5 |
+| sphere | 5 | 7 | 530 | 3.9 | 3.9 | 6.7 | 4.8 |
+| sphere | 10 | 3 | 530 | 2.3 | 2.3 | 3.4 | 2.7 |
+| sphere | 20 | 2 | 535 | 1.4 | 1.4 | 1.7 | 1.5 |
+
+## Rod on glass (n = 1.52), axial dipole x; rates in units of the vacuum rate
+
+| gap | lambda_T | T_x | Fp_x | eta_a | T_x / T0_x (vs bare glass) | Fp_x / tot0_x | T_y max | T_z max |
+|---|---|---|---|---|---|---|---|---|
+| 5 | 635 | 265.7 | 2198 | 12.1% | 209.3 | 1731 | 0.62 | 1.45 |
+| 10 | 640 | 74.1 | 519 | 14.3% | 58.3 | 409 | 0.97 | 2.24 |
+| 20 | 640 | 13.9 | 79 | 17.6% | 10.9 | 62 | 1.20 | 2.26 |
+
+## Nonlocal correction (hydrodynamic, cover-layer model)
+
+| gap | Fp_z peak local | nonlocal | change | lambda shift | T_z peak local | nonlocal | change |
+|---|---|---|---|---|---|---|---|
+| 3 | 3748 | 2752 | -26.6% | +95 nm | 214.1 | 177.1 | -17.3% |
+| 5 | 1644 | 1421 | -13.5% | -5 nm | 117.5 | 97.9 | -16.7% |
+| 10 | 454 | 400 | -12.0% | -5 nm | 36.3 | 30.6 | -15.7% |
+
+## Design table for real emitters (axial dipole, rod D = 20 nm in air, resonance-matched length)
+
+| emitter | lambda_e | q0 | best L (nm) | gap | T (saturated brightness) | Fp | rate speed-up | eta(q0) | eta/q0 |
+|---|---|---|---|---|---|---|---|---|---|
+| hBN defect | 580 | 0.87 | 50 | 5 | 46.2 | 1091 | 950 | 4.2% | 0.05 |
+| hBN defect | 580 | 0.87 | 50 | 10 | 14.7 | 274 | 238 | 5.4% | 0.06 |
+| hBN defect | 580 | 0.87 | 50 | 20 | 3.9 | 44 | 39 | 8.8% | 0.10 |
+| crystal violet | 640 | 0.02 | 60 | 5 | 58.1 | 469 | 10 | 11.2% | 5.61 |
+| crystal violet | 640 | 0.02 | 60 | 10 | 19.9 | 127 | 4 | 11.3% | 5.67 |
+| crystal violet | 640 | 0.02 | 60 | 20 | 5.7 | 23 | 1 | 7.8% | 3.92 |
+| NV, 25 nm nanodiamond | 690 | 0.1 | 80 | 5 | 435.5 | 2215 | 222 | 19.6% | 1.96 |
+| NV, 25 nm nanodiamond | 690 | 0.1 | 80 | 10 | 137.4 | 667 | 68 | 20.3% | 2.03 |
+| NV, 25 nm nanodiamond | 690 | 0.1 | 80 | 20 | 29.8 | 129 | 14 | 21.7% | 2.17 |
+| NV, 100 nm nanodiamond | 690 | 0.7 | 80 | 5 | 435.5 | 2215 | 1551 | 19.7% | 0.28 |
+| NV, 100 nm nanodiamond | 690 | 0.7 | 80 | 10 | 137.4 | 667 | 467 | 20.6% | 0.29 |
+| NV, 100 nm nanodiamond | 690 | 0.7 | 80 | 20 | 29.8 | 129 | 90 | 23.1% | 0.33 |
+| CsPbI3 nanocrystal | 690 | 0.9 | 80 | 5 | 435.5 | 2215 | 1993 | 19.7% | 0.22 |
+| CsPbI3 nanocrystal | 690 | 0.9 | 80 | 10 | 137.4 | 667 | 600 | 20.6% | 0.23 |
+| CsPbI3 nanocrystal | 690 | 0.9 | 80 | 20 | 29.8 | 129 | 116 | 23.2% | 0.26 |
+
+Sources: Khatua et al., ACS Nano 8, 4440 (2014); Mohtashami & Koenderink, NJP 15, 043017 (2013); Nikolay et al., Optica 6, 1084 (2019); Protesescu et al., Nano Lett. 15, 3692 (2015)

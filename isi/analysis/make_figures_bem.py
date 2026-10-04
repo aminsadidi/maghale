@@ -23,8 +23,9 @@ def load(name):
     d = np.loadtxt(p, delimiter=',', skiprows=2, ndmin=2); d = d[np.argsort(d[:, 0])]
     return {k: d[:, i] for i, k in enumerate(hdr)}
 def finest(prefix):
+    # finest mesh with the complete wavelength range (the 1-nm mesh hit the 6-h CI limit at 808 nm)
     hs = sorted(float(re.search(r'_h([\d.]+)_air', f).group(1)) for f in glob.glob(f'{RAW}/{prefix}_h*_air.csv'))
-    return hs[0]
+    return next(h for h in hs if len(load(f'{prefix}_h{h:g}_air')['lambda_nm']) >= 101)
 
 hR = finest('rod_L60')
 rod = load(f'rod_L60_h{hR:g}_air'); sph = load('sph_n1444_air')

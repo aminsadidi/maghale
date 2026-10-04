@@ -187,8 +187,9 @@ orientations over \SIrange{500}{900}{nm} (Fig.~\ref{fig:mie}): with 1444 vertice
 \SI{0.9}{\percent} for the radial $\Fp$ and \SI{1.4}{\percent} for the radial $T$, \SI{0.7}{\percent} and
 \SI{1.0}{\percent} for the tangential dipole, and at most \SI{4}{\percent}; the deviation is of the same size at 10 and
 \SI{20}{nm} and in water (Table~S1). For the rod (axial dipole, \SI{5}{nm} gap) the peak values change by
-\SI{0.3}{\percent} ($\Fp$) and \SI{0.4}{\percent} ($T$) between the two finest meshes, and the peak positions not at
-all (Table~S2, Fig.~S1); we quote the \SI{1.5}{nm} mesh. The three-dimensional FDTD reproduces the radiative peak
+\SI{0.3}{\percent} ($\Fp$) and \SI{0.4}{\percent} ($T$) between the 2- and \SI{1.5}{nm} meshes, and the peak positions
+not at all; a \SI{1}{nm} mesh (6324 elements, \SIrange{500}{808}{nm}) changes them by a further \SI{0.2}{\percent}
+(Table~S2, Fig.~S1). We quote the \SI{1.5}{nm} mesh. The three-dimensional FDTD reproduces the radiative peak
 (119 at \SI{616}{nm}, BEM 117 at \SI{608}{nm}) but gives a \SI{9}{\percent} lower $\Fp$ (1496 versus 1638); the
 body-of-revolution FDTD reproduces $T$ to \SI{7}{\percent} on a \SI{1}{nm} grid but does not converge for $\Fp$ in
 the \SI{5}{nm} gap, where the staircased surface overestimates it by about a factor of two even for the sphere
@@ -285,7 +286,15 @@ contributes little to excitation; for emitters pumped far above the gap the exci
 interband response and is no larger than for a compact particle.
 
 \subsection{Robustness: emitter position, substrate and nonlocal response}
-\emph{Emitter position.} \TBD{offset paragraph}
+\emph{Emitter position.} Emitters are often attached to a dielectric spacer shell of fixed thickness rather than
+placed exactly on the axis. We therefore moved the dipole over a shell of thickness $s$ around the hemispherical cap,
+from the axis ($\theta=0$) to the start of the cylindrical side ($\theta=\SI{90}{\degree}$, a lateral offset of
+$R+s$), with the dipole normal ($n$) or tangential ($t$) to the surface (Fig.~\ref{fig:offset}). For $s=\SI{5}{nm}$
+the radiative enhancement of the normal dipole decreases only gradually, to \SI{68}{\percent} of its on-axis value at
+$\theta=\SI{90}{\degree}$ (\SI{70}{\percent} for $s=\SI{10}{nm}$), and its efficiency from \SI{7.6}{\percent} to
+\SI{6.8}{\percent}, because the longitudinal mode carries charge over the whole cap. Tangential dipoles remain dark
+everywhere ($T\leq1.2$). For a spacer-shell geometry the relevant tolerance is therefore the orientation of the
+transition dipole relative to the local surface normal, not the position on the cap.
 
 \emph{Substrate.} In experiments the rod usually lies on a glass cover slip. We placed the rod with its axis
 parallel to a glass half-space ($n=1.52$) at a height of \SI{1}{nm} (a ligand layer) and the dipole beyond the tip,
@@ -299,7 +308,14 @@ glass interface radiates predominantly into the glass~\cite{novotny}, i.e.\ towa
 did not resolve the angular distribution with the substrate). The dipoles perpendicular to
 the rod axis remain dark ($T<2.3$).
 
-\emph{Nonlocal response.} \TBD{nonlocal paragraph}
+\emph{Nonlocal response.} The hydrodynamic correction, estimated with the equivalent cover layer of Luo
+\emph{et al.}~\cite{luo2013,raza2015,mortensen}, blue-shifts the radiative peak by \SI{5}{nm} and lowers $\Fp$ and $T$
+at resonance by \SIrange{12}{17}{\percent} at gaps of 5 and \SI{10}{nm}; the antenna efficiency changes by less than
+0.4 percentage points and the anisotropy increases slightly (from 49 to 70 at \SI{5}{nm}), because the transverse,
+surface-dominated channel is suppressed more strongly. At \SI{3}{nm} the non-radiative interband maximum of $\Fp$ is
+reduced by \SI{27}{\percent}. These changes are of the order expected for the cover-layer model with the tabulated
+gold permittivity and do not affect the conclusions, but they indicate that absolute values of $\Fp$ at gaps of
+\SI{3}{nm} and below carry an additional model uncertainty of this size.
 
 \subsection{Generality: aspect ratio, environment, size, shape and metal}
 Figure~\ref{fig:aspect} shows the radiative enhancement and the antenna efficiency at the radiative peak for aspect
@@ -311,9 +327,12 @@ to \SI{760}{nm}, $T$ at a \SI{5}{nm} gap rises from 18 to \num{1.0e3} and $\eta_
 resonance wavelength and only weakly on the gap between 5 and \SI{20}{nm}. At fixed aspect ratio 3, the rod volume
 matters: for diameters of 15, 20 and \SI{30}{nm} the efficiency at the radiative peak (\SI{5}{nm} gap) is
 \SI{3.3}{\percent}, \SI{7.3}{\percent} and \SI{23.7}{\percent}, reflecting the growth of radiative damping with
-volume, while the resonance shifts only from 605 to \SI{625}{nm}; \TBD{D25 and spheroid}. A silver rod of the same
+volume, while the resonance shifts only from 605 to \SI{625}{nm} (\SI{14.0}{\percent} at \SI{615}{nm} for
+$D=\SI{25}{nm}$). A prolate spheroid with the same length and diameter resonates at \SI{600}{nm} with $T=106$ and
+$\eta_a=\SI{5.3}{\percent}$; its sharper apex (radius of curvature \SI{3.3}{nm}) raises the off-resonance ratio to
+7.7, which shows that the geometric factor is set by the curvature of the surface on the scale of the gap. A silver rod of the same
 dimensions resonates at \SI{505}{nm} with $T=\num{1.1e3}$ and $\eta_a=\SI{38}{\percent}$, and its anisotropy reaches
-677 in $\Fp$. In all gold cases the non-resonant ratio, read at \SI{500}{nm}, is 2.9--3.8 at a \SI{5}{nm} gap, so the
+677 in $\Fp$. For all gold rods the non-resonant ratio, read at \SI{500}{nm}, is 2.9--3.8 at a \SI{5}{nm} gap, so the
 separation into a geometric factor of about three and a resonant factor that grows with the oscillator strength
 of the longitudinal mode holds generally.
 
@@ -467,6 +486,13 @@ gaps. Dotted: emitter without antenna ($\eta=q_0$).}\label{fig:q0}
 \caption{(a) Radiative enhancement of the axial dipole at a \SI{5}{nm} gap for rods with $D=\SI{20}{nm}$ and aspect
 ratios (AR) 2--5 in air and AR 3 in water (BEM). (b) Antenna efficiency at the radiative peak versus resonance
 wavelength for three gaps; open squares: AR 3 in water.}\label{fig:aspect}
+\end{figure}
+
+\begin{figure}[p]\centering
+\includegraphics[width=0.75\linewidth]{fig_offset.pdf}
+\caption{Emitter on a spacer shell of thickness $s$ around the rod tip, at polar angle $\theta$ from the axis, with
+its dipole normal to the surface: (a) radiative enhancement relative to the on-axis value and (b) antenna efficiency
+at the radiative peak (\SI{610}{nm}).}\label{fig:offset}
 \end{figure}
 
 \input{refs.tex}

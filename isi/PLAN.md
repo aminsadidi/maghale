@@ -18,8 +18,13 @@
 - [x] Collection efficiency converged (NA 0.9: 18.0%); antenna keeps the dipolar pattern -> lay rods in the focal plane
 - [x] Fp in a 5-nm gap NOT converged in staircased FDTD at 1 nm -> Fp taken from Lumerical (conformal), BEM recommended
 
+## Done (BEM, GitHub Actions with free MATLAB + MNPBEM17 GPL)
+- [x] 13 BEM cases (bem-runs.yml): sphere within ~1% of exact Mie (radial + tangential), rod Fp converged to 0.3%
+- [x] Extra studies (bem-extra.yml): eigenmode decomposition (AR 2-5, sphere), excitation, glass substrate,
+      nonlocal (Luo cover layer), diameters / silver / spheroid, emitter-position tolerance
+- [x] Manuscript rebuilt on BEM (main.tex 15 pp, si.tex), new figures (make_figures_bem.py, ingest_extra.py)
+
 ## Waiting on the user
-- [~] MNPBEM run: script isi/bem/run_mnpbem.m + guide isi/bem/README_fa.md ready; waiting for results_bem_full.zip from friend laptop -> python isi/analysis/ingest_bem.py
 - [ ] Supervisor approval + corresponding-author e-mail
 - [ ] Target journal (template, word limit, reference style)
 

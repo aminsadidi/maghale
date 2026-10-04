@@ -34,14 +34,16 @@ mesh (vertices) & host & gap (nm) & radial $\Fp$ & radial $T$ & tangential $\Fp$
 \end{tabular}\end{table}
 
 \begin{table}[h]\centering
-\caption{Mesh convergence of the rod (axial dipole). $h$: target element size.}\label{tab:bemconv}
+\caption{Mesh convergence of the rod (axial dipole). $h$: target element size. $^a$Wavelengths \SIrange{500}{808}{nm} only (six-hour limit of the CI job).}\label{tab:bemconv}
 \begin{tabular}{rrrrrr}\toprule
 $h$ (nm) & elements & gap (nm) & $\Fp^{\max}$ ($\lambda$) & $T_{\max}$ ($\lambda$) & $\eta_a(\lambda_T)$\\\midrule
 3   & 720  & 5 & 1649 (604) & 117.7 (608) & 7.3\%\\
 2   & 1550 & 5 & 1643 (604) & 117.0 (608) & 7.3\%\\
 1.5 & 2829 & 5 & 1638 (604) & 116.5 (608) & 7.3\%\\
+1$^a$ & 6324 & 5 & 1634 (604) & 116.2 (608) & 7.3\%\\
 3   & 720  & 3 & 3672 (508) & 209.8 (608) & 6.5\%\\
 1.5 & 2829 & 3 & 3782 (508) & 214.1 (608) & 6.6\%\\
+1$^a$ & 6324 & 3 & 3770 (508) & 213.1 (608) & 6.6\%\\
 1.5 & 2829 & 20 & 78 (604) & 8.2 (612) & 11.6\%\\\bottomrule
 \end{tabular}\end{table}
 
