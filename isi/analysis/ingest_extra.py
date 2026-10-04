@@ -1,0 +1,194 @@
+"""Analysis of the additional MNPBEM studies (isi/bem/extra, workflow bem-extra.yml).
+  modes      : quasistatic plasmon-mode decomposition -> resonant vs background (geometric) anisotropy
+  offset     : tolerance to the emitter position on a spacer shell around the tip
+  shapes     : other diameters, silver, prolate spheroid
+  excitation : local-field enhancement at the emitter positions (rod vs equal-volume sphere)
+  substrate  : rod lying on glass
+  nonlocal   : hydrodynamic correction (Luo et al. cover layer)
+  emitters   : design table for real emitters, from the aspect-ratio sweep (isi/results/bem_raw)
+usage: python isi/analysis/ingest_extra.py [extra_dir] [raw_dir]   (run from repo root)"""
+import sys, os, re, glob
+import numpy as np, matplotlib
+matplotlib.use('Agg'); import matplotlib.pyplot as plt
+
+EX = sys.argv[1] if len(sys.argv) > 1 else 'isi/results/bem_extra'
+RAW = sys.argv[2] if len(sys.argv) > 2 else 'isi/results/bem_raw'
+FIG = 'isi/figures'; OUT = 'isi/results/bem_extra_summary.md'
+C = ['#1f4e9c', '#c0392b', '#2a9d5c', '#8a5a00', '#7b3fa0', '#5f6b73']   # same fixed order as make_figures*.py
+plt.rcParams.update({'font.family': 'serif', 'font.size': 8, 'axes.linewidth': 0.8, 'lines.linewidth': 1.4,
+                     'xtick.direction': 'in', 'ytick.direction': 'in', 'xtick.top': True, 'ytick.right': True,
+                     'legend.frameon': False, 'savefig.bbox': 'tight', 'figure.dpi': 150})
+
+
+def load(path):
+    if not os.path.exists(path): return None
+    L = open(path).read().splitlines()
+    i = 0
+    while L[i].startswith('#'): i += 1
+    hdr = L[i].split(',')
+    d = np.loadtxt(path, delimiter=',', skiprows=i + 1, ndmin=2)
+    return {k: d[:, j] for j, k in enumerate(hdr)}
+
+
+def eta(T, F, q0):
+    return T / (F + (1 - q0) / q0)
+
+
+lines = ['# Additional BEM studies', '']
+
+# ------------------------------------------------------------------ modes
+specs = [s for s in ['rodL40', 'rodL60', 'rodL80', 'rodL100', 'sphere'] if os.path.exists(f'{EX}/modes_{s}.csv')]
+if specs:
+    lines += ['## Plasmon-mode decomposition (quasistatic)', '',
+              'At the peak of the axial Fp: share of Fp-1 carried by the longitudinal dipolar mode; background = full - mode;',
+              'geometric ratio = background_axial / Fp_transverse; total ratio = Fp_axial / Fp_transverse.', '',
+              '| particle | gap | lambda_peak | Fp_z | mode share | background_z | Fp_x | geometric ratio | total ratio |',
+              '|---|---|---|---|---|---|---|---|---|']
+    fig, ax = plt.subplots(1, 3, figsize=(7.2, 2.5))
+    share = {}
+    for ci, s in enumerate(specs):
+        d = load(f'{EX}/modes_{s}.csv')
+        rows = []
+        for g in sorted(set(d['gap'])):
+            m = d['gap'] == g
+            lam, Fz, Fx, dL = d['lambda_nm'][m], d['Fp_z'][m], d['Fp_x'][m], d['dFz_L'][m]
+            # peak of the mode term = resonance (the full Fp can peak at the interband edge for tiny gaps)
+            i = np.argmax(dL)
+            bg = Fz[i] - dL[i]
+            rows.append((g, lam[i], Fz[i], dL[i] / (Fz[i] - 1), bg, Fx[i], bg / Fx[i], Fz[i] / Fx[i]))
+            if g in (3, 5, 10, 20):
+                lines.append(f'| {s} | {g:g} | {lam[i]:.0f} | {Fz[i]:.0f} | {100*dL[i]/(Fz[i]-1):.0f}% | {bg:.1f} | {Fx[i]:.1f} | {bg/Fx[i]:.2f} | {Fz[i]/Fx[i]:.0f} |')
+            if s == 'rodL60' and g == 5:
+                ax[0].plot(lam, Fz, color=C[0], label='axial, full')
+                ax[0].plot(lam, dL, color=C[1], ls='--', label='longitudinal mode')
+                ax[0].plot(lam, Fz - dL, color=C[2], label='axial, background')
+                ax[0].plot(lam, Fx, color=C[3], label='transverse')
+        r = np.array(rows); share[s] = r
+        lab = 'sphere' if s == 'sphere' else f'L = {s[4:]} nm'
+        ax[1].plot(r[:, 0], 100 * r[:, 3], 'o-', ms=3, color=C[ci], label=lab)
+        ax[2].plot(r[:, 0], r[:, 7], 'o-', ms=3, color=C[ci], label=lab)
+        ax[2].plot(r[:, 0], r[:, 6], ':', color=C[ci])
+    ax[0].set_yscale('log'); ax[0].set_xlabel('Wavelength (nm)'); ax[0].set_ylabel(r'$F_p$ (5 nm gap)')
+    ax[0].legend(fontsize=6, loc='lower left')
+    ax[1].set_xlabel('Gap (nm)'); ax[1].set_ylabel('Dipolar-mode share (%)'); ax[1].legend(fontsize=6, loc='center right', bbox_to_anchor=(1.0, 0.42))
+    ax[2].set_xlabel('Gap (nm)'); ax[2].set_ylabel('Axial / transverse $F_p$'); ax[2].set_yscale('log')
+    for a, t in zip(ax, 'abc'): a.text(-0.02, 1.04, f'({t})', transform=a.transAxes, fontweight='bold')
+    fig.tight_layout(w_pad=1.5); fig.savefig(f'{FIG}/fig_modes.pdf'); plt.close(fig)
+    # gap at which the dipolar mode carries half of Fp-1
+    for s, r in share.items():
+        sh = r[:, 3]
+        if sh.min() < 0.5 < sh.max():
+            k = np.where(np.diff(np.sign(sh - 0.5)))[0][0]
+            g50 = np.interp(0.5, sh[k:k + 2], r[k:k + 2, 0])
+            lines.append(f'- {s}: dipolar mode carries half of Fp-1 at a gap of {g50:.1f} nm; total ratio max {r[:,7].max():.0f} at {r[np.argmax(r[:,7]),0]:g} nm')
+    for s in specs:
+        info = open(f'{EX}/modes_info_{s}.csv').read().splitlines()[0]
+        lines.append(f'- {s}: {info.lstrip("# ")}')
+
+# ------------------------------------------------------------------ offset
+off = {s: load(f'{EX}/offset_s{s}.csv') for s in (5, 10)}
+if any(v is not None for v in off.values()):
+    lines += ['', '## Emitter position on a spacer shell around the tip (rod L60)', '',
+              '| shell s | theta | lateral offset (nm) | Fp_n | T_n | eta_n | Fp_t | T_t | T_y |', '|---|---|---|---|---|---|---|---|---|']
+    fig, ax = plt.subplots(1, 2, figsize=(4.8, 2.2))
+    for ci, (s, d) in enumerate(off.items()):
+        if d is None: continue
+        th = sorted({int(re.search(r'th(\d+)', k).group(1)) for k in d if k.startswith('Fp_n_th')})
+        j = np.argmax(d['T_n_th0'])
+        lr = d['lambda_nm'][j]
+        Tn = np.array([d[f'T_n_th{t}'][j] for t in th]); Fn = np.array([d[f'Fp_n_th{t}'][j] for t in th])
+        for t in th:
+            x = (10 + s) * np.sin(np.radians(t))
+            lines.append(f'| {s} | {t} | {x:.1f} | {d[f"Fp_n_th{t}"][j]:.0f} | {d[f"T_n_th{t}"][j]:.1f} | {100*d[f"T_n_th{t}"][j]/d[f"Fp_n_th{t}"][j]:.1f}% | '
+                         f'{d[f"Fp_t_th{t}"][j]:.0f} | {d[f"T_t_th{t}"][j]:.2f} | {d[f"T_y_th{t}"][j]:.2f} |')
+        half = np.interp(0.5, (Tn / Tn[0])[::-1], np.array(th)[::-1])
+        lines.append(f'- s = {s} nm (lambda {lr:.0f} nm): T_n falls to half at theta = {half:.0f} deg, i.e. lateral offset {(10+s)*np.sin(np.radians(half)):.1f} nm')
+        ax[0].plot(th, Tn / Tn[0], 'o-', ms=3, color=C[ci], label=f'spacer {s} nm')
+        ax[1].plot(th, 100 * Tn / Fn, 'o-', ms=3, color=C[ci], label=f'spacer {s} nm')
+    ax[0].set_xlabel(r'Polar angle $\theta$ (deg)'); ax[0].set_ylabel(r'$T_n(\theta)/T_n(0)$'); ax[0].legend(fontsize=6, frameon=False)
+    ax[1].set_xlabel(r'Polar angle $\theta$ (deg)'); ax[1].set_ylabel(r'$\eta_a$ (%)')
+    for a, t in zip(ax, 'ab'): a.text(0.03, 0.93, f'({t})', transform=a.transAxes, fontweight='bold')
+    fig.tight_layout(); fig.savefig(f'{FIG}/fig_offset.pdf'); plt.close(fig)
+
+# ------------------------------------------------------------------ shapes
+shp = sorted(glob.glob(f'{EX}/shape_*.csv'))
+if shp:
+    lines += ['', '## Other shapes and metals (axial / transverse dipole)', '',
+              '| case | gap | lambda_T | T_z max | Fp_z there | eta_a | Fp_z/Fp_x there | T_z/T_x there | Fp_z/Fp_x at 500 nm |', '|---|---|---|---|---|---|---|---|---|']
+    for f in shp:
+        d = load(f); name = os.path.basename(f)[6:-4]
+        for g in (5, 10):
+            if f'T_z_g{g}' not in d: continue
+            j = np.argmax(d[f'T_z_g{g}']); k = np.argmin(abs(d['lambda_nm'] - 500))
+            lines.append(f'| {name} | {g} | {d["lambda_nm"][j]:.0f} | {d[f"T_z_g{g}"][j]:.1f} | {d[f"Fp_z_g{g}"][j]:.0f} | '
+                         f'{100*d[f"T_z_g{g}"][j]/d[f"Fp_z_g{g}"][j]:.1f}% | {d[f"Fp_z_g{g}"][j]/d[f"Fp_x_g{g}"][j]:.0f} | '
+                         f'{d[f"T_z_g{g}"][j]/d[f"T_x_g{g}"][j]:.0f} | {d[f"Fp_z_g{g}"][k]/d[f"Fp_x_g{g}"][k]:.2f} |')
+
+# ------------------------------------------------------------------ excitation
+exc = {s: load(f'{EX}/excitation_{s}.csv') for s in ('rod', 'sphere')}
+if any(v is not None for v in exc.values()):
+    lines += ['', '## Excitation (local-field intensity) enhancement on the axis', '',
+              '| particle | gap | max |E_z|^2 (pol. axial) | at lambda | 405 nm | 450 nm | 532 nm | 633 nm |', '|---|---|---|---|---|---|---|---|---|']
+    fig, ax = plt.subplots(1, 1, figsize=(3.3, 2.3))
+    for ci, (s, d) in enumerate(exc.items()):
+        if d is None: continue
+        for g in (5, 10, 20):
+            y = d[f'Ez2_polz_g{g}']; j = np.argmax(y)
+            at = [np.interp(w, d['lambda_nm'], y) for w in (405, 450, 532, 633)]
+            lines.append(f'| {s} | {g} | {y[j]:.0f} | {d["lambda_nm"][j]:.0f} | ' + ' | '.join(f'{v:.1f}' for v in at) + ' |')
+        ax.plot(d['lambda_nm'], d['Ez2_polz_g5'], color=C[ci], label=f'{s}, 5 nm')
+        ax.plot(d['lambda_nm'], d['Ez2_polz_g10'], color=C[ci], ls='--', label=f'{s}, 10 nm')
+    ax.set_yscale('log'); ax.set_xlabel('Wavelength (nm)'); ax.set_ylabel(r'$|E_z|^2/|E_0|^2$'); ax.legend(fontsize=6, frameon=False)
+    fig.tight_layout(); fig.savefig(f'{FIG}/fig_excitation.pdf'); plt.close(fig)
+
+# ------------------------------------------------------------------ substrate
+d = load(f'{EX}/substrate_glass.csv')
+if d is not None:
+    lines += ['', '## Rod on glass (n = 1.52), axial dipole x; rates in units of the vacuum rate', '',
+              '| gap | lambda_T | T_x | Fp_x | eta_a | T_x / T0_x (vs bare glass) | Fp_x / tot0_x | T_y max | T_z max |', '|---|---|---|---|---|---|---|---|---|']
+    for g in (5, 10, 20):
+        j = np.argmax(d[f'rad_x_g{g}'])
+        lines.append(f'| {g} | {d["lambda_nm"][j]:.0f} | {d[f"rad_x_g{g}"][j]:.1f} | {d[f"tot_x_g{g}"][j]:.0f} | '
+                     f'{100*d[f"rad_x_g{g}"][j]/d[f"tot_x_g{g}"][j]:.1f}% | {d[f"rad_x_g{g}"][j]/d[f"rad0_x_g{g}"][j]:.1f} | '
+                     f'{d[f"tot_x_g{g}"][j]/d[f"tot0_x_g{g}"][j]:.0f} | {d[f"rad_y_g{g}"].max():.2f} | {d[f"rad_z_g{g}"].max():.2f} |')
+
+# ------------------------------------------------------------------ nonlocal
+a, b = load(f'{EX}/nonlocal_local.csv'), load(f'{EX}/nonlocal_nonlocal.csv')
+if a is not None and b is not None:
+    lines += ['', '## Nonlocal correction (hydrodynamic, cover-layer model)', '',
+              '| gap | Fp_z peak local | nonlocal | change | lambda shift | T_z peak local | nonlocal | change |', '|---|---|---|---|---|---|---|---|']
+    for g in (3, 5, 10):
+        i, k = np.argmax(a[f'Fp_z_g{g}']), np.argmax(b[f'Fp_z_g{g}'])
+        i2, k2 = np.argmax(a[f'T_z_g{g}']), np.argmax(b[f'T_z_g{g}'])
+        lines.append(f'| {g} | {a[f"Fp_z_g{g}"][i]:.0f} | {b[f"Fp_z_g{g}"][k]:.0f} | {100*(b[f"Fp_z_g{g}"][k]/a[f"Fp_z_g{g}"][i]-1):+.1f}% | '
+                     f'{b["lambda_nm"][k]-a["lambda_nm"][i]:+.0f} nm | {a[f"T_z_g{g}"][i2]:.1f} | {b[f"T_z_g{g}"][k2]:.1f} | {100*(b[f"T_z_g{g}"][k2]/a[f"T_z_g{g}"][i2]-1):+.1f}% |')
+
+# ------------------------------------------------------------------ emitters
+EMIT = [  # name, emission peak (nm), intrinsic quantum yield, source
+    ('hBN defect', 580, 0.87, 'Nikolay et al., Optica 6, 1084 (2019)'),
+    ('crystal violet', 640, 0.02, 'Khatua et al., ACS Nano 8, 4440 (2014)'),
+    ('NV, 25 nm nanodiamond', 690, 0.10, 'Mohtashami & Koenderink, NJP 15, 043017 (2013)'),
+    ('NV, 100 nm nanodiamond', 690, 0.70, 'Mohtashami & Koenderink, NJP 15, 043017 (2013)'),
+    ('CsPbI3 nanocrystal', 690, 0.90, 'Protesescu et al., Nano Lett. 15, 3692 (2015)'),
+]
+rods = {}
+for f in glob.glob(f'{RAW}/rod_L*_h2_air.csv'):
+    rods[int(re.search(r'rod_L(\d+)_', f).group(1))] = load(f)
+if rods:
+    lines += ['', '## Design table for real emitters (axial dipole, rod D = 20 nm in air, resonance-matched length)', '',
+              '| emitter | lambda_e | q0 | best L (nm) | gap | T (saturated brightness) | Fp | rate speed-up | eta(q0) | eta/q0 |',
+              '|---|---|---|---|---|---|---|---|---|---|']
+    for name, le, q0, src in EMIT:
+        best = None
+        for L, d in rods.items():
+            T5 = np.interp(le, d['lambda_nm'], d['T_z_g5'])
+            if best is None or T5 > best[1]: best = (L, T5)
+        L = best[0]; d = rods[L]
+        for g in (5, 10, 20):
+            T = np.interp(le, d['lambda_nm'], d[f'T_z_g{g}']); F = np.interp(le, d['lambda_nm'], d[f'Fp_z_g{g}'])
+            e = eta(T, F, q0)
+            lines.append(f'| {name} | {le} | {q0} | {L} | {g} | {T:.1f} | {F:.0f} | {q0*F+1-q0:.0f} | {100*e:.1f}% | {e/q0:.2f} |')
+    lines += ['', 'Sources: ' + '; '.join(sorted({e[3] for e in EMIT}))]
+
+open(OUT, 'w').write('\n'.join(lines) + '\n')
+print('\n'.join(lines))

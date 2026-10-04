@@ -2,6 +2,7 @@
 \usepackage[margin=2.4cm]{geometry}
 \usepackage{amsmath,amssymb,graphicx,booktabs,siunitx,xcolor}
 \usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\newcommand{\Fp}{F_p}
 \newcommand{\TBD}[1]{\textcolor{red}{\textbf{[#1]}}}
 \renewcommand{\thefigure}{S\arabic{figure}}\renewcommand{\thetable}{S\arabic{table}}\renewcommand{\theequation}{S\arabic{equation}}
 \graphicspath{{../figures/}}
@@ -10,7 +11,91 @@
 \begin{document}
 \maketitle
 
-\section*{S1. Drude--Lorentz representation of Johnson--Christy gold}
+\section*{S1. Boundary-element calculations: validation and convergence}
+All boundary-element (BEM) results were obtained with MNPBEM17~[3--5] (retarded solver, curved boundary elements,
+Johnson--Christy gold from the tabulated file distributed with the toolbox) in MATLAB R2026b on GitHub-hosted
+runners. The script \texttt{isi/bem/run\_mnpbem.m} defines all cases; the workflow
+\texttt{.github/workflows/bem-runs.yml} runs one case per job. Table~\ref{tab:bemmie} compares the equal-volume sphere
+with the exact Mie solution evaluated with the same tabulated permittivity (radial dipole: Ruppin~[6]; tangential
+dipole: Kim \emph{et al.}~[7]); Table~\ref{tab:bemconv} and Fig.~\ref{fig:bemconv} give the mesh convergence of the rod.
+
+\begin{table}[h]\centering
+\caption{BEM versus exact Mie theory for the equal-volume gold sphere ($R=\SI{15.874}{nm}$). Median absolute
+relative deviation over \SIrange{500}{900}{nm} (maximum in brackets for the radial $\Fp$).}\label{tab:bemmie}
+\begin{tabular}{llrrrrr}\toprule
+mesh (vertices) & host & gap (nm) & radial $\Fp$ & radial $T$ & tangential $\Fp$ & tangential $T$\\\midrule
+400  & air & 5  & 2.4\% (6.5\%) & 1.8\% & 2.1\% & 1.0\%\\
+784  & air & 5  & 1.0\% (4.4\%) & 1.4\% & 0.7\% & 0.9\%\\
+1444 & air & 5  & 0.9\% (4.2\%) & 1.4\% & 0.7\% & 1.0\%\\
+1444 & air & 10 & 1.5\% (3.8\%) & 1.3\% & 0.5\% & 1.1\%\\
+1444 & air & 20 & 0.9\% (3.3\%) & 1.3\% & 0.1\% & 1.2\%\\
+784  & water & 5  & 0.6\% (4.4\%) & 1.4\% & 0.7\% & 0.8\%\\
+784  & water & 20 & 0.4\% (2.9\%) & 1.3\% & 0.1\% & 1.2\%\\\bottomrule
+\end{tabular}\end{table}
+
+\begin{table}[h]\centering
+\caption{Mesh convergence of the rod (axial dipole). $h$: target element size.}\label{tab:bemconv}
+\begin{tabular}{rrrrrr}\toprule
+$h$ (nm) & elements & gap (nm) & $\Fp^{\max}$ ($\lambda$) & $T_{\max}$ ($\lambda$) & $\eta_a(\lambda_T)$\\\midrule
+3   & 720  & 5 & 1649 (604) & 117.7 (608) & 7.3\%\\
+2   & 1550 & 5 & 1643 (604) & 117.0 (608) & 7.3\%\\
+1.5 & 2829 & 5 & 1638 (604) & 116.5 (608) & 7.3\%\\
+3   & 720  & 3 & 3672 (508) & 209.8 (608) & 6.5\%\\
+1.5 & 2829 & 3 & 3782 (508) & 214.1 (608) & 6.6\%\\
+1.5 & 2829 & 20 & 78 (604) & 8.2 (612) & 11.6\%\\\bottomrule
+\end{tabular}\end{table}
+
+\begin{figure}[h]\centering\includegraphics[width=\linewidth]{fig_bem_convergence.pdf}
+\caption{Mesh convergence of the BEM for the rod with axial dipole at a \SI{5}{nm} gap.}\label{fig:bemconv}\end{figure}
+
+\section*{S2. Plasmon-eigenmode decomposition, excitation and additional set-ups}
+\emph{Eigenmodes.} The 40 lowest eigenvalues of the quasistatic BEM matrix $F$ were computed with
+\texttt{bemstateig} of MNPBEM17 on the \SI{2}{nm} meshes (sphere: 784 vertices). The longitudinal (transverse)
+dipolar mode is the eigenvector $u_k$ with the largest oscillator strength $s_k=(\textstyle\sum_j a_j\mathbf r_j u_{k,j})\cdot(\tilde u_k\cdot\mathbf n)$
+for a uniform field along $z$ ($x$), where $a_j$, $\mathbf r_j$ and $\mathbf n_j$ are the area, centroid and normal
+of element $j$; its contribution to $\Fp-1$ follows from Eq.~(3) of the main text and is evaluated with the same
+decay-rate routine as the full solution. The trivial eigenvalue $-2\pi$ (uniform charge) does not couple. Script:
+\texttt{isi/bem/extra/job\_modes.m}. Table~\ref{tab:modes} lists the decomposition at the resonance of the
+longitudinal mode.
+
+\begin{table}[h]\centering
+\caption{Quasistatic decomposition of the axial $\Fp$ at the resonance of the longitudinal dipolar mode
+($\lambda_L$). Share: fraction of $\Fp-1$ carried by that mode; background: $\Fp-1$ minus that contribution, plus
+one; geometric ratio: background divided by the transverse $\Fp$; total ratio: axial over transverse $\Fp$.}\label{tab:modes}
+\begin{tabular}{lrrrrrrr}\toprule
+particle & $\lambda_L$ (nm) & gap (nm) & axial $\Fp$ & share & background & geometric ratio & total ratio\\\midrule
+rod AR 2 & 540 & 5  & 859  & 57\% & 368 & 2.7 & 6\\
+         &     & 10 & 154  & 80\% & 32  & 2.6 & 13\\
+rod AR 3 & 595 & 3  & 2936 & 80\% & 593 & 2.7 & 13\\
+         &     & 5  & 1374 & 91\% & 129 & 3.1 & 33\\
+         &     & 10 & 352  & 96\% & 14  & 3.3 & 82\\
+         &     & 20 & 55   & 98\% & 1.9 & 1.6 & 47\\
+rod AR 4 & 655 & 5  & 3095 & 98\% & 57  & 3.4 & 185\\
+         &     & 10 & 861  & 99\% & 7.5 & 3.3 & 382\\
+rod AR 5 & 725 & 5  & 4661 & 99\% & 46  & 3.7 & 374\\
+         &     & 10 & 1322 & 100\% & 6.8 & 3.6 & 693\\
+sphere   & 510 & 5  & 761  & 9\%  & 693 & 2.4 & 3\\
+         &     & 10 & 89   & 21\% & 70  & 2.4 & 3\\\bottomrule
+\end{tabular}\end{table}
+
+\begin{figure}[h]\centering\includegraphics[width=0.5\linewidth]{fig_excitation.pdf}
+\caption{Local intensity enhancement $|E_z|^2/|E_0|^2$ on the axis, 5 and \SI{10}{nm} beyond the apex, for a plane
+wave polarised along the axis (BEM): rod and equal-volume sphere.}\label{fig:exc}\end{figure}
+
+\emph{Substrate.} The rod (axis along $x$) lies \SI{1}{nm} above a glass half-space ($\varepsilon=1.52^2$); the
+reflected Green function is tabulated with \texttt{compgreentablayer} at 23 wavelengths between 480 and \SI{920}{nm}
+and interpolated. Rates are given in units of the vacuum rate; the reference is the same dipole above bare glass
+(\texttt{decayrate0}). Script: \texttt{job\_substrate.m}.
+
+\emph{Nonlocal response.} Following Luo \emph{et al.}~[8] the metal is shrunk by $\Delta d=\SI{0.05}{nm}$ and
+covered by a layer of the same thickness with permittivity
+$\varepsilon_t=\varepsilon_m\varepsilon_b q_L\Delta d/(\varepsilon_m-\varepsilon_b)$,
+$q_L=\sqrt{\omega_p^2/\varepsilon_\infty-\omega(\omega+i\gamma)}/\beta$, with the tabulated Johnson--Christy
+$\varepsilon_m$, $\hbar\omega_p=\SI{9.02}{eV}$, $\varepsilon_\infty=9.84$, $\hbar\gamma=\SI{0.071}{eV}$ and
+$\beta=\sqrt{3/5}\,v_F$, $v_F=\SI{1.40e6}{m/s}$; integration over neighbouring elements of the two surfaces uses
+polar refinement (\texttt{npol}~=~20). The local reference uses the same mesh. Script: \texttt{job\_nonlocal.m}.
+
+\section*{S3. Drude--Lorentz representation of Johnson--Christy gold}
 For the time-domain body-of-revolution solver the Johnson--Christy permittivity~[1] is represented as
 \begin{equation}
 \varepsilon(f)=\varepsilon_\infty-\frac{\sigma_0 f_0^2}{f^2+i f\gamma_0}
@@ -30,7 +115,7 @@ Lorentz 1 & 2.208 & 2.737 & 0.509 & 1.156\\
 Lorentz 2 & 2.755 & 3.416 & 0.010 & 2.101\\\bottomrule
 \end{tabular}\end{table}
 
-\section*{S2. Three-dimensional FDTD set-up}
+\section*{S4. Three-dimensional FDTD set-up}
 Lumerical FDTD 2024~R1, cubic domain of side \SI{600}{nm} with 12 PML layers, maximum simulation time
 \SI{300}{fs}, auto-shutoff $10^{-5}$ (reached after \SIrange{19}{28}{fs} for cases B, C, D and
 \SIrange{52}{80}{fs} for the axial rod cases). A uniform override mesh ($\Delta=\SI{2}{nm}$ unless stated) covers
@@ -56,7 +141,7 @@ M3 mesh 3 nm & 644 & 2027 & 648 & 184 & 8.7\% & 9.3\% & 18\%\\
 M1.5 mesh 1.5 nm & 540 & 3752 & 620 & 165 & 0.05\% & 7.0\% & 9.6\%\\\bottomrule
 \end{tabular}\end{table}
 
-\section*{S3. Free-space reference and mesh sensitivity of the three-dimensional solver}
+\section*{S5. Free-space reference and mesh sensitivity of the three-dimensional solver}
 Figure~\ref{fig:fs} shows the free-space check: $T_B$ stays within $[0.993,1.003]$ while $F_{p,B}$ oscillates
 between 0.93 and 1.13, which yields the unphysical $\eta_B=1.08$ at \SI{748}{nm} and bounds the normalisation
 uncertainty of $F_p$ at $\pm\SI{13}{\percent}$ (\SI{3}{\percent} at \SI{610}{nm}). Figure~\ref{fig:mesh} shows
@@ -70,7 +155,7 @@ same mesh and source position are unaffected.
 \caption{Mesh sensitivity of case A in the three-dimensional solver: (a) $F_p$, (b) $T$, (c) $\eta_a$ for override
 meshes of 3, 2 and 1.5~nm.}\label{fig:mesh}\end{figure}
 
-\section*{S4. Body-of-revolution solver: method and benchmarks}
+\section*{S6. Body-of-revolution solver: method and benchmarks}
 Cylindrical-coordinate FDTD (Meep~[2]) with field dependence $e^{im\varphi}$; axial dipole: $E_z$ source, $m=0$;
 transverse dipole: $E_r$ source, $m=1$. $T$ is the ratio of the fluxes through a closed surface (top and bottom discs and a cylindrical side wall) around
 the particle with and without it. $F_p=(P_{\rm rad}+P_{\rm abs})/P_0$, where $P_{\rm abs}$ is the net inflow through a
@@ -104,13 +189,19 @@ extrapolated & 48\% & 4.4\% & -- & --\\\bottomrule
 
 PML thickness 0.15 versus \SI{0.3}{\micro\metre} at the \SI{1}{nm} grid changes $T$ by \SI{0.1}{\percent} (median)
 but $F_p$ by \SI{9}{\percent}. The radiative quantities are therefore converged to the level quoted in the main text,
-whereas $F_p$ in a \SI{5}{nm} gap is not converged at grids of \SI{1}{nm} with a staircased surface and is not used.
+whereas $F_p$ in a \SI{5}{nm} gap is not converged at grids of \SI{1}{nm} with a staircased surface and is not used; all $F_p$ values in the main text are BEM results.
 The transverse ($m=\pm1$) configuration with a single $E_r$ source on the axis gave unphysical (negative) total
-rates and is likewise not used; transverse results are taken from the three-dimensional solver. All runs were
+rates and is likewise not used; all transverse results in the main text are BEM results. All runs were
 executed on GitHub-hosted runners (workflow \texttt{.github/workflows/meep-runs.yml}); raw outputs are in
 \texttt{isi/results/ci}.
 
 \section*{References}
 \noindent[1] P. B. Johnson and R. W. Christy, Phys. Rev. B \textbf{6}, 4370 (1972).\\
-\noindent[2] A. F. Oskooi \emph{et al.}, Comput. Phys. Commun. \textbf{181}, 687 (2010).
+\noindent[2] A. F. Oskooi \emph{et al.}, Comput. Phys. Commun. \textbf{181}, 687 (2010).\\
+\noindent[3] U. Hohenester and A. Tr\"ugler, Comput. Phys. Commun. \textbf{183}, 370 (2012).\\
+\noindent[4] J. Waxenegger, A. Tr\"ugler and U. Hohenester, Comput. Phys. Commun. \textbf{193}, 138 (2015).\\
+\noindent[5] U. Hohenester, Comput. Phys. Commun. \textbf{222}, 209 (2018).\\
+\noindent[6] R. Ruppin, J. Chem. Phys. \textbf{76}, 1681 (1982).\\
+\noindent[7] Y. S. Kim, P. T. Leung and T. F. George, Surf. Sci. \textbf{195}, 1 (1988).\\
+\noindent[8] Y. Luo \emph{et al.}, Phys. Rev. Lett. \textbf{111}, 093901 (2013).
 \end{document}
