@@ -1,0 +1,91 @@
+# Heavy Meep (body-of-revolution FDTD) runs for the ISI manuscript, on free GitHub-hosted runners.
+# Each matrix job is one independent FDTD run (case x sub-band x structure/free space).
+# Results (one CSV per case) are committed to isi/results/ci/ on the same branch.
+# Trigger: push a change to isi/ci/trigger.txt, or run manually (Actions tab -> meep-runs -> Run workflow).
+name: meep-runs
+
+on:
+  workflow_dispatch:
+    inputs:
+      stages:
+        description: 'Stages to run (A = Mie calibration, B = convergence)'
+        default: 'AB'
+  push:
+    paths:
+      - 'isi/ci/trigger.txt'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: meep-runs-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.m.outputs.matrix }}
+      count: ${{ steps.m.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: m
+        run: |
+          M=$(python3 isi/ci/make_matrix.py "${{ github.event.inputs.stages || 'AB' }}")
+          echo "matrix=$M" >> "$GITHUB_OUTPUT"
+          echo "count=$(echo "$M" | python3 -c 'import json,sys; print(len(json.load(sys.stdin)["include"]))')" >> "$GITHUB_OUTPUT"
+          echo "$M" | python3 -c 'import json,sys; print(len(json.load(sys.stdin)["include"]), "pending runs")'
+
+  sim:
+    needs: plan
+    if: needs.plan.outputs.count != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: isi/environment.yml
+          cache-environment: true
+      - name: run ${{ matrix.case }} band ${{ matrix.band }} ${{ matrix.tag }}
+        shell: bash -el {0}
+        env:
+          OMP_NUM_THREADS: '1'
+          MPLBACKEND: Agg
+        run: python isi/ci/run_one.py "${{ matrix.case }}" "${{ matrix.band }}" "${{ matrix.tag }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.case }}__${{ matrix.band }}_${{ matrix.tag }}
+          path: task_out/*.npz
+          retention-days: 30
+
+  combine:
+    needs: sim
+    if: always() && needs.sim.result != 'skipped'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: isi/environment.yml
+          cache-environment: true
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: combine runs into one CSV per case
+        shell: bash -el {0}
+        env:
+          MPLBACKEND: Agg
+        run: python isi/ci/combine.py artifacts
+      - name: commit results
+        run: |
+          git config user.name "meep-runs bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add isi/results/ci
+          if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
+          git commit -m "CI: Meep results ($(ls isi/results/ci/*.csv | wc -l) cases)"
+          for i in 1 2 3 4; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep $((i*5)); done
