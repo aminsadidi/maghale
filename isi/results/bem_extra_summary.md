@@ -124,3 +124,28 @@ geometric ratio = background_axial / Fp_transverse; total ratio = Fp_axial / Fp_
 | CsPbI3 nanocrystal | 690 | 0.9 | 80 | 20 | 29.8 | 129 | 116 | 23.2% | 0.26 |
 
 Sources: Khatua et al., ACS Nano 8, 4440 (2014); Mohtashami & Koenderink, NJP 15, 043017 (2013); Nikolay et al., Optica 6, 1084 (2019); Protesescu et al., Nano Lett. 15, 3692 (2015)
+
+## Collection efficiency (BEM far field), rod in air, at the radiative peak
+
+| dipole | gap | lambda | rod along optical axis NA0.5 | NA0.9 | rod in focal plane NA0.5 | NA0.9 | bare dipole (axis/plane) NA0.9 |
+|---|---|---|---|---|---|---|---|
+| z | 5 | 610 | 1.2% | 18.1% | 9.4% | 32.5% | 19.4% / 32.6% |
+| z | 10 | 610 | 1.1% | 17.5% | 9.4% | 32.5% | 19.4% / 32.6% |
+| z | 20 | 610 | 1.0% | 15.8% | 9.4% | 32.6% | 19.4% / 32.6% |
+| x | 5 | 500 | 10.9% | 36.5% | 1.3% | 19.2% | 19.4% / 32.6% |
+| x | 10 | 500 | 10.0% | 34.1% | 1.3% | 19.1% | 19.4% / 32.6% |
+| x | 20 | 500 | 9.7% | 33.1% | 1.3% | 19.1% | 19.4% / 32.6% |
+
+## Collection efficiency, rod on glass (axis x), at the radiative peak of the axial dipole
+
+| dipole | gap | lambda | into glass (total) | oil NA1.3 | oil NA1.45 | air hemisphere | dry NA0.9 from top |
+|---|---|---|---|---|---|---|---|
+| x | 5 | 630 | 50.2% | 28.9% | 38.5% | 49.8% | 32.5% |
+| x | 10 | 630 | 50.4% | 29.0% | 38.7% | 49.6% | 32.4% |
+| x | 20 | 640 | 51.8% | 30.1% | 40.2% | 48.2% | 31.4% |
+| y | 5 | 630 | 19.3% | 5.1% | 7.8% | 80.7% | 44.2% |
+| y | 10 | 630 | 13.1% | 1.3% | 2.6% | 86.9% | 50.4% |
+| y | 20 | 640 | -4.9% | -11.7% | -14.5% | 104.9% | 61.0% |
+| z | 5 | 630 | 78.7% | 53.7% | 64.1% | 21.3% | 9.5% |
+| z | 10 | 630 | 77.0% | 53.2% | 63.2% | 23.0% | 11.7% |
+| z | 20 | 640 | 168.3% | 137.3% | 151.0% | -68.3% | -54.9% |
