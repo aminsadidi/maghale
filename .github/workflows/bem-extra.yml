@@ -1,7 +1,7 @@
 # Additional MNPBEM17 (BEM) studies for the manuscript: plasmon-mode decomposition, emitter-position tolerance,
 # other shapes/metals, excitation enhancement, glass substrate, nonlocal correction.
 # Each line of isi/bem/extra/jobs.txt ("job spec output.csv") is one matrix job; jobs whose output already exists in
-# isi/results/bem_extra/ are skipped. Results are committed to isi/results/bem_extra/.
+# isi/results/bem_extra/ are skipped; if isi/bem/extra/only.txt exists, only the jobs listed there run. Results are committed to isi/results/bem_extra/.
 name: bem-extra
 
 on:
@@ -29,9 +29,11 @@ jobs:
           python3 - <<'PY' >> "$GITHUB_OUTPUT"
           import os, json
           inc = []
+          only = set(open('isi/bem/extra/only.txt').read().split('\n')) if os.path.exists('isi/bem/extra/only.txt') else None
           for l in open('isi/bem/extra/jobs.txt'):
               if not l.strip() or l.startswith('#'): continue
               job, spec, out = l.split()
+              if only is not None and f'{job} {spec}' not in only: continue
               if not os.path.exists(f'isi/results/bem_extra/{out}'):
                   inc.append({'job': job, 'spec': spec})
           print('matrix=' + json.dumps({'include': inc or [{'job': 'none', 'spec': 'none'}]}))
