@@ -1,3 +1,4 @@
+# job spec output  (one MNPBEM run per line; see .github/workflows/bem-extra.yml)
 modes rodL60 modes_rodL60.csv
 modes rodL40 modes_rodL40.csv
 modes rodL80 modes_rodL80.csv
