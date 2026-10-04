@@ -1,0 +1,11 @@
+# CI environment: serial (no-MPI) Meep build. Each CI job is a single-process run, so MPI is not needed,
+# and MPICH/UCX initialisation fails on some GitHub runners. Numerics are identical to the MPI build.
+name: meep
+channels: [conda-forge]
+dependencies:
+  - python=3.11
+  - pymeep=*=nompi_*
+  - numpy
+  - scipy
+  - matplotlib
+  - h5py
