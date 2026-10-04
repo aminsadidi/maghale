@@ -248,7 +248,7 @@ if kh:
         m = K[:, 2] == g
         ax.semilogy(K[m, 1], K[m, 7], mk + '-', c=C[0], ms=3, lw=1, label=f'633 nm, {g} nm gap')
         ax.semilogy(K[m, 1], K[m, 6], mk + '--', c=C[1], ms=3, lw=1, label=f'594 nm, {g} nm gap')
-    ax.axhspan(1000, 1300, color='0.85', zorder=0); ax.text(565, 1100, 'measured max. (633 nm)', fontsize=6, va='center')
+    ax.axhspan(1000, 1300, color='0.85', zorder=0); ax.text(748, 1600, 'measured maximum, 633 nm (Khatua et al.)', fontsize=6, ha='right'); ax.set_ylim(0.3, 4000)
     ax.set_xlabel('SPR wavelength (nm)'); ax.set_ylabel(r'Fluorescence enhancement $\xi$'); ax.legend(fontsize=5, ncol=2, loc='lower center')
     fig.savefig(f'{FIG}/fig_khatua.pdf'); plt.close(fig)
 
