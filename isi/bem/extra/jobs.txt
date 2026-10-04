@@ -16,3 +16,5 @@ excitation sphere excitation_sphere.csv
 substrate glass substrate_glass.csv
 nonlocal local nonlocal_local.csv
 nonlocal nonlocal nonlocal_nonlocal.csv
+collection free collection_free.csv
+collection glass collection_glass.csv
