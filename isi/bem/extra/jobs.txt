@@ -18,3 +18,11 @@ nonlocal local nonlocal_local.csv
 nonlocal nonlocal nonlocal_nonlocal.csv
 collection free collection_free.csv
 collection glass collection_glass.csv
+khatua L39 khatua_L39.csv
+khatua L43 khatua_L43.csv
+khatua L47 khatua_L47.csv
+khatua L51 khatua_L51.csv
+khatua L55 khatua_L55.csv
+khatua L60 khatua_L60.csv
+khatua L65 khatua_L65.csv
+khatua L70 khatua_L70.csv
