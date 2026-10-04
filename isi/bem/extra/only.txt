@@ -1,2 +1,0 @@
-offset s5
-offset s10
