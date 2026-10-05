@@ -430,6 +430,17 @@ enhancements are 209 ($T$) and \num{1.7e3} ($\Fp$). The substrate therefore does
 improves the efficiency, because the resonance moves further from the interband edge, and most of the emission
 is directed into the glass (next subsection). The dipoles perpendicular to the rod axis remain dark ($T<2.3$).
 
+\emph{Permittivity of gold.} Tabulated permittivities of gold differ by tens of percent in $\varepsilon''$. Repeating
+the rod calculation with the data of Palik~\cite{palik}, Olmon \emph{et al.}~\cite{olmon2012} and McPeak
+\emph{et al.}~\cite{mcpeak2015} instead of Johnson--Christy changes the radiative enhancement at a \SI{5}{nm} gap by
+$+23$ to $+\SI{65}{\percent}$ and $\Fp$ by $-1$ to $+\SI{53}{\percent}$; adding surface (Kreibig) damping,
+$A\hbar v_F/L_{\rm eff}$ with $A=0.33$ and $L_{\rm eff}=4V/S=\SI{17.8}{nm}$, lowers both by 13--\SI{14}{\percent}. The
+evaporated-film data shift the resonance by at most \SI{16}{nm}; the coarser Palik data shift it by \SI{44}{nm}. None of
+these changes the conclusions: the antenna efficiency at the radiative peak stays between 7.2 and \SI{9.1}{\percent}
+(\SI{7.3}{\percent} with Johnson--Christy), and the maximum anisotropy at \SI{5}{nm} lies between 42 and 80 (49), with
+the same gap dependence (Table~S11). The larger values for the newer data sets follow from their smaller
+$\varepsilon''$, as expected from Eq.~\eqref{eq:law}.
+
 \emph{Nonlocal response.} The hydrodynamic correction, estimated with the equivalent cover layer of Luo
 \emph{et al.}~\cite{luo2013,raza2015,mortensen}, blue-shifts the radiative peak by \SI{5}{nm} and lowers $\Fp$ and $T$
 at resonance by \SIrange{12}{17}{\percent} at gaps of 5 and \SI{10}{nm}; the antenna efficiency changes by less than
@@ -578,8 +589,21 @@ modal Purcell factors of \numrange{3e4}{5e4}, one to two orders of magnitude abo
 the sub-nanometre gaps needed experimentally~\cite{chikkaraddy2016}; room-temperature emitter linewidths of tens of
 meV raise the threshold further. All emitters considered here are therefore weakly coupled, which justifies the rate
 description and implies that the antenna preserves the single-photon statistics of a single emitter. The main
-threat to antibunching is instead the photoluminescence of the gold itself, whose quantum yield is of order
-$10^{-6}$~\cite{yorulmaz2012} but which is excited by the same laser and has to be filtered spectrally or temporally.
+threat to antibunching is instead the photoluminescence of the gold itself, which is excited by the same laser and
+emitted in the same band, at the plasmon resonance. Its quantum yield is only of order
+$10^{-6}$~\cite{yorulmaz2012}, but the absorption cross-section of the rod (BEM: \SI{1.6e3}{nm^2} at
+\SI{405}{nm}, \num{1.5e3} at \SI{532}{nm} and \SI{9.5e3}{nm^2} at the resonance) exceeds that of a molecule by five
+orders of magnitude. For pulsed excitation that excites the emitter with probability $1-1/e$, the ratio of background
+to signal photons is $B/S=\sigma_{\rm abs}Y_{\rm PL}/[(1-e^{-1})\,\sigma_eE_{\rm exc}\,\eta]$, and the Poissonian
+background raises $g^{(2)}(0)$ to $(2SB+B^2)/(S+B)^2$. For an emitter with an absorption cross-section
+$\sigma_e=\SI{e-16}{cm^2}$, typical of dye molecules and colour centres, the rod at a \SI{5}{nm} gap gives
+$g^{(2)}(0)=0.77$ under \SI{405}{nm} and 0.87 under \SI{532}{nm} excitation, i.e.\ the source is no longer a
+single-photon source; resonant excitation at the plasmon reduces this to 0.28. For quantum dots or perovskite
+nanocrystals ($\sigma_e\approx\SI{e-14}{cm^2}$) $g^{(2)}(0)$ stays between 0.003 and 0.07 for all gaps and pump wavelengths.
+Purity therefore sets a further design rule: $g^{(2)}(0)<0.1$ requires $\sigma_e\gtrsim$ 2--\SI{4e-15}{cm^2} for
+non-resonant and $\gtrsim\SI{4e-16}{cm^2}$ for resonant excitation at a \SI{5}{nm} gap (Table~S12), with spectral or
+temporal filtering of the gold emission as the remedy for weak absorbers. These estimates assume that all gold
+emission falls into the detection band and are therefore upper bounds on $g^{(2)}(0)$.
 
 The Purcell effect does change a quantum property of the emitted light, its indistinguishability. For an emitter with
 pure dephasing rate $\gamma^*$ in the bad-cavity regime, $I=\Gamma/(\Gamma+2\gamma^*)$ with $\Gamma=\Fp\Gamma_0$
@@ -588,7 +612,11 @@ pure dephasing rate $\gamma^*$ in the bad-cavity regime, $I=\Gamma/(\Gamma+2\gam
 emit indistinguishable photons. At cryogenic temperatures ($\hbar\gamma^*=1$--\SI{10}{\micro eV}), however, the same
 antenna raises $I$ from 3--\SI{25}{\percent} for the bare emitter to above \SI{96}{\percent} for $\Fp\geq80$
 (\SI{20}{nm} gap) and above \SI{98}{\percent} at the \SI{5}{nm} gap, at the cost of the antenna efficiency of
-Fig.~\ref{fig:q0}. For a cryogenic source of indistinguishable photons the trade-off is therefore between $I$, which
+Fig.~\ref{fig:q0}. The room-temperature permittivity used here is conservative for these estimates: removing the phonon
+contribution from the Drude damping of gold (\SI{0.061}{eV} to \SI{0.039}{eV}, or to \SI{0.020}{eV} as a lower bound)
+leaves the resonance unchanged and raises $\Fp$ by 10--\SI{21}{\percent}, $T$ by 26--\SI{57}{\percent} and the antenna
+efficiency from 7.3 to 8.3--\SI{9.5}{\percent} at a \SI{5}{nm} gap, so that $I$ changes by less than 0.5 percentage points for
+$\hbar\gamma^*=\SI{1}{\micro eV}$ and by less than three for \SI{10}{\micro eV} (Table~S11). For a cryogenic source of indistinguishable photons the trade-off is therefore between $I$, which
 favours small gaps, and the efficiency, which favours large ones.
 
 \begin{table}[t]\centering
@@ -627,7 +655,8 @@ For single-photon sources the results give simple rules: a gap of 5--\SI{10}{nm}
 antenna raises the efficiency, and \SI{15}{nm} or more for near-unity emitters, for which it mainly accelerates the
 emission; an emission wavelength well to the red of the interband edge (above about \SI{650}{nm} for gold), which
 favours longer and thicker rods, flatter ends and a glass substrate; resonant excitation if an excitation enhancement
-is wanted; and a rod lying in the focal plane, ideally on glass and collected through the substrate with an
+is wanted, and an emitter with a large absorption cross-section, or spectral filtering, to keep the gold
+photoluminescence below the single-photon signal; and a rod lying in the focal plane, ideally on glass and collected through the substrate with an
 oil-immersion objective. Methodologically, volume-discretisation
 solvers reproduce the radiated power, the resonance and the emission pattern, but statements about quenching and the
 optimal gap require a surface method or careful convergence studies.

@@ -349,6 +349,77 @@ spheroid & 10 & 600 & 386 & 449 & 0.86 & 24.5 & 34.4 & 0.71\\
 spheroid & 20 & 605 & 47 & 65 & 0.73 & 5.3 & 8.4 & 0.63\\
 \bottomrule\end{tabular}\end{table}
 
+\section*{S8. Sensitivity to the gold permittivity and cryogenic estimate}
+Same rod and BEM settings as in the main text ($h=\SI{2}{nm}$, \SIrange{500}{840}{nm} in steps of \SI{4}{nm}).
+Palik: table distributed with MNPBEM; Olmon (evaporated film) and McPeak: refractiveindex.info database (CC0), resampled
+on 0.6--\SI{4.0}{eV}. Surface damping and cryogenic estimates modify only the Drude term of the Drude--Lorentz fit of
+Section~S3 ($\hbar\omega_p^{\rm eff}=\SI{8.59}{eV}$, $\hbar\gamma=\SI{0.061}{eV}$):
+$\varepsilon=\varepsilon_{\rm JC}-\omega_p^2/(\omega^2+i\gamma'\omega)+\omega_p^2/(\omega^2+i\gamma\omega)$ with
+$\hbar\gamma'=\SI{0.078}{eV}$ (surface damping), \SI{0.039}{eV} (phonon contribution, \SI{0.022}{eV} from the
+dc resistivity of gold, removed) and \SI{0.020}{eV} (lower bound). The interband part is kept at its room-temperature
+value. Tables: \texttt{isi/bem/extra/gold\_*.dat}, script \texttt{isi/analysis/make\_gold\_tables.py}.
+
+\begin{table}[h]\centering\small
+\caption{Rod $60\times\SI{20}{nm}$, axial dipole: radiative peak, $\Fp$ there, antenna efficiency and maximum
+anisotropy $\Fp^{\parallel}/\Fp^{\perp}$ (wavelength in brackets) for different permittivity data.}\label{tab:material}
+\begin{tabular}{lrrrrrr}\toprule
+data & gap (nm) & $\lambda_T$ (nm) & $T_{\max}$ & $\Fp(\lambda_T)$ & $\eta_a$ & max $\Fp^{\parallel}/\Fp^{\perp}$\\\midrule
+JC (reference) & 5 & 608 & 117.0 & 1603 & 7.3\% & 49 (608)\\
+JC (reference) & 10 & 612 & 36.2 & 406 & 8.9\% & 136 (608)\\
+JC (reference) & 20 & 612 & 8.3 & 71 & 11.6\% & 75 (604)\\
+Palik & 5 & 652 & 193.1 & 2452 & 7.9\% & 80 (652)\\
+Palik & 10 & 652 & 58.1 & 688 & 8.5\% & 222 (652)\\
+Palik & 20 & 652 & 11.9 & 119 & 10.1\% & 116 (652)\\
+Olmon (evap.) & 5 & 604 & 145.6 & 1746 & 8.3\% & 62 (604)\\
+Olmon (evap.) & 10 & 604 & 44.2 & 488 & 9.1\% & 167 (604)\\
+Olmon (evap.) & 20 & 608 & 9.7 & 77 & 12.6\% & 85 (600)\\
+McPeak & 5 & 596 & 144.3 & 1584 & 9.1\% & 61 (592)\\
+McPeak & 10 & 596 & 44.3 & 443 & 10.0\% & 165 (592)\\
+McPeak & 20 & 600 & 9.6 & 68 & 14.3\% & 82 (592)\\
+JC + surface damping & 5 & 612 & 100.5 & 1395 & 7.2\% & 42 (608)\\
+JC + surface damping & 10 & 612 & 31.4 & 384 & 8.2\% & 117 (608)\\
+JC + surface damping & 20 & 616 & 7.4 & 60 & 12.3\% & 68 (608)\\
+JC, cold (0.039 eV) & 5 & 608 & 146.9 & 1762 & 8.3\% & 62 (608)\\
+JC, cold (0.039 eV) & 10 & 608 & 44.7 & 492 & 9.1\% & 168 (608)\\
+JC, cold (0.039 eV) & 20 & 612 & 9.8 & 77 & 12.8\% & 86 (604)\\
+JC, cold (0.020 eV) & 5 & 608 & 183.7 & 1933 & 9.5\% & 78 (608)\\
+JC, cold (0.020 eV) & 10 & 608 & 55.6 & 544 & 10.2\% & 206 (608)\\
+JC, cold (0.020 eV) & 20 & 612 & 11.6 & 82 & 14.3\% & 99 (604)\\
+\bottomrule\end{tabular}\end{table}
+
+\sloppy
+\section*{S9. Gold photoluminescence and single-photon purity}
+Absorption cross-sections of the rod for a plane wave polarised along its axis (BEM): \SI{1598}{nm^2} (\SI{405}{nm}),
+\SI{1421}{nm^2} (\SI{450}{nm}), \SI{1485}{nm^2} (\SI{532}{nm}) and \SI{9538}{nm^2} (\SI{610}{nm}). Gold
+photoluminescence yield $Y_{\rm PL}=10^{-6}$~[10], all of it assumed to fall into the detection band. Emitter at
+the radiative peak, $q_0=1$ (for $q_0=0.1$, $B/S$ differs by less than \SI{15}{\percent}).
+Script: \texttt{isi/analysis/g2\_background.py}.
+
+\begin{table}[h]\centering\small
+\caption{Background-to-signal ratio and $g^{(2)}(0)$ for pulsed excitation (emitter excitation probability $1-1/e$).
+$E_{\rm exc}=|E_z|^2/|E_0|^2$ at the emitter.}\label{tab:g2}
+\begin{tabular}{rrrrrr}\toprule
+gap (nm) & pump (nm) & $E_{\rm exc}$ & $\sigma_e$ (cm$^2$) & $B/S$ & $g^{(2)}(0)$\\\midrule
+5 & 405 & 3.2 & $10^{-16}$ & 1.1 & 0.773\\
+5 & 405 & 3.2 & $10^{-14}$ & 0.011 & 0.022\\
+5 & 532 & 1.8 & $10^{-16}$ & 1.81 & 0.873\\
+5 & 532 & 1.8 & $10^{-14}$ & 0.0181 & 0.035\\
+5 & 610 & 118.8 & $10^{-16}$ & 0.174 & 0.275\\
+5 & 610 & 118.8 & $10^{-14}$ & 0.00174 & 0.003\\
+10 & 405 & 1.7 & $10^{-16}$ & 1.69 & 0.862\\
+10 & 405 & 1.7 & $10^{-14}$ & 0.0169 & 0.033\\
+10 & 532 & 0.8 & $10^{-16}$ & 3.51 & 0.951\\
+10 & 532 & 0.8 & $10^{-14}$ & 0.0351 & 0.067\\
+10 & 610 & 36.9 & $10^{-16}$ & 0.46 & 0.531\\
+10 & 610 & 36.9 & $10^{-14}$ & 0.0046 & 0.009\\
+20 & 405 & 1.1 & $10^{-16}$ & 1.92 & 0.882\\
+20 & 405 & 1.1 & $10^{-14}$ & 0.0192 & 0.037\\
+20 & 532 & 0.7 & $10^{-16}$ & 3.07 & 0.939\\
+20 & 532 & 0.7 & $10^{-14}$ & 0.0307 & 0.059\\
+20 & 610 & 8.3 & $10^{-16}$ & 1.57 & 0.849\\
+20 & 610 & 8.3 & $10^{-14}$ & 0.0157 & 0.031\\
+\bottomrule\end{tabular}\end{table}
+
 \section*{References}
 \noindent[1] P. B. Johnson and R. W. Christy, Phys. Rev. B \textbf{6}, 4370 (1972).\\
 \noindent[2] A. F. Oskooi \emph{et al.}, Comput. Phys. Commun. \textbf{181}, 687 (2010).\\
@@ -358,5 +429,6 @@ spheroid & 20 & 605 & 47 & 65 & 0.73 & 5.3 & 8.4 & 0.63\\
 \noindent[6] R. Ruppin, J. Chem. Phys. \textbf{76}, 1681 (1982).\\
 \noindent[7] Y. S. Kim, P. T. Leung and T. F. George, Surf. Sci. \textbf{195}, 1 (1988).\\
 \noindent[8] Y. Luo \emph{et al.}, Phys. Rev. Lett. \textbf{111}, 093901 (2013).\\
-\noindent[9] J. Gersten and A. Nitzan, J. Chem. Phys. \textbf{75}, 1139 (1981).
+\noindent[9] J. Gersten and A. Nitzan, J. Chem. Phys. \textbf{75}, 1139 (1981).\\
+\noindent[10] M. Yorulmaz \emph{et al.}, Nano Lett. \textbf{12}, 4385 (2012).
 \end{document}
