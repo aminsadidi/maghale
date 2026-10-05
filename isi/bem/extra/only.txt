@@ -1,2 +1,2 @@
-collection_glass glass
-collection_glass dielectric
+recip glass
+recip dielectric

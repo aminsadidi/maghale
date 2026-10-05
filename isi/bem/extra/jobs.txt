@@ -39,3 +39,5 @@ collection_glass glass collection_glass_v3.csv
 collection_glass dielectric collection_dielectric_v3.csv
 collection_glass glass collection_glass_v4.csv
 collection_glass dielectric collection_dielectric_v4.csv
+recip glass recip_glass.csv
+recip dielectric recip_dielectric.csv

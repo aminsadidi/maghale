@@ -66,3 +66,46 @@ if __name__ == '__main__':
     for p in ([1, 0, 0], [0, 1, 0], [0, 0, 1]):
         r = fractions(p, 10.97, 630); key = (1, 0, 0) if p[2] == 0 else (0, 0, 1)
         print('glass', p, {k: round(float(v), 4) for k, v in r.items() if k != 'tot_rel'}, 'rad rate / free =', round(float(r['tot_rel'] / free[key]), 3))
+
+
+def reciprocity_pattern(p, h, lam, n1=1.0, n2=1.52, nth=181, nph=72):
+    """Same quantity from reciprocity: dP/dOmega(s, e) ~ n_j |p . E_loc|^2, E_loc = field at the dipole of a
+    unit-amplitude plane wave incident from direction s in medium j (propagating along -s), polarisation e."""
+    k0 = 2 * np.pi / lam; k1, k2 = n1 * k0, n2 * k0; e1, e2 = n1**2, n2**2
+    th = (np.arange(nth) + 0.5) * (np.pi / 2) / nth; ph = (np.arange(nph) + 0.5) * 2 * np.pi / nph
+    T, P = np.meshgrid(th, ph, indexing='ij'); pv = np.array(p, float)
+    res = {}
+    for side in ('up', 'down'):
+        kk = k1 if side == 'up' else k2
+        kx = kk * np.sin(T); kz1, kz2, rs, rp, ts, tp = fresnel(kx, k1, k2, e1, e2)
+        cP, sP = np.cos(P), np.sin(P)
+        es = np.stack([-sP, cP, 0 * P])
+        if side == 'up':      # incident wave travels downward in medium 1: k = (-kx c, -kx s, -kz1)
+            # s: incident + reflected (r_s); p: incident p-vector + reflected p-vector (r_p)
+            epi = np.stack([kz1 * cP, kz1 * sP, kx]) / k1          # p-unit vector, downward wave (sign convention)
+            epr = np.stack([-kz1 * cP, -kz1 * sP, kx]) / k1        # p-unit vector of reflected (upward) wave
+            ph_i = np.exp(-1j * kz1 * h); ph_r = np.exp(1j * kz1 * h) # phases at the dipole height (z = h)
+            Es = es * (ph_i + rs * ph_r)
+            Ep = epi * ph_i + epr * rp * ph_r
+        else:                 # incident from glass travelling upward; transmitted into medium 1 (k1 frame)
+            rs2 = (kz2 - kz1) / (kz2 + kz1); ts2 = 2 * kz2 / (kz1 + kz2)
+            tp2 = 2 * e1 * kz2 / (e1 * kz2 + e2 * kz1) * np.sqrt(e2 / e1)
+            ept = np.stack([-kz1 * cP, -kz1 * sP, kx]) / k1        # p-unit vector of transmitted upward wave in medium 1
+            pht = np.exp(1j * kz1 * h)
+            Es = es * ts2 * pht
+            Ep = ept * tp2 * pht
+        nj = n1 if side == 'up' else n2
+        f = nj * (np.abs(np.tensordot(pv, Es, 1))**2 + np.abs(np.tensordot(pv, Ep, 1))**2)
+        res[side] = (th, ph, np.real(f))
+    return res
+
+
+def recip_fractions(p, h, lam, n2=1.52):
+    o = reciprocity_pattern(p, h, lam, n2=n2)
+    def integ(th, ph, f, thmax=np.pi / 2):
+        dth = th[1] - th[0]; m = th <= thmax
+        return np.sum(np.mean(f[m], 1) * 2 * np.pi * np.sin(th[m])) * dth
+    up, dn = integ(*o['up']), integ(*o['down']); tot = up + dn
+    return {'down': dn / tot, 'glass_NA1.3': integ(*o['down'], np.arcsin(1.3 / n2)) / tot,
+            'glass_NA1.45': integ(*o['down'], np.arcsin(1.45 / n2)) / tot, 'air_NA0.9': integ(*o['up'], np.arcsin(0.9)) / tot,
+            'tot_rel': tot}
