@@ -26,3 +26,11 @@ khatua L55 khatua_L55.csv
 khatua L60 khatua_L60.csv
 khatua L65 khatua_L65.csv
 khatua L70 khatua_L70.csv
+tips c1 tips_c1.csv
+modes tipc1 modes_tipc1.csv
+tips c0.75 tips_c0.75.csv
+modes tipc0.75 modes_tipc0.75.csv
+tips c0.5 tips_c0.5.csv
+modes tipc0.5 modes_tipc0.5.csv
+tips c0.35 tips_c0.35.csv
+modes tipc0.35 modes_tipc0.35.csv

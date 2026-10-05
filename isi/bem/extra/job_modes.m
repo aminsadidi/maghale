@@ -8,6 +8,8 @@ op = bemoptions('sim', 'stat', 'interp', 'curv');
 epstab = {epsconst(1), epstable('gold.dat')};
 if strncmp(spec, 'rod', 3)
     L = sscanf(spec, 'rodL%d');  [p0, ztop] = bemx_rod(20, L, 2, op);
+elseif strncmp(spec, 'tip', 3)                       % rod L60 D20 with flattened ends, cap semi-axis c = r*R
+    [p0, ztop] = bemx_tiprod(20, 60, sscanf(spec, 'tipc%f') * 10, 2, op);
 else
     p0 = trisphere(784, 2 * 15.874);  ztop = 15.874;
 end
