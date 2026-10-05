@@ -46,7 +46,6 @@ for il = 1:numel(lam)
         P = reshape(P, [numel(ar), ng, nd]);
         for g = 1:ng
             for k = 1:nd
-                tot = sum(P(:, g, k));
                 Pt = sum(P(:, g, k));
                 row = [row, Pt, rad(g, k), tot(g, k)]; %#ok<AGROW>
                 for c = 1:nc, row = [row, sum(P(cones{c, 2}, g, k)) / Pt]; end %#ok<AGROW>
