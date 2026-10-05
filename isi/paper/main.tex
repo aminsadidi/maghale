@@ -25,25 +25,22 @@ plasmon-mode decomposition, an equal-volume control and design rules for single-
 
 \begin{abstract}
 Near the tip of a gold nanorod the decay rate of a quantum emitter depends strongly on the orientation of its
-transition dipole. Part of this anisotropy is generic---any metal surface quenches a perpendicular dipole more
-strongly than a parallel one---and part is due to the longitudinal plasmon resonance of the elongated particle,
-but the two have not been separated quantitatively. We do so for a capped gold nanorod (length \SI{60}{nm},
-diameter \SI{20}{nm}) with converged boundary-element calculations that reproduce the exact Mie solution for the
-equal-volume sphere to about \SI{1}{\percent}, and with a quasistatic plasmon-eigenmode decomposition of the decay
-rate. At a \SI{5}{nm} gap the axial dipole reaches a Purcell factor of \num{1.64e3} and a radiative enhancement of
-117, and \SI{91}{\percent} of the rate enhancement is carried by a single mode, the longitudinal dipolar plasmon.
-The remaining, non-resonant part has an axial-to-transverse ratio of about three, close to that of the
-equal-volume sphere (2.8--3.0); the resonance raises the ratio to 49 for the total and 329 for the radiative rate.
-Because the quenching background decays faster with distance than the coupling to the mode, the anisotropy is
-largest not at the smallest gap but at about \SI{10}{nm} (136), and it grows with the aspect ratio from 19 to 872
-between aspect ratios 2 and 5, while the non-resonant factor stays near three for all shapes. Translating the results into design rules, we show that the optimal gap
-grows with the intrinsic quantum yield of the emitter, quantify the tolerance to the emitter position, the effect
-of a glass substrate and of nonlocal response, and give resonance-matched antenna parameters for representative
-emitters. Without adjustable parameters, the same calculations reproduce the thousandfold single-molecule fluorescence
-enhancement measured for crystal violet near gold nanorods and its dependence on the resonance wavelength.
-Three-dimensional and body-of-revolution finite-difference time-domain calculations agree with the
-boundary-element results for the radiative quantities but underestimate (by \SI{9}{\percent}) or fail to converge
-for the total rate in the nanometre gap.
+transition dipole. Part of this anisotropy is generic---any curved metal surface quenches a perpendicular dipole more
+strongly than a parallel one---and part is caused by the longitudinal plasmon resonance. We separate the two for a
+capped gold nanorod (\SI{60}{nm}$\times$\SI{20}{nm}) with boundary-element calculations that match the exact Mie
+solution for the equal-volume sphere to \SI{1}{\percent}, and with a plasmon-eigenmode decomposition. At a
+\SI{5}{nm} gap the axial dipole reaches a Purcell factor of \num{1.6e3} and a radiative enhancement of 117, and about
+\SI{90}{\percent} of the enhancement is carried by the longitudinal dipolar mode. The non-resonant part has an
+axial-to-transverse ratio of about three, like the equal-volume sphere, and is set by the tip curvature (2 for flat
+ends, 8 for sharp tips); the resonance raises the ratio to 49 for the total and 329 for the radiative rate, with a
+maximum near \SI{10}{nm} that grows from 19 to 872 between aspect ratios 2 and 5. We derive design rules for
+single-photon sources---the optimal gap grows with the emitter's intrinsic quantum yield, the rod should lie in the
+focal plane---and show robustness to emitter position, substrate, nonlocal response and tip shape. Single emitters
+remain weakly coupled (at most \SI{37}{\percent} of the strong-coupling threshold), so single-photon statistics are
+preserved, and at cryogenic temperatures the antenna raises photon indistinguishability above \SI{96}{\percent}.
+Without adjustable parameters, the model reproduces the thousandfold single-molecule fluorescence enhancement
+measured near gold nanorods. Finite-difference time-domain solvers reproduce the radiative quantities but not the
+total rate in the nanometre gap.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Purcell effect; local density of optical states; gold nanorod; plasmon eigenmodes;
@@ -65,6 +62,16 @@ transferred to non-radiative channels in the metal, and the fluorescence is quen
 enhanced~\cite{anger,kuhn,ford,carminati2006}. The total decay rate and the radiative rate therefore have to be
 treated separately, and their ratio---the antenna quantum efficiency---depends sensitively on distance,
 wavelength and the intrinsic quantum yield of the emitter~\cite{bharadwaj2007,khurgin,lu2020}.
+
+The optical response of metal nanoparticles is governed by their size, shape and dielectric environment, which set
+the frequency, width and near-field distribution of the localized resonances~\cite{kelly2003,maier}. For emitters
+within a few nanometres of the metal, two further regimes become relevant and are the subject of quantum
+plasmonics~\cite{tame2013}: when the emitter--plasmon coupling rate exceeds the plasmon and emitter losses, the
+system enters strong coupling, which has been reached for single molecules only in sub-nanometre gaps of
+particle-on-mirror cavities~\cite{chikkaraddy2016,torma2015}; and below about \SI{1}{nm} electron spill-out,
+nonlocality and tunnelling modify the metal response itself~\cite{savage2012,zhu2016,yang2019}. Which of these
+regimes applies sets the appropriate description of the emitted light: a weakly coupled emitter keeps its quantum
+statistics and is described by modified decay rates, whereas strong coupling produces hybrid light--matter states.
 
 Gold nanorods are attractive antennas because their longitudinal plasmon resonance is tunable through the
 aspect ratio across the visible and near infrared~\cite{ni2008,sonnichsen}, they can be synthesised with good
@@ -157,8 +164,17 @@ The nanorod is a gold cylinder of length \SI{40}{nm} and radius $R=\SI{10}{nm}$ 
 caps (total length $L=\SI{60}{nm}$, aspect ratio 3), a geometry accessible by seed-mediated
 growth~\cite{nikoobakht}. The dipole is placed on the rod axis at a distance $d$ from the apex
 ($d=\SI{5}{nm}$ unless stated otherwise; \numrange{3}{30}{nm} in the gap study). The equal-volume sphere has
-$R_{\rm sph}=\SI{15.874}{nm}$. The host is air unless stated. Gold is described by the tabulated
+$R_{\rm sph}=\SI{15.874}{nm}$. The host is air unless stated; Fig.~\ref{fig:geometry} summarises the geometry and the dipole orientations. Gold is described by the tabulated
 Johnson--Christy permittivity~\cite{johnson} in all boundary-element and Mie calculations.
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=\linewidth]{fig_geometry.pdf}
+\caption{Geometry. (a) Capped gold nanorod ($L=\SI{60}{nm}$, $D=\SI{20}{nm}$) with an emitter on the axis at a gap $d$
+from the apex, oriented along (axial, $z$) or perpendicular to (transverse, $x$) the rod axis. (b) Gold sphere of the
+same volume, probed with radial and tangential dipoles at the same gap. (c) Emitter on a spacer shell of thickness $s$
+around the tip, at polar angle $\theta$, with its dipole normal to the surface; variants with a glass substrate and in
+water are also studied.}\label{fig:geometry}
+\end{figure}
 
 \subsection{Boundary-element method}
 The rates are computed with the boundary-element method (BEM) of the MNPBEM17
@@ -185,7 +201,7 @@ the Supplementary Information.
 
 \subsection{Validation and convergence}
 For the equal-volume sphere at a \SI{5}{nm} gap the BEM reproduces the exact Mie solution for both dipole
-orientations over \SIrange{500}{900}{nm} (Fig.~\ref{fig:mie}): with 1444 vertices the median deviation is
+orientations over \SIrange{500}{900}{nm} (Fig.~S3): with 1444 vertices the median deviation is
 \SI{0.9}{\percent} for the radial $\Fp$ and \SI{1.4}{\percent} for the radial $T$, \SI{0.7}{\percent} and
 \SI{1.0}{\percent} for the tangential dipole, and at most \SI{4}{\percent}; the deviation is of the same size at 10 and
 \SI{20}{nm} and in water (Table~S1). For the rod (axial dipole, \SI{5}{nm} gap) the peak values change by
@@ -207,6 +223,13 @@ onset of interband absorption and is almost purely non-radiative ($T=2.0$). The 
 position has $T<0.5$ at all wavelengths---it radiates less than in free space---and its $\Fp$ maximum (248 at
 \SI{508}{nm}) is non-radiative.
 
+\begin{figure}[tbp]\centering
+\includegraphics[width=0.55\linewidth]{fig_spectra.pdf}
+\caption{(a) Purcell factor, (b) radiative enhancement and (c) antenna efficiency at a \SI{5}{nm} gap for the
+rod with axial and transverse dipole and the equal-volume sphere with radial and tangential dipole (BEM). Dotted:
+free space.}\label{fig:spectra}
+\end{figure}
+
 The equal-volume sphere separates the generic from the resonant contribution (Fig.~\ref{fig:orientation}). Its
 radial-to-tangential ratio of $\Fp$ lies between 2.75 and 2.97 over the whole band, in agreement with the exact
 solution (2.76--2.97) and near the quasi-static flat-surface value of two, without resonant structure. The rod
@@ -217,6 +240,13 @@ exceeds the sphere by factors of 15 in $\Fp$ and 23 in $T$, whereas the maxima o
 2.0 in $\Fp$: with the same amount of gold, the elongated particle does not provide a larger total rate but moves a
 radiative resonance out of the interband region.
 
+\begin{figure}[tbp]\centering
+\includegraphics[width=\linewidth]{fig_orientation.pdf}
+\caption{Orientation ratios of (a) $\Fp$ and (b) $T$ for the rod (axial/transverse) and the equal-volume sphere
+(radial/tangential) at a \SI{5}{nm} gap; dashed: exact Mie solution for the sphere. Dotted: quasi-static
+flat-surface limit of 2.}\label{fig:orientation}
+\end{figure}
+
 \subsection{Mode decomposition}
 The eigenmode analysis makes this separation explicit (Fig.~\ref{fig:modes}). The lowest non-trivial mode of the
 rod is the longitudinal dipole ($\lambda_k=-5.01$, quasistatic resonance at \SI{595}{nm}, \SI{13}{nm} to the blue of
@@ -225,6 +255,14 @@ the retarded result); the transverse dipolar modes lie at $\lambda_k\approx-1.71
 remaining background is a smooth function of wavelength and its axial value exceeds the transverse rate by a
 factor of 3.1, close to the sphere's ratio: \emph{the geometric anisotropy of the rod is that of any curved metal
 surface, and the excess is the contribution of a single resonant mode.}
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=\linewidth]{fig_modes.pdf}
+\caption{Plasmon-eigenmode decomposition (quasistatic BEM). (a) $\Fp$ of the axial dipole at a \SI{5}{nm} gap,
+the contribution of the longitudinal dipolar mode, the remaining background and the transverse $\Fp$. (b) Share of
+$\Fp-1$ carried by the longitudinal dipolar mode at its resonance versus gap. (c) Axial/transverse ratio of $\Fp$
+(solid) and of the background alone (dotted) versus gap.}\label{fig:modes}
+\end{figure}
 
 The two contributions depend differently on the gap (Fig.~\ref{fig:modes}b,c). The background decays as the
 near-field of a dipole above a lossy surface, approximately as $d^{-3}$, whereas the coupling to the dipolar mode
@@ -261,6 +299,12 @@ efficiency at the radiative peak increases only from \SI{6.6}{\percent} to \SI{1
 spectral maximum, reached far to the red of the resonance, rises from \SI{12}{\percent} to \SI{60}{\percent}. The
 exact solution for the sphere shows the same trade-off (Fig.~\ref{fig:gap}, lower row).
 
+\begin{figure}[tbp]\centering
+\includegraphics[width=\linewidth]{fig_gap.pdf}
+\caption{Gap dependence of $\Fp$, $T$ and $\eta_a$ for the rod with axial dipole (top, BEM) and the equal-volume
+sphere with radial dipole (bottom, exact Mie).}\label{fig:gap}
+\end{figure}
+
 For a single-photon source the relevant figure of merit depends on the operating regime. Under saturated
 (continuous-wave or high-repetition) excitation the photon rate scales with the radiative rate, i.e.\ with $T$,
 for any $q_0$. Under pulsed excitation with a period much longer than the excited-state lifetime the number of
@@ -271,6 +315,12 @@ beyond \SI{7}{nm}: gaps of 7 and \SI{10}{nm} raise the efficiency from \SI{1}{\p
 \SI{7.1}{\percent}, whereas \SI{20}{nm} gives \SI{4.8}{\percent}. A large $\Fp$ is needed to outcompete the
 intrinsic non-radiative rate $(1-q_0)/q_0$, but beyond that point additional $\Fp$ only feeds absorption, so the
 optimal gap increases with $q_0$.
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=0.55\linewidth]{fig_q0.pdf}
+\caption{Quantum efficiency at the radiative peak versus intrinsic quantum yield, Eq.~\eqref{eq:eta}, for six
+gaps. Dotted: emitter without antenna ($\eta=q_0$).}\label{fig:q0}
+\end{figure}
 
 \begin{table}[t]\centering
 \caption{Quantum efficiency $\eta(q_0)$ at the radiative peak of the rod (axial dipole, BEM), Eq.~\eqref{eq:eta}.}\label{tab:q0}
@@ -301,7 +351,7 @@ interband response and is no larger than for a compact particle.
 \emph{Emitter position.} Emitters are often attached to a dielectric spacer shell of fixed thickness rather than
 placed exactly on the axis. We therefore moved the dipole over a shell of thickness $s$ around the hemispherical cap,
 from the axis ($\theta=0$) to the start of the cylindrical side ($\theta=\SI{90}{\degree}$, a lateral offset of
-$R+s$), with the dipole normal ($n$) or tangential ($t$) to the surface (Fig.~\ref{fig:offset}). For $s=\SI{5}{nm}$
+$R+s$), with the dipole normal ($n$) or tangential ($t$) to the surface (Fig.~S4). For $s=\SI{5}{nm}$
 the radiative enhancement of the normal dipole decreases only gradually, to \SI{68}{\percent} of its on-axis value at
 $\theta=\SI{90}{\degree}$ (\SI{70}{\percent} for $s=\SI{10}{nm}$), and its efficiency from \SI{7.6}{\percent} to
 \SI{6.8}{\percent}, because the longitudinal mode carries charge over the whole cap. Tangential dipoles remain dark
@@ -355,6 +405,13 @@ dimensions resonates at \SI{505}{nm} with $T=\num{1.1e3}$ and $\eta_a=\SI{38}{\p
 separation into a geometric factor of about three and a resonant factor that grows with the oscillator strength
 of the longitudinal mode holds generally.
 
+\begin{figure}[tbp]\centering
+\includegraphics[width=\linewidth]{fig_aspect.pdf}
+\caption{(a) Radiative enhancement of the axial dipole at a \SI{5}{nm} gap for rods with $D=\SI{20}{nm}$ and aspect
+ratios (AR) 2--5 in air and AR 3 in water (BEM). (b) Antenna efficiency at the radiative peak versus resonance
+wavelength for three gaps; open squares: AR 3 in water.}\label{fig:aspect}
+\end{figure}
+
 \subsection{Collection efficiency}
 The far field of the BEM solution, sampled on 1444 directions, gives the fraction of the radiated power that enters
 the cone of a collection objective. For the axial dipole at the radiative peak and a rod standing along the optical
@@ -391,6 +448,14 @@ the instrument response. The agreement, obtained without adjustable parameters, 
 the design rules above. Because $q_0$ is small, this experiment probes the regime in which the antenna improves the
 efficiency itself; the near-unity-yield regime remains to be tested experimentally.
 
+\begin{figure}[tbp]\centering
+\includegraphics[width=0.55\linewidth]{fig_khatua.pdf}
+\caption{Fluorescence enhancement of crystal violet near gold nanorods of diameter \SI{25}{nm} in glycerol (BEM, dipole
+on the axis and parallel to it) versus the computed resonance wavelength, for excitation at 633 and \SI{594}{nm} and
+gaps of 3, 5 and \SI{10}{nm}. Grey band: maximum enhancement measured by Khatua \emph{et al.}~\cite{khatua} under
+\SI{633}{nm} excitation.}\label{fig:khatua}
+\end{figure}
+
 \subsection{Design table for representative emitters}
 Table~\ref{tab:emit} combines the aspect-ratio sweep with literature values of the emission wavelength and the
 intrinsic quantum yield of four emitter classes: defects in hexagonal boron nitride ($q_0=0.87$ at
@@ -424,55 +489,87 @@ CsPbI$_3$ nanocrystal~\cite{protesescu2015} & 690 & 0.90 & 80 & 5 & 436 & \num{1
 \end{tabular}
 \end{table}
 
+\subsection{Quantum regime: coupling strength, indistinguishability and photon statistics}
+The rate-based description used so far assumes weak coupling. For a single plasmon mode of energy width
+$\hbar\kappa$ in the bad-cavity limit, the mode-induced decay rate is $\Gamma_{\rm mode}=4g^2/\kappa$, so that the
+emitter--plasmon coupling follows from the modal Purcell factor as
+$\hbar g=\tfrac12\sqrt{\Fp^{\rm mode}\,\hbar\Gamma_0\,\hbar\kappa}$, and strong coupling requires
+$g>(\kappa+\gamma)/4$~\cite{torma2015}, i.e.\ $\Fp^{\rm mode}>\kappa/(4\Gamma_0)$ for a spectrally narrow emitter.
+Taking $\Fp^{\rm mode}$ and $\kappa$ from the retarded pole fits and a radiative lifetime of \SI{1}{ns}---an upper
+bound on $\Gamma_0$ for dyes, quantum dots and colour centres---we find $\hbar g=\SI{5.3}{meV}$ at a \SI{5}{nm} gap
+for aspect ratio 3 ($\hbar\kappa=\SI{133}{meV}$), \SI{16}{\percent} of the threshold, and at most \SI{37}{\percent}
+(\SI{7.9}{meV}, aspect ratio 5) for any rod and gap studied (Table~\ref{tab:quantum}). Strong coupling would require
+modal Purcell factors of \numrange{3e4}{5e4}, one to two orders of magnitude above the present ones, consistent with
+the sub-nanometre gaps needed experimentally~\cite{chikkaraddy2016}; room-temperature emitter linewidths of tens of
+meV raise the threshold further. All emitters considered here are therefore weakly coupled, which justifies the rate
+description and implies that the antenna preserves the single-photon statistics of a single emitter. The main
+threat to antibunching is instead the photoluminescence of the gold itself, whose quantum yield is of order
+$10^{-6}$~\cite{yorulmaz2012} but which is excited by the same laser and has to be filtered spectrally or temporally.
+
+The Purcell effect does change a quantum property of the emitted light, its indistinguishability. For an emitter with
+pure dephasing rate $\gamma^*$ in the bad-cavity regime, $I=\Gamma/(\Gamma+2\gamma^*)$ with $\Gamma=\Fp\Gamma_0$
+($q_0=1$)~\cite{grange2015}. At room temperature ($\hbar\gamma^*\approx\SI{10}{meV}$) $I$ stays below
+\SI{13}{\percent} even for $\Fp=\num{4.5e3}$, so plasmonic nanorods cannot make dephased room-temperature emitters
+emit indistinguishable photons. At cryogenic temperatures ($\hbar\gamma^*=1$--\SI{10}{\micro eV}), however, the same
+antenna raises $I$ from 3--\SI{25}{\percent} for the bare emitter to above \SI{96}{\percent} for $\Fp\geq80$
+(\SI{20}{nm} gap) and above \SI{98}{\percent} at the \SI{5}{nm} gap, at the cost of the antenna efficiency of
+Fig.~\ref{fig:q0}. For a cryogenic source of indistinguishable photons the trade-off is therefore between $I$, which
+favours small gaps, and the efficiency, which favours large ones.
+
+\begin{table}[t]\centering
+\caption{Emitter--plasmon coupling for a radiative lifetime of \SI{1}{ns} (axial dipole on the axis).
+$\Fp^{\rm mode}$ and $\hbar\kappa$ from the retarded pole fits (Table~S4); strong coupling requires $g>\kappa/4$.}\label{tab:quantum}
+\begin{tabular}{rrrrrr}\toprule
+aspect ratio & gap (nm) & $\Fp^{\rm mode}$ & $\hbar\kappa$ (meV) & $\hbar g$ (meV) & $g/(\kappa/4)$\\\midrule
+3 & 3  & 1908 & 145 & 6.7 & 0.19\\
+3 & 5  & 1291 & 133 & 5.3 & 0.16\\
+3 & 10 & 417  & 132 & 3.0 & 0.09\\
+4 & 5  & 3481 & 86  & 7.0 & 0.33\\
+5 & 5  & 4454 & 85  & 7.9 & 0.37\\\bottomrule
+\end{tabular}
+\end{table}
+
 % ---------------------------------------------------------------------------------------------
 \section{Discussion}
-The central result is that the orientation dependence of emission near a nanorod tip consists of two factors with
-different physical origins. A non-resonant factor of about three, which is the same for the equal-volume sphere and
-for rods of aspect ratio 2--5, describes how strongly the curved metal surface quenches a perpendicular relative to
-a parallel dipole; it does not depend on the plasmon resonance. On top of it, a single mode---the longitudinal
-dipolar plasmon---contributes a resonant factor that grows with the oscillator strength of that mode, from 19 to
-872 between aspect ratios 2 and 5. The eigenmode decomposition and the equal-volume control lead independently to the
-same separation, and the decomposition explains why the anisotropy peaks at an intermediate gap: the background is
-shared by both orientations and dominates at small gaps, while the coupling to the mode decays more slowly.
+The orientation dependence of emission near a nanorod tip consists of two factors with different origins. A
+non-resonant factor describes how strongly the curved metal surface quenches a perpendicular relative to a parallel
+dipole; it is about three for hemispherical tips and the equal-volume sphere, decreases towards the flat-surface
+value of two for flatter ends and grows for sharper tips, but does not depend on the plasmon resonance. On top of it,
+a single mode---the longitudinal dipolar plasmon---contributes a resonant factor that grows with the oscillator
+strength of that mode, from 19 to 872 between aspect ratios 2 and 5, and is insensitive to the tip shape. The
+equal-volume control and the eigenmode decomposition lead independently to this separation, and the decomposition
+explains why the anisotropy peaks at an intermediate gap: the background is shared by both orientations and
+dominates at small gaps, whereas the coupling to the mode decays more slowly.
 
-For randomly oriented emitters on the axis, the averages are $\langle\Fp\rangle=(\Fp^{\parallel}+2\Fp^{\perp})/3$ and
-likewise for $T$. At \SI{608}{nm} and a \SI{5}{nm} gap this gives $\langle\Fp\rangle=555$ and $\langle T\rangle=39$,
-three times below the axial values, while $\langle T\rangle/\langle\Fp\rangle=\SI{7.0}{\percent}$ is almost the axial
-efficiency because the axial channel dominates both averages. The ensemble is bimodal: one third of the orientations
-is bright, while the transverse two thirds are quenched ($\eta_a=\SI{1.1}{\percent}$) and radiate less than in free
-space ($T=0.35$). An enhancement factor measured on an orientation ensemble~\cite{yuan,khatua} therefore hides a
-population of nearly dark emitters, which matters for single-emitter applications where each emitter's orientation
-is fixed, and it suggests orientation-selective assembly or emitters with a well-defined transition dipole.
+For randomly oriented emitters on the axis, $\langle\Fp\rangle=(\Fp^{\parallel}+2\Fp^{\perp})/3=555$ and
+$\langle T\rangle=39$ at \SI{608}{nm} and a \SI{5}{nm} gap, three times below the axial values, while the averaged
+efficiency (\SI{7.0}{\percent}) is close to the axial one. The ensemble is bimodal: the transverse two thirds of the
+orientations are quenched ($\eta_a=\SI{1.1}{\percent}$, $T=0.35$). An enhancement factor measured on an orientation
+ensemble~\cite{yuan,khatua} therefore hides a population of nearly dark emitters, which matters when each emitter's
+orientation is fixed.
 
-For single-photon sources the results translate into simple rules. The gap should be chosen according to the
-emitter: 5--\SI{10}{nm} for poor emitters, for which the antenna raises the efficiency, and \SI{15}{nm} or more for
-near-unity emitters, for which the antenna mainly accelerates the emission and raises the saturated photon rate at
-the cost of efficiency. The emission wavelength should lie well to the red of the interband edge, above about
-\SI{650}{nm} for gold, which also favours longer rods, larger diameters and a glass substrate. The excitation should
-be resonant with the longitudinal mode if an excitation enhancement is wanted. Finally, because the antenna leaves
-the dipolar emission pattern intact, the rod should lie in the focal plane of the collection optics.
-
-Methodologically, our comparison shows that volume-discretisation solvers reproduce the radiated power, the
-resonance and the emission pattern of a nanorod antenna but not the total rate in a \SI{5}{nm} gap. A
-three-dimensional FDTD calculation with a conformal mesh underestimated it by \SI{9}{\percent}; a staircased
-body-of-revolution FDTD overestimated it by a factor of two even on a \SI{1}{nm} grid. Statements about quenching,
-efficiency and the optimal gap therefore require a surface method or careful convergence studies.
+For single-photon sources the results give simple rules: a gap of 5--\SI{10}{nm} for poor emitters, for which the
+antenna raises the efficiency, and \SI{15}{nm} or more for near-unity emitters, for which it mainly accelerates the
+emission; an emission wavelength well to the red of the interband edge (above about \SI{650}{nm} for gold), which
+favours longer and thicker rods, flatter ends and a glass substrate; resonant excitation if an excitation enhancement
+is wanted; and a rod lying in the focal plane of the collection optics. Methodologically, volume-discretisation
+solvers reproduce the radiated power, the resonance and the emission pattern, but statements about quenching and the
+optimal gap require a surface method or careful convergence studies.
 
 The limitations of the present study are the local-response description of gold beyond the hydrodynamic estimate,
-which is adequate at gaps of a few nanometres but not in sub-nanometre gaps where tunnelling matters~\cite{xu,ciraci};
-surface scattering, which adds to the damping of small particles~\cite{kreibig,coronado}; the classical treatment of
-the emitter in the weak-coupling regime; and the quasistatic approximation of the eigenmode analysis, which shifts the
-longitudinal resonance by \SI{13}{nm} and, lacking radiative coupling, gives anisotropy ratios about \SI{35}{\percent}
-lower than the retarded ones (33, 82 and 47 versus 49, 136 and 75 at 5, 10 and \SI{20}{nm}) while reproducing their
-gap dependence and the position of the maximum. The retarded pole fits confirm the dominance of the dipolar mode
-but do not resolve the background; a full quasinormal-mode expansion~\cite{sauvan,lalanne} would remove this
-limitation.
+which is adequate at gaps of a few nanometres but not below about \SI{1}{nm}~\cite{xu,ciraci,zhu2016}; surface
+scattering~\cite{kreibig,coronado}; the point-dipole, weak-coupling description of the emitter, which
+Table~\ref{tab:quantum} justifies; and the quasistatic eigenmode analysis, which shifts the resonance by \SI{13}{nm}
+and gives anisotropy ratios about \SI{35}{\percent} lower than the retarded ones while reproducing their gap
+dependence. The retarded pole fits confirm the dominance of the dipolar mode but do not resolve the background; a full
+quasinormal-mode expansion~\cite{sauvan,lalanne} would remove this limitation.
 
 % ---------------------------------------------------------------------------------------------
 \section{Conclusion}
 Using converged boundary-element calculations, an equal-volume sphere as a control and a plasmon-eigenmode
 decomposition, we have separated the orientational anisotropy of the Purcell enhancement near a gold nanorod tip
-into a geometric factor of about three, common to all curved metal surfaces, and a resonant factor carried by the
+into a geometric factor set by the curvature of the metal surface (about three for hemispherical tips and the
+equal-volume sphere) and a resonant factor carried by the
 longitudinal dipolar mode, which reaches 49 in the total and 329 in the radiative rate for an aspect-ratio-3 rod at a
 \SI{5}{nm} gap, peaks near a \SI{10}{nm} gap and grows with the aspect ratio. More than \SI{92}{\percent} of the
 emitted power is absorbed at the Purcell maximum for a \SI{5}{nm} gap; the optimal gap for a single-photon source
@@ -490,65 +587,6 @@ All raw spectra, simulation scripts (MNPBEM, Lumerical and Meep) and analysis co
 
 \section*{Conflict of interest}
 The authors declare no competing interests.
-
-% ---------------------------------------------------------------------------------------------
-\begin{figure}[p]\centering
-\includegraphics[width=0.55\linewidth]{fig_spectra.pdf}
-\caption{(a) Purcell factor, (b) radiative enhancement and (c) antenna efficiency at a \SI{5}{nm} gap for the
-rod with axial and transverse dipole and the equal-volume sphere with radial and tangential dipole (BEM). Dotted:
-free space.}\label{fig:spectra}
-\end{figure}
-\begin{figure}[p]\centering
-\includegraphics[width=\linewidth]{fig_orientation.pdf}
-\caption{Orientation ratios of (a) $\Fp$ and (b) $T$ for the rod (axial/transverse) and the equal-volume sphere
-(radial/tangential) at a \SI{5}{nm} gap; dashed: exact Mie solution for the sphere. Dotted: quasi-static
-flat-surface limit of 2.}\label{fig:orientation}
-\end{figure}
-\begin{figure}[p]\centering
-\includegraphics[width=\linewidth]{fig_mie.pdf}
-\caption{Validation of the BEM against the exact Mie solution for the equal-volume sphere at a \SI{5}{nm} gap:
-(a) $\Fp$ and (b) $T$ for the radial (solid) and tangential (dashed) dipole and three surface meshes. The thick
-grey curves are the exact results.}\label{fig:mie}
-\end{figure}
-\begin{figure}[p]\centering
-\includegraphics[width=\linewidth]{fig_modes.pdf}
-\caption{Plasmon-eigenmode decomposition (quasistatic BEM). (a) $\Fp$ of the axial dipole at a \SI{5}{nm} gap,
-the contribution of the longitudinal dipolar mode, the remaining background and the transverse $\Fp$. (b) Share of
-$\Fp-1$ carried by the longitudinal dipolar mode at its resonance versus gap. (c) Axial/transverse ratio of $\Fp$
-(solid) and of the background alone (dotted) versus gap.}\label{fig:modes}
-\end{figure}
-\begin{figure}[p]\centering
-\includegraphics[width=\linewidth]{fig_gap.pdf}
-\caption{Gap dependence of $\Fp$, $T$ and $\eta_a$ for the rod with axial dipole (top, BEM) and the equal-volume
-sphere with radial dipole (bottom, exact Mie).}\label{fig:gap}
-\end{figure}
-\begin{figure}[p]\centering
-\includegraphics[width=0.55\linewidth]{fig_q0.pdf}
-\caption{Quantum efficiency at the radiative peak versus intrinsic quantum yield, Eq.~\eqref{eq:eta}, for six
-gaps. Dotted: emitter without antenna ($\eta=q_0$).}\label{fig:q0}
-\end{figure}
-
-\begin{figure}[p]\centering
-\includegraphics[width=\linewidth]{fig_aspect.pdf}
-\caption{(a) Radiative enhancement of the axial dipole at a \SI{5}{nm} gap for rods with $D=\SI{20}{nm}$ and aspect
-ratios (AR) 2--5 in air and AR 3 in water (BEM). (b) Antenna efficiency at the radiative peak versus resonance
-wavelength for three gaps; open squares: AR 3 in water.}\label{fig:aspect}
-\end{figure}
-
-\begin{figure}[p]\centering
-\includegraphics[width=0.75\linewidth]{fig_offset.pdf}
-\caption{Emitter on a spacer shell of thickness $s$ around the rod tip, at polar angle $\theta$ from the axis, with
-its dipole normal to the surface: (a) radiative enhancement relative to the on-axis value and (b) antenna efficiency
-at the radiative peak (\SI{610}{nm}).}\label{fig:offset}
-\end{figure}
-
-\begin{figure}[p]\centering
-\includegraphics[width=0.55\linewidth]{fig_khatua.pdf}
-\caption{Fluorescence enhancement of crystal violet near gold nanorods of diameter \SI{25}{nm} in glycerol (BEM, dipole
-on the axis and parallel to it) versus the computed resonance wavelength, for excitation at 633 and \SI{594}{nm} and
-gaps of 3, 5 and \SI{10}{nm}. Grey band: maximum enhancement measured by Khatua \emph{et al.}~\cite{khatua} under
-\SI{633}{nm} excitation.}\label{fig:khatua}
-\end{figure}
 
 \input{refs.tex}
 \end{document}

@@ -131,6 +131,16 @@ $r=c/R$ & gap (nm) & $\lambda_T$ (nm) & $T_{\max}$ & $\eta_a$ & max $\Fp^{\paral
 \caption{Local intensity enhancement $|E_z|^2/|E_0|^2$ on the axis, 5 and \SI{10}{nm} beyond the apex, for a plane
 wave polarised along the axis (BEM): rod and equal-volume sphere.}\label{fig:exc}\end{figure}
 
+\begin{figure}[h]\centering\includegraphics[width=\linewidth]{fig_mie.pdf}
+\caption{Validation of the BEM against the exact Mie solution for the equal-volume sphere at a \SI{5}{nm} gap:
+(a) $\Fp$ and (b) $T$ for the radial (solid) and tangential (dashed) dipole and three surface meshes; thick grey
+curves: exact results.}\label{fig:miesi}\end{figure}
+
+\begin{figure}[h]\centering\includegraphics[width=0.75\linewidth]{fig_offset.pdf}
+\caption{Emitter on a spacer shell of thickness $s$ around the rod tip at polar angle $\theta$, dipole normal to the
+surface: (a) radiative enhancement relative to the on-axis value, (b) antenna efficiency at the radiative peak
+(\SI{610}{nm}). Script: \texttt{job\_offset.m}.}\label{fig:offsetsi}\end{figure}
+
 \emph{Substrate.} The rod (axis along $x$) lies \SI{1}{nm} above a glass half-space ($\varepsilon=1.52^2$); the
 reflected Green function is tabulated with \texttt{compgreentablayer} at 23 wavelengths between 480 and \SI{920}{nm}
 and interpolated. Rates are given in units of the vacuum rate; the reference is the same dipole above bare glass
