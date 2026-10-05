@@ -80,6 +80,34 @@ sphere   & 510 & 5  & 761  & 9\%  & 693 & 2.4 & 3\\
          &     & 10 & 89   & 21\% & 70  & 2.4 & 3\\\bottomrule
 \end{tabular}\end{table}
 
+\emph{Retarded pole fits.} The full BEM spectra $\Fp(\omega)-1$ of the axial dipole were fitted over the window
+given below with $\mathrm{Im}[C/(\tilde\omega-\omega)]+a_0+a_1(\omega-\omega_0)+a_2(\omega-\omega_0)^2$ ($C$,
+$\tilde\omega$ complex; relative residuals), the quasinormal-mode form of a single modal contribution plus a smooth
+background. The method was first applied to the quasistatic spectra, for which the dipolar-mode term is known
+exactly (Table~\ref{tab:modes}). Script: \texttt{isi/analysis/pole\_fit.py}.
+
+\begin{table}[h]\centering
+\caption{Share of $\Fp-1$ carried by the longitudinal dipolar mode at its resonance from pole fits. Quasistatic:
+exact value / fitted value. Retarded: fitted value, pole wavelength and full linewidth.}\label{tab:pole}
+\begin{tabular}{lrrrrr}\toprule
+aspect ratio & gap (nm) & quasistatic exact / fit & retarded fit & $\lambda$ (nm) & width (meV)\\\midrule
+2 & 5  & 57\% / --$^a$ & --$^a$ & 545 & -- \\
+2.5 & 5 & -- & 74\% & 582 & 237\\
+3 & 3  & 80\% / 59\% & 73\% & 614 & 145\\
+3 & 5  & 91\% / 78\% & 88\% & 610 & 133\\
+3 & 10 & 96\% / 89\% & 94\% & 608 & 132\\
+3 & 20 & 98\% / 94\% & 96\% & 607 & 133\\
+4 & 5  & 98\% / 97\% & 97\% & 676 & 86\\
+4 & 10 & 99\% / 98\% & 97\% & 676 & 89\\
+5 & 5  & 99\% / 98\% & 100\% & 756 & 85\\
+5 & 10 & 100\% / 99\% & 101\% & 756 & 85\\\bottomrule
+\end{tabular}
+
+\smallskip
+{\footnotesize $^a$The resonance lies at the interband edge; the fit cannot separate mode and background (fitted share
+$>$\SI{100}{\percent}).}
+\end{table}
+
 \begin{figure}[h]\centering\includegraphics[width=0.5\linewidth]{fig_excitation.pdf}
 \caption{Local intensity enhancement $|E_z|^2/|E_0|^2$ on the axis, 5 and \SI{10}{nm} beyond the apex, for a plane
 wave polarised along the axis (BEM): rod and equal-volume sphere.}\label{fig:exc}\end{figure}
