@@ -1,8 +1,1 @@
-tips c1
-modes tipc1
-tips c0.75
-modes tipc0.75
-tips c0.5
-modes tipc0.5
-tips c0.35
-modes tipc0.35
+collection_glass glass
