@@ -5,10 +5,11 @@ function job_collection_glass(spec, outdir)
 %    is computed here as dP/dOmega = 0.5 Re[ n . (E x H*) ] with H = (k/k0) n x E in the medium of that direction.
 %    Checks written to the CSV: (i) the same quantities for the dipole alone above glass (compare with the analytic
 %    solution in isi/analysis/glass_check.py); (ii) the integrated power versus MNPBEM's radiative decay rate.
-%    spec : 'glass'
+%    spec : 'glass' (gold rod) or 'dielectric' (lossless rod, eps = 4: energy conservation, radiated power = total rate)
 gaps = [5 10 20];  ng = numel(gaps);  lam = [600 610 620 630 640 650 660];
 pinf = trisphere(1444, 2);
-epstab = {epsconst(1), epstable('gold.dat'), epsconst(1.52^2)};
+if strcmp(spec, 'dielectric'), mat = epsconst(4); else, mat = epstable('gold.dat'); end
+epstab = {epsconst(1), mat, epsconst(1.52^2)};
 layer = layerstructure(epstab, [1, 3], 0, layerstructure.options);
 op = bemoptions('sim', 'ret', 'interp', 'curv', 'layer', layer, 'pinfty', pinf);
 [p0, ~] = bemx_rod(20, 60, 2, op);
@@ -30,11 +31,11 @@ cones = {'air_NA0.9', up & nv(:, 3) >= cos(asin(0.9));  'air_hemisphere', up;
          'glass_NA1.3', ~up & -nv(:, 3) >= cos(asin(1.3 / 1.52));  'glass_NA1.45', ~up & -nv(:, 3) >= cos(asin(1.45 / 1.52));
          'glass_hemisphere', ~up};
 nc = size(cones, 1);
-M = zeros(numel(lam), 1 + 2 * ng * nd * (2 + nc));
+M = zeros(numel(lam), 1 + 2 * ng * nd * (3 + nc));
 for il = 1:numel(lam)
     enei = lam(il);
     sig = bem \ dip(p, enei);
-    [~, rad] = decayrate(dip, sig);
+    [tot, rad] = decayrate(dip, sig);                     % tot from the near field (independent of the far field)
     E_ind = remap(farfield(dip.spec, sig), nv);           % field of the induced charges and currents
     E_dip = remap(farfield(dip, dip.spec, enei), nv);     % direct + reflected/transmitted dipole field
     row = enei;
@@ -46,8 +47,9 @@ for il = 1:numel(lam)
         for g = 1:ng
             for k = 1:nd
                 tot = sum(P(:, g, k));
-                row = [row, tot, rad(g, k)]; %#ok<AGROW>
-                for c = 1:nc, row = [row, sum(P(cones{c, 2}, g, k)) / tot]; end %#ok<AGROW>
+                Pt = sum(P(:, g, k));
+                row = [row, Pt, rad(g, k), tot(g, k)]; %#ok<AGROW>
+                for c = 1:nc, row = [row, sum(P(cones{c, 2}, g, k)) / Pt]; end %#ok<AGROW>
             end
         end
     end
@@ -55,10 +57,10 @@ for il = 1:numel(lam)
 end
 hdr = 'lambda_nm';  tag = {'rod', 'bare'};
 for which = 1:2, for g = gaps, for k = 1:nd
-    hdr = [hdr, sprintf(',P_%s_%s_g%g,raddecay_%s_%s_g%g', tag{which}, dn{k}, g, tag{which}, dn{k}, g)]; %#ok<AGROW>
+    hdr = [hdr, sprintf(',P_%s_%s_g%g,raddecay_%s_%s_g%g,totdecay_%s_%s_g%g', tag{which}, dn{k}, g, tag{which}, dn{k}, g, tag{which}, dn{k}, g)]; %#ok<AGROW>
     for c = 1:nc, hdr = [hdr, sprintf(',f_%s_%s_%s_g%g', tag{which}, cones{c, 1}, dn{k}, g)]; end %#ok<AGROW>
 end, end, end
-bemx_csv(fullfile(outdir, 'collection_glass_v2.csv'), hdr, M, ...
+bemx_csv(fullfile(outdir, ['collection_' spec '_v3.csv']), hdr, M, ...
     sprintf('rod on glass, far field remapped to pinfty order; dipole height %.3f nm above glass; faces=%d', zc, p.n));
 end
 

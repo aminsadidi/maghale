@@ -35,3 +35,5 @@ modes tipc0.5 modes_tipc0.5.csv
 tips c0.35 tips_c0.35.csv
 modes tipc0.35 modes_tipc0.35.csv
 collection_glass glass collection_glass_v2.csv
+collection_glass glass collection_glass_v3.csv
+collection_glass dielectric collection_dielectric_v3.csv
