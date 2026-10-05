@@ -252,5 +252,25 @@ if kh:
     ax.set_xlabel('SPR wavelength (nm)'); ax.set_ylabel(r'Fluorescence enhancement $\xi$'); ax.legend(fontsize=5, ncol=2, loc='lower center')
     fig.savefig(f'{FIG}/fig_khatua.pdf'); plt.close(fig)
 
+# ------------------------------------------------------------------ end-cap shape (rod L60 D20)
+tips = sorted(glob.glob(f'{EX}/tips_c*.csv'), key=lambda f: -float(re.search(r'tips_c([\d.]+)', f).group(1)))
+if tips:
+    lines += ['', '## Shape of the rod ends (cap semi-axis c = r R), retarded BEM; background from quasistatic modes', '',
+              '| r | gap | lambda_T | T_z max | Fp_z there | eta_a | Fp_z/Fp_x max | ratio at 500 nm | quasistatic background ratio | mode share (qs) |',
+              '|---|---|---|---|---|---|---|---|---|---|']
+    for f in tips:
+        r = re.search(r'tips_c([\d.]+)', f).group(1); d = load(f)
+        mq = load(f'{EX}/modes_tipc{r}.csv')
+        for g in (3, 5, 10, 20):
+            T, F, Fx = d[f'T_z_g{g}'], d[f'Fp_z_g{g}'], d[f'Fp_x_g{g}']
+            j = np.argmax(T); k = np.argmin(abs(d['lambda_nm'] - 500)); rat = F / Fx
+            bgs = mf = np.nan
+            if mq is not None:
+                m = mq['gap'] == g
+                if m.any():
+                    i = np.argmax(mq['dFz_L'][m]); Fz = mq['Fp_z'][m][i]
+                    bgs = (Fz - mq['dFz_L'][m][i]) / mq['Fp_x'][m][i]; mf = mq['dFz_L'][m][i] / (Fz - 1)
+            lines.append(f'| {r} | {g} | {d["lambda_nm"][j]:.0f} | {T[j]:.1f} | {F[j]:.0f} | {100*T[j]/F[j]:.1f}% | {rat.max():.0f} | {rat[k]:.2f} | {bgs:.2f} | {100*mf:.0f}% |')
+
 open(OUT, 'w').write('\n'.join(lines) + '\n')
 print('\n'.join(lines))
