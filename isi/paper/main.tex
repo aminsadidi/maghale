@@ -35,7 +35,7 @@ axial-to-transverse ratio of about three, like the equal-volume sphere, and is s
 ends, 8 for sharp tips); the resonance raises the ratio to 49 for the total and 329 for the radiative rate, with a
 maximum near \SI{10}{nm} that grows from 19 to 872 between aspect ratios 2 and 5. We derive design rules for
 single-photon sources---the optimal gap grows with the emitter's intrinsic quantum yield, the rod should lie in the
-focal plane---and show robustness to emitter position, substrate, nonlocal response and tip shape. Single emitters
+focal plane and, on glass, be collected through the substrate (\SI{79}{\percent} at $\mathrm{NA}=1.45$)---and show robustness to emitter position, substrate, nonlocal response and tip shape. Single emitters
 remain weakly coupled (at most \SI{37}{\percent} of the strong-coupling threshold), so single-photon statistics are
 preserved, and at cryogenic temperatures the antenna raises photon indistinguishability above \SI{96}{\percent}.
 Without adjustable parameters, the model reproduces the thousandfold single-molecule fluorescence enhancement
@@ -365,10 +365,8 @@ on the rod axis and parallel to the interface. The longitudinal resonance shifts
 efficiency increases from \SI{7.3}{\percent} to \SI{12.1}{\percent} (\SI{14.3}{\percent} and \SI{17.6}{\percent} at
 10 and \SI{20}{nm}). Relative to the same dipole on bare glass, whose rate is 1.27 times the vacuum rate, the
 enhancements are 209 ($T$) and \num{1.7e3} ($\Fp$). The substrate therefore does not weaken the conclusions; it
-improves the efficiency, because the resonance moves further from the interband edge, and a dipole parallel to and close to a
-glass interface radiates predominantly into the glass~\cite{novotny}, i.e.\ towards an oil-immersion objective (we
-did not resolve the angular distribution with the substrate). The dipoles perpendicular to
-the rod axis remain dark ($T<2.3$).
+improves the efficiency, because the resonance moves further from the interband edge, and most of the emission
+is directed into the glass (next subsection). The dipoles perpendicular to the rod axis remain dark ($T<2.3$).
 
 \emph{Nonlocal response.} The hydrodynamic correction, estimated with the equivalent cover layer of Luo
 \emph{et al.}~\cite{luo2013,raza2015,mortensen}, blue-shifts the radiative peak by \SI{5}{nm} and lowers $\Fp$ and $T$
@@ -423,9 +421,24 @@ multi-element antennas designed for directivity~\cite{taminiau2008}. If the same
 objective collects \SI{9.4}{\percent} at $\mathrm{NA}=0.5$ and \SI{32.5}{\percent} at $\mathrm{NA}=0.9$, the value of
 a dipole perpendicular to the optical axis (\SI{32.6}{\percent}). A rod standing along the optical axis therefore
 wastes almost half of its emission, and the orientation of the antenna relative to the collection optics is as
-important a design parameter as the gap. For a rod on glass, a dipole parallel to and close to the interface is
-expected to radiate preferentially into the substrate~\cite{novotny}; the angular split computed with the layer
-Green function was not numerically reliable for the weakly radiating transverse dipoles and is not reported.
+important a design parameter as the gap.
+
+On a glass substrate the substrate itself provides the remedy. We obtained the angular emission of the dipole next to
+the rod on glass by reciprocity: the power emitted into a direction $\hat{\mathbf s}$ of medium $j$ is
+$\mathrm{d}P/\mathrm{d}\Omega\propto n_j\sum_{\rm pol}|\mathbf p\cdot\mathbf E_{\rm loc}|^2$, where
+$\mathbf E_{\rm loc}$ is the field at the emitter produced by a unit-amplitude plane wave incident from
+$\hat{\mathbf s}$~\cite{novotny}, computed with the BEM for 1728 directions from both half-spaces. The method
+reproduces the analytic result for a bare dipole above glass (radiative rate 1.298 versus 1.299 times the vacuum
+rate, \SI{82.6}{\percent} versus \SI{82.7}{\percent} into the glass) and, for a lossless dielectric rod, gives a
+radiated power equal to the independently computed total decay rate to within \SIrange{1}{7}{\percent} (Supplementary
+Information). For the gold rod lying on glass, the axial dipole at a \SI{5}{nm} gap radiates $T=272$ at
+\SI{640}{nm} (\SI{2}{\percent} from the value of the substrate calculation above), and \SI{82.7}{\percent} of this
+power enters the glass, the same fraction as for a bare horizontal dipole at the same height: on glass, too, the
+antenna enhances but does not redirect the emission. An oil-immersion objective below the substrate therefore
+collects \SI{79}{\percent} ($\mathrm{NA}=1.45$) or \SI{65}{\percent} ($\mathrm{NA}=1.3$) of the radiated power,
+whereas a dry objective above the sample ($\mathrm{NA}=0.9$) collects \SI{15}{\percent}. Collecting through the
+substrate is thus four times more efficient than collecting from a rod standing along the optical axis, and the
+gap does not change these fractions (\SIrange{5}{20}{nm}).
 
 \subsection{Comparison with single-molecule experiments}
 The same method can be compared directly with the single-molecule experiments of Khatua \emph{et al.}~\cite{khatua},
@@ -552,7 +565,8 @@ For single-photon sources the results give simple rules: a gap of 5--\SI{10}{nm}
 antenna raises the efficiency, and \SI{15}{nm} or more for near-unity emitters, for which it mainly accelerates the
 emission; an emission wavelength well to the red of the interband edge (above about \SI{650}{nm} for gold), which
 favours longer and thicker rods, flatter ends and a glass substrate; resonant excitation if an excitation enhancement
-is wanted; and a rod lying in the focal plane of the collection optics. Methodologically, volume-discretisation
+is wanted; and a rod lying in the focal plane, ideally on glass and collected through the substrate with an
+oil-immersion objective. Methodologically, volume-discretisation
 solvers reproduce the radiated power, the resonance and the emission pattern, but statements about quenching and the
 optimal gap require a surface method or careful convergence studies.
 

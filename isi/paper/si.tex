@@ -146,6 +146,38 @@ reflected Green function is tabulated with \texttt{compgreentablayer} at 23 wave
 and interpolated. Rates are given in units of the vacuum rate; the reference is the same dipole above bare glass
 (\texttt{decayrate0}). Script: \texttt{job\_substrate.m}.
 
+\emph{Collection on glass by reciprocity.} The angular emission of the dipole next to the rod on glass was obtained
+from $\mathrm{d}P/\mathrm{d}\Omega=n_j\sum_{\rm pol}|\mathbf p\cdot\mathbf E_{\rm loc}(\hat{\mathbf s},{\rm pol})|^2$,
+where $\mathbf E_{\rm loc}$ is the field at the dipole for a unit-amplitude plane wave incident from direction
+$\hat{\mathbf s}$ in medium $j$ (air or glass), computed with the layer BEM for $24\times36$ directions per half-space
+and two polarisations (3456 right-hand sides of one BEM solution; \texttt{job\_recip.m}). A free dipole gives
+$8\pi/3$, which fixes the absolute normalisation. The formula was verified against an independent angular-spectrum
+(Fresnel) calculation for a bare dipole above glass (\texttt{isi/analysis/glass\_check.py}). The far field returned
+directly by the layer routines of MNPBEM17 was not used: the induced-charge and dipole contributions are returned on
+differently ordered direction sets, so that their sum, and quantities derived from it, are inconsistent for weakly
+radiating dipoles. Table~\ref{tab:recip} lists the checks and results.
+
+\begin{table}[h]\centering
+\caption{Emission of the dipole next to the rod on glass ($n=1.52$, dipole height \SI{10.97}{nm}, \SI{640}{nm}) by
+reciprocity. Radiative rate in units of the vacuum rate; for the lossless rod ($\varepsilon=4$) it must equal the total
+decay rate obtained from the near field. Fractions of the radiated power.}\label{tab:recip}
+\begin{tabular}{lrrrrrr}\toprule
+case & gap & radiative rate & total rate & into glass & oil NA 1.45 & dry NA 0.9 (top)\\\midrule
+bare dipole $x$, analytic & -- & 1.299 & 1.299 & 82.7\% & 79.2\% & 14.7\%\\
+bare dipole $x$, BEM reciprocity & -- & 1.298 & -- & 82.6\% & 78.5\%$^a$ & 14.6\%\\
+dielectric rod, $x$ & 5 & 2.785 & 2.882 & 82.7\% & 78.5\%$^a$ & 14.6\%\\
+dielectric rod, $y$ & 5 & 0.938 & 0.934 & 82.7\% & 78.5\%$^a$ & 14.6\%\\
+dielectric rod, $z$ & 5 & 1.516 & 1.421 & 84.9\% & 81.5\%$^a$ & 9.8\%\\
+gold rod, $x$ & 5 & 271.6 & 1960 & 82.7\% & 78.5\%$^a$ & 14.6\%\\
+gold rod, $x$ & 20 & 14.5 & 78.8 & 82.6\% & 78.4\%$^a$ & 14.7\%\\\bottomrule
+\end{tabular}
+
+\smallskip
+{\footnotesize $^a$The direction grid places the cone edge between quadrature points, which biases the NA-limited
+fractions by up to 2 percentage points; the main text quotes the analytic bare-dipole fractions, which the rod
+reproduces for the total fraction into the glass to $<0.2$ points.}
+\end{table}
+
 \emph{Nonlocal response.} Following Luo \emph{et al.}~[8] the metal is shrunk by $\Delta d=\SI{0.05}{nm}$ and
 covered by a layer of the same thickness with permittivity
 $\varepsilon_t=\varepsilon_m\varepsilon_b q_L\Delta d/(\varepsilon_m-\varepsilon_b)$,
