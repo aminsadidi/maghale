@@ -286,6 +286,69 @@ rates and is likewise not used; all transverse results in the main text are BEM 
 executed on GitHub-hosted runners (workflow \texttt{.github/workflows/meep-runs.yml}); raw outputs are in
 \texttt{isi/results/ci}.
 
+\section*{S7. Semi-analytic spheroid solution and closed-form single-mode model}
+\emph{Multipole solution.} For a prolate spheroid with semi-axes $a>b$ (focal distance $f=\sqrt{a^2-b^2}$, surface
+$\xi=\xi_0=a/f$ in prolate spheroidal coordinates $\xi,\eta,\varphi$) and a dipole on the axis at $z_0>a$, the potential
+inside is $\sum_n A_nP_n^m(\xi)P_n^m(\eta)\cos m\varphi$ and the induced potential outside
+$\sum_n B_nQ_n^m(\xi)P_n^m(\eta)\cos m\varphi$, with $m=0$ for the axial and $m=1$ for the transverse dipole~[9]. The
+incident coefficients $s_n=c_nP_n^m(\xi_0)$ are obtained by projecting the dipole potential on the surface onto
+$P_n^m(\eta)$ (1500-point Gauss--Legendre quadrature); continuity of the potential and of $\varepsilon\,\partial_\xi\phi$
+gives
+\begin{equation}
+B_nQ_n^m(\xi_0)=\frac{(\varepsilon-\varepsilon_b)\,P_n'/P_n}{\varepsilon_b\,Q_n'/Q_n-\varepsilon\,P_n'/P_n}\,s_n ,
+\end{equation}
+where the logarithmic derivatives are evaluated at $\xi_0$ (type-3 Legendre functions, 30-digit arithmetic), so that
+only ratios of Legendre functions enter. The induced field at the dipole follows by differentiating the series
+($n\leq50$; converged to $<10^{-6}$ at a \SI{5}{nm} gap), $\Fp=1+\tfrac{3}{2k^3}\mathrm{Im}\,(\hat{\mathbf n}\cdot\mathbf E_{\rm ind})$
+and $T=|1+p_{\rm ind}|^2$, where $p_{\rm ind}$ is the dipole moment of the $n=1$ term. For the $n=1$ terms the
+radiation reaction $i\tfrac23k^3p_{\rm ind}$ and the dynamic depolarisation $k^2p_{\rm ind}/a$ act as a uniform
+field on the particle and are included self-consistently. The code is \texttt{isi/analysis/spheroid\_qs.py}.
+
+\emph{Closed form.} Keeping the $n=1$, $m=0$ term only, the field of the dipolar mode on the axis per unit dipole
+moment is $E_1(z_0)=-(3/f^3)\,Q_1'(\xi)$ with $Q_1(\xi)=\tfrac{\xi}{2}\ln\frac{\xi+1}{\xi-1}-1$, which gives
+Eq.~(5) of the main text; by reciprocity the same factor describes the excitation of the mode by the emitter. The
+polarisability of the mode at its resonance is approximated by the peak of the quasistatic Lorentzian with
+$1/L_z=1-\varepsilon'$, combined with radiation damping. For a rod, the spheroid with the same half-length and apex
+radius of curvature ($b^2/a=D/2$) is used for $E_1$, and the actual rod volume for $\alpha_L$. All 30 configurations
+are listed in Table~\ref{tab:law}.
+
+\begin{table}[h]\centering\small
+\caption{Closed-form single-mode model (Eqs.~4--5 of the main text) versus BEM for the axial dipole at the radiative
+peak $\lambda_L$. Ratio: BEM/model.}\label{tab:law}
+\begin{tabular}{lrrrrrrrr}\toprule
+case & gap (nm) & $\lambda_L$ (nm) & $\Fp$ BEM & $\Fp$ model & ratio & $T$ BEM & $T$ model & ratio\\\midrule
+AR 2 & 5 & 560 & 719 & 1038 & 0.69 & 18.3 & 34.0 & 0.54\\
+AR 2 & 10 & 565 & 131 & 293 & 0.45 & 6.6 & 13.6 & 0.49\\
+AR 2 & 20 & 570 & 17 & 46 & 0.36 & 2.4 & 4.5 & 0.54\\
+AR 2.5 & 5 & 585 & 979 & 1311 & 0.75 & 47.0 & 76.3 & 0.62\\
+AR 2.5 & 10 & 585 & 246 & 346 & 0.71 & 15.3 & 24.8 & 0.62\\
+AR 2.5 & 20 & 590 & 34 & 60 & 0.57 & 4.2 & 7.4 & 0.57\\
+AR 3 & 5 & 608 & 1603 & 1499 & 1.07 & 117.0 & 137.0 & 0.85\\
+AR 3 & 10 & 612 & 406 & 458 & 0.89 & 36.2 & 49.9 & 0.73\\
+AR 3 & 20 & 612 & 71 & 76 & 0.94 & 8.3 & 12.0 & 0.69\\
+AR 4 & 5 & 680 & 3454 & 2838 & 1.22 & 638.2 & 614.2 & 1.04\\
+AR 4 & 10 & 680 & 1039 & 861 & 1.21 & 196.0 & 198.8 & 0.99\\
+AR 4 & 20 & 680 & 197 & 162 & 1.22 & 39.2 & 44.6 & 0.88\\
+AR 5 & 5 & 760 & 4477 & 3117 & 1.44 & 1006.5 & 824.3 & 1.22\\
+AR 5 & 10 & 760 & 1389 & 997 & 1.39 & 315.4 & 278.0 & 1.13\\
+AR 5 & 20 & 760 & 277 & 204 & 1.36 & 64.5 & 65.4 & 0.99\\
+D 15 & 5 & 605 & 2073 & 2172 & 0.95 & 68.7 & 88.3 & 0.78\\
+D 15 & 10 & 605 & 462 & 493 & 0.94 & 18.0 & 25.0 & 0.72\\
+D 15 & 20 & 610 & 55 & 73 & 0.75 & 4.2 & 6.7 & 0.63\\
+D 25 & 5 & 615 & 1233 & 1130 & 1.09 & 172.1 & 197.3 & 0.87\\
+D 25 & 10 & 615 & 400 & 369 & 1.08 & 60.8 & 71.5 & 0.85\\
+D 25 & 20 & 620 & 75 & 81 & 0.93 & 14.8 & 21.0 & 0.70\\
+D 30 & 5 & 625 & 957 & 896 & 1.07 & 227.2 & 263.6 & 0.86\\
+D 30 & 10 & 625 & 351 & 329 & 1.06 & 90.1 & 104.9 & 0.86\\
+D 30 & 20 & 625 & 86 & 75 & 1.15 & 24.1 & 29.2 & 0.83\\
+Ag & 5 & 505 & 2974 & 2600 & 1.14 & 1131.0 & 1116.0 & 1.01\\
+Ag & 10 & 505 & 866 & 728 & 1.19 & 331.8 & 329.4 & 1.01\\
+Ag & 20 & 505 & 155 & 121 & 1.29 & 61.0 & 63.6 & 0.96\\
+spheroid & 5 & 600 & 1984 & 2306 & 0.86 & 105.5 & 144.7 & 0.73\\
+spheroid & 10 & 600 & 386 & 449 & 0.86 & 24.5 & 34.4 & 0.71\\
+spheroid & 20 & 605 & 47 & 65 & 0.73 & 5.3 & 8.4 & 0.63\\
+\bottomrule\end{tabular}\end{table}
+
 \section*{References}
 \noindent[1] P. B. Johnson and R. W. Christy, Phys. Rev. B \textbf{6}, 4370 (1972).\\
 \noindent[2] A. F. Oskooi \emph{et al.}, Comput. Phys. Commun. \textbf{181}, 687 (2010).\\
@@ -294,5 +357,6 @@ executed on GitHub-hosted runners (workflow \texttt{.github/workflows/meep-runs.
 \noindent[5] U. Hohenester, Comput. Phys. Commun. \textbf{222}, 209 (2018).\\
 \noindent[6] R. Ruppin, J. Chem. Phys. \textbf{76}, 1681 (1982).\\
 \noindent[7] Y. S. Kim, P. T. Leung and T. F. George, Surf. Sci. \textbf{195}, 1 (1988).\\
-\noindent[8] Y. Luo \emph{et al.}, Phys. Rev. Lett. \textbf{111}, 093901 (2013).
+\noindent[8] Y. Luo \emph{et al.}, Phys. Rev. Lett. \textbf{111}, 093901 (2013).\\
+\noindent[9] J. Gersten and A. Nitzan, J. Chem. Phys. \textbf{75}, 1139 (1981).
 \end{document}
