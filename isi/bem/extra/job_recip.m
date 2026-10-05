@@ -37,7 +37,10 @@ kdir = -s;                                                        % propagation 
 e1 = cross(repmat([0 0 1], 2 * nd1, 1), kdir, 2);  e1 = bsxfun(@rdivide, e1, sqrt(sum(e1.^2, 2)));
 e2 = cross(kdir, e1, 2);
 pol = [e1; e2];  dirs = [kdir; kdir];                            % 2 polarisations per direction
-exc = planewave(pol, dirs, op);
+%  MNPBEM asserts dot(pol, dir) == 0 exactly; construct with an exactly orthogonal dummy (-dy, dx, 0) and then set the
+%  (numerically orthogonal, |dot| ~ 1e-16) polarisation, which init stores without further use
+exc = planewave([-dirs(:, 2), dirs(:, 1), 0 * dirs(:, 3)], dirs, op);
+exc.pol = pol;
 sig = bem \ exc(p, lam);
 emesh = meshfield(p, pos(:, 1), pos(:, 2), pos(:, 3), op, 'nmax', 4000);
 Einc = emesh(exc.field(emesh.pt, lam));                          % [ng, 3, 2*ndir] incident + reflected/transmitted
