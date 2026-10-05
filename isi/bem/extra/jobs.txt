@@ -47,3 +47,5 @@ material mcpeak material_mcpeak.csv
 material cold1 material_cold1.csv
 material cold2 material_cold2.csv
 material surf material_surf.csv
+absorption rod absorption_rod.csv
+absorption sphere absorption_sphere.csv

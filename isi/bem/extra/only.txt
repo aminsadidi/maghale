@@ -1,6 +1,2 @@
-material palik
-material olmon
-material mcpeak
-material cold1
-material cold2
-material surf
+absorption rod
+absorption sphere
