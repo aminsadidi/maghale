@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>گزارش پیشرفت مقاله</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --paper:#ffffff; --ink:#1d2330; --ink2:#4a5263; --muted:#7a8191; --line:#e3e1da;
+  --accent:#1f4e9c; --accent-soft:#e8eef8; --gold:#b8892a; --gold-soft:#faf3e3; --good:#2a7a4b; --good-soft:#e7f4ec;
+  --warn:#9a5b00; --warn-soft:#fbf1e1;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Vazirmatn",Tahoma,sans-serif;line-height:1.95}
+.page{max-width:900px;margin:0 auto;padding:28px 16px 60px}
+header.cover{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:34px 34px 28px;position:relative;overflow:hidden}
+header.cover::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.kicker{color:var(--gold);font-weight:600;font-size:.92rem;letter-spacing:.02em}
+h1{font-size:1.75rem;line-height:1.6;margin:.4rem 0 .6rem;font-weight:800}
+.en{direction:ltr;unicode-bidi:isolate;font-family:Georgia,"Times New Roman",serif}
+.entitle{display:block;direction:ltr;text-align:left;color:var(--ink2);font-family:Georgia,serif;font-size:1rem;line-height:1.6;margin:.3rem 0 1rem}
+.meta{color:var(--ink2);font-size:.95rem}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{font-size:.82rem;padding:3px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.badge.g{background:var(--good-soft);color:var(--good)} .badge.o{background:var(--gold-soft);color:var(--gold)}
+section{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px 30px;margin-top:20px}
+h2{font-size:1.3rem;margin:0 0 .8rem;font-weight:800;display:flex;align-items:center;gap:10px}
+h2 .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--accent);color:#fff;font-size:.95rem}
+h3{font-size:1.05rem;margin:1.2rem 0 .4rem;color:var(--accent)}
+p{margin:.5rem 0}
+.lead{font-size:1.05rem;color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 4px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fbfbf9}
+.tile .v{font-size:1.55rem;font-weight:800;color:var(--accent);direction:ltr;text-align:right}
+.tile .l{font-size:.86rem;color:var(--ink2);line-height:1.7}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92rem}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:right;vertical-align:top}
+th{background:#f3f2ed;font-weight:600}
+td.before{color:var(--ink2)} td.after{color:var(--ink)}
+tr:hover td{background:#fafaf7}
+.tl{position:relative;margin:10px 0 0;padding-right:26px}
+.tl::before{content:"";position:absolute;right:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.step{position:relative;margin:0 0 16px}
+.step::before{content:"";position:absolute;right:-24px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:3px solid var(--accent)}
+.step.key::before{border-color:var(--gold)}
+.step b{display:block}
+.step .d{color:var(--ink2);font-size:.95rem}
+figure{margin:16px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff;padding:6px}
+figcaption{font-size:.86rem;color:var(--ink2);margin-top:6px;line-height:1.8}
+.callout{border-right:4px solid var(--gold);background:var(--gold-soft);padding:12px 16px;border-radius:8px;margin:14px 0}
+.callout.g{border-color:var(--good);background:var(--good-soft)}
+.callout.w{border-color:var(--warn);background:var(--warn-soft)}
+ul{margin:.4rem 0;padding-right:1.3rem} li{margin:.25rem 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:720px){.two,.tiles{grid-template-columns:1fr 1fr} header.cover,section{padding:20px 18px} h1{font-size:1.4rem}}
+.num{direction:ltr;unicode-bidi:isolate}
+footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:24px}
+@media print{
+  body{background:#fff} .page{padding:0} header.cover,section{border:none;border-radius:0;padding:14px 4px;break-inside:auto}
+  section{page-break-inside:auto} figure,table,.tile,.callout{break-inside:avoid}
+  h2{break-after:avoid}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="cover">
+  <div class="kicker">گزارش پیشرفت پروژه — برای جلسه با استاد راهنما</div>
+  <h1>از مقاله‌ی درسی تا پیش‌نویس مقاله‌ی ISI: ناهمسانگردی تشدیدی و هندسی در گسیل نزدیک نانومیله‌ی طلا</h1>
+  <span class="entitle">Resonant versus geometric anisotropy of the Purcell enhancement near a gold nanorod: plasmon-mode decomposition, an equal-volume control and design rules for single-photon sources</span>
+  <div class="meta">امین حسین سدیدی · سید محمد پارسا مولایی طبری — استاد راهنما: دکتر مالک باقری هارونی — گروه فیزیک، دانشگاه اصفهان</div>
+  <div class="badges">
+    <span class="badge g">پیش‌نویس کامل انگلیسی (۱۸ صفحه + ۸ صفحه اطلاعات تکمیلی)</span>
+    <span class="badge">۵۸ مرجع با DOI تأییدشده</span>
+    <span class="badge o">همخوانی با آزمایش بدون پارامتر تنظیمی</span>
+    <span class="badge">کد و داده‌ی باز و تکرارپذیر</span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">۱</span>خلاصه در یک نگاه</h2>
+  <p class="lead">مقاله‌ی درسی یک شبیه‌سازی FDTD سه‌بعدی با نرم‌افزار Lumerical بود. پیام اصلی‌اش این بود که ناهمسانگردی گسیل کنار نوک نانومیله «تشدیدی» است. حالا این ایده به یک پیش‌نویس کامل انگلیسی برای مجله‌ی ISI تبدیل شده است. همه‌ی عددهای کلیدی با روش دقیق‌تر (BEM) دوباره و به‌صورت همگرا حساب شده‌اند، یک توضیح فیزیکی کمّی برایشان آمده، با آزمایش منتشرشده مقایسه شده‌اند و به قواعد طراحی برای چشمه‌ی تک‌فوتونی رسیده‌اند.</p>
+  <div class="tiles">
+    <div class="tile"><div class="v">≈ 1%</div><div class="l">اختلاف BEM با حل دقیق Mie؛ در FDTD تا ۱۵٪ بود</div></div>
+    <div class="tile"><div class="v">0.2%</div><div class="l">تغییر نتایج میله با ریزتر کردن مش (همگرایی کامل)</div></div>
+    <div class="tile"><div class="v">91%</div><div class="l">سهم یک مُد (دوقطبی طولی) در تقویت پورسل در شکاف ۵ nm</div></div>
+    <div class="tile"><div class="v">~1100 ✓</div><div class="l">تقویت فلورسانس اندازه‌گیری‌شده (Khatua 2014)؛ ما ۹۰۰ تا ۱۳۰۰ پیش‌بینی می‌کنیم</div></div>
+    <div class="tile"><div class="v">79%</div><div class="l">بازده جمع‌آوری نور با عدسی روغنی از زیر شیشه، در برابر ۱۸٪ در چیدمان عمودی</div></div>
+    <div class="tile"><div class="v">&gt; 96%</div><div class="l">تمایزناپذیری فوتون در دمای پایین؛ جفت‌شدگی ضعیف اثبات شده</div></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">۲</span>نقطه‌ی شروع: مقاله‌ی درسی</h2>
+  <p>مقاله‌ی درسی (۲۲ صفحه، فارسی) این موارد را داشت:</p>
+  <ul>
+    <li>شبیه‌سازی FDTD سه‌بعدی (Lumerical) برای دوقطبی ۵ نانومتر جلوتر از نوک یک نانومیله‌ی طلای <span class="num">60 × 20 nm</span>.</li>
+    <li>چهار کنترل: فضای آزاد، دوقطبی عرضی، و کره‌ی هم‌حجم با دوقطبی شعاعی و مماسی.</li>
+    <li>پویش شکاف (۳ تا ۲۰ nm) و آزمون مش.</li>
+    <li>نتیجه‌ی اصلی: نسبت طولی به عرضی در تشدید به ۴۱ (برای F<sub>p</sub>) و ۳۵۸ (برای T) می‌رسد، در حالی که برای کره نزدیک ۲ می‌ماند. پس ناهمسانگردی میله «تشدیدی» است.</li>
+  </ul>
+  <div class="callout w"><b>محدودیت‌هایی که خود مقاله‌ی درسی صادقانه گفته بود:</b>
+    <ul>
+      <li>ارتفاع قله‌ها به مش حساس بود؛ T بیشینه با مش‌های ۳، ۲ و ۱٫۵ nm برابر ۱۸۴، ۱۱۹ و ۱۶۵ شد.</li>
+      <li>نتیجه‌گیری‌ها فقط بر «مکان قله‌ها و نسبت‌ها» تکیه داشت، نه بر عدد دقیق.</li>
+      <li>توضیح فیزیکی کمّی‌ای برای «چرا تشدیدی» نداشت.</li>
+      <li>با هیچ آزمایشی مقایسه نشده بود.</li>
+      <li>کاربرد عملی‌اش محدود به یک جدول بازده بود.</li>
+    </ul>
+    این‌ها دقیقاً چیزهایی بودند که داور مجله‌ی ISI می‌پرسد.</div>
+</section>
+
+<section>
+  <h2><span class="n">۳</span>مسیری که طی شد</h2>
+  <div class="tl">
+    <div class="step"><b>۱. بازبینی و پاک‌سازی نسخه‌ی درسی</b><div class="d">همه‌ی عددهای جدول‌ها از داده‌ی خام دوباره درآمد و سه خطای عددی در متن اصلاح شد. همه‌ی مراجع با doi.org بررسی شد و یک مرجع ناموجود جایگزین شد.</div></div>
+    <div class="step"><b>۲. حل‌گر دوم: FDTD متقارن محوری (Meep)</b><div class="d">در ۵۴ اجرا روی سرورهای رایگان GitHub انجام شد. نتیجه: نرخ تابشی (T) و الگوی تابش همگرا شد (۴٫۴٪ با Mie)، اما F<sub>p</sub> در شکاف ۵ نانومتری با هیچ مش FDTD همگرا نمی‌شود. یعنی عدد F<sub>p</sub> مقاله‌ی درسی هم قطعی نبود. این خودش یک یافته‌ی روش‌شناختی است.</div></div>
+    <div class="step key"><b>۳. روش اصلی جدید: المان مرزی (BEM، جعبه‌ابزار MNPBEM17)</b><div class="d">BEM فقط سطح ذره را گسسته می‌کند و سطح منحنی را دقیق مدل می‌کند. با MATLAB رایگان روی GitHub اجرا شد و حدود ۶۰ اجرای مستقل داشت. اختلاف با حل دقیق Mie برای هر دو جهت دوقطبی حدود ۱٪ است و همگرایی مش ۰٫۲٪. عددهای مقاله حالا «عدد» هستند، نه فقط «روند». Lumerical کمتر از ۱۰٪ با آن فاصله داشت (۹٪ کمتر برای F<sub>p</sub> و حدود ۲٪ برای T)، پس کار درسی تأیید شد.</div></div>
+    <div class="step key"><b>۴. توضیح فیزیکی: تجزیه به مُدهای پلاسمونی</b><div class="d">نرخ واپاشی به مُدهای ویژه‌ی ذره تجزیه شد. ناهمسانگردی دقیقاً به دو بخش جدا می‌شود: یک ضریب «هندسی» حدود ۳ که هر سطح فلزی منحنی دارد، و یک ضریب «تشدیدی» که فقط از یک مُد (دوقطبی طولی) می‌آید. این یافته با برازش قطب روی طیف‌های کامل تأخیری تأیید شد.</div></div>
+    <div class="step"><b>۵. آزمون‌های استحکام</b><div class="d">جابه‌جایی گسیلنده روی پوسته‌ی فاصله‌انداز، زیرلایه‌ی شیشه، اثر غیرموضعی (مدل هیدرودینامیکی)، و چهار شکل مختلف نوک میله.</div></div>
+    <div class="step"><b>۶. تعمیم</b><div class="d">نسبت ابعاد ۲ تا ۵، قطرهای ۱۵ تا ۳۰ nm، میله‌ی نقره، اسفروئید و محیط آب.</div></div>
+    <div class="step key"><b>۷. مقایسه با آزمایش</b><div class="d">آزمایش تک‌مولکولی Khatua و همکاران (ACS Nano 2014) با همان ابعاد و همان رنگدانه بازسازی شد. تقویت حدود هزار برابری و وابستگی‌اش به طول‌موج بدون هیچ پارامتر تنظیمی درست درآمد.</div></div>
+    <div class="step"><b>۸. رژیم کوانتومی (پیشنهاد استاد)</b><div class="d">قدرت جفت‌شدگی گسیلنده و پلاسمون، شرط جفت‌شدگی قوی، حفظ آمار تک‌فوتونی و تمایزناپذیری فوتون‌ها بررسی شد.</div></div>
+    <div class="step"><b>۹. بازده جمع‌آوری نور</b><div class="d">در هوا و روی شیشه، با روش عکس‌پذیری. روش در برابر حل تحلیلی و قانون پایستگی انرژی اعتبارسنجی شد.</div></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">۴</span>مقایسه‌ی نسخه‌ی درسی و پیش‌نویس ISI</h2>
+  <table>
+    <tr><th>جنبه</th><th>مقاله‌ی درسی</th><th>پیش‌نویس فعلی</th></tr>
+    <tr><td>روش محاسبه</td><td class="before">فقط FDTD سه‌بعدی (Lumerical)</td><td class="after">BEM به‌عنوان روش اصلی، به‌علاوه‌ی دو FDTD مستقل (Lumerical و Meep) برای مقایسه</td></tr>
+    <tr><td>دقت در برابر Mie</td><td class="before">۸ تا ۱۵٪</td><td class="after">حدود ۱٪، برای هر دو جهت و سه شکاف</td></tr>
+    <tr><td>اعتبار عدد F<sub>p</sub></td><td class="before">وابسته به مش؛ فقط نسبت‌ها قابل گزارش</td><td class="after">همگرا (۰٫۲٪)؛ F<sub>p</sub> = 1638 و T = 117</td></tr>
+    <tr><td>توضیح فیزیکی</td><td class="before">کیفی («تشدیدی است»)</td><td class="after">کمّی: تجزیه‌ی مُدی، ۹۱٪ از یک مُد، ضریب هندسی جدا</td></tr>
+    <tr><td>وابستگی به شکاف</td><td class="before">چهار شکاف</td><td class="after">۳ تا ۳۰ nm؛ کشف بیشینه‌ی ناهمسانگردی در حدود ۱۰ nm</td></tr>
+    <tr><td>هندسه</td><td class="before">یک میله</td><td class="after">نسبت ابعاد ۲ تا ۵، چهار قطر، چهار شکل نوک، نقره، اسفروئید</td></tr>
+    <tr><td>محیط واقعی</td><td class="before">—</td><td class="after">زیرلایه‌ی شیشه، آب، پوسته‌ی فاصله‌انداز، اثر غیرموضعی</td></tr>
+    <tr><td>مقایسه با آزمایش</td><td class="before">—</td><td class="after">Khatua 2014: تقویت و طول عمر بدون پارامتر تنظیمی درست درمی‌آیند</td></tr>
+    <tr><td>فیزیک کوانتومی</td><td class="before">—</td><td class="after">جفت‌شدگی ضعیف، آمار تک‌فوتونی، تمایزناپذیری</td></tr>
+    <tr><td>کاربرد</td><td class="before">جدول بازده</td><td class="after">قاعده‌ی شکاف بهینه برحسب q<sub>0</sub>، جدول طراحی برای چهار گسیلنده‌ی واقعی، قاعده‌ی جمع‌آوری نور</td></tr>
+    <tr><td>شکل‌ها و مراجع</td><td class="before">۳ شکل، ۳۹ مرجع</td><td class="after">۸ شکل اصلی و ۵ شکل SI، ۵۸ مرجع (از جمله Nature، Nature Physics، PRL)</td></tr>
+    <tr><td>زبان و قالب</td><td class="before">فارسی، گزارش درسی</td><td class="after">انگلیسی با ساختار مقاله‌ی ژورنالی، به‌علاوه‌ی SI جداگانه</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="n">۵</span>یافته‌های اصلی</h2>
+  <figure><img src="{{IMG:fig_geometry}}" alt="هندسه‌ی مسئله"><figcaption>شکل ۱ مقاله: هندسه. (a) نانومیله‌ی طلا با طول ۶۰ و قطر ۲۰ نانومتر و دوقطبی محوری یا عرضی در فاصله‌ی d از نوک. (b) کره‌ی طلای هم‌حجم به‌عنوان کنترل. (c) گسیلنده روی پوسته‌ی فاصله‌انداز.</figcaption></figure>
+
+  <h3>الف) ناهمسانگردی دو جزء دارد</h3>
+  <p>نسبت محوری به عرضی F<sub>p</sub> برای کره در کل طیف ۲٫۷۵ تا ۲٫۹۷ است، که با حل دقیق Mie می‌خواند. برای میله این نسبت در تشدید به <b>۴۹</b> (برای F<sub>p</sub>) و <b>۳۲۹</b> (برای T) می‌رسد.</p>
+  <figure><img src="{{IMG:fig_orientation}}" alt="نسبت جهتی"><figcaption>نسبت جهتی: میله (آبی) در برابر کره‌ی هم‌حجم (سبز؛ خط‌چین = حل دقیق Mie).</figcaption></figure>
+
+  <h3>ب) چرا؟ تجزیه به مُدهای پلاسمونی (یافته‌ی جدید)</h3>
+  <ul>
+    <li>در شکاف ۵ nm، <b>۹۱٪</b> تقویت از یک مُد، یعنی دوقطبی طولی، می‌آید.</li>
+    <li>بقیه یک پس‌زمینه‌ی غیرتشدیدی است با نسبت حدود ۳. این همان رفتار کره است و فقط به انحنای سطح بستگی دارد: حدود ۲ برای نوک تخت و حدود ۸ برای نوک تیز.</li>
+    <li>چون پس‌زمینه با فاصله سریع‌تر از جفت‌شدگی به مُد افت می‌کند، ناهمسانگردی در حدود <b>۱۰ nm</b> بیشینه است (۱۳۶)، نه در کوچک‌ترین شکاف.</li>
+    <li>این بیشینه با نسبت ابعاد از ۱۹ به ۸۷۲ می‌رسد.</li>
+  </ul>
+  <figure><img src="{{IMG:fig_modes}}" alt="تجزیه‌ی مدی"><figcaption>(a) تجزیه‌ی F<sub>p</sub> به مُد دوقطبی طولی و پس‌زمینه. (b) سهم مُد برحسب شکاف برای چهار نسبت ابعاد و کره. (c) نسبت جهتی کل (خط پر) و پس‌زمینه (نقطه‌چین).</figcaption></figure>
+
+  <h3>ج) همخوانی با آزمایش (بدون پارامتر تنظیمی)</h3>
+  <p>برای crystal violet کنار میله‌های ۲۵ نانومتری در گلیسرول:</p>
+  <ul>
+    <li>تقویت برانگیختگی <b>۱۲۷</b> و تقویت گسیل <b>۷٫۱</b>؛ مقادیر Khatua و همکاران حدود ۱۳۰ و ۹ است.</li>
+    <li>بیشینه‌ی تقویت فلورسانس <b>۹۰۰ تا ۱۳۰۰</b>؛ مقدار اندازه‌گیری‌شده حدود ۱۱۰۰ است.</li>
+    <li>کوتاه شدن طول عمر ۱۱ تا ۲۷ برابر؛ مقدار اندازه‌گیری‌شده دست‌کم ۷ برابر است.</li>
+  </ul>
+  <figure><img src="{{IMG:fig_khatua}}" alt="مقایسه با آزمایش" style="max-width:520px"><figcaption>تقویت فلورسانس محاسبه‌شده برحسب طول‌موج تشدید. نوار خاکستری بیشینه‌ی اندازه‌گیری‌شده در آزمایش است.</figcaption></figure>
+
+  <h3>د) قواعد طراحی برای چشمه‌ی تک‌فوتونی</h3>
+  <div class="two">
+    <div>
+      <ul>
+        <li><b>شکاف بهینه به بازده ذاتی (q<sub>0</sub>) گسیلنده بستگی دارد:</b> برای گسیلنده‌ی کم‌بازده ۷ تا ۱۰ nm و برای گسیلنده‌ی پربازده ۲۰ nm.</li>
+        <li><b>طول‌موج گسیل بالای حدود ۶۵۰ nm باشد:</b> با نسبت ابعاد ۵، بازده آنتن تا ۲۲٪ و T حدود ۱۰۰۰ است.</li>
+        <li><b>روی شیشه و جمع‌آوری از زیر:</b> ۷۹٪ نور با NA 1.45، یعنی ۴ برابر چیدمان عمودی.</li>
+        <li><b>جدول طراحی</b> برای hBN، crystal violet، مرکز NV و پروسکایت CsPbI<sub>3</sub>، با مقادیر منتشرشده.</li>
+      </ul>
+    </div>
+    <figure style="margin:0"><img src="{{IMG:fig_aspect}}" alt="نسبت ابعاد"><figcaption>T و بازده آنتن برحسب نسبت ابعاد و محیط.</figcaption></figure>
+  </div>
+
+  <h3>هـ) رژیم کوانتومی</h3>
+  <ul>
+    <li><b>جفت‌شدگی ضعیف:</b> قدرت جفت‌شدگی در بهترین حالت ۳۷٪ آستانه‌ی جفت‌شدگی قوی است. پس آمار تک‌فوتونی حفظ می‌شود. این با شکاف‌های زیر نانومتری لازم در آزمایش Chikkaraddy (Nature 2016) سازگار است.</li>
+    <li><b>تمایزناپذیری:</b> در دمای اتاق ناچیز است، اما در دمای پایین آنتن آن را از ۳ تا ۲۵٪ به <b>بیش از ۹۶٪</b> می‌رساند.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۶</span>چرا این کار شانس چاپ در مجله‌ی ISI دارد</h2>
+  <h3>۱. نوآوری روشن و بررسی‌شده</h3>
+  <ul>
+    <li><b>نزدیک‌ترین کار قبلی</b> (Mohammadi, Sandoghdar, Agio، New J. Phys. 2008) فقط دوقطبی محوری را در فاصله‌ی ۱۰ نانومتر یا بیشتر بررسی کرده است. نه کره‌ی هم‌حجم داشت، نه دوقطبی عرضی، نه شکاف‌های کوچک.</li>
+    <li><b>کار تازه‌ی ۲۰۲۶</b> (Ugwuoke و همکاران، arXiv) هم فقط دوقطبی محوری را دارد.</li>
+    <li>در جست‌وجوی ما، جدا کردن کمّی سهم هندسی و تشدیدی با «کنترل هم‌حجم» و «تجزیه‌ی مُدی» پیدا نشد.</li>
+  </ul>
+  <h3>۲. اعتبار عددی که داور به آن اعتماد می‌کند</h3>
+  <ul>
+    <li>سه روش مستقل (BEM، FDTD سه‌بعدی و FDTD متقارن محوری) به کار رفته است.</li>
+    <li>دقت در برابر حل دقیق حدود ۱٪ و همگرایی مش ۰٫۲٪ است.</li>
+    <li>همه‌ی آزمون‌های کنترلی در SI آمده است.</li>
+  </ul>
+  <h3>۳. اتصال به آزمایش</h3>
+  <p>مقایسه‌ی بدون پارامتر تنظیمی با یک آزمایش تک‌مولکولی منتشرشده در ACS Nano، نقطه‌ی ضعف همیشگی کارهای صرفاً محاسباتی را برطرف می‌کند.</p>
+  <h3>۴. کاربرد مشخص</h3>
+  <p>قواعد طراحی عددی برای چشمه‌های تک‌فوتونی، که موضوع داغ فوتونیک کوانتومی است، به همراه جدول برای گسیلنده‌های واقعی.</p>
+  <h3>۵. تکرارپذیری</h3>
+  <p>همه‌ی اسکریپت‌ها، داده‌ی خام و تحلیل‌ها در مخزن عمومی GitHub هستند و هر عدد مقاله از داده‌ی خام بازتولید می‌شود. داوران و مجلات امروز این را مزیت می‌دانند.</p>
+  <div class="callout g"><b>مجلات هدف پیشنهادی (همه در Web of Science):</b>
+    <ul>
+      <li><i class="en">Optics Express</i></li>
+      <li><i class="en">The Journal of Physical Chemistry C</i></li>
+      <li><i class="en">JOSA B</i></li>
+      <li><i class="en">Plasmonics</i> (گزینه‌ی مطمئن‌تر)</li>
+    </ul>
+    چارک (Q) و ضریب تأثیر دقیق امسال باید پیش از ارسال در JCR بررسی شود.</div>
+</section>
+
+<section>
+  <h2><span class="n">۷</span>وضعیت فعلی و تصمیم‌هایی که به نظر استاد نیاز دارد</h2>
+  <div class="two">
+    <div>
+      <h3>آماده است</h3>
+      <ul>
+        <li>متن کامل انگلیسی (چکیده، مقدمه، نظریه، روش، نتایج، بحث، نتیجه‌گیری)</li>
+        <li>اطلاعات تکمیلی (SI) با ۹ جدول و ۵ شکل</li>
+        <li>۵۸ مرجع با DOI بررسی‌شده</li>
+        <li>همه‌ی شبیه‌سازی‌ها و تحلیل‌ها، تکرارپذیر</li>
+      </ul>
+    </div>
+    <div>
+      <h3>منتظر نظر شما</h3>
+      <ul>
+        <li>انتخاب مجله و سطح هدف</li>
+        <li>ترتیب نویسندگان، نویسنده‌ی مسئول و ایمیل</li>
+        <li>بازبینی علمی متن و تأیید یافته‌ها</li>
+        <li>آیا همکاری تجربی (برای مجلات سطح بالاتر) ممکن است؟</li>
+        <li>داوران پیشنهادی (مثلاً دکتر محمدی، دانشگاه خلیج فارس)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout"><b>روش کار و ابزارها:</b>
+    <ul>
+      <li>محاسبات سنگین روی زیرساخت رایگان GitHub انجام شد: MATLAB رایگان برای مخازن عمومی، MNPBEM17 با مجوز GPL و Meep.</li>
+      <li>در نوشتن کدها، تحلیل‌ها و پیش‌نویس متن از دستیار هوش مصنوعی (Claude) کمک گرفته شد.</li>
+      <li>همه‌ی نتایج با آزمون‌های مستقل (حل دقیق Mie، حل تحلیلی و پایستگی انرژی) و مقایسه با آزمایش بررسی شده‌اند.</li>
+      <li>طبق سیاست مجلات، این کمک در بخش «اعلام استفاده از هوش مصنوعی» مقاله ذکر خواهد شد.</li>
+    </ul></div>
+</section>
+
+<footer>گزارش پیشرفت پروژه — گروه فیزیک دانشگاه اصفهان — مهر ۱۴۰۵</footer>
+</div>
+</body>
+</html>
