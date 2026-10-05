@@ -1,5 +1,9 @@
 // Additional references for the ISI version. All DOIs resolved via doi.org and checked against Crossref metadata.
 module.exports = {
+  gersten1981: 'Gersten J., Nitzan A. Spectroscopic properties of molecules interacting with small dielectric particles. <i>The Journal of Chemical Physics</i> <b>75</b>, 1139–1152 (1981). doi:10.1063/1.442161',
+  olmon2012: 'Olmon R. L., Slovick B., Johnson T. W., Shelton D., Oh S.-H., Boreman G. D., Raschke M. B. Optical dielectric function of gold. <i>Physical Review B</i> <b>86</b>, 235147 (2012). doi:10.1103/PhysRevB.86.235147',
+  mcpeak2015: 'McPeak K. M., Jayanti S. V., Kress S. J. P., Meyer S., Iotti S., Rossinelli A., Norris D. J. Plasmonic films can easily be better: rules and recipes. <i>ACS Photonics</i> <b>2</b>, 326–333 (2015). doi:10.1021/ph5004237',
+  palik: 'Palik E. D. (ed.) <i>Handbook of Optical Constants of Solids</i> (Academic Press, Orlando, 1985).',
   tame2013: 'Tame M. S., McEnery K. R., Özdemir Ş. K., Lee J., Maier S. A., Kim M. S. Quantum plasmonics. <i>Nature Physics</i> <b>9</b>, 329–340 (2013). doi:10.1038/nphys2615',
   chikkaraddy2016: 'Chikkaraddy R., de Nijs B., Benz F., Barrow S. J., Scherman O. A., Rosta E., Demetriadou A., Fox P., Hess O., Baumberg J. J. Single-molecule strong coupling at room temperature in plasmonic nanocavities. <i>Nature</i> <b>535</b>, 127–130 (2016). doi:10.1038/nature17974',
   torma2015: 'Törmä P., Barnes W. L. Strong coupling between surface plasmon polaritons and emitters: a review. <i>Reports on Progress in Physics</i> <b>78</b>, 013901 (2015). doi:10.1088/0034-4885/78/1/013901',

@@ -28,19 +28,19 @@ Near the tip of a gold nanorod the decay rate of a quantum emitter depends stron
 transition dipole. Part of this anisotropy is generic---any curved metal surface quenches a perpendicular dipole more
 strongly than a parallel one---and part is caused by the longitudinal plasmon resonance. We separate the two for a
 capped gold nanorod (\SI{60}{nm}$\times$\SI{20}{nm}) with boundary-element calculations that match the exact Mie
-solution for the equal-volume sphere to \SI{1}{\percent}, and with a plasmon-eigenmode decomposition. At a
-\SI{5}{nm} gap the axial dipole reaches a Purcell factor of \num{1.6e3} and a radiative enhancement of 117, and about
-\SI{90}{\percent} of the enhancement is carried by the longitudinal dipolar mode. The non-resonant part has an
-axial-to-transverse ratio of about three, like the equal-volume sphere, and is set by the tip curvature (2 for flat
-ends, 8 for sharp tips); the resonance raises the ratio to 49 for the total and 329 for the radiative rate, with a
-maximum near \SI{10}{nm} that grows from 19 to 872 between aspect ratios 2 and 5. We derive design rules for
-single-photon sources---the optimal gap grows with the emitter's intrinsic quantum yield, the rod should lie in the
-focal plane and, on glass, be collected through the substrate (\SI{79}{\percent} at $\mathrm{NA}=1.45$)---and show robustness to emitter position, substrate, nonlocal response and tip shape. Single emitters
-remain weakly coupled (at most \SI{37}{\percent} of the strong-coupling threshold), so single-photon statistics are
-preserved, and at cryogenic temperatures the antenna raises photon indistinguishability above \SI{96}{\percent}.
-Without adjustable parameters, the model reproduces the thousandfold single-molecule fluorescence enhancement
-measured near gold nanorods. Finite-difference time-domain solvers reproduce the radiative quantities but not the
-total rate in the nanometre gap.
+solution to \SI{1}{\percent}, an equal-volume sphere as a control and a plasmon-eigenmode decomposition. At a
+\SI{5}{nm} gap the axial dipole reaches a Purcell factor of \num{1.6e3} and a radiative enhancement of 117, about
+\SI{90}{\percent} of which is carried by the longitudinal dipolar mode. The non-resonant part has an axial-to-transverse
+ratio of 2--8 set by the tip curvature; the resonance raises the ratio to 49 (total rate) and 329 (radiative rate),
+with a maximum near \SI{10}{nm} that grows from 19 to 872 between aspect ratios 2 and 5. A closed-form single-mode
+model, based on the dipolar mode of the spheroid with the same apex curvature, reproduces the resonant enhancement of
+30 rod, sphere and spheroid configurations without adjustable parameters and traces the anisotropy to the figure of merit
+$(1-\varepsilon')^2/\varepsilon''$ of the metal. The model reproduces the thousandfold single-molecule fluorescence
+enhancement measured near gold nanorods. We derive design rules for single-photon sources---gap versus intrinsic
+quantum yield, collection through a glass substrate (\SI{79}{\percent} at $\mathrm{NA}=1.45$), purity limits set by
+gold photoluminescence---and show that single emitters remain weakly coupled, that the conclusions are robust to the
+gold permittivity data, nonlocal response, substrate and tip shape, and that at cryogenic temperatures the antenna
+raises photon indistinguishability above \SI{96}{\percent}.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Purcell effect; local density of optical states; gold nanorod; plasmon eigenmodes;
@@ -95,10 +95,12 @@ descriptions---a single ``Purcell factor''---discard precisely the resonant part
 is that the total rate in a nanometre gap is difficult to converge with volume-discretisation methods, whereas the
 radiative rate is not; conclusions about quenching then depend on the solver.
 
-In this work we separate the two contributions in two independent ways. First, we compare the nanorod with an
+In this work we separate the two contributions in two independent ways and explain the result analytically. First, we compare the nanorod with an
 equal-volume gold sphere, probed with axial (radial) and transverse (tangential) dipoles at the same gap. Second,
 we expand the decay rate in the quasistatic plasmon eigenmodes of the particle~\cite{mayergoyz2005} and isolate
-the contribution of the longitudinal dipolar mode from the non-resonant background. All rates are computed with a
+the contribution of the longitudinal dipolar mode from the non-resonant background. Third, we derive a closed-form
+single-mode expression, based on the exact dipolar mode of a prolate spheroid, that reproduces the resonant
+enhancement without adjustable parameters and identifies the material and geometric factors that control it. All rates are computed with a
 boundary-element method validated against the exact Mie solution, and checked against two finite-difference
 time-domain solvers. We then translate the results into design rules for plasmon-enhanced single-photon sources:
 the dependence of the optimal gap on the emitter's intrinsic quantum yield, the tolerance to its position, the
@@ -209,9 +211,13 @@ orientations over \SIrange{500}{900}{nm} (Fig.~S3): with 1444 vertices the media
 not at all; a \SI{1}{nm} mesh (6324 elements, \SIrange{500}{808}{nm}) changes them by a further \SI{0.2}{\percent}
 (Table~S2, Fig.~S1). We quote the \SI{1.5}{nm} mesh. The three-dimensional FDTD reproduces the radiative peak
 (119 at \SI{616}{nm}, BEM 117 at \SI{608}{nm}) but gives a \SI{9}{\percent} lower $\Fp$ (1496 versus 1638); the
-body-of-revolution FDTD reproduces $T$ to \SI{7}{\percent} on a \SI{1}{nm} grid but does not converge for $\Fp$ in
-the \SI{5}{nm} gap, where the staircased surface overestimates it by about a factor of two even for the sphere
-(Supplementary Information). Volume discretisation is therefore adequate for the radiated power and the emission
+body-of-revolution FDTD reproduces $T$ to \SI{7}{\percent} on a \SI{1}{nm} grid but not $\Fp$ in the \SI{5}{nm}
+gap. Against the exact solution for the sphere its $\Fp$ error decreases only slowly with the grid spacing, from
+\SI{215}{\percent} (\SI{2}{nm}) to 108 and \SI{93}{\percent} (1.33 and \SI{1}{nm}), with \SI{48}{\percent}
+remaining after linear extrapolation to zero spacing, while the error in $T$ falls from 10 to \SI{4}{\percent}; in the
+three-dimensional solver the peak $\Fp$ of the rod changes non-monotonically with the override mesh (2027, 1496 and
+3752 for 3, 2 and \SI{1.5}{nm}), whereas the radiative peak stays at \SI{616\pm4}{nm} and the efficiency at it
+changes by about two percentage points (9.3, 8.6 and \SI{7.0}{\percent}; Supplementary Information). Volume discretisation is therefore adequate for the radiated power and the emission
 pattern, but the total rate---and hence the quenching---in a nanometre gap requires a method that represents the
 metal surface exactly.
 
@@ -291,6 +297,62 @@ known, the same fit reproduces the mode share to within 1--2 percentage points f
 underestimates it by about 13 points for aspect ratio 3, whose resonance is closer to the interband edge; for
 aspect ratio 2 the fit cannot separate mode and background. The background itself is the small difference of two
 large numbers and is therefore taken from the quasistatic analysis.
+
+\subsection{Closed-form model of the resonant enhancement}
+The dominance of a single mode suggests a closed-form description. For a prolate spheroid the quasistatic problem of a
+dipole on the axis is separable in spheroidal coordinates~\cite{gersten1981}: the axial dipole couples only to the
+$m=0$ harmonics $Q_n(\xi)P_n(\eta)$, the transverse one only to $m=1$, and the decay rate is a sum over $n$ of
+analytic terms. We evaluated this multipole series with the radiation reaction and dynamic depolarisation of the
+dipolar terms included self-consistently~\cite{kelly2003} (Supplementary Information). For the
+\SI{60}{nm}$\times$\SI{20}{nm} spheroid it reproduces the BEM background to within \SIrange{2}{6}{\percent} (axial
+$\Fp$ at \SI{500}{nm}: 875 versus 896 at a \SI{5}{nm} gap), the transverse rate to within 6 and \SI{14}{\percent}
+(median) at 5 and \SI{10}{nm}, and the axial peak to within \SI{10}{\percent} in $\Fp$ and \SI{5}{nm} in wavelength (Fig.~\ref{fig:law}a).
+
+Keeping only the dipolar term, the resonant enhancement of the axial dipole at a distance $d$ from the apex follows
+from the polarisability of the longitudinal mode and the field that this mode produces on the axis:
+\begin{equation}
+  \Fp^{\rm res}\simeq\frac{3}{2k^3}\,\mathrm{Im}\,\alpha_L\,E_1(z_0)^2,\qquad
+  T^{\rm res}\simeq\bigl[1+\mathrm{Im}\,\alpha_L\,E_1(z_0)\bigr]^2,
+  \label{eq:law}
+\end{equation}
+\begin{equation}
+  \mathrm{Im}\,\alpha_L=\Bigl[\frac{4\pi\varepsilon''}{V(1-\varepsilon')^2}+\frac{2k^3}{3}\Bigr]^{-1},\qquad
+  E_1(z_0)=\frac{3}{f^3}\Bigl[\frac{\xi}{\xi^2-1}-\frac12\ln\frac{\xi+1}{\xi-1}\Bigr],\quad \xi=\frac{z_0}{f},
+  \label{eq:law2}
+\end{equation}
+where $\varepsilon=\varepsilon'+i\varepsilon''$ is the metal permittivity at the resonance, $V$ the particle volume,
+$k$ the wavenumber, $z_0=L/2+d$ and $f$ the focal distance of the spheroid. The first term of $\mathrm{Im}\,\alpha_L$ is
+the peak of the quasistatic Lorentzian, $V(1-\varepsilon')^2/(4\pi\varepsilon'')$, which uses
+$1/L_z=1-\varepsilon'$ at resonance and therefore contains no shape factor; the second is radiation damping.
+$E_1$ is the exact on-axis field of the dipolar spheroidal mode per unit dipole moment; far from the particle it
+reduces to the point-dipole field $2/z_0^3$, while near the apex it is enhanced by the lightning-rod effect. For a
+rod we use the spheroid with the same half-length and the same apex radius of curvature, $b^2/a=D/2$, i.e.
+$f=\tfrac12\sqrt{L(L-D)}$. Without any adjustable parameter, Eqs.~\eqref{eq:law}--\eqref{eq:law2} reproduce the BEM
+values of $\Fp$ and $T$ at the resonance for 30 configurations---aspect ratios 2--5, diameters 15--\SI{30}{nm}, a
+silver rod and the spheroid, at gaps of 5, 10 and \SI{20}{nm}---over three orders of magnitude: the ratio of the BEM value to the closed form is 0.7--1.4 for $\Fp$ at gaps of 5 and
+\SI{10}{nm} and 0.6--1.2 for $T$ (Fig.~\ref{fig:law}b,c; Table~S6). The largest deviations occur for aspect ratio 2, whose resonance lies at the interband
+edge, where the background neglected in Eq.~\eqref{eq:law} is comparable to the modal term.
+
+Equation~\eqref{eq:law} makes the origin of the resonant anisotropy transparent. The transverse rate is
+non-resonant at $\lambda_L$, so the anisotropy at the resonance is $\Fp^{\rm res}/\Fp^{\perp}$, and its
+material dependence enters only through the factor $(1-\varepsilon')^2/\varepsilon''$, a figure of merit of the
+metal at the resonance wavelength. For gold it grows from 29 at \SI{560}{nm} to 84 at \SI{608}{nm}, 260 at \SI{680}{nm} and 370 at
+\SI{760}{nm}, which, together with the larger volume and the stronger lightning-rod field of longer rods, accounts
+for the increase of the maximum anisotropy from 19 to 872 between aspect ratios 2 and 5; for silver at
+\SI{505}{nm} it is 400, hence the anisotropy of 677 of the silver rod at the same size. Increasing the diameter at
+fixed aspect ratio increases $V$ but lowers $E_1$, because the apex becomes blunter, and radiation damping caps
+$\mathrm{Im}\,\alpha_L$ at $3/(2k^3)$; the resonant factor therefore decreases with diameter (70, 49, 39 and 34 for
+$D=15$, 20, 25 and \SI{30}{nm} at \SI{5}{nm}), while the radiative enhancement increases. The geometric factor, in
+contrast, is determined by the background terms $n\geq2$, which depend only on the local surface curvature on the scale
+of the gap.
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=\linewidth]{fig_law.pdf}
+\caption{(a) Semi-analytic multipole solution (dashed: axial, dotted: transverse) versus BEM (solid) for a gold
+prolate spheroid of \SI{60}{nm}$\times$\SI{20}{nm} at gaps of 5 and \SI{10}{nm}. (b) $\Fp$ and (c) $T$ of the axial
+dipole at the resonance: BEM versus the closed form, Eqs.~\eqref{eq:law}--\eqref{eq:law2}, for 30 configurations
+(symbols: gap; colours: rod series, silver rod, spheroid); grey band: a factor of 1.4.}\label{fig:law}
+\end{figure}
 
 \subsection{Gap dependence and the quantum-yield design rule}
 Increasing the gap from 3 to \SI{20}{nm} (Fig.~\ref{fig:gap}) leaves the radiative peak at \SIrange{608}{612}{nm}
@@ -585,7 +647,10 @@ decomposition, we have separated the orientational anisotropy of the Purcell enh
 into a geometric factor set by the curvature of the metal surface (about three for hemispherical tips and the
 equal-volume sphere) and a resonant factor carried by the
 longitudinal dipolar mode, which reaches 49 in the total and 329 in the radiative rate for an aspect-ratio-3 rod at a
-\SI{5}{nm} gap, peaks near a \SI{10}{nm} gap and grows with the aspect ratio. More than \SI{92}{\percent} of the
+\SI{5}{nm} gap, peaks near a \SI{10}{nm} gap and grows with the aspect ratio. A closed-form single-mode model
+reproduces the resonant enhancement of 30 configurations without adjustable parameters and shows that it scales with the
+volume, the lightning-rod field of the apex and the figure of merit $(1-\varepsilon')^2/\varepsilon''$ of the metal
+at the resonance. More than \SI{92}{\percent} of the
 emitted power is absorbed at the Purcell maximum for a \SI{5}{nm} gap; the optimal gap for a single-photon source
 depends on the intrinsic quantum yield of the emitter, and resonance-matched rods emitting above \SI{650}{nm}, on
 glass and in the focal plane of the collection optics, offer the best compromise between speed, brightness and
