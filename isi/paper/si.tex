@@ -108,6 +108,25 @@ aspect ratio & gap (nm) & quasistatic exact / fit & retarded fit & $\lambda$ (nm
 $>$\SI{100}{\percent}).}
 \end{table}
 
+\emph{Shape of the rod ends.} The caps of the $L=\SI{60}{nm}$, $D=\SI{20}{nm}$ rod were replaced by half-spheroids
+with axial semi-axis $c=rR$ by an affine map of the hemispherical cap vertices and curved-element midpoints (same
+total length; \texttt{bemx\_tiprod.m}, \texttt{job\_tips.m}). Retarded BEM and quasistatic decomposition as above.
+
+\begin{table}[h]\centering
+\caption{Effect of the end-cap shape (axial dipole on the axis). $\lambda_T$, $T_{\max}$, $\eta_a$: radiative peak;
+background ratio and mode share: quasistatic decomposition at the resonance of the dipolar mode.}\label{tab:tips}
+\begin{tabular}{rrrrrrr}\toprule
+$r=c/R$ & gap (nm) & $\lambda_T$ (nm) & $T_{\max}$ & $\eta_a$ & max $\Fp^{\parallel}/\Fp^{\perp}$ & background ratio\\\midrule
+1    & 5  & 610 & 117.5 & 7.6\% & 49  & 3.1\\
+1    & 10 & 610 & 36.3  & 8.5\% & 135 & 3.3\\
+0.75 & 5  & 615 & 128.9 & 8.2\% & 47  & 2.6\\
+0.75 & 10 & 615 & 42.5  & 9.0\% & 135 & 2.6\\
+0.5  & 5  & 620 & 144.6 & 8.8\% & 45  & 2.1\\
+0.5  & 10 & 620 & 51.9  & 9.4\% & 135 & 2.0\\
+0.35 & 5  & 625 & 157.1 & 9.5\% & 43  & 1.8\\
+0.35 & 10 & 625 & 60.6  & 10.1\% & 133 & 1.7\\\bottomrule
+\end{tabular}\end{table}
+
 \begin{figure}[h]\centering\includegraphics[width=0.5\linewidth]{fig_excitation.pdf}
 \caption{Local intensity enhancement $|E_z|^2/|E_0|^2$ on the axis, 5 and \SI{10}{nm} beyond the apex, for a plane
 wave polarised along the axis (BEM): rod and equal-volume sphere.}\label{fig:exc}\end{figure}

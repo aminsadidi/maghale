@@ -253,13 +253,13 @@ if kh:
     fig.savefig(f'{FIG}/fig_khatua.pdf'); plt.close(fig)
 
 # ------------------------------------------------------------------ end-cap shape (rod L60 D20)
-tips = sorted(glob.glob(f'{EX}/tips_c*.csv'), key=lambda f: -float(re.search(r'tips_c([\d.]+)', f).group(1)))
+tips = sorted(glob.glob(f'{EX}/tips_c*.csv'), key=lambda f: -float(re.search(r'tips_c([\d.]+?)\.csv', f).group(1)))
 if tips:
     lines += ['', '## Shape of the rod ends (cap semi-axis c = r R), retarded BEM; background from quasistatic modes', '',
               '| r | gap | lambda_T | T_z max | Fp_z there | eta_a | Fp_z/Fp_x max | ratio at 500 nm | quasistatic background ratio | mode share (qs) |',
               '|---|---|---|---|---|---|---|---|---|---|']
     for f in tips:
-        r = re.search(r'tips_c([\d.]+)', f).group(1); d = load(f)
+        r = re.search(r'tips_c([\d.]+?)\.csv', f).group(1); d = load(f)
         mq = load(f'{EX}/modes_tipc{r}.csv')
         for g in (3, 5, 10, 20):
             T, F, Fx = d[f'T_z_g{g}'], d[f'Fp_z_g{g}'], d[f'Fp_x_g{g}']
