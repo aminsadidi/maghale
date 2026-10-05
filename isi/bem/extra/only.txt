@@ -1,2 +1,6 @@
-recip glass
-recip dielectric
+material palik
+material olmon
+material mcpeak
+material cold1
+material cold2
+material surf
