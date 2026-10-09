@@ -49,3 +49,15 @@ material cold2 material_cold2.csv
 material surf material_surf.csv
 absorption rod absorption_rod.csv
 absorption sphere absorption_sphere.csv
+telecom L60 telecom_L60.csv
+telecom L70 telecom_L70.csv
+telecom L80 telecom_L80.csv
+telecom L90 telecom_L90.csv
+telecom L100 telecom_L100.csv
+telecom L120 telecom_L120.csv
+telecom L140 telecom_L140.csv
+telecom L160 telecom_L160.csv
+telecom L180 telecom_L180.csv
+telecom L200 telecom_L200.csv
+ldosmap air_L60_608 ldosmap_air_L60_608.csv
+ldosmap air_L60_520 ldosmap_air_L60_520.csv

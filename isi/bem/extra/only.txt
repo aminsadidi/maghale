@@ -1,2 +1,12 @@
-absorption rod
-absorption sphere
+telecom L60
+telecom L70
+telecom L80
+telecom L90
+telecom L100
+telecom L120
+telecom L140
+telecom L160
+telecom L180
+telecom L200
+ldosmap air_L60_608
+ldosmap air_L60_520
