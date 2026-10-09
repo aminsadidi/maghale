@@ -37,13 +37,12 @@ def rods():
     return out
 
 
-EMITTERS = [  # name, wavelength, q0, radiative lifetime (s), pure dephasing at 4 K (eV)
-    ('GaAs/InGaAs QD', 810, 0.9, 1e-9, 1e-6),
-    ('InAs/GaAs QD (O band)', 1310, 0.9, 1.5e-9, 2e-6),
-    ('G centre in Si', 1278, 0.1, 6e-9, 5e-6),
-    ('InAs/InP QD (C band)', 1550, 0.9, 1.5e-9, 2e-6),
-    ('PbS/CdS colloidal QD', 1550, 0.3, 1e-6, None),
-    ('Er$^{3+}$ in glass', 1535, 0.8, 1e-2, None),
+EMITTERS = [  # name, wavelength, q0, radiative lifetime (s), pure dephasing at 4 K (eV); generic emitter classes
+    ('bright emitter, 810 nm', 810, 1.0, 1e-9, 1e-6),
+    ('bright emitter, O band', 1310, 1.0, 1e-9, 1e-6),
+    ('bright emitter, C band', 1550, 1.0, 1e-9, 1e-6),
+    ('dim emitter, C band', 1550, 0.1, 1e-9, 1e-6),
+    ('slow emitter (PbS-like), C band', 1550, 0.3, 1e-6, None),
 ]
 
 
@@ -68,7 +67,7 @@ def main():
                        f"{100*x['eta']:.1f}% | {x['R']:.0f} | {x['Rmax']:.0f} | {x['Ez2']:.0f} | {Fm:.0f} / {Tm:.0f} |")
     # resonance-matched designs
     out += ['', '## Resonance-matched rods for telecom emitters (interpolated between computed rods)', '',
-            '| emitter | lambda_e | q0 | gap | T | Fp | eta(q0) | speed-up | hbar g (meV) | g/(kappa/4) | I (4 K) |', '|---|---|---|---|---|---|---|---|---|---|---|']
+            '| emitter | lambda_e | q0 | gap | T | Fp | eta(q0) | speed-up | hbar g (meV) | g/(kappa/4) | I (gamma* = 1 / 10 ueV) |', '|---|---|---|---|---|---|---|---|---|---|---|']
     for name, le, q0, trad, gs in EMITTERS:
         for g in (5, 10, 20):
             T = interp_at(R, le, g, 'T'); F = interp_at(R, le, g, 'Fp')
@@ -79,7 +78,7 @@ def main():
             r = min(R, key=lambda r: abs(r[g]['lamT'] - le)); d = r['d']; Tz = d[f'T_z_g{g}']; lam = d['lambda_nm']
             half = lam[Tz >= Tz.max() / 2]; kap = 1239.84 / half.min() - 1239.84 / half.max()
             hg = 0.5 * np.sqrt(F * hG0 * kap)
-            I = f'{100 * sp * hG0 / q0 / (sp * hG0 / q0 + 2 * gs):.0f}%' if gs else '--'
+            I = f'{100 * sp * hG0 / q0 / (sp * hG0 / q0 + 2 * gs):.1f}% / {100 * sp * hG0 / q0 / (sp * hG0 / q0 + 2e-5):.0f}%' if gs else '--'
             out.append(f'| {name} | {le} | {q0} | {g} | {T:.0f} | {F:.0f} | {100*eta:.1f}% | {sp:.3g} | {1e3*hg:.3g} | {hg/(kap/4):.2g} | {I} |')
     open(os.path.join(RES, 'telecom.md'), 'w').write('\n'.join(out) + '\n'); print('\n'.join(out))
 

@@ -39,13 +39,12 @@ def main():
     panels += [(lds, r'LDOS $\rho/\rho_0$, 608 nm', LogNorm(1, lds[np.isfinite(lds)].max())),
                (rad, r'radiative LDOS, 608 nm', LogNorm(0.1, rad[np.isfinite(rad)].max())),
                (G['E2'], r'$|E|^2/|E_0|^2$, 608 nm', LogNorm(0.1, np.nanmax(G['E2'])))]
-    if 'air_L60_520' in files:
-        X2, Z2, G2, _ = grid(files['air_L60_520'])
-        l2 = (G2['Fp_x'] + G2['Fp_y'] + G2['Fp_z']) / 3
-        panels.append((l2, r'LDOS $\rho/\rho_0$, 520 nm', LogNorm(1, lds[np.isfinite(lds)].max())))
+    eff = 100 * rad / lds
+    panels.insert(2, (eff, r'efficiency $\langle T\rangle/\langle F_p\rangle$ (%), 608 nm', None))
     fig, ax = plt.subplots(1, len(panels), figsize=(1.85 * len(panels), 3.0))
     for a, (A, t, nrm) in zip(ax, panels):
-        im = a.pcolormesh(X, Z, A, norm=nrm, cmap='inferno', shading='nearest', rasterized=True)
+        kw = dict(norm=nrm) if nrm is not None else dict(vmin=0, vmax=np.nanmax(A))
+        im = a.pcolormesh(X, Z, A, cmap='inferno', shading='nearest', rasterized=True, **kw)
         rod(a); a.set_aspect('equal'); a.set_title(t, fontsize=7.5); a.set_xlabel('x (nm)')
         fig.colorbar(im, ax=a, fraction=0.06, pad=0.02)
     ax[0].set_ylabel('z (nm)')

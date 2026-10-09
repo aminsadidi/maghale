@@ -35,8 +35,8 @@ ratio of 2--8 set by the tip curvature; the resonance raises the ratio to 49 (to
 with a maximum near \SI{10}{nm} that grows from 19 to 872 between aspect ratios 2 and 5. A closed-form single-mode
 model, based on the dipolar mode of the spheroid with the same apex curvature, reproduces the resonant enhancement of
 30 rod, sphere and spheroid configurations without adjustable parameters and traces the anisotropy to the figure of merit
-$(1-\varepsilon')^2/\varepsilon''$ of the metal. The model reproduces the thousandfold single-molecule fluorescence
-enhancement measured near gold nanorods. We derive design rules for single-photon sources---gap versus intrinsic
+$(1-\varepsilon')^2/\varepsilon''$ of the metal. Without adjustable parameters, the model reproduces the maximum single-molecule fluorescence
+enhancements measured near gold nanorods in two independent experiments ($10^3$ and $10^4$). We derive design rules for single-photon sources---gap versus intrinsic
 quantum yield, collection through a glass substrate (\SI{79}{\percent} at $\mathrm{NA}=1.45$), purity limits set by
 gold photoluminescence---and show that single emitters remain weakly coupled, that the conclusions are robust to the
 gold permittivity data, nonlocal response, substrate and tip shape, and that at cryogenic temperatures the antenna
@@ -524,22 +524,41 @@ $\xi=E_{\rm exc}E_{\rm em}$, with $E_{\rm exc}=|E_z|^2/|E_0|^2$ at the laser wav
 $E_{\rm em}=\langle\eta(q_0)\rangle/q_0$ averaged over the emission band (Fig.~\ref{fig:khatua}). For the
 \SI{47}{nm} rod, whose computed resonance (\SI{625}{nm}) is closest to the optimum, we obtain $E_{\rm exc}=127$ and
 $E_{\rm em}=7.1$ at a \SI{5}{nm} gap, hence $\xi\approx900$, and $\xi\approx\num{1.3e3}$ at \SI{3}{nm}; Khatua
-\emph{et al.} measured maximum enhancements of about 1100 for resonances near 630--\SI{650}{nm} and estimated
-$E_{\rm exc}\approx130$ and $E_{\rm em}\approx9$ with a discrete-dipole model. Our calculation also reproduces the
-spectral selectivity: under \SI{633}{nm} excitation $\xi$ falls by more than an order of magnitude for resonances at
-\SI{695}{nm} and beyond, and under \SI{594}{nm} excitation the maximum (\num{270} at \SI{5}{nm}) occurs for the
-shortest rods, compared with their estimate of 225. The computed total decay rate is shortened by factors of 11--27
-for the best rods, consistent with the measured lifetime reduction by at least a factor of seven, which was limited by
-the instrument response. The agreement, obtained without adjustable parameters, supports the use of the same model for
-the design rules above. Because $q_0$ is small, this experiment probes the regime in which the antenna improves the
-efficiency itself; the near-unity-yield regime remains to be tested experimentally.
+\emph{et al.} estimated $E_{\rm exc}\approx130$ and $E_{\rm em}\approx9$ with a discrete-dipole model. Figure~\ref{fig:khatua}
+compares the calculation with the maximum enhancements they measured on 11 individual rods (digitised from their
+Fig.~5). Near the optimum the agreement is good: for the four rods with resonances between 615 and \SI{650}{nm} under
+\SI{633}{nm} excitation the measured maxima, 400--\num{1450}, lie within about a factor of two of the values calculated for
+gaps of 3--\SI{5}{nm}, and the position of the optimum (resonance 625--\SI{650}{nm}) is reproduced. Away from the
+optimum the measured enhancements decrease more slowly than calculated: under \SI{594}{nm} excitation rods with
+resonances at 640--\SI{670}{nm} still give 94--208, three to seven times the value at a \SI{5}{nm} gap, and the same
+underestimate is present in the authors' own calculations. Because the excitation enhancement scales with the overlap
+of the laser with the plasmon line, a broader effective resonance---from size and shape dispersion, surface damping,
+the glass substrate and molecules at off-axis positions, which see the transverse and interband response---flattens the
+dependence on the resonance wavelength without changing the maximum. The computed total decay rate is shortened by
+factors of 11--27 for the best rods, consistent with the measured lifetimes of 100--\SI{450}{ps} (unenhanced:
+\SI{1.0}{ns}), which were limited by the instrument response of about \SI{120}{ps}.
+
+A second, independent test is provided by Lu \emph{et al.}~\cite{lu2020}, who detected single molecules of a dye with
+$q_0=\num{1.3e-4}$ (emission maximum about \SI{730}{nm}) near gold nanorods of diameter \SI{25}{nm} in toluene
+($n=1.496$) under \SI{671}{nm} excitation. In this regime the emission enhancement is close to its upper limit
+$T/\Fp\cdot q_0^{-1}$ and probes the radiative rate rather than the quantum efficiency. The same calculation (seven rod
+lengths, gaps of 1.5--\SI{5}{nm}) gives a maximum enhancement of \num{9.7e4} for a resonance at 670--\SI{680}{nm} and a
+\SI{1.5}{nm} gap, comparable to their own estimate of \num{5e4}; at the resonance of their best rod (\SI{667}{nm}) it
+gives \num{1.6e4} at a \SI{5}{nm} gap and \num{7.9e4} at \SI{1.5}{nm}, compared with the measured \num{6.5e3} under
+circular polarisation, corresponding to \num{1.3e4} for polarisation along the rod. For a rod resonating at
+\SI{638}{nm} the measured value drops by a factor of 3.3; the calculated drop, a factor of 7.6, is again steeper. Both
+experiments thus show the same pattern: the model, without adjustable parameters, reproduces the magnitude and the
+position of the optimum, and it overestimates the selectivity with respect to the resonance wavelength, as expected
+from inhomogeneous broadening in single-particle experiments. Because $q_0$ is small in both experiments, they probe
+the regime in which the antenna improves the efficiency itself; the near-unity-yield regime remains to be tested
+experimentally.
 
 \begin{figure}[tbp]\centering
 \includegraphics[width=0.55\linewidth]{fig_khatua.pdf}
 \caption{Fluorescence enhancement of crystal violet near gold nanorods of diameter \SI{25}{nm} in glycerol (BEM, dipole
 on the axis and parallel to it) versus the computed resonance wavelength, for excitation at 633 and \SI{594}{nm} and
-gaps of 3, 5 and \SI{10}{nm}. Grey band: maximum enhancement measured by Khatua \emph{et al.}~\cite{khatua} under
-\SI{633}{nm} excitation.}\label{fig:khatua}
+gaps of 3, 5 and \SI{10}{nm}. Stars: maximum enhancement measured on individual rods by Khatua
+\emph{et al.}~\cite{khatua} (digitised from their Fig.~5; bars: $\pm\SI{25}{\percent}$).}\label{fig:khatua}
 \end{figure}
 
 \subsection{Design table for representative emitters}
@@ -683,8 +702,9 @@ at the resonance. More than \SI{92}{\percent} of the
 emitted power is absorbed at the Purcell maximum for a \SI{5}{nm} gap; the optimal gap for a single-photon source
 depends on the intrinsic quantum yield of the emitter, and resonance-matched rods emitting above \SI{650}{nm}, on
 glass and in the focal plane of the collection optics, offer the best compromise between speed, brightness and
-efficiency. The model reproduces, without adjustable parameters, the measured thousandfold enhancement of
-single-molecule fluorescence near gold nanorods. Simulation scripts, raw spectra and analysis code are openly available.
+efficiency. The model reproduces, without adjustable parameters, the magnitude and the optimum of the
+single-molecule fluorescence enhancement measured in two independent experiments, while the measured dependence on
+the resonance wavelength is broader, as expected from inhomogeneous broadening. Simulation scripts, raw spectra and analysis code are openly available.
 
 \section*{Data availability}
 All raw spectra, simulation scripts (MNPBEM, Lumerical and Meep) and analysis code are available at
