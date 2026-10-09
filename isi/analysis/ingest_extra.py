@@ -248,8 +248,13 @@ if kh:
         m = K[:, 2] == g
         ax.semilogy(K[m, 1], K[m, 7], mk + '-', c=C[0], ms=3, lw=1, label=f'633 nm, {g} nm gap')
         ax.semilogy(K[m, 1], K[m, 6], mk + '--', c=C[1], ms=3, lw=1, label=f'594 nm, {g} nm gap')
-    ax.axhspan(1000, 1300, color='0.85', zorder=0); ax.text(748, 1600, 'measured maximum, 633 nm (Khatua et al.)', fontsize=6, ha='right'); ax.set_ylim(0.3, 4000)
-    ax.set_xlabel('SPR wavelength (nm)'); ax.set_ylabel(r'Fluorescence enhancement $\xi$'); ax.legend(fontsize=5, ncol=2, loc='lower center')
+    xd = np.genfromtxt('isi/data/khatua2014_fig5.csv', delimiter=',', names=True, skip_header=4)
+    for ex, c in ((633, C[0]), (594, C[1])):
+        m = xd['excitation_nm'] == ex
+        ax.errorbar(xd['spr_nm'][m], xd['xi'][m], yerr=0.25 * xd['xi'][m], fmt='*', c=c, ms=6, mfc=c, mec='k', mew=0.4,
+                    elinewidth=0.6, capsize=0, zorder=5, label=f'experiment, {ex} nm')
+    ax.set_ylim(0.3, 4000); ax.set_xlim(575, 755)
+    ax.set_xlabel('SPR wavelength (nm)'); ax.set_ylabel(r'Fluorescence enhancement $\xi$'); ax.legend(fontsize=4.6, ncol=2, loc='lower center')
     fig.savefig(f'{FIG}/fig_khatua.pdf'); plt.close(fig)
 
 # ------------------------------------------------------------------ end-cap shape (rod L60 D20)
