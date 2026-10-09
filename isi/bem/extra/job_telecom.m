@@ -2,10 +2,11 @@ function job_telecom(spec, outdir)
 %  JOB_TELECOM - gold nanorods (D = 20 nm) embedded in glass/polymer (n = 1.45) with longitudinal resonances from
 %  the visible to the telecom O and C bands. Dipole on the axis, gaps 5, 10, 20 nm, axial (z) and transverse (x);
 %  extinction for a plane wave polarised along the rod, and |E_z|^2/|E_0|^2 at the dipole positions.
-%    spec : 'L60', 'L80', ...
-L = sscanf(spec, 'L%d');  D = 20;  nb = 1.45;
+%    spec : 'L60', 'L80', ... (D = 20 nm) or 'D40L300' (other diameters)
+t = sscanf(spec, 'D%dL%d');  if numel(t) == 2, D = t(1); L = t(2); else, L = sscanf(spec, 'L%d'); D = 20; end
+nb = 1.45;
 op = bemoptions('sim', 'ret', 'interp', 'curv');
-h = 2;  if L > 120, h = 2.5; end
+h = 2;  if L > 120, h = 2.5; end;  if D > 20, h = max(h, D / 10); end
 [p0, ztop] = bemx_rod(D, L, h, op);
 p = comparticle({epsconst(nb^2), epstable('gold.dat')}, {p0}, [2, 1], 1, op);
 gaps = [5 10 20];  ng = numel(gaps);

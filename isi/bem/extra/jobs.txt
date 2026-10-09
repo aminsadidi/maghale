@@ -68,3 +68,11 @@ lu L52 lu_L52.csv
 lu L54 lu_L54.csv
 lu L56 lu_L56.csv
 lu L58 lu_L58.csv
+telecom D30L120 telecom_D30L120.csv
+telecom D30L180 telecom_D30L180.csv
+telecom D30L240 telecom_D30L240.csv
+telecom D30L270 telecom_D30L270.csv
+telecom D40L160 telecom_D40L160.csv
+telecom D40L240 telecom_D40L240.csv
+telecom D40L320 telecom_D40L320.csv
+telecom D40L360 telecom_D40L360.csv
