@@ -1,0 +1,24 @@
+# Maximum single-molecule fluorescence enhancement for individual gold nanorods (crystal violet in glycerol),
+# digitised from Fig. 5 of Khatua et al., ACS Nano 8, 4440 (2014) (squares; 633 nm and 594 nm excitation).
+# Axis calibration from tick marks (x: 1.933 px/nm) and decade labels (193 px/decade); estimated digitisation
+# uncertainty +-3 nm and +-5% (the error bars of the original, about +-20-30%, are not reproduced).
+excitation_nm,spr_nm,xi
+633,587,196
+633,599,489
+633,605,592
+633,616,822
+633,631,402
+633,642,1042
+633,648,1447
+633,671,494
+633,701,104
+594,587,245
+594,600,346
+594,605,211
+594,615,94
+594,631,117
+594,642,133
+594,649,208
+594,670,94
+594,701,9.9
+594,722,9.9
