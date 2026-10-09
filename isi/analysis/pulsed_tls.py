@@ -64,3 +64,26 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+def figure():
+    import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
+    plt.rcParams.update({'font.family': 'serif', 'font.size': 9, 'axes.linewidth': 0.8, 'xtick.direction': 'in',
+                         'ytick.direction': 'in', 'xtick.top': True, 'ytick.right': True, 'legend.frameon': False,
+                         'savefig.bbox': 'tight'})
+    d = np.loadtxt(os.path.join(RES, 'pulsed_tls.csv'), delimiter=',', skiprows=1)
+    fig, ax = plt.subplots(1, 2, figsize=(6.8, 2.5))
+    m = d[:, 1] == 0
+    ax[0].loglog(d[m, 0], d[m, 3], 'o-', c='#1f4e9c', ms=3.5)
+    ax[0].set_xlabel(r'pulse length $\tau_p\Gamma$'); ax[0].set_ylabel(r'$g^{(2)}(0)$')
+    # designs: 1/Gamma for 1550 nm rods at gaps 5, 10, 20 nm with 100 fs pulses
+    for g, inv, c in ((5, 189, '#c0392b'), (10, 576, '#8a5a00'), (20, 2646, '#2a9d5c')):
+        x = 100 / inv; y = np.interp(np.log(x), np.log(d[m, 0]), d[m, 3])
+        ax[0].plot(x, y, 's', c=c, ms=6, label=f'1550 nm, {g} nm gap, 100 fs')
+    ax[0].legend(fontsize=6, loc='upper left'); ax[0].set_title('(a)', loc='left', fontsize=9)
+    for gs, c in zip((0.0, 0.01, 0.1, 1.0), ('#1f4e9c', '#2a9d5c', '#8a5a00', '#c0392b')):
+        m = d[:, 1] == gs
+        ax[1].semilogx(d[m, 0], d[m, 4], 'o-', c=c, ms=3.5, label=rf'$\gamma^*/\Gamma={gs:g}$')
+    ax[1].set_xlabel(r'pulse length $\tau_p\Gamma$'); ax[1].set_ylabel('indistinguishability $I$'); ax[1].set_ylim(0, 1.02)
+    ax[1].legend(fontsize=6); ax[1].set_title('(b)', loc='left', fontsize=9)
+    fig.tight_layout(); fig.savefig(os.path.join(HERE, '..', 'figures', 'fig_pulsed.pdf')); fig.savefig(os.path.join(HERE, '..', 'figures', 'fig_pulsed.png'), dpi=130)
