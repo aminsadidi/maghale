@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>گزارش کار پروژه</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --paper:#ffffff; --ink:#1d2330; --ink2:#4a5263; --muted:#7a8191; --line:#e3e1da;
+  --accent:#1f4e9c; --accent-soft:#e8eef8; --gold:#b8892a; --gold-soft:#faf3e3; --good:#2a7a4b; --good-soft:#e7f4ec;
+  --warn:#9a5b00; --warn-soft:#fbf1e1;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Vazirmatn",Tahoma,sans-serif;line-height:1.95}
+.page{max-width:900px;margin:0 auto;padding:28px 16px 60px}
+header.cover{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:34px 34px 28px;position:relative;overflow:hidden}
+header.cover::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.kicker{color:var(--gold);font-weight:600;font-size:.92rem;letter-spacing:.02em}
+h1{font-size:1.75rem;line-height:1.6;margin:.4rem 0 .6rem;font-weight:800}
+.en{direction:ltr;unicode-bidi:isolate;font-family:Georgia,"Times New Roman",serif}
+.entitle{display:block;direction:ltr;text-align:left;color:var(--ink2);font-family:Georgia,serif;font-size:1rem;line-height:1.6;margin:.3rem 0 1rem}
+.meta{color:var(--ink2);font-size:.95rem}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{font-size:.82rem;padding:3px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.badge.g{background:var(--good-soft);color:var(--good)} .badge.o{background:var(--gold-soft);color:var(--gold)}
+section{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px 30px;margin-top:20px}
+h2{font-size:1.3rem;margin:0 0 .8rem;font-weight:800;display:flex;align-items:center;gap:10px}
+h2 .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--accent);color:#fff;font-size:.95rem}
+h3{font-size:1.05rem;margin:1.2rem 0 .4rem;color:var(--accent)}
+p{margin:.5rem 0}
+.lead{font-size:1.05rem;color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 4px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fbfbf9}
+.tile .v{font-size:1.55rem;font-weight:800;color:var(--accent);direction:ltr;text-align:right}
+.tile .l{font-size:.86rem;color:var(--ink2);line-height:1.7}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92rem}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:right;vertical-align:top}
+th{background:#f3f2ed;font-weight:600}
+td.before{color:var(--ink2)} td.after{color:var(--ink)}
+tr:hover td{background:#fafaf7}
+.tl{position:relative;margin:10px 0 0;padding-right:26px}
+.tl::before{content:"";position:absolute;right:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.step{position:relative;margin:0 0 16px}
+.step::before{content:"";position:absolute;right:-24px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:3px solid var(--accent)}
+.step.key::before{border-color:var(--gold)}
+.step b{display:block}
+.step .d{color:var(--ink2);font-size:.95rem}
+figure{margin:16px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff;padding:6px}
+figcaption{font-size:.86rem;color:var(--ink2);margin-top:6px;line-height:1.8}
+.callout{border-right:4px solid var(--gold);background:var(--gold-soft);padding:12px 16px;border-radius:8px;margin:14px 0}
+.callout.g{border-color:var(--good);background:var(--good-soft)}
+.callout.w{border-color:var(--warn);background:var(--warn-soft)}
+ul{margin:.4rem 0;padding-right:1.3rem} li{margin:.25rem 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:720px){.two,.tiles{grid-template-columns:1fr 1fr} header.cover,section{padding:20px 18px} h1{font-size:1.4rem}}
+.num{direction:ltr;unicode-bidi:isolate}
+footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:24px}
+@media print{
+  body{background:#fff} .page{padding:0} header.cover,section{border:none;border-radius:0;padding:14px 4px;break-inside:auto}
+  section{page-break-inside:auto} figure,.tile,.callout{break-inside:avoid} table{break-inside:auto} tr{break-inside:avoid}
+  h2{break-after:avoid}
+}
+.papers{display:grid;gap:10px;margin-top:16px}
+.pcard{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:#fbfbf9}
+.pcard .entitle{margin:.2rem 0 0;font-size:.95rem}
+.ptag{font-weight:700;color:var(--accent);font-size:.9rem}.ptag.g{color:var(--good)}
+.tile .v sup{font-size:.6em}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="cover">
+  <div class="kicker">گزارش کار برای استاد راهنما — دو پیش‌نویس مقاله</div>
+  <h1>پلاسمونیک کوانتومی با نانومیله‌ی طلا: از ناهمسانگردی گسیل تا چشمه‌ی تک‌فوتونی در طول‌موج‌های مخابراتی</h1>
+  <div class="meta">امین حسین سدیدی · سید محمد پارسا مولایی طبری — استاد راهنما: دکتر مالک باقری هارونی — گروه فیزیک، دانشگاه اصفهان</div>
+  <div class="papers">
+    <div class="pcard"><div class="ptag">مقاله‌ی ۱ — پیش‌نویس کامل (۲۱ صفحه + ۱۰ صفحه SI، ۶۲ مرجع)</div>
+      <span class="entitle">Resonant versus geometric anisotropy of the Purcell enhancement near a gold nanorod: plasmon-mode decomposition, an equal-volume control and design rules for single-photon sources</span></div>
+    <div class="pcard"><div class="ptag g">مقاله‌ی ۲ — پیش‌نویس اول (۷ صفحه، ۲۴ مرجع) — بر اساس محورهای پیشنهادی استاد</div>
+      <span class="entitle">Single gold nanorods as quantum-plasmonic antennas from the visible to the telecom bands: local density of states, hot spots and pulsed single-photon emission</span></div>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">۱</span>خلاصه در یک نگاه</h2>
+  <p class="lead">کار از یک مقاله‌ی درسی با شبیه‌سازی FDTD (Lumerical) شروع شد. اکنون دو پیش‌نویس انگلیسی داریم. هر دو بر محاسبات همگرا با روش المان مرزی (BEM) تکیه دارند که با حل دقیق Mie در حد ۱٪ می‌خواند. مقاله‌ی اول فیزیک ناهمسانگردی گسیل را با یک قانون تحلیلی توضیح می‌دهد و با دو آزمایش منتشرشده مقایسه می‌کند. مقاله‌ی دوم دقیقاً بر محورهایی است که استاد مطرح کردند: LDOS، نقاط داغ، ثابت جفت‌شدگی، طول‌موج‌های ۸۱۰، ۱۳۱۰ و ۱۵۵۰ نانومتر، و خلوص و تمایزناپذیری فوتون‌ها با شبیه‌سازی کوانتومی.</p>
+  <div class="tiles">
+    <div class="tile"><div class="v">≈ 1%</div><div class="l">اختلاف BEM با حل دقیق Mie (در FDTD تا ۱۵٪)</div></div>
+    <div class="tile"><div class="v">30</div><div class="l">پیکربندی که یک فرمول بسته‌ی بدون پارامتر تنظیمی پیش‌بینی می‌کند (نسبت BEM به فرمول ۰٫۷ تا ۱٫۴)</div></div>
+    <div class="tile"><div class="v">2 آزمایش</div><div class="l">مقایسه با Khatua 2014 (۱۱ نانومیله) و Lu 2020 (تقویت حدود ۱۰<sup>۴</sup>)</div></div>
+    <div class="tile"><div class="v">1550 nm</div><div class="l">میله‌ی ۲۴۰×۳۰ نانومتر: T ≈ ۱۱۰۰ با بازده آنتن ۴۶٪</div></div>
+    <div class="tile"><div class="v">g ≤ 0.43·κ/4</div><div class="l">جفت‌شدگی در همه‌ی طول‌موج‌ها ضعیف می‌ماند؛ آمار تک‌فوتونی حفظ می‌شود</div></div>
+    <div class="tile"><div class="v">I ≈ 0.94–0.98</div><div class="l">تمایزناپذیری در ۴ کلوین با پالس ۱۰۰ fs و شکاف ۱۰ تا ۲۰ nm (شبیه‌سازی QuTiP)</div></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">۲</span>محورهای پیشنهادی استاد و جای پاسخ هرکدام</h2>
+  <table>
+    <tr><th>محور پیشنهادی</th><th>آنچه انجام شد</th><th>کجا</th></tr>
+    <tr><td>۱. تعریف سیستم و هندسه‌ی نانوذره‌ی فلزی</td><td>نانومیله‌ی طلا با کلاهک نیم‌کره، کره‌ی هم‌حجم به‌عنوان کنترل، چهار شکل نوک، نسبت ابعاد ۲ تا ۱۰، قطر ۱۵ تا ۴۰ nm، نقره و بیضی‌گون</td><td>مقاله‌ی ۱، شکل ۱؛ مقاله‌ی ۲، بخش ۲</td></tr>
+    <tr><td>LDOS که ضریب پورسل را می‌دهد</td><td>F<sub>p</sub> همان LDOS بهنجارشده است. LDOS کل و LDOS تابشی جدا حساب شده‌اند.</td><td>هر دو مقاله</td></tr>
+    <tr><td>۲. کجا میدان بیشتر است (hotspot) و اثرات لبه‌ای</td><td>نقشه‌ی دوبعدی LDOS، LDOS تابشی، بازده و شدت میدان دور میله. اثر شکل نوک (تخت تا تیز) و اثر نوک‌تیزی در فرمول بسته.</td><td>مقاله‌ی ۲، شکل ۱؛ مقاله‌ی ۱، شکل ۹ و جدول S5</td></tr>
+    <tr><td>ثابت جفت‌شدگی متناسب با میدان</td><td>g = μ·E<sub>vac</sub>/ħ و g² ∝ F<sub>p</sub>. پس نقشه‌ی LDOS نقشه‌ی g² هم هست. g/(κ/4) برای همه‌ی طرح‌ها حساب شد.</td><td>مقاله‌ی ۲، بخش ۳٫۳؛ مقاله‌ی ۱، جدول ۳</td></tr>
+    <tr><td>۳. برهمکنش گسیلنده و نانوذره، ویژگی‌های نور گسیلی</td><td>نرخ کل و تابشی، بازده، الگوی تابش، بازده جمع‌آوری (۷۹٪ از زیر شیشه)، g<sup>(2)</sup>(0) و تمایزناپذیری</td><td>هر دو مقاله</td></tr>
+    <tr><td>۴. گسیلنده در طول‌موج قله</td><td>میله‌ی هم‌تشدید با گسیلنده برای هر طول‌موج طراحی شد، به‌علاوه‌ی جدول طراحی برای گسیلنده‌های واقعی.</td><td>مقاله‌ی ۱، جدول ۲؛ مقاله‌ی ۲، جدول ۱</td></tr>
+    <tr><td>طول‌موج‌های ۸۱۰، ۱۳۱۰ و ۱۵۵۰ nm (مخابرات کوانتومی)</td><td>میله‌هایی با طول ۶۰ تا ۳۶۰ و قطر ۲۰ تا ۴۰ نانومتر در شیشه، از ۷۶۰ تا ۱۸۰۰ nm</td><td>مقاله‌ی ۲، شکل ۲</td></tr>
+    <tr><td>تمایزناپذیری و کیفیت تک‌فوتون</td><td>شبیه‌سازی معادله‌ی اصلی (لیندبلاد) با پالس واقعی: g<sup>(2)</sup>(0) و تمایزناپذیری برحسب طول پالس و دمای واهلش</td><td>مقاله‌ی ۲، شکل ۳</td></tr>
+    <tr><td>کار گروه Stephen Hughes</td><td>مطالعه شد و ارجاع داده شد (QNM کوانتیزه، دیمر نانومیله). نتیجه‌ی ما با نتیجه‌ی آن‌ها سازگار است: پالس زیرپیکوثانیه لازم است. ما آن را برای میله‌ی تنها و طول‌موج مخابراتی کمّی کردیم.</td><td>مقاله‌ی ۲</td></tr>
+    <tr><td>لایه‌ی طلا زیر شیشه</td><td>ساختار nanoparticle-on-mirror در ۱۵۵۰ nm در ۲۰۲۵ به‌طور تجربی گزارش شده (گروه Mikkelsen). برای گام بعد پیشنهاد می‌شود: نانومیله روی آینه‌ی طلا.</td><td>پیشنهاد گام بعد</td></tr>
+    <tr><td>روش حل (FEM/COMSOL، FDTD)</td><td>روش اصلی BEM است که روشی سطحی و برای شکاف‌های نانومتری دقیق‌تر است. دو FDTD مستقل (Lumerical و Meep) برای مقایسه به کار رفت. نشان دادیم FDTD نرخ تابشی را درست می‌دهد ولی نرخ کل را در شکاف نانومتری فقط کند همگرا می‌کند.</td><td>مقاله‌ی ۱، بخش ۴٫۱ و SI</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="n">۳</span>مسیری که طی شد</h2>
+  <div class="tl">
+    <div class="step"><b>۱. مقاله‌ی درسی (نقطه‌ی شروع)</b><div class="d">FDTD سه‌بعدی با Lumerical برای یک میله‌ی ۶۰×۲۰ نانومتری. ایده‌ی «ناهمسانگردی تشدیدی» آنجا مطرح شد، ولی ارتفاع قله‌ها به مش حساس بود و مقایسه با آزمایش نداشت.</div></div>
+    <div class="step"><b>۲. حل‌گر دوم FDTD (Meep، متقارن محوری)</b><div class="d">۵۴ اجرا. نشان داد نرخ تابشی همگراست ولی نرخ کل در شکاف ۵ nm با مش FDTD همگرا نمی‌شود: خطا ۲۱۵ → ۱۰۸ → ۹۳٪ و پس از برون‌یابی ۴۸٪.</div></div>
+    <div class="step key"><b>۳. روش اصلی: BEM (جعبه‌ابزار MNPBEM17)</b><div class="d">بیش از ۱۲۰ اجرای مستقل روی سرورهای رایگان GitHub. خطا در برابر Mie حدود ۱٪ و همگرایی مش ۰٫۲٪.</div></div>
+    <div class="step key"><b>۴. توضیح فیزیکی و قانون تحلیلی</b><div class="d">تجزیه به مُدهای پلاسمونی: ۹۱٪ تقویت از یک مُد است و ضریب هندسی جداست. حل نیمه‌تحلیلی بیضی‌گون (Gersten–Nitzan) و یک فرمول بسته که ۳۰ پیکربندی را بدون پارامتر تنظیمی پیش‌بینی می‌کند.</div></div>
+    <div class="step"><b>۵. استحکام و تعمیم</b><div class="d">جابه‌جایی گسیلنده، زیرلایه‌ی شیشه، اثر غیرموضعی، شکل نوک، چهار داده‌ی مختلف ضریب دی‌الکتریک طلا، طلای سرد، نقره و محیط آب.</div></div>
+    <div class="step key"><b>۶. مقایسه با دو آزمایش</b><div class="d">داده‌های ۱۱ نانومیله از Khatua 2014 از شکل مقاله استخراج شد. Lu 2020 در رژیم بازده ۱۰<sup>−۴</sup> بازسازی شد.</div></div>
+    <div class="step key"><b>۷. محورهای استاد → مقاله‌ی دوم</b><div class="d">نقشه‌ی LDOS و hotspot، میله‌های مخابراتی (۸۱۰، ۱۳۱۰ و ۱۵۵۰ nm)، ثابت جفت‌شدگی، شبیه‌سازی کوانتومی پالسی با QuTiP و فوتولومینسانس طلا.</div></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">۴</span>مقاله‌ی ۱: یافته‌های اصلی</h2>
+  <figure><img src="{{IMG:fig_geometry}}" alt="هندسه"><figcaption>هندسه‌ی مسئله: نانومیله‌ی ۶۰×۲۰ نانومتر با دوقطبی محوری یا عرضی، کره‌ی هم‌حجم به‌عنوان کنترل، و گسیلنده روی پوسته‌ی فاصله‌انداز.</figcaption></figure>
+  <h3>الف) ناهمسانگردی دو جزء دارد</h3>
+  <p>برای کره‌ی هم‌حجم نسبت محوری به عرضی F<sub>p</sub> حدود ۳ است و با Mie می‌خواند. برای میله در تشدید به <b>۴۹</b> (F<sub>p</sub>) و <b>۳۲۹</b> (T) می‌رسد. تجزیه‌ی مُدی نشان می‌دهد ۹۱٪ از یک مُد (دوقطبی طولی) است. ضریب هندسی (۲ برای نوک تخت تا ۸ برای نوک تیز) جدا از ضریب تشدیدی است. ناهمسانگردی در شکاف حدود ۱۰ nm بیشینه است و با نسبت ابعاد از ۱۹ به ۸۷۲ می‌رسد.</p>
+  <figure><img src="{{IMG:fig_modes}}" alt="تجزیه‌ی مدی"><figcaption>تجزیه به مُد دوقطبی طولی و پس‌زمینه؛ سهم مُد برحسب شکاف؛ نسبت جهتی کل و پس‌زمینه.</figcaption></figure>
+  <h3>ب) قانون تحلیلی</h3>
+  <p>فرمول بسته بر پایه‌ی مُد دوقطبی دقیق بیضی‌گونی است که همان انحنای نوک را دارد. نشان می‌دهد بخش تشدیدی با «ضریب شایستگی» فلز، <span class="num">(1−ε′)²/ε″</span>، با حجم و با میدان نوک رشد می‌کند. این کار مقاله را از «گزارش عدد» به «قانون فیزیکی» می‌برد.</p>
+  <figure><img src="{{IMG:fig_law}}" alt="قانون تحلیلی"><figcaption>(a) حل نیمه‌تحلیلی در برابر BEM برای بیضی‌گون. (b و c) F<sub>p</sub> و T در تشدید: BEM در برابر فرمول بسته برای ۳۰ پیکربندی.</figcaption></figure>
+  <h3>ج) مقایسه با آزمایش (بدون پارامتر تنظیمی)</h3>
+  <ul>
+    <li><b>Khatua 2014 (ACS Nano):</b> نزدیک بهینه، مقادیر اندازه‌گیری‌شده (۴۰۰ تا ۱۴۵۰) تا حدود ضریب ۲ با محاسبه در شکاف ۳ تا ۵ nm می‌خوانند و محل بهینه درست پیش‌بینی می‌شود.</li>
+    <li><b>Lu 2020 (ACS Photonics):</b> اندازه‌گیری حدود ۱۳۰۰۰ است. مدل در شکاف ۵ nm حدود ۱۶۰۰۰ و در ۱٫۵ nm حدود ۷۹۰۰۰ می‌دهد؛ برآورد خود نویسندگان ۵۰۰۰۰ است.</li>
+    <li><b>نتیجه‌ی صادقانه:</b> دور از تشدید، آزمایش ۳ تا ۷ برابر پهن‌تر از محاسبه است، و این در محاسبه‌ی خود نویسندگان هم دیده می‌شود. دلیل محتمل پهن‌شدگی ناهمگن در آزمایش تک‌ذره است. این نکته در مقاله صریح نوشته شده است.</li>
+  </ul>
+  <figure><img src="{{IMG:fig_khatua}}" alt="مقایسه با آزمایش" style="max-width:520px"><figcaption>خطوط: محاسبه‌ی BEM برای سه شکاف و دو طول‌موج برانگیختگی. ستاره‌ها: بیشینه‌ی اندازه‌گیری‌شده روی ۱۱ نانومیله در آزمایش Khatua و همکاران.</figcaption></figure>
+  <h3>د) استحکام و قواعد طراحی</h3>
+  <ul>
+    <li>با چهار داده‌ی ضریب دی‌الکتریک طلا، بازده بین ۷٫۲ و ۹٫۱٪ و بیشینه‌ی ناهمسانگردی بین ۴۲ و ۸۰ می‌ماند. نتیجه‌گیری‌ها تغییر نمی‌کنند.</li>
+    <li>شکاف بهینه به بازده ذاتی گسیلنده بستگی دارد: ۷ تا ۱۰ nm برای کم‌بازده و حدود ۲۰ nm برای پربازده.</li>
+    <li>جمع‌آوری از زیر شیشه با عدسی روغنی ۷۹٪ نور را جمع می‌کند، در برابر ۱۸٪ در چیدمان عمودی.</li>
+    <li>فوتولومینسانس خود طلا برای گسیلنده‌های کم‌جذب (مولکول) خلوص را خراب می‌کند. شرط کمّی برای سطح مقطع جذب گسیلنده به دست آمد.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۵</span>مقاله‌ی ۲: پلاسمونیک کوانتومی از مرئی تا مخابرات</h2>
+  <h3>الف) نقشه‌ی LDOS و نقاط داغ</h3>
+  <p>LDOS کل در لایه‌ی نازکی دور تمام ذره بالاست، ولی این بخش غیرتابشی است و گسیلنده را خاموش می‌کند. LDOS تابشی و شدت میدان فقط نزدیک نوک‌ها متمرکزند: ۴ نانومتر جلوی نوک شدت <b>۱۵۸</b> برابر و T برابر <b>۱۵۷</b> است، در حالی که کنار میله شدت ۳۲ برابر است. در نوک، دوقطبی محوری حدود <b>۶۰۰ برابر</b> سریع‌تر از دوقطبی عرضی تابش می‌کند. چون g² ∝ F<sub>p</sub>، این نقشه‌ها نقشه‌ی ثابت جفت‌شدگی هم هستند.</p>
+  <figure><img src="{{IMG:fig_ldosmap}}" alt="نقشه‌ی LDOS"><figcaption>از چپ به راست: LDOS کل، LDOS تابشی، بازده آنتن، و شدت میدان، همه در تشدید (۶۰۸ nm).</figcaption></figure>
+  <h3>ب) تنظیم به ۸۱۰، ۱۳۱۰ و ۱۵۵۰ نانومتر</h3>
+  <ul>
+    <li>با افزایش طول میله (۶۰ تا ۲۰۰ nm، قطر ۲۰، در شیشه) تشدید از ۷۶۰ به ۱۶۲۰ nm می‌رسد. در ۱۵۵۰ nm و شکاف ۵ nm: F<sub>p</sub> ≈ ۵۳۰۰ و T ≈ ۱۲۰۰.</li>
+    <li><b>یافته‌ی جدید:</b> بازده آنتن را قطر میله تعیین می‌کند، نه طول‌موج. در کل بازه تقریباً ثابت است: ۲۳٪ برای قطر ۲۰ nm، ۴۴ تا ۵۰٪ برای ۳۰ nm و حدود ۶۰٪ برای ۴۰ nm.</li>
+    <li>طرح پیشنهادی برای باند C: میله‌ی ۲۴۰×۳۰ نانومتر، با T ≈ ۱۱۰۰ و بازده ۴۶٪.</li>
+  </ul>
+  <figure><img src="{{IMG:fig_telecom}}" alt="مخابراتی"><figcaption>(a) طیف T برای میله‌های ۶۰ تا ۲۰۰ نانومتری. (b) ناهمسانگردی در تشدید. (c) بازده آنتن برای سه قطر. خط‌چین‌ها ۸۱۰، ۱۳۱۰ و ۱۵۵۰ nm را نشان می‌دهند.</figcaption></figure>
+  <h3>ج) رژیم جفت‌شدگی و کیفیت تک‌فوتون</h3>
+  <ul>
+    <li>ħg = ۵٫۲، ۷٫۵ و ۸٫۱ meV در ۸۱۰، ۱۳۱۰ و ۱۵۵۰ nm. همه در رژیم <b>جفت‌شدگی ضعیف</b> هستند (g/(κ/4) ≤ ۰٫۴۳).</li>
+    <li>پورسل طول عمر را به <b>۰٫۲ تا ۳ پیکوثانیه</b> می‌رساند، یعنی هم‌اندازه‌ی طول پالس لیزر. پس گسیلنده ممکن است در یک پالس دوباره برانگیخته شود.</li>
+    <li>با پالس ۱۰۰ fs: g<sup>(2)</sup>(0) برابر ۰٫۱۵ در شکاف ۵ nm و ۰٫۰۲ در شکاف ۲۰ nm است.</li>
+    <li><b>قاعده‌ی طراحی:</b> شکافی که سرعت را بیشینه می‌کند خلوص را بیشینه نمی‌کند. شکاف ۱۰ تا ۲۰ nm با پالس حدود ۱۰۰ fs بهترین تعادل را دارد: g<sup>(2)</sup>(0) ≤ ۰٫۰۷ و تمایزناپذیری ۰٫۹۴ تا ۰٫۹۸ در ۴ کلوین. در دمای اتاق تمایزناپذیری زیر ۰٫۱۵ می‌ماند.</li>
+  </ul>
+  <figure><img src="{{IMG:fig_pulsed}}" alt="شبیه‌سازی پالسی"><figcaption>(a) g<sup>(2)</sup>(0) برحسب طول پالس (برحسب طول عمر)؛ مربع‌ها طرح‌های ۱۵۵۰ nm با پالس ۱۰۰ fs هستند. (b) تمایزناپذیری برای چند نرخ واهلش.</figcaption></figure>
+  <table>
+    <tr><th>طول‌موج</th><th>شکاف</th><th>T</th><th>F<sub>p</sub></th><th>بازده</th><th>طول عمر</th><th>g<sup>(2)</sup>(0)</th><th>تمایزناپذیری (4 K)</th></tr>
+    <tr><td>810 nm</td><td>5 nm</td><td>518</td><td>2305</td><td>22%</td><td>0.43 ps</td><td>0.08</td><td>0.93</td></tr>
+    <tr><td>1310 nm</td><td>5 nm</td><td>942</td><td>4160</td><td>23%</td><td>0.24 ps</td><td>0.13</td><td>0.89</td></tr>
+    <tr><td>1550 nm</td><td>5 nm</td><td>1201</td><td>5305</td><td>23%</td><td>0.19 ps</td><td>0.15</td><td>0.88</td></tr>
+    <tr><td>1550 nm</td><td>10 nm</td><td>396</td><td>1736</td><td>23%</td><td>0.58 ps</td><td>0.07</td><td>0.94</td></tr>
+    <tr><td>1550 nm</td><td>20 nm</td><td>89</td><td>378</td><td>24%</td><td>2.6 ps</td><td>0.02</td><td>0.98</td></tr>
+  </table>
+  <p style="font-size:.88rem;color:var(--ink2)">میله‌ی قطر ۲۰ nm در شیشه، گسیلنده با بازده یک و طول عمر ذاتی ۱ ns، پالس ۱۰۰ fs.</p>
+</section>
+
+<section>
+  <h2><span class="n">۶</span>جایگاه در ادبیات: چه بررسی شده و چه چیزی تازه است</h2>
+  <ul>
+    <li><b>قبلاً بررسی شده:</b> کره، دیسک، میله‌ی بی‌نهایت، دو کره‌ی کنار هم و بیضی‌گون کوچک (به گفته‌ی استاد)؛ میله‌ی طلا فقط با دوقطبی محوری و شکاف ۱۰ nm یا بیشتر (Mohammadi و همکاران ۲۰۰۸)؛ دیمر نانومیله با QNM کوانتیزه (Hughes و همکاران ۲۰۱۹)؛ و ساختار nanoparticle-on-mirror در ۱۵۵۰ nm (Mikkelsen و همکاران ۲۰۲۵).</li>
+    <li><b>تازه در مقاله‌ی ۱:</b> جدا کردن کمّی سهم هندسی و تشدیدی با کنترل هم‌حجم و تجزیه‌ی مُدی، فرمول بسته‌ی بدون پارامتر، و مقایسه با دو آزمایش.</li>
+    <li><b>تازه در مقاله‌ی ۲:</b> میله‌ی تنها از مرئی تا باندهای مخابراتی، کشف اینکه بازده با قطر تعیین می‌شود نه طول‌موج، نقشه‌ی LDOS و جفت‌شدگی، و معاوضه‌ی کمّی بین شکاف و خلوص و تمایزناپذیری با شبیه‌سازی کوانتومی پالسی.</li>
+  </ul>
+  <div class="callout g"><b>مجلات پیشنهادی (چارک و ضریب تأثیر پیش از ارسال در JCR یا SJR بررسی شود):</b>
+    <ul>
+      <li>مقاله‌ی ۱: <i class="en">Physical Review B</i>، <i class="en">J. Phys. Chem. C</i>، <i class="en">Optics Express</i></li>
+      <li>مقاله‌ی ۲: <i class="en">ACS Photonics</i>، <i class="en">Nanophotonics</i>، <i class="en">Physical Review Applied</i>، <i class="en">Optics Express</i></li>
+    </ul></div>
+</section>
+
+<section>
+  <h2><span class="n">۷</span>محدودیت‌ها، گام بعد و تصمیم‌هایی که با استاد است</h2>
+  <div class="two">
+    <div>
+      <h3>محدودیت‌ها (در متن مقاله‌ها ذکر شده)</h3>
+      <ul>
+        <li>پهن‌تر بودن پاسخ طیفی در آزمایش نسبت به محاسبه</li>
+        <li>نقاط کوانتومی اپیتکسیال مخابراتی در نیمه‌رسانا هستند، نه شیشه. مدل فعلی برای گسیلنده‌های کلوئیدی، Er و رنگ‌مایه‌ها مستقیم است.</li>
+        <li>فوتولومینسانس طلا در مخابرات و نوارهای فونونی هنوز محاسبه نشده‌اند.</li>
+        <li>فرمول بسته برای میله‌های خیلی بلند (۲۰۰ nm) حدود ۲ برابر کم برآورد می‌کند.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>تصمیم‌های استاد</h3>
+      <ul>
+        <li>دو مقاله‌ی جدا یا ادغام در یک مقاله</li>
+        <li>انتخاب مجله برای هرکدام</li>
+        <li>ترتیب نویسندگان، نویسنده‌ی مسئول و ایمیل</li>
+        <li>گام بعدی پیشنهادی: نانومیله روی آینه‌ی طلا (لایه‌ی طلا زیر شیشه) در ۱۵۵۰ nm</li>
+        <li>بازبینی علمی و تأیید یافته‌ها</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout"><b>روش کار و ابزارها:</b>
+    <ul>
+      <li>همه‌ی محاسبات روی زیرساخت رایگان GitHub انجام شد: MATLAB رایگان، MNPBEM17 (مجوز GPL)، Meep و QuTiP. کد و داده‌ی خام در مخزن عمومی پروژه موجود و تکرارپذیر است.</li>
+      <li>در نوشتن کدها، تحلیل‌ها و پیش‌نویس متن از دستیار هوش مصنوعی (Claude) کمک گرفته شد. طبق سیاست مجلات، این در بخش «اعلام استفاده از هوش مصنوعی» ذکر خواهد شد.</li>
+      <li>همه‌ی نتایج با آزمون‌های مستقل (حل دقیق Mie، حل تحلیلی، پایستگی انرژی) و مقایسه با آزمایش کنترل شده‌اند.</li>
+    </ul></div>
+</section>
+
+<footer>گزارش کار پروژه — گروه فیزیک دانشگاه اصفهان — مهر ۱۴۰۵ — پیوست‌ها: Paper1_main.pdf، Paper1_SI.pdf، Paper2_draft.pdf</footer>
+</div>
+</body>
+</html>
