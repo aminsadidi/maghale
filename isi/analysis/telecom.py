@@ -80,25 +80,45 @@ def main():
             hg = 0.5 * np.sqrt(F * hG0 * kap)
             I = f'{100 * sp * hG0 / q0 / (sp * hG0 / q0 + 2 * gs):.1f}% / {100 * sp * hG0 / q0 / (sp * hG0 / q0 + 2e-5):.0f}%' if gs else '--'
             out.append(f'| {name} | {le} | {q0} | {g} | {T:.0f} | {F:.0f} | {100*eta:.1f}% | {sp:.3g} | {1e3*hg:.3g} | {hg/(kap/4):.2g} | {I} |')
+    out += ['', '## Thicker rods (n = 1.45)', '', '| rod | gap | lambda_T | T | Fp | eta_a | Fp_z/Fp_x |', '|---|---|---|---|---|---|---|']
+    for f in sorted(glob.glob(os.path.join(RES, 'bem_extra', 'telecom_D*L*.csv'))):
+        d = load(f); tag = re.search(r'telecom_(D\d+L\d+)', f).group(1)
+        for g in GAPS:
+            Tz, Fz, Fx = d[f'T_z_g{g}'], d[f'Fp_z_g{g}'], d[f'Fp_x_g{g}']; i = np.argmax(Tz)
+            out.append(f'| {tag} | {g} | {d["lambda_nm"][i]:.0f} | {Tz[i]:.0f} | {Fz[i]:.0f} | {100*Tz[i]/Fz[i]:.1f}% | {Fz[i]/Fx[i]:.0f} |')
     open(os.path.join(RES, 'telecom.md'), 'w').write('\n'.join(out) + '\n'); print('\n'.join(out))
 
     # figure: (a) T spectra of all rods at 10 nm, (b) eta_a and Fp_z/Fp_x at the radiative peak vs lambda_T
-    fig, ax = plt.subplots(1, 2, figsize=(7.0, 2.6))
+    fig, ax = plt.subplots(1, 3, figsize=(9.6, 2.6))
     cm = plt.get_cmap('viridis')
     for k, r in enumerate(R):
         d = r['d']; ax[0].semilogy(d['lambda_nm'], d['T_z_g10'], c=cm(k / max(1, len(R) - 1)), lw=1.1, label=f"L={r['L']}")
     for le in (810, 1310, 1550): ax[0].axvline(le, c='0.6', lw=0.8, ls=':')
     ax[0].set_xlabel('wavelength (nm)'); ax[0].set_ylabel(r'$T$ (axial, 10 nm gap)'); ax[0].legend(fontsize=5.5, ncol=2)
     ax[0].set_title('(a)', loc='left', fontsize=9)
-    a2 = ax[1]; b2 = a2.twinx()
+    a2 = ax[1]
     for g, mk in zip(GAPS, 'os^'):
         lt = [r[g]['lamT'] for r in R]
-        a2.plot(lt, [100 * r[g]['eta'] for r in R], mk + '-', c=C[0], ms=3.5, lw=1, label=f'{g} nm')
-        b2.semilogy(lt, [r[g]['R'] for r in R], mk + '--', c=C[1], ms=3.5, lw=1)
+        a2.semilogy(lt, [r[g]['R'] for r in R], mk + '-', c=C[1], ms=3.5, lw=1, label=f'{g} nm gap')
     for le in (810, 1310, 1550): a2.axvline(le, c='0.6', lw=0.8, ls=':')
-    a2.set_xlabel(r'radiative peak $\lambda_T$ (nm)'); a2.set_ylabel(r'antenna efficiency $\eta_a$ (%)', color=C[0])
-    b2.set_ylabel(r'$F_p^{\parallel}/F_p^{\perp}$ at $\lambda_T$', color=C[1]); a2.legend(fontsize=6, loc='upper left')
+    a2.set_xlabel(r'radiative peak $\lambda_T$ (nm)'); a2.set_ylabel(r'$F_p^{\parallel}/F_p^{\perp}$ at $\lambda_T$ (D = 20 nm)')
+    a2.legend(fontsize=6, loc='lower right')
     a2.set_title('(b)', loc='left', fontsize=9)
+    # (c) diameter: efficiency and T at the radiative peak (10 nm gap) for D = 20, 30, 40 nm
+    a3 = ax[2]
+    for D, c in ((20, C[0]), (30, C[2]), (40, C[3])):
+        if D == 20:
+            pts = [(r[10]['lamT'], r[10]['eta'], r[10]['T']) for r in R]
+        else:
+            pts = []
+            for f in sorted(glob.glob(os.path.join(RES, 'bem_extra', f'telecom_D{D}L*.csv')), key=lambda f: int(re.search(r'L(\d+)', f).group(1))):
+                d = load(f); Tz, Fz = d['T_z_g10'], d['Fp_z_g10']; i = np.argmax(Tz)
+                if d['lambda_nm'][i] < d['lambda_nm'].max() - 20: pts.append((d['lambda_nm'][i], Tz[i] / Fz[i], Tz[i]))
+        pts = np.array(pts)
+        if len(pts): a3.plot(pts[:, 0], 100 * pts[:, 1], 'o-', c=c, ms=3.5, lw=1, label=f'D = {D} nm')
+    for le in (810, 1310, 1550): a3.axvline(le, c='0.6', lw=0.8, ls=':')
+    a3.set_ylim(0, 75); a3.set_xlabel(r'radiative peak $\lambda_T$ (nm)'); a3.set_ylabel(r'$\eta_a$ (%), 10 nm gap'); a3.legend(fontsize=6)
+    a3.set_title('(c)', loc='left', fontsize=9)
     fig.tight_layout(); fig.savefig(os.path.join(FIG, 'fig_telecom.pdf')); fig.savefig(os.path.join(FIG, 'fig_telecom.png'), dpi=130)
 
 
