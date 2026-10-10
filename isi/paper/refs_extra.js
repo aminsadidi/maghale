@@ -1,5 +1,8 @@
 // Additional references for the ISI version. All DOIs resolved via doi.org and checked against Crossref metadata.
 module.exports = {
+  shahbazyan2016: 'Shahbazyan T. V. Local density of states for nanoplasmonics. <i>Physical Review Letters</i> <b>117</b>, 207401 (2016). doi:10.1103/PhysRevLett.117.207401',
+  shahbazyan2018: 'Shahbazyan T. V. Spontaneous decay of a quantum emitter near a plasmonic nanostructure. <i>Physical Review B</i> <b>98</b>, 115401 (2018). doi:10.1103/PhysRevB.98.115401',
+  ji2015: 'Ji B., Giovanelli E., Habert B., Spinicelli P., Nasilowski M., Xu X., Lequeux N., Hugonin J.-P., Marquier F., Greffet J.-J., Dubertret B. Non-blinking quantum dot with a plasmonic nanoshell resonator. <i>Nature Nanotechnology</i> <b>10</b>, 170–175 (2015). doi:10.1038/nnano.2014.298',
   hughes2019: 'Hughes S., Franke S., Gustin C., Kamandar Dezfouli M., Knorr A., Richter M. Theory and limits of on-demand single-photon sources using plasmonic resonators: a quantized quasinormal mode approach. <i>ACS Photonics</i> <b>6</b>, 2168–2180 (2019). doi:10.1021/acsphotonics.9b00849',
   franke2019: 'Franke S., Hughes S., Kamandar Dezfouli M., Kristensen P. T., Busch K., Knorr A., Richter M. Quantization of quasinormal modes for open cavities and plasmonic cavity quantum electrodynamics. <i>Physical Review Letters</i> <b>122</b>, 213901 (2019). doi:10.1103/PhysRevLett.122.213901',
   ge2014: 'Ge R.-C., Hughes S. Design of an efficient single photon source from a metallic nanorod dimer: a quasi-normal mode finite-difference time-domain approach. <i>Optics Letters</i> <b>39</b>, 4235–4238 (2014). doi:10.1364/OL.39.004235',
