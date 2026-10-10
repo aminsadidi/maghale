@@ -10,7 +10,11 @@ function job_nshell(spec, outdir)
 n = 1.45;  Din = 20;
 op = bemoptions('sim', 'ret', 'interp', 'curv');
 gold = epstable('gold.dat');
-solid = strncmp(spec, 'solid_', 6);  s = spec;  if solid, s = spec(7:end); end
+%  optional suffix '_cK' (K = 1..11): wavelength chunk K of 500:20:1800 nm (6 wavelengths per chunk) with a 3 nm outer
+%  mesh, so that every chunk of the large rod-shaped shells fits into the six-hour limit of a CI job
+chunk = 0;  cpos = strfind(spec, '_c');
+if ~isempty(cpos), chunk = str2double(spec(cpos(end) + 2:end)); spec0 = spec(1:cpos(end) - 1); else, spec0 = spec; end
+solid = strncmp(spec0, 'solid_', 6);  s = spec0;  if solid, s = spec0(7:end); end
 parts = strsplit(s, '_t');  t = str2double(parts{2});
 issph = strcmp(parts{1}, 'sph');
 if issph, Lin = Din; else, Lin = str2double(parts{1}(2:end)); end
@@ -22,7 +26,8 @@ else
     if issph
         pin = trisphere(400, Din);  pout = trisphere(576, Din + 2 * t);
     else
-        [pin, ~] = bemx_rod(Din, Lin, 2, op);  [pout, ~] = bemx_rod(Din + 2 * t, Lin + 2 * t, 2, op);
+        hout = 2;  if chunk > 0, hout = 3; end
+        [pin, ~] = bemx_rod(Din, Lin, 2, op);  [pout, ~] = bemx_rod(Din + 2 * t, Lin + 2 * t, hout, op);
     end
     p = comparticle({epsconst(n^2), gold, epsconst(n^2)}, {pin, pout}, [3, 2; 2, 1], 1, 2, op);
     pos = [0, 0, 0;  0, 0, Lin / 2 - 4;  Din / 2 - 4, 0, 0];  lab = {'centre', 'axis_cap4', 'side4'};
@@ -33,6 +38,7 @@ dip = dipole(pt, [0 0 1; 1 0 0], op);
 exc = planewave([0 0 1; 1 0 0], [1 0 0; 0 0 1], op);
 bem = bemsolver(p, op);
 lam = 500:10:1800;  np = size(pos, 1);
+if chunk > 0, lall = 500:20:1800; lam = lall((chunk - 1) * 6 + 1:min(chunk * 6, numel(lall))); end
 M = zeros(numel(lam), 3 + 4 * np);
 for il = 1:numel(lam)
     [tot, rad] = decayrate(dip, bem \ dip(p, lam(il)));
