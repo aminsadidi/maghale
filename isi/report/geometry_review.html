@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>بررسی هندسه‌ها</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --paper:#ffffff; --ink:#1d2330; --ink2:#4a5263; --muted:#7a8191; --line:#e3e1da;
+  --accent:#1f4e9c; --accent-soft:#e8eef8; --gold:#b8892a; --gold-soft:#faf3e3; --good:#2a7a4b; --good-soft:#e7f4ec;
+  --warn:#9a5b00; --warn-soft:#fbf1e1;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Vazirmatn",Tahoma,sans-serif;line-height:1.95}
+.page{max-width:900px;margin:0 auto;padding:28px 16px 60px}
+header.cover{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:34px 34px 28px;position:relative;overflow:hidden}
+header.cover::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.kicker{color:var(--gold);font-weight:600;font-size:.92rem;letter-spacing:.02em}
+h1{font-size:1.75rem;line-height:1.6;margin:.4rem 0 .6rem;font-weight:800}
+.en{direction:ltr;unicode-bidi:isolate;font-family:Georgia,"Times New Roman",serif}
+.entitle{display:block;direction:ltr;text-align:left;color:var(--ink2);font-family:Georgia,serif;font-size:1rem;line-height:1.6;margin:.3rem 0 1rem}
+.meta{color:var(--ink2);font-size:.95rem}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{font-size:.82rem;padding:3px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.badge.g{background:var(--good-soft);color:var(--good)} .badge.o{background:var(--gold-soft);color:var(--gold)}
+section{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px 30px;margin-top:20px}
+h2{font-size:1.3rem;margin:0 0 .8rem;font-weight:800;display:flex;align-items:center;gap:10px}
+h2 .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--accent);color:#fff;font-size:.95rem}
+h3{font-size:1.05rem;margin:1.2rem 0 .4rem;color:var(--accent)}
+p{margin:.5rem 0}
+.lead{font-size:1.05rem;color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 4px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fbfbf9}
+.tile .v{font-size:1.55rem;font-weight:800;color:var(--accent);direction:ltr;text-align:right}
+.tile .l{font-size:.86rem;color:var(--ink2);line-height:1.7}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92rem}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:right;vertical-align:top}
+th{background:#f3f2ed;font-weight:600}
+td.before{color:var(--ink2)} td.after{color:var(--ink)}
+tr:hover td{background:#fafaf7}
+.tl{position:relative;margin:10px 0 0;padding-right:26px}
+.tl::before{content:"";position:absolute;right:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.step{position:relative;margin:0 0 16px}
+.step::before{content:"";position:absolute;right:-24px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:3px solid var(--accent)}
+.step.key::before{border-color:var(--gold)}
+.step b{display:block}
+.step .d{color:var(--ink2);font-size:.95rem}
+figure{margin:16px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff;padding:6px}
+figcaption{font-size:.86rem;color:var(--ink2);margin-top:6px;line-height:1.8}
+.callout{border-right:4px solid var(--gold);background:var(--gold-soft);padding:12px 16px;border-radius:8px;margin:14px 0}
+.callout.g{border-color:var(--good);background:var(--good-soft)}
+.callout.w{border-color:var(--warn);background:var(--warn-soft)}
+ul{margin:.4rem 0;padding-right:1.3rem} li{margin:.25rem 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:720px){.two,.tiles{grid-template-columns:1fr 1fr} header.cover,section{padding:20px 18px} h1{font-size:1.4rem}}
+.num{direction:ltr;unicode-bidi:isolate}
+footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:24px}
+.papers{display:grid;gap:10px;margin-top:16px}
+.pcard{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:#fbfbf9}
+.pcard .entitle{margin:.2rem 0 0;font-size:.95rem}
+.ptag{font-weight:700;color:var(--accent);font-size:.9rem}.ptag.g{color:var(--good)}
+.tile .v sup{font-size:.6em}
+@page{size:A4 portrait;margin:16mm 14mm 16mm 14mm}
+@media print{
+  html{font-size:10.5pt}
+  body{background:#fff;line-height:1.8;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{max-width:none;margin:0;padding:0}
+  header.cover,section{border:none;border-radius:0;padding:0;margin:0 0 6mm 0;background:#fff}
+  header.cover{padding-top:4mm}
+  section{break-before:auto;margin-bottom:5mm;padding-top:2mm;border-top:1px solid #e3e1da}
+  h2,h3{break-after:avoid;page-break-after:avoid}
+  h3+ul,h3+p{break-before:avoid}
+  h1{font-size:17pt} h2{font-size:13.5pt;break-after:avoid} h3{font-size:11.5pt;break-after:avoid}
+  .tiles{grid-template-columns:repeat(3,1fr);gap:3mm}
+  .tile{padding:3mm 4mm}.tile .v{font-size:14pt}.tile .l{font-size:8.8pt}
+  figure{margin:4mm 0;break-inside:avoid}
+  figure img{max-height:88mm;width:auto;max-width:100%;border:none;padding:0}
+  figcaption{font-size:8.8pt}
+  table{font-size:8.8pt;break-inside:auto} tr{break-inside:avoid} th,td{padding:4px 6px}
+  .two{grid-template-columns:1fr 1fr}
+  .callout,.tile,.pcard{break-inside:avoid}
+  .tl{padding-right:30px;margin-right:2px} .step,li{break-inside:avoid}
+  footer{margin-top:6mm}
+  tr:hover td{background:none}
+}
+.en-list li{direction:ltr;text-align:left;list-style:none} ol{padding-right:1.3rem} .refs li{font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="cover">
+  <div class="kicker">بررسی ادبیات و طرح پژوهش — برای استاد راهنما</div>
+  <h1>کدام هندسه‌ی نانوذره‌ی طلا هنوز بررسی نشده است؟ مرور سه ساختار و طرح یک پژوهش تازه</h1>
+  <div class="meta">امین حسین سدیدی · سید محمد پارسا مولایی طبری — استاد راهنما: دکتر مالک باقری هارونی — گروه فیزیک، دانشگاه اصفهان — مهر ۱۴۰۵</div>
+  <div class="badges"><span class="badge">۳ هندسه بررسی شد</span><span class="badge o">۳۰ منبع مرور شد</span><span class="badge g">محاسبات مسیر انتخاب‌شده روی GitHub آغاز شد</span></div>
+</header>
+
+<section>
+  <h2><span class="n">۱</span>خلاصه</h2>
+  <p class="lead">سه ساختار بررسی شد: نانومیله‌ی متناهی (هندسه‌ی فعلی ما)، نانوبی‌پیرامید طلا، و گسیلنده درون نانوساختار توخالی طلا. برای هرکدام مشخص شد چه کسانی، با چه روش و چه نتیجه‌ای کار کرده‌اند و چه چیزی هنوز باز است.</p>
+  <div class="tiles">
+    <div class="tile"><div class="v">زیاد</div><div class="l">کار قبلی روی نانومیله؛ نوآوری ما در «تفکیک کمّی» و «مخابرات» است، نه خود هندسه</div></div>
+    <div class="tile"><div class="v">متوسط</div><div class="l">بی‌پیرامید: بیشتر در جفت‌شدگی قوی بررسی شده؛ چشمه‌ی تک‌فوتونی تقریباً خالی است</div></div>
+    <div class="tile"><div class="v">کم</div><div class="l">گسیلنده درون پوسته‌ی طلای <b>میله‌ای</b>: در جست‌وجوی ما هیچ کاری پیدا نشد</div></div>
+  </div>
+  <div class="callout g"><b>انتخاب:</b> «گسیلنده‌ی کوانتومی درون پوسته‌ی طلای میله‌ای‌شکل» به‌عنوان موضوع مقاله‌ی سوم. محاسبات آن روی GitHub آغاز شده است (بخش ۷).</div>
+  <div class="callout w"><b>یک یافته‌ی مهم برای مقاله‌ی ۱:</b> فرمول Purcell تک‌مُدی برای نوک بیضی‌گون قبلاً به‌صورت نظری توسط Shahbazyan به دست آمده است (Phys. Rev. Lett. 2016؛ Phys. Rev. B 2018). این دو مرجع به مقاله‌ی ۱ اضافه شد و سهم جدید ما دقیق نوشته شد: نگاشت میله‌ی کلاهک‌دار به بیضی‌گون هم‌انحنا، قطبش‌پذیری با میرایی تابشی در تشدید محاسبه‌شده، و آزمون کمّی روی ۳۰ پیکربندی در برابر BEM کامل.</div>
+</section>
+
+<section>
+  <h2><span class="n">۲</span>روش بررسی و محدودیت آن</h2>
+  <ul>
+    <li>جست‌وجوی هدفمند وب (arXiv، صفحات ناشران، مخازن دانشگاهی) با ترکیب کلیدواژه‌های هندسه، گسیلنده، Purcell، جهت دوقطبی، تک‌فوتون و مخابرات.</li>
+    <li>خواندن متن کامل مقالات کلیدی، مثلاً Shahbazyan 2018. اطلاعات کتاب‌شناختی با Crossref تأیید شد.</li>
+    <li><b>محدودیت:</b> این بررسی جایگزین جست‌وجوی کامل در Scopus یا Web of Science نیست. «پیدا نشد» یعنی در این جست‌وجو پیدا نشد. پیش از ادعای «اولین بار» در مقاله، عبارت‌های پیشنهادی بخش ۸ باید در Google Scholar هم جست‌وجو شوند.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۳</span>نانومیله‌ی متناهی طلا (هندسه‌ی فعلی)</h2>
+  <h3>کارهای تجربی</h3>
+  <table>
+    <tr><th>مرجع</th><th>سیستم</th><th>نتیجه‌ی اصلی</th></tr>
+    <tr><td>Yuan et al., Angew. Chem. Int. Ed. 2013</td><td>crystal violet کنار میله‌ی تنها</td><td>تقویت فلورسانس تک‌مولکول تا ۱۱۰۰ برابر</td></tr>
+    <tr><td>Khatua et al., ACS Nano 2014</td><td>همان سیستم، ۱۱ میله، دو طول‌موج</td><td>وابستگی تقویت به طول‌موج تشدید؛ کوتاه شدن طول عمر</td></tr>
+    <tr><td>Lu et al., ACS Photonics 2020</td><td>رنگ‌مایه با بازده ۱٫۳×۱۰<sup>−۴</sup></td><td>تقویت حدود ۶۵۰۰ تا ۱۳۰۰۰؛ حد بازده قابل آشکارسازی</td></tr>
+    <tr><td>گروه Jianfang Wang (Ming و همکاران)</td><td>پوسته‌ی سیلیکا با رنگ‌مایه روی میله</td><td>وابستگی شدید به قطبش برانگیختگی</td></tr>
+    <tr><td>گروه‌های Acuna و Tinnefeld (DNA origami)</td><td>یک مولکول در مکان دقیق کنار میله</td><td>تقویت حدود ۱۰۰۰ برابر در فروسرخ نزدیک (ACS Nano 2023)؛ تغییر طیف با مکان (arXiv:2302.11960)</td></tr>
+    <tr><td>Sánchez-Iglesias et al., J. Phys. Chem. Lett. 2019</td><td>نقطه‌ی کوانتومی کنار میله</td><td>رقابت انتقال انرژی و اثر Purcell</td></tr>
+    <tr><td>arXiv:2311.11560</td><td>نقطه‌ی کوانتومی در شکاف دیمر میله</td><td>Purcell قوی، گسیل بدون چشمک‌زنی</td></tr>
+  </table>
+  <h3>کارهای نظری</h3>
+  <table>
+    <tr><th>مرجع</th><th>آنچه انجام شده</th><th>آنچه انجام نشده</th></tr>
+    <tr><td>Mohammadi, Sandoghdar, Agio (NJP 2008؛ JCTN 2009)</td><td>T و بازده برحسب نسبت ابعاد، حجم و محیط</td><td>فقط دوقطبی محوری؛ فاصله ۱۰ nm یا بیشتر؛ بدون کنترل هم‌حجم</td></tr>
+    <tr><td>Shahbazyan (PRL 2016؛ PRB 2018)</td><td>فرمول Purcell تک‌مُدی و حجم مُد در نوک بیضی‌گون؛ اشاره به عدم تقویت دوقطبی عرضی</td><td>بدون آزمون در برابر محاسبه‌ی کامل؛ فقط بیضی‌گون؛ بدون کمّی‌سازی سهم هندسی</td></tr>
+    <tr><td>Sauvan et al. (PRL 2013)</td><td>بسط مُدهای شبه‌نرمال برای نانومیله</td><td>تمرکز بر روش، نه تفکیک ناهمسانگردی</td></tr>
+    <tr><td>Raziman &amp; Martin (EPFL)</td><td>اهمیت کلی جهت دوقطبی</td><td>نه برای نانومیله به‌طور سیستماتیک</td></tr>
+    <tr><td>Ugwuoke et al. (arXiv 2026)</td><td>میله‌ی هسته‌پوسته با روش BOR</td><td>فقط دوقطبی محوری</td></tr>
+    <tr><td>Hughes و همکاران (Opt. Lett. 2014؛ PRL 2019؛ ACS Photonics 2019)</td><td>دیمر میله با QNM کوانتیزه؛ تمایزناپذیری و لزوم پالس زیرپیکوثانیه</td><td>میله‌ی <b>تنها</b>؛ طول‌موج‌های مخابراتی</td></tr>
+  </table>
+  <div class="callout"><b>آنچه باز بود و مقاله‌های ۱ و ۲ پوشش می‌دهند:</b> تفکیک کمّی سهم هندسی و تشدیدی با کنترل هم‌حجم و تجزیه‌ی مُدی؛ آزمون کمّی فرمول تک‌مُدی روی میله‌ی واقعی؛ مقایسه با دو آزمایش؛ میله‌ی تنها از مرئی تا مخابرات؛ یافته‌ی «بازده آنتن را قطر تعیین می‌کند، نه طول‌موج»؛ شبیه‌سازی کوانتومی پالسی.</div>
+</section>
+
+<section>
+  <h2><span class="n">۴</span>نانوبی‌پیرامید طلا</h2>
+  <table>
+    <tr><th>مرجع</th><th>سیستم</th><th>نتیجه</th></tr>
+    <tr><td>Stührenberg et al., Nano Lett. 2018 (Chalmers)</td><td>بی‌پیرامید تنها و تک‌لایه‌ی WSe<sub>2</sub></td><td>جفت‌شدگی قوی در دمای اتاق</td></tr>
+    <tr><td>پیش‌چاپ ۲۰۲۵ (Trinity College Dublin و Tyndall)</td><td>بی‌پیرامید و سه نقطه‌ی کوانتومی در نقطه‌ی داغ</td><td>جفت‌شدگی قوی، ħg حدود ۱۷۶ meV</td></tr>
+    <tr><td>ACS Appl. Nano Mater. (اتصال با شیمی click)</td><td>بی‌پیرامید و <b>تک</b> نقطه‌ی کوانتومی</td><td>جفت‌شدگی متوسط، g حدود ۴۵ meV</td></tr>
+    <tr><td>بی‌پیرامید با پلیمر فلورسان (HAL)</td><td>رنگ‌مایه روی بی‌پیرامید</td><td>تقویت فقط ۱٫۴ برابر</td></tr>
+    <tr><td>Chinese J. Lasers 2017</td><td>اندازه‌گیری جمعی (ensemble)</td><td>تقویت حداکثر ۶ برابر</td></tr>
+    <tr><td>Sensors &amp; Transducers 2022</td><td>بی‌پیرامید تنها</td><td>پراکندگی و جهت‌یابی سه‌بعدی؛ رفتار دوقطبی</td></tr>
+  </table>
+  <div class="callout"><b>آنچه پیدا نشد:</b> مطالعه‌ی سیستماتیک Purcell، بازده و ناهمسانگردی جهت برای <b>تک‌گسیلنده در جفت‌شدگی ضعیف</b>؛ مقایسه‌ی بی‌پیرامید و میله برای چشمه‌ی تک‌فوتونی؛ طراحی مخابراتی؛ g<sup>(2)</sup> و تمایزناپذیری؛ قانون تحلیلی برای نقش تیزی نوک.<br><b>ارزیابی:</b> نوآوری متوسط، ریسک کم. ادامه‌ی طبیعی قانون مقاله‌ی ۱ است (ضریب هندسی با تیزی نوک بالا می‌رود).</div>
+</section>
+
+<section>
+  <h2><span class="n">۵</span>گسیلنده درون نانوساختار توخالی طلا</h2>
+  <table>
+    <tr><th>مرجع</th><th>هندسه</th><th>نتیجه</th></tr>
+    <tr><td><b>Ji et al., Nature Nanotechnology 10, 170 (2015)</b></td><td>تک نقطه‌ی کوانتومی در سیلیکا با پوسته‌ی پیوسته‌ی طلا (<b>کروی</b>)</td><td>Purcell قوی، گسیل پایدار و بدون چشمک‌زنی، مقاومت در برابر نور شدید</td></tr>
+    <tr><td>نظریه‌ی اتم در پوسته‌ی کروی (arXiv quant-ph/0412094)</td><td>دوقطبی درون هسته‌ی سیلیکا با پوسته‌ی طلا</td><td>اتلاف اهمی ممکن است با نزدیک شدن به سطح داخلی <b>کم</b> شود</td></tr>
+    <tr><td>Phys. Rev. A 96, 043869</td><td>دوقطبی و پوسته‌ی کروی</td><td>تشدیدهای Fano؛ وابستگی به جهت دوقطبی</td></tr>
+    <tr><td>Ayala-Orozco, Halas et al., Nano Lett. 2014</td><td>nanomatryoshka (هسته‌ی طلا، لایه‌ی سیلیکا، پوسته‌ی طلا)</td><td>رنگ‌مایه در لایه‌ی داخلی؛ تقویت یا خاموشی بسته به طراحی</td></tr>
+    <tr><td>پوسته‌ی طلا روی ویروس</td><td>گسیلنده‌ی ایده‌آل درون پوسته</td><td>تقویت ۲۴ برابری میدان دور (شبیه‌سازی)</td></tr>
+    <tr><td>KAIST 2019؛ قاب‌های چهاروجهی؛ Mirkin 2026</td><td>نانوقاب طلا</td><td>نقاط داغ داخلی برای SERS؛ <b>بدون گسیلنده</b></td></tr>
+  </table>
+  <div class="callout g"><b>آنچه پیدا نشد:</b> گسیلنده درون پوسته‌ی طلای <b>میله‌ای‌شکل (کشیده)</b>؛ گسیلنده درون نانوقفس یا نانوقاب؛ کمیت‌های کوانتومی (g، g<sup>(2)</sup>، تمایزناپذیری) برای گسیلنده‌ی محصور؛ تنظیم این ساختارها به طول‌موج‌های مخابراتی.<br><b>ارزیابی:</b> بیشترین نوآوری. ایده‌ی تجربی موفق Ji 2015 (حالت کروی) پشتوانه‌ی آن است و با تخصص ما در میله ترکیب می‌شود.</div>
+</section>
+
+<section>
+  <h2><span class="n">۶</span>مقایسه و انتخاب</h2>
+  <table>
+    <tr><th>ساختار</th><th>کار قبلی</th><th>تازگی ممکن</th><th>ریسک</th><th>ساخت تجربی</th><th>نتیجه</th></tr>
+    <tr><td>نانومیله‌ی متناهی</td><td>زیاد</td><td>در تفکیک کمّی و مخابرات</td><td>کم</td><td>آسان</td><td>مقاله‌های ۱ و ۲</td></tr>
+    <tr><td>نانوبی‌پیرامید</td><td>متوسط</td><td>چشمه‌ی تک‌فوتونی، قانون تیزی نوک</td><td>کم</td><td>آسان</td><td>گزینه‌ی بعدی</td></tr>
+    <tr><td><b>گسیلنده درون پوسته‌ی میله‌ای</b></td><td>کروی کار شده؛ میله‌ای پیدا نشد</td><td><b>زیاد</b></td><td>متوسط</td><td>ممکن (روش Ji 2015 با هسته‌ی سیلیکای میله‌ای)</td><td><b>مقاله‌ی ۳ — آغاز شد</b></td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="n">۷</span>طرح پژوهش: گسیلنده‌ی کوانتومی درون پوسته‌ی طلای میله‌ای‌شکل</h2>
+  <h3>چرا جدید است</h3>
+  <p>در حالت کروی (Ji 2015) پوسته فقط تشدید دوقطبی ایزوتروپ دارد. در پوسته‌ی میله‌ای، مُد طولی تشدیدی <b>قوی و ناهمسانگرد</b> می‌دهد. این تشدید با دو پارامتر مستقل تنظیم می‌شود: طول هسته و ضخامت پوسته. پوسته‌ی نازک تشدید را به سمت فروسرخ می‌برد، پس ممکن است به طول‌موج‌های مخابراتی <b>بدون میله‌ی خیلی بلند</b> برسیم. گسیلنده هم داخل هسته‌ی سیلیکا محافظت می‌شود.</p>
+  <h3>پرسش‌های پژوهش</h3>
+  <ol>
+    <li>Purcell، تقویت تابشی و بازده گسیلنده درون پوسته‌ی میله‌ای در مقایسه با پوسته‌ی کروی و میله‌ی توپر با همان اندازه چقدر است؟</li>
+    <li>آیا محصور بودن گسیلنده خاموشی را کم می‌کند؟ این را پیش‌بینی نظری حالت کروی پیشنهاد می‌کند.</li>
+    <li>مکان بهینه‌ی گسیلنده در هسته کجاست: مرکز، نزدیک کلاهک یا کنار دیواره؟ ناهمسانگردی جهت چقدر است؟</li>
+    <li>آیا با ضخامت پوسته می‌توان به ۱۳۱۰ و ۱۵۵۰ نانومتر رسید؟ بازده در آنجا چقدر است؟</li>
+    <li>جفت‌شدگی (g)، خلوص g<sup>(2)</sup>(0) و تمایزناپذیری با پالس واقعی چگونه است؟</li>
+  </ol>
+  <h3>هندسه و پارامترها (مرحله‌ی اول — در حال اجرا)</h3>
+  <table>
+    <tr><th>پارامتر</th><th>مقادیر</th></tr>
+    <tr><td>هسته‌ی سیلیکا (n = 1.45)</td><td>قطر ۲۰ nm؛ طول کل ۴۰، ۶۰ و ۹۰ nm (کپسولی)؛ و کره‌ی ۲۰ nm برای مقایسه</td></tr>
+    <tr><td>ضخامت پوسته‌ی طلا</td><td>۴، ۷ و ۱۲ nm</td></tr>
+    <tr><td>محیط بیرونی</td><td>n = 1.45 (شیشه یا پلیمر)</td></tr>
+    <tr><td>مکان گسیلنده</td><td>مرکز هسته؛ روی محور ۴ nm مانده به کلاهک؛ کنار دیواره ۴ nm مانده به آن</td></tr>
+    <tr><td>جهت دوقطبی</td><td>محوری (z) و عرضی (x)</td></tr>
+    <tr><td>مرجع مقایسه</td><td>میله‌ی توپر طلا با همان ابعاد بیرونی، گسیلنده ۴ nm بیرون نوک</td></tr>
+    <tr><td>بازه‌ی طول‌موج</td><td>۵۰۰ تا ۱۸۰۰ نانومتر</td></tr>
+    <tr><td>کمیت‌ها</td><td>F<sub>p</sub>، T، بازده و ناهمسانگردی برای هر مکان و جهت؛ طیف خاموشی برای دو قطبش</td></tr>
+  </table>
+  <h3>روش و اعتبارسنجی</h3>
+  <ul>
+    <li>BEM تأخیری (MNPBEM) با دو سطح منحنی (داخلی و بیرونی پوسته)، همان روش اعتبارسنجی‌شده‌ی مقاله‌های ۱ و ۲.</li>
+    <li><b>اعتبارسنجی مستقل:</b> برای پوسته‌ی کروی با گسیلنده در مرکز، حل دقیق تحلیلی (Mie چندلایه) وجود دارد و نتایج BEM با آن سنجیده می‌شود.</li>
+    <li>آزمون همگرایی مش با ریزتر کردن عناصر، به‌خصوص برای پوسته‌ی ۴ nm.</li>
+    <li>مرحله‌ی دوم: تنظیم به ۱۳۱۰ و ۱۵۵۰ nm، نقشه‌ی LDOS درون هسته، و شبیه‌سازی کوانتومی پالسی با QuTiP مانند مقاله‌ی ۲.</li>
+  </ul>
+  <h3>ریسک‌ها و راه حل</h3>
+  <ul>
+    <li><b>پوسته‌ی نازک (۴ nm):</b> اثرات غیرموضعی و پراکندگی سطحی مهم می‌شود. از داده‌ی طلا با میرایی سطحی و مدل لایه‌ی پوششی (همان روش مقاله‌ی ۱) استفاده می‌کنیم.</li>
+    <li><b>بازده تابشی:</b> اگر خاموشی درون پوسته شدید باشد، این خودش نتیجه‌ی منتشرشدنی است، و طراحی بهینه (ضخامت و مکان) را گزارش می‌کنیم.</li>
+    <li><b>ادعای نوآوری:</b> پیش از نوشتن، جست‌وجوی کامل در Scopus یا Google Scholar لازم است.</li>
+  </ul>
+  <h3>وضعیت و زمان‌بندی</h3>
+  <table>
+    <tr><th>مرحله</th><th>وضعیت</th></tr>
+    <tr><td>۱۵ محاسبه‌ی BEM (پوسته‌های میله‌ای و کروی، میله‌ی توپر مرجع)</td><td>روی GitHub آغاز شد</td></tr>
+    <tr><td>اعتبارسنجی با حل دقیق پوسته‌ی کروی</td><td>پس از رسیدن نتایج</td></tr>
+    <tr><td>تنظیم مخابراتی، نقشه‌ی LDOS داخلی و کمیت‌های کوانتومی</td><td>مرحله‌ی دوم</td></tr>
+    <tr><td>پیش‌نویس مقاله‌ی ۳</td><td>پس از تأیید استاد</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="n">۸</span>منابع اصلی و عبارت‌های جست‌وجوی پیشنهادی</h2>
+  <ul class="refs">
+    <li>T. V. Shahbazyan, Phys. Rev. Lett. 117, 207401 (2016); Phys. Rev. B 98, 115401 (2018).</li>
+    <li>B. Ji et al., Nature Nanotechnology 10, 170 (2015), doi:10.1038/nnano.2014.298.</li>
+    <li>S. Khatua et al., ACS Nano 8, 4440 (2014); H. Yuan et al., Angew. Chem. Int. Ed. 52, 1217 (2013); X. Lu et al., ACS Photonics 7, 2498 (2020).</li>
+    <li>A. Mohammadi, V. Sandoghdar, M. Agio, New J. Phys. 10, 105015 (2008); J. Comput. Theor. Nanosci. 6, 2024 (2009).</li>
+    <li>C. Sauvan et al., Phys. Rev. Lett. 110, 237401 (2013).</li>
+    <li>S. Hughes et al., ACS Photonics 6, 2168 (2019); S. Franke et al., Phys. Rev. Lett. 122, 213901 (2019); R.-C. Ge, S. Hughes, Opt. Lett. 39, 4235 (2014).</li>
+    <li>M. Stührenberg et al., Nano Lett. 18, 5938 (2018) — بی‌پیرامید و WSe<sub>2</sub>.</li>
+    <li>C. Ayala-Orozco et al., Nano Lett. 14, 2926 (2014) — nanomatryoshka.</li>
+    <li>arXiv: quant-ph/0412094؛ 2302.11960؛ 2311.11560؛ 2511.03409؛ 1805.09529.</li>
+  </ul>
+  <div style="break-inside:avoid"><p><b>جست‌وجوهای پیشنهادی در Google Scholar:</b></p>
+  <ul class="en-list">
+    <li><span class="en">"gold nanoshell" nanorod "quantum dot" inside OR encapsulated Purcell</span></li>
+    <li><span class="en">"hollow gold nanorod" OR "gold nanotube" emitter fluorescence</span></li>
+    <li><span class="en">"silica-coated" "gold shell" rod emitter "decay rate"</span></li>
+    <li><span class="en">bipyramid "single molecule" fluorescence enhancement</span></li>
+  </ul></div>
+  <div class="callout"><b>ابزار:</b> بررسی و طراحی با کمک دستیار هوش مصنوعی (Claude) انجام شد. منابع کلیدی خوانده شدند و اطلاعات کتاب‌شناختی با Crossref تأیید شد.</div>
+</section>
+<footer>بررسی هندسه‌ها و طرح پژوهش — گروه فیزیک دانشگاه اصفهان — مهر ۱۴۰۵</footer>
+</div>
+</body>
+</html>
