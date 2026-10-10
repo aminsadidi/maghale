@@ -34,17 +34,20 @@ mesh (vertices) & host & gap (nm) & radial $\Fp$ & radial $T$ & tangential $\Fp$
 \end{tabular}\end{table}
 
 \begin{table}[h]\centering
-\caption{Mesh convergence of the rod (axial dipole). $h$: target element size. $^a$Wavelengths \SIrange{500}{808}{nm} only (six-hour limit of the CI job).}\label{tab:bemconv}
+\caption{Mesh convergence of the rod (axial dipole). $h$: target element size. For $h=\SI{1}{nm}$ the gaps of 5, 10 and \SI{20}{nm} cover \SIrange{500}{900}{nm} (four wavelength chunks run in parallel); $^a$\SIrange{500}{808}{nm} only (six-hour limit of a single CI job).}\label{tab:bemconv}
 \begin{tabular}{rrrrrr}\toprule
 $h$ (nm) & elements & gap (nm) & $\Fp^{\max}$ ($\lambda$) & $T_{\max}$ ($\lambda$) & $\eta_a(\lambda_T)$\\\midrule
 3   & 720  & 5 & 1649 (604) & 117.7 (608) & 7.3\%\\
 2   & 1550 & 5 & 1643 (604) & 117.0 (608) & 7.3\%\\
 1.5 & 2829 & 5 & 1638 (604) & 116.5 (608) & 7.3\%\\
-1$^a$ & 6324 & 5 & 1634 (604) & 116.2 (608) & 7.3\%\\
+1 & 6324 & 5 & 1634 (604) & 116.2 (608) & 7.3\%\\
 3   & 720  & 3 & 3672 (508) & 209.8 (608) & 6.5\%\\
 1.5 & 2829 & 3 & 3782 (508) & 214.1 (608) & 6.6\%\\
 1$^a$ & 6324 & 3 & 3770 (508) & 213.1 (608) & 6.6\%\\
-1.5 & 2829 & 20 & 78 (604) & 8.2 (612) & 11.6\%\\\bottomrule
+1.5 & 2829 & 10 & 453 (604) & 36.2 (612) & 8.9\%\\
+1 & 6324 & 10 & 453 (604) & 36.2 (612) & 8.9\%\\
+1.5 & 2829 & 20 & 78 (604) & 8.2 (612) & 11.6\%\\
+1 & 6324 & 20 & 78 (604) & 8.2 (612) & 11.6\%\\\bottomrule
 \end{tabular}\end{table}
 
 \begin{figure}[h]\centering\includegraphics[width=\linewidth]{fig_bem_convergence.pdf}
@@ -419,6 +422,23 @@ gap (nm) & pump (nm) & $E_{\rm exc}$ & $\sigma_e$ (cm$^2$) & $B/S$ & $g^{(2)}(0)
 20 & 610 & 8.3 & $10^{-16}$ & 1.57 & 0.849\\
 20 & 610 & 8.3 & $10^{-14}$ & 0.0157 & 0.031\\
 \bottomrule\end{tabular}\end{table}
+
+\section*{S10. Comparison with Khatua \emph{et al.}: surface damping and substrate}
+The rods of the comparison with Khatua \emph{et al.} ($D=\SI{25}{nm}$, $L=39$--\SI{70}{nm}) were recomputed (i) in
+homogeneous glycerol ($n=1.47$) with surface-damped gold (Section~S8) and (ii) lying on glass ($n=1.52$), \SI{1}{nm}
+above it and covered by glycerol, with the dipole beyond the tip on the axis and parallel to it and excitation through
+the substrate at normal incidence, polarised along the rod (layer Green function, MNPBEM). Rates are normalised to bulk
+glycerol and $E_{\rm exc}$ to the field at the same position without the rod. Figure~\ref{fig:khvar} compares the three
+models with the measurements. Surface damping lowers the maximum enhancement from 903 to 674 (\SI{5}{nm} gap) and from
+\num{1.32e3} to 960 (\SI{3}{nm}); the substrate changes it by $+2$ and $+\SI{6}{\percent}$. For all three models the
+ratio of the measured to the calculated enhancement has the same spread (rms of $\log_{10}$ 0.29--0.33 at \SI{3}{nm}
+and 0.38--0.44 at \SI{5}{nm} under \SI{633}{nm} excitation; 0.39--0.54 under \SI{594}{nm}), i.e.\ neither effect
+reproduces the broader measured dependence on the resonance wavelength. Script: \texttt{isi/analysis/khatua\_variants.py}.
+
+\begin{figure}[h]\centering\includegraphics[width=0.9\linewidth]{fig_khatua_var.pdf}
+\caption{Maximum fluorescence enhancement versus resonance wavelength (radiative peak at a \SI{10}{nm} gap) for the
+homogeneous model, with surface damping and on a glass substrate (\SI{5}{nm} gap), and the measurements of Khatua
+\emph{et al.} (stars).}\label{fig:khvar}\end{figure}
 
 \section*{References}
 \noindent[1] P. B. Johnson and R. W. Christy, Phys. Rev. B \textbf{6}, 4370 (1972).\\
