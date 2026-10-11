@@ -1,0 +1,24 @@
+# Emitter inside rod-shaped gold nanoshells (core D = 20 nm, host and core n = 1.45)
+
+Centre of the core, axial dipole; values at the radiative peak lambda_T. side/cap: same wavelength, 4 nm from the inner wall / inner cap.
+
+| geometry | lambda_T | T | Fp | eta | T side | T cap | T_x (centre) at lambda_T | T at 1310 | T at 1550 |
+|---|---|---|---|---|---|---|---|---|---|
+| L40_t4 | 740 | 245 | 1427 | 17.2% | 254 | 190 | 4.77 | 0.13 | 0.05 |
+| L60_t4 | 880 | 239 | 1143 | 20.9% | 246 | 124 | 0.77 | 0.45 | 0.13 |
+| L90_t4 | 1080 | 145 | 743 | 19.5% | 147 | 56 | 0.17 | 2.84 | 0.48 |
+| L40_t7 | 660 | 155 | 558 | 27.7% | 157 | 135 | 6.35 | 0.06 | 0.02 |
+| L60_t7 | 780 | 138 | 396 | 34.9% | 141 | 82 | 0.96 | 0.16 | 0.06 |
+| L90_t7 | 940 | 120 | 301 | 39.9% | 121 | 47 | 0.22 | 0.69 | 0.19 |
+| L40_t12 | 620 | 46 | 141 | 32.9% | 46 | 51 | 7.19 | 0.03 | 0.01 |
+| L60_t12 | 700 | 65 | 118 | 55.4% | 66 | 53 | 1.45 | 0.06 | 0.02 |
+| L90_t12 | 840 | 46 | 79 | 57.9% | 46 | 25 | 0.28 | 0.20 | 0.06 |
+
+## References
+
+- solid_L40_t7: T max 98 at 610 nm, Fp 527, eta 18.6%
+- solid_L60_t7: T max 353 at 680 nm, Fp 800, eta 44.2%
+- solid_L90_t7: T max 511 at 820 nm, Fp 979, eta 52.2%
+- sph_t12: T max 30 at 560 nm, Fp 325, eta 9.3%
+- sph_t4: T max 112 at 620 nm, Fp 2362, eta 4.7%
+- sph_t7: T max 51 at 580 nm, Fp 828, eta 6.2%
