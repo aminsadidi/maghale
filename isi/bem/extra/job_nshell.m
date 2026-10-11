@@ -27,7 +27,8 @@ else
         pin = trisphere(400, Din);  pout = trisphere(576, Din + 2 * t);
     else
         hout = 2;  if chunk > 0, hout = 3; end
-        [pin, ~] = bemx_rod(Din, Lin, 2, op);  [pout, ~] = bemx_rod(Din + 2 * t, Lin + 2 * t, hout, op);
+        hin = 2;  if Lin > 120, hin = 2.5; end
+        [pin, ~] = bemx_rod(Din, Lin, hin, op);  [pout, ~] = bemx_rod(Din + 2 * t, Lin + 2 * t, hout, op);
     end
     p = comparticle({epsconst(n^2), gold, epsconst(n^2)}, {pin, pout}, [3, 2; 2, 1], 1, 2, op);
     pos = [0, 0, 0;  0, 0, Lin / 2 - 4;  Din / 2 - 4, 0, 0];  lab = {'centre', 'axis_cap4', 'side4'};
@@ -38,7 +39,10 @@ dip = dipole(pt, [0 0 1; 1 0 0], op);
 exc = planewave([0 0 1; 1 0 0], [1 0 0; 0 0 1], op);
 bem = bemsolver(p, op);
 lam = 500:10:1800;  np = size(pos, 1);
-if chunk > 0, lall = 500:20:1800; lam = lall((chunk - 1) * 6 + 1:min(chunk * 6, numel(lall))); end
+if chunk > 0
+    if Lin > 120, lall = 900:20:1800; nper = 4; else, lall = 500:20:1800; nper = 6; end   % long cores: telecom range
+    lam = lall((chunk - 1) * nper + 1:min(chunk * nper, numel(lall)));
+end
 M = zeros(numel(lam), 3 + 4 * np);
 for il = 1:numel(lam)
     [tot, rad] = decayrate(dip, bem \ dip(p, lam(il)));
