@@ -40,7 +40,7 @@ def main():
         row = f"| {g} | {nc}/8 | {lam[i]:.0f} | {T[i]:.0f} | {F[i]:.0f} | {100*T[i]/F[i]:.0f}% |"
         if lam.min() <= 1550 <= lam.max():
             t, f = at(d, 'T_x_c', 1550), at(d, 'Fp_x_c', 1550)
-            row += (f" {t:.0f} | {f:.0f} | {100*t/f:.0f}% | {-at(d, 'ReG_x_c', 1550)/2:.0f} | {at(d, 'f_zNA1.3_x_c', 1550):.2f} |"
+            row += (f" {t:.0f} | {f:.0f} | {100*t/f:.0f}% | {-at(d, 'ReG_x_c', 1550)/2:.0f} | {at(d, 'f_zNA13_x_c', 1550):.2f} |"
                     f" {at(d, 'f_py60_x_c', 1550):.2f} / {at(d, 'f_my60_x_c', 1550):.2f} | {100*chk:.2g}% |")
         else:
             row += f' -- | -- | -- | -- | -- | -- | {100*chk:.2g}% |'
@@ -62,7 +62,7 @@ def main():
         ax[0, 1].semilogy(w, d['ImG_x_c'], c=c, lw=1.1)
         ax[0, 2].semilogy(w, d['T_x_c'], c=c, lw=1.1)
         ax[1, 0].plot(w, 100 * d['T_x_c'] / d['Fp_x_c'], c=c, lw=1.1)
-        ax[1, 1].plot(w, d['f_zNA1.3_x_c'], c=c, lw=1.1)
+        ax[1, 1].plot(w, d['f_zNA13_x_c'], c=c, lw=1.1)
         ax[1, 2].plot(w, d['ext_x'] / 1e3, c=c, lw=1.1)
         if g in ('trimer', 'tri90'): ax[1, 2].plot(w, 50 * d['ext_y'] / 1e3, c=c, lw=0.9, ls='--')
     labs = [r'Re $\tilde G_{xx}$ (scattered)', r'Im $\tilde G_{xx}$ = LDOS $-$ 1', r'radiative enhancement $T$',
