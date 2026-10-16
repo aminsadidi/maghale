@@ -63,10 +63,10 @@ def main():
         ax[0, 2].semilogy(w, d['T_x_c'], c=c, lw=1.1)
         ax[1, 0].plot(w, 100 * d['T_x_c'] / d['Fp_x_c'], c=c, lw=1.1)
         ax[1, 1].plot(w, d['f_zNA13_x_c'], c=c, lw=1.1)
-        ax[1, 2].plot(w, d['ext_x'] / 1e3, c=c, lw=1.1)
-        if g in ('trimer', 'tri90'): ax[1, 2].plot(w, 50 * d['ext_y'] / 1e3, c=c, lw=0.9, ls='--')
+        ax[1, 2].semilogy(w, d['ext_x'] / 1e3, c=c, lw=1.1)
+        if g in ('trimer', 'tri90'): ax[1, 2].semilogy(w, d['ext_y'] / 1e3, c=c, lw=0.9, ls='--')
     labs = [r'Re $\tilde G_{xx}$ (scattered)', r'Im $\tilde G_{xx}$ = LDOS $-$ 1', r'radiative enhancement $T$',
-            r'antenna efficiency $\eta_a$ (%)', 'fraction into NA 1.3 (+z)', r'extinction ($10^3$ nm$^2$); dashed: $y$-pol. $\times 50$']
+            r'antenna efficiency $\eta_a$ (%)', 'fraction into NA 1.3 (+z)', r'extinction ($10^3$ nm$^2$); dashed: $y$-pol.']
     for a, l, t in zip(ax.flat, labs, 'abcdef'):
         a.set_xlabel(r'$\hbar\omega$ (eV)'); a.set_ylabel(l); a.set_title(f'({t})', loc='left', fontsize=9)
         for le in (1310, 1550): a.axvline(HC / le, c='0.6', lw=0.8, ls=':')
