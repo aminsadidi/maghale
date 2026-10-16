@@ -58,13 +58,26 @@ def main():
         ref = np.interp(1550, dim[270]['lambda_nm'], dim[270]['T_x_c']) if 270 in dim else np.nan
         out.append(f"| {L3} | {nc}/6 | {lp:.0f} | {Tm:.0f} | {100*d['T_x_c'][i]/d['Fp_x_c'][i]:.0f}% | {e('T_x_c',1550)/ref:.2f} |"
                    f" {e('f_py60_x_c',1550):.2f} / {e('f_my60_x_c',1550):.2f} | {r[j]:.2f} ({d['lambda_nm'][j]:.0f}) | {e('f_zNA13_x_c',1550):.2f} |")
+    out += ['', '## (2b) All R3 geometries on the L = 270 nm dimer (values at 1550 nm; dimer: T = %s)' % (
+            f"{np.interp(1550, dim[270]['lambda_nm'], dim[270]['T_x_c']):.0f}" if 270 in dim else '?'), '',
+            '| L3 | angle | X3 | Y3 | chunks | T(1550) | Fp(1550) | eta | f(+y) | f(-y) | ratio | best ratio (lambda) | f NA1.3 |',
+            '|---|---|---|---|---|---|---|---|---|---|---|---|---|']
+    allg = {}
+    for f in sorted(glob.glob(os.path.join(EX, 'tri2_L270_R*_c1.csv'))):
+        stem = re.search(r'tri2_(L270_R[^/]*?)_c1\.csv', f).group(1)
+        p = {'A': 35, 'X': 0, 'Y': 160}
+        for t in stem.split('_')[1:]: p[t[0]] = float(t[1:])
+        d, nc = series(stem); allg[stem] = (p, d); e = lambda k: np.interp(1550, d['lambda_nm'], d[k])
+        r = d['f_py60_x_c'] / d['f_my60_x_c']; j = np.argmax(r)
+        out.append(f"| {p['R']:g} | {p['A']:g} | {p['X']:g} | {p['Y']:g} | {nc}/6 | {e('T_x_c'):.0f} | {e('Fp_x_c'):.0f} | {100*e('T_x_c')/e('Fp_x_c'):.0f}% |"
+                   f" {e('f_py60_x_c'):.2f} | {e('f_my60_x_c'):.2f} | {e('f_py60_x_c')/e('f_my60_x_c'):.2f} | {r[j]:.2f} ({d['lambda_nm'][j]:.0f}) | {e('f_zNA13_x_c'):.2f} |")
     out += ['', '## (3) Mesh convergence (Fp / T, emitter at the gap centre or 20 nm from the tip, dipole x)', '',
             '| structure | h (nm) | faces | 1310 | 1480 | 1550 | 1660 |', '|---|---|---|---|---|---|---|']
     mesh = {}
     for f in sorted(glob.glob(os.path.join(EX, 'tri2_*_M.csv'))):
-        m = re.search(r'tri2_(S_)?L300_H([\d.]+)_M', f)
+        m = re.search(r'tri2_(S_)?(L\d+(?:_R300_A35_Y160)?)_H([\d.]+)_M', f)
         if not m: continue
-        st = 'single' if m.group(1) else 'dimer'; h = float(m.group(2)); d = load(f)
+        st = ('single ' if m.group(1) else '') + m.group(2); h = float(m.group(3)); d = load(f)
         faces = re.search(r'faces=(\d+)', open(f).readline()).group(1)
         mesh.setdefault(st, {})[h] = d
         out.append(f'| {st} | {h:g} | {faces} | ' + ' | '.join(f"{a:.1f} / {b:.1f}" for a, b in zip(d['Fp_x_c'], d['T_x_c'])) + ' |')
