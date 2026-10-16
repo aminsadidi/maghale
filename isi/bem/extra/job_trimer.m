@@ -18,7 +18,8 @@ cpos = strfind(spec, '_c');  chunk = str2double(spec(cpos(end) + 2:end));  geo =
 lall = 1000:20:2200;  nper = 8;  lam = lall((chunk - 1) * nper + 1:min(chunk * nper, numel(lall)));
 pinf = trisphere(1444, 2);
 op = bemoptions('sim', 'ret', 'interp', 'curv', 'pinfty', pinf);
-gold = epstable('gold.dat');
+gtab = 'gold.dat';  if max(lam) > 1937, gtab = fullfile(fileparts(mfilename('fullpath')), 'gold_jcx.dat'); end   % JC ends at 0.64 eV; beyond: Drude-extended JC
+gold = epstable(gtab);
 rods = {};
 [r, ~] = bemx_rod(D, 300, 5, op);  r = rot(r, 90, [0, 1, 0]);            % axis along x, finer mesh (5 nm) near the gap
 rods{end + 1} = shift(r, [-170, 0, 0]);
@@ -73,5 +74,5 @@ for ip = 1:np, for k = 1:nd
     hdr = [hdr, sprintf(',Fp_%s,T_%s,ReG_%s,ImG_%s', s, s, s, s)]; %#ok<AGROW>
     for c = 1:nc, hdr = [hdr, sprintf(',f_%s_%s', cones{c, 1}, s)]; end %#ok<AGROW>
 end, end
-bemx_csv(fullfile(outdir, ['trimer_' spec '.csv']), hdr, M, sprintf('%s: rods D=%g, n=%.2f, faces=%d, pinfty 1444', ...
-    spec, D, n, p.n));
+bemx_csv(fullfile(outdir, ['trimer_' spec '.csv']), hdr, M, sprintf('%s: rods D=%g, n=%.2f, faces=%d, pinfty 1444, %s', ...
+    spec, D, n, p.n, gtab));
