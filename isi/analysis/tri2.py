@@ -112,3 +112,40 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+def figure_tradeoff():
+    """directionality vs radiative enhancement for all R3 geometries on the L = 270 nm dimer -> fig_tri3"""
+    dim, _ = series('L270'); T0 = np.interp(1550, dim['lambda_nm'], dim['T_x_c'])
+    G = {}
+    for f in sorted(glob.glob(os.path.join(EX, 'tri2_L270_R*_c1.csv'))):
+        stem = re.search(r'tri2_(L270_R[^/]*?)_c1\.csv', f).group(1)
+        p = {'A': 35, 'X': 0, 'Y': 160}
+        for t in stem.split('_')[1:]: p[t[0]] = float(t[1:])
+        G[stem] = (p, series(stem)[0])
+    fig, ax = plt.subplots(1, 3, figsize=(9.6, 2.8))
+    for A, c in ((0, '#c0392b'), (20, '#e67e22'), (27, '#2a9d5c'), (35, '#1f4e9c')):
+        k = f'L270_R300_A{A}_Y160'
+        if k in G:
+            d = G[k][1]; ax[0].plot(d['lambda_nm'], d['f_py60_x_c'] / d['f_my60_x_c'], c=c, lw=1.1, label=rf'$\theta_3$ = {A}$^\circ$')
+            ax[1].plot(d['lambda_nm'], d['T_x_c'], c=c, lw=1.1, label=rf'$\theta_3$ = {A}$^\circ$')
+    ax[0].plot(dim['lambda_nm'], dim['f_py60_x_c'] / dim['f_my60_x_c'], 'k--', lw=0.9, label='dimer')
+    ax[1].plot(dim['lambda_nm'], dim['T_x_c'], 'k--', lw=0.9, label='dimer')
+    for a in ax[:2]:
+        for le in (1310, 1550): a.axvline(le, c='0.6', lw=0.8, ls=':')
+        a.set_xlabel('wavelength (nm)'); a.legend(fontsize=6)
+    ax[0].set_ylabel(r'$f(+y)/f(-y)$'); ax[0].set_title(r'(a) $L_3$ = 300 nm, $Y_3$ = 160 nm', loc='left', fontsize=9)
+    ax[1].set_ylabel(r'$T$ (gap centre, $x$ dipole)'); ax[1].set_title('(b)', loc='left', fontsize=9)
+    a = ax[2]
+    for k, (p, d) in G.items():
+        r = np.interp(1550, d['lambda_nm'], d['f_py60_x_c'] / d['f_my60_x_c']); t = np.interp(1550, d['lambda_nm'], d['T_x_c']) / T0
+        a.plot(t, r, 'o', ms=4, c=plt.cm.viridis(p['A'] / 70))
+        a.annotate(f"{p['R']:g}/{p['A']:g}°/{p['Y']:g}" + (f"/x{p['X']:+g}" if p['X'] else ''), (t, r), fontsize=5, xytext=(3, 2), textcoords='offset points')
+    a.plot(1, 1, 'ks', ms=5); a.annotate('dimer', (1, 1), fontsize=6, xytext=(3, 2), textcoords='offset points')
+    a.set_xlabel(r'$T$(1550) / $T_{\rm dimer}$(1550)'); a.set_ylabel(r'$f(+y)/f(-y)$ at 1550 nm')
+    a.set_title(r'(c) all geometries ($L_3$/$\theta_3$/$Y_3$)', loc='left', fontsize=9)
+    fig.tight_layout(); fig.savefig(os.path.join(FIG, 'fig_tri3.pdf')); fig.savefig(os.path.join(FIG, 'fig_tri3.png'), dpi=150)
+
+
+if __name__ == '__main__':
+    figure_tradeoff()
