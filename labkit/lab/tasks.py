@@ -43,11 +43,11 @@ def catalogue():
     sm = lumerical('smoke', {'L': 285, 'L3': 0, 'dx': 4.0, 'coarse': True}, 3e5, 4.0, 2, 'SMOKE TEST: Lumerical FDTD (coarse dimer, a few minutes)')
     sm['smoke'] = True; T.append(sm)
     # --- tier 1: fine end of the mesh-convergence study (spectra 1300-1700 nm, 6 chunks of 7 wavelengths) -------------
-    for h in (3.5, 3.0):                                     # trimer, symmetry 'x': R2 + half R3 meshed
-        N = rod_faces(D, 285, h) + rod_faces(D, 315, h) // 2
+    for h in (3.0, 2.75, 2.5):                               # trimer rotated into the xz plane, symmetry 'xy' (1/4 problem)
+        N = rod_faces(D, 285, h) // 2 + rod_faces(D, 315, h) // 4
         for c in range(1, 7):
-            T.append(mnpbem('meshsym', f'T_L285_R315_Y160_H{h:g}_c{c}', 7, N, 2, 1, f'trimer mesh h = {h:g} nm, spectrum chunk {c}/6'))
-    for h in (2.5, 2.0):                                     # dimer, symmetry 'xy': half of R2 meshed
+            T.append(mnpbem('meshsym', f'Q_L285_R315_Y160_H{h:g}_c{c}', 7, N, 4, 1, f'trimer mesh h = {h:g} nm, spectrum chunk {c}/6'))
+    for h in (2.5, 2.25, 2.0):                               # dimer, symmetry 'xy': half of R2 meshed
         N = rod_faces(D, 285, h) // 2
         for c in range(1, 7):
             T.append(mnpbem('meshsym', f'D_L285_H{h:g}_c{c}', 7, N, 4, 1, f'dimer mesh h = {h:g} nm, spectrum chunk {c}/6'))

@@ -4,6 +4,8 @@ function job_meshsym(spec, outdir)
 %    'D_L285_H2'            dimer, arms L = 285 nm: symmetry 'xy', only the y >= 0 half of R2 is meshed (1/4 problem)
 %    'T_L285_R315_Y160_H3'  trimer with a horizontal R3 (length 315 nm, centre (0, 160) nm): symmetry 'x', R2 and the
 %                           x >= 0 half of R3 are meshed (1/2 problem)
+%    'Q_L285_R315_Y160_H3'  the same trimer rotated by 90 deg about x (rods in the xz plane, R3 at z = Y3), which makes
+%                           it symmetric under x and y: symmetry 'xy', half of R2 and a quarter of R3 (1/4 problem)
 %  Optional '_cK': chunk K (1..6) of the spectrum 1300:10:1700 nm instead of the four wavelengths.
 %  Emitter at the gap centre, dipole along x. Output: Fp, T at 1310, 1450, 1550, 1650 nm, and the number of faces of the
 %  meshed part and of the full structure.
@@ -18,13 +20,17 @@ for k = 1:numel(tok)
 end
 lam = [1310 1450 1550 1650];
 if chunk > 0, lall = 1300:10:1700;  nper = 7;  lam = lall((chunk - 1) * nper + 1:min(chunk * nper, numel(lall))); end   % spectra: 6 chunks
-if kind == 'D', sym = 'xy'; else, sym = 'x'; end
+if kind == 'T', sym = 'x'; else, sym = 'xy'; end
 op = bemoptions('sim', 'ret', 'interp', 'curv', 'sym', sym);
 gold = epstable('gold.dat');
 xc = g / 2 + L / 2;
 if kind == 'D'
     r2 = halfrod(D, L, h, 'side', op);                          % y >= 0 half of a rod along x
     parts = {shift(r2, [xc, 0, 0])};  mult = 4;
+elseif kind == 'Q'
+    r2 = halfrod(D, L, h, 'side', op);
+    r3 = halfrod(D, L3, h, 'quarter', op);                      % x >= 0, y >= 0 quarter of a rod along x
+    parts = {shift(r2, [xc, 0, 0]), shift(r3, [0, 0, Y3])};  mult = 4;
 else
     r2 = fullrod(D, L, h, op);
     r3 = halfrod(D, L3, h, 'axial', op);                        % x >= 0 half of a rod along x
@@ -58,10 +64,15 @@ end
 function p = halfrod(D, L, h, how, op)
 %  half of a capsule rod (axis along x, centre at the origin), cut exactly on a mirror plane:
 %    'side'  : y >= 0 half (cut along the axis)        'axial' : x >= 0 half (cut through the middle)
+%    'quarter' : x >= 0 and y >= 0
 %  built along z as in MNPBEM's trirod and rotated by 90 deg about y (z -> x, y unchanged)
 nphi = ceil(pi * D / h);  nth = 2 * ceil(pi * D / (4 * h));  nz = ceil((L - D) / h) + 1;
 theta = linspace(0, 0.5 * pi, nth);
-if strcmp(how, 'side')
+if strcmp(how, 'quarter')
+    phi = linspace(0, pi, ceil(nphi / 2) + 1);
+    z = linspace(0, 0.5 * (L - D), ceil(nz / 2));
+    caps = shift(trispheresegment(phi, theta, D, op), [0, 0, 0.5 * (L - D)]);
+elseif strcmp(how, 'side')
     phi = linspace(0, pi, ceil(nphi / 2) + 1);                   % original y = sin(phi) >= 0
     z = 0.5 * linspace(-1, 1, nz) * (L - D);
     cap1 = shift(trispheresegment(phi, theta, D, op), [0, 0, 0.5 * (L - D)]);
@@ -76,6 +87,6 @@ cyl = particle([0.5 * D * cos(verts(:, 1)), 0.5 * D * sin(verts(:, 1)), verts(:,
 p = clean([caps; cyl]);
 p = rot(p, 90, [0, 1, 0]);
 v = p.verts;  tol = 1e-6;
-if strcmp(how, 'side') && min(v(:, 2)) < -tol, error('halfrod: vertices below y = 0'); end
-if strcmp(how, 'axial') && min(v(:, 1)) < -tol, error('halfrod: vertices below x = 0'); end
+if any(strcmp(how, {'side', 'quarter'})) && min(v(:, 2)) < -tol, error('halfrod: vertices below y = 0'); end
+if any(strcmp(how, {'axial', 'quarter'})) && min(v(:, 1)) < -tol, error('halfrod: vertices below x = 0'); end
 end
