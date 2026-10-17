@@ -41,13 +41,13 @@ def maps(out):
     for j, (s, lab) in enumerate(cases):
         f = load(os.path.join(EX, f'trimap_{s}_field.csv')); xs, ys, Z = grid(f, 'E2_xpol', 6)
         a = ax[0, j]; im = a.pcolormesh(xs, ys, Z, norm=LogNorm(vmin=1, vmax=np.nanmax(Z)), cmap='inferno', shading='nearest')
-        a.set_aspect('equal'); a.set_title(f'({"abc"[j]}) ' + r'$|E|^2/|E_0|^2$, ' + lab, loc='left', fontsize=7.5)
-        fig.colorbar(im, ax=a, fraction=0.035, pad=0.02); a.set_xlabel('x (nm)'); a.set_ylabel('y (nm)')
+        a.set_aspect('equal'); a.set_title(f'({"abc"[j]}) ' + lab, loc='left', fontsize=7.5); a.plot(0, 0, 'c+', ms=7, mew=1.2)
+        fig.colorbar(im, ax=a, fraction=0.035, pad=0.02, label=r'$|E|^2/|E_0|^2$'); a.set_xlabel('x (nm)'); a.set_ylabel('y (nm)')
         c0 = f['E2_xpol'][np.argmin(f['x'] ** 2 + f['y'] ** 2)]
         L = load(os.path.join(EX, f'trimap_{s}.csv')); xs, ys, Z = grid(L, 'Fp_x', 2)
         a = ax[1, j]; im = a.pcolormesh(xs, ys, Z, norm=LogNorm(vmin=np.nanmin(Z), vmax=np.nanmax(Z)), cmap='viridis', shading='nearest')
-        a.set_aspect('equal'); a.set_title(f'({"def"[j]}) ' + r'LDOS $F_p$ ($x$ dipole), gap region', loc='left', fontsize=7.5)
-        fig.colorbar(im, ax=a, fraction=0.05, pad=0.02); a.set_xlabel('x (nm)'); a.set_ylabel('y (nm)')
+        a.set_aspect('equal'); a.set_title(f'({"def"[j]}) gap region', loc='left', fontsize=7.5); a.plot(0, 0, 'w+', ms=7, mew=1.2)
+        fig.colorbar(im, ax=a, fraction=0.05, pad=0.02, label=r'LDOS $F_p$ ($x$ dipole)'); a.set_xlabel('x (nm)'); a.set_ylabel('y (nm)')
         i0 = np.argmin(L['x'] ** 2 + L['y'] ** 2); im_ = np.argmax(L['Fp_x'])
         edge = [L['Fp_x'][np.argmin(L['x'] ** 2 + (L['y'] - s_) ** 2)] for s_ in (20, -20)]
         out.append(f"| {s} | {np.nanmax(f['E2_xpol']):.0f} | {c0:.0f} | {L['Fp_x'][i0]:.0f} | {L['Fp_x'][im_]:.0f} ({L['x'][im_]:g}, {L['y'][im_]:g}) |"
