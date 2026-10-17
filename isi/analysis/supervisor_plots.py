@@ -6,7 +6,7 @@
   fig_hostn.png  : tuning the resonance with the host index n (dimer L = 270 nm): T spectra and peak wavelength vs n
 usage: python isi/analysis/supervisor_plots.py"""
 import os, re, glob, sys
-import numpy as np, matplotlib
+import numpy as np, matplotlib, matplotlib.ticker
 matplotlib.use('Agg'); import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -76,6 +76,7 @@ def rho_h(out):
             out.append(f'| {lab} | {lam:.0f} | {vals} |')
     for a, yl, t in zip(ax, (r'LDOS  $\rho_{xx}/\rho_0 = F_p$', r'radiative enhancement $T$', r'efficiency $T/F_p$ (%)'), 'abc'):
         a.set_xlabel('emitter-tip distance h (nm)'); a.set_ylabel(yl); a.set_title(f'({t}) 1550 nm', loc='left', fontsize=9)
+        a.set_xticks([3, 5, 10, 20, 30]); a.xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter()); a.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
     ax[0].legend(fontsize=6); fig.tight_layout(); fig.savefig(os.path.join(FIG, 'fig_rho_h.png'), dpi=150)
     out += ['', '(h < 4 nm is below the 4-5 nm mesh resolution: indicative only)', '']
 
