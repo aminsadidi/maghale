@@ -1,0 +1,4 @@
+output/
+vendor/
+results_*.zip
+__pycache__/
