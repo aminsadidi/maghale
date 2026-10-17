@@ -4,18 +4,20 @@ function job_meshsym(spec, outdir)
 %    'D_L285_H2'            dimer, arms L = 285 nm: symmetry 'xy', only the y >= 0 half of R2 is meshed (1/4 problem)
 %    'T_L285_R315_Y160_H3'  trimer with a horizontal R3 (length 315 nm, centre (0, 160) nm): symmetry 'x', R2 and the
 %                           x >= 0 half of R3 are meshed (1/2 problem)
+%  Optional '_cK': chunk K (1..6) of the spectrum 1300:10:1700 nm instead of the four wavelengths.
 %  Emitter at the gap centre, dipole along x. Output: Fp, T at 1310, 1450, 1550, 1650 nm, and the number of faces of the
 %  meshed part and of the full structure.
-n = 1.5;  D = 60;  g = 40;  L = 300;  L3 = 0;  Y3 = 160;  h = 5;  kind = spec(1);
+n = 1.5;  D = 60;  g = 40;  L = 300;  L3 = 0;  Y3 = 160;  h = 5;  kind = spec(1);  chunk = 0;
 tok = strsplit(spec(3:end), '_');
 for k = 1:numel(tok)
     t = tok{k};  v = str2double(t(2:end));
     switch t(1)
-        case 'L', L = v;  case 'R', L3 = v;  case 'Y', Y3 = v;  case 'H', h = v;
+        case 'L', L = v;  case 'R', L3 = v;  case 'Y', Y3 = v;  case 'H', h = v;  case 'c', chunk = v;
         otherwise, error('job_meshsym: unknown token %s', t);
     end
 end
 lam = [1310 1450 1550 1650];
+if chunk > 0, lall = 1300:10:1700;  nper = 7;  lam = lall((chunk - 1) * nper + 1:min(chunk * nper, numel(lall))); end   % spectra: 6 chunks
 if kind == 'D', sym = 'xy'; else, sym = 'x'; end
 op = bemoptions('sim', 'ret', 'interp', 'curv', 'sym', sym);
 gold = epstable('gold.dat');
