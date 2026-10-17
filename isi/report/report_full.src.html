@@ -330,7 +330,24 @@ footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:24px}
     <tr><td class="num">4.5</td><td class="num">11562</td><td class="num">63.3</td><td class="num">343.0</td><td class="num">317.5</td><td class="num">207.3</td></tr>
     <tr><td class="num">4</td><td class="num">14852</td><td class="num">61.8</td><td class="num">328.0</td><td class="num">329.7</td><td class="num">209.3</td></tr>
   </table>
-  <p>تریمر یک مُد ترکیبی <b>تیز</b> دارد؛ ریز شدن مش این قله را کمی به سمت قرمز می‌برد و چون ۱۴۵۰ و ۱۵۵۰ nm روی دو دامنه‌ی آن هستند، مقدار در یک طول موج ثابت بیشتر تغییر می‌کند (در ۱۵۵۰ nm از ۲۷۵ به ۳۳۰ <b>افزایش</b>؛ یعنی اعداد طرح نهایی در h = ۵ محافظه‌کارانه‌اند). معیار درست برای چنین قله‌ای مکان و ارتفاع قله است؛ برای همین طیف کامل ۱۳۰۰–۱۷۰۰ nm در همه‌ی سطوح مش در حال محاسبه است (روی GitHub تا h = ۳.۵ nm، و با کامپیوتر آزمایشگاه تا h = ۲.۷۵ nm برای تریمر و h = ۲.۲۵ nm برای دیمر).</p>
+  <p>تریمر یک مُد ترکیبی <b>تیز</b> دارد؛ ریز شدن مش این قله را کمی به سمت قرمز می‌برد و چون ۱۴۵۰ و ۱۵۵۰ nm روی دو دامنه‌ی آن هستند، مقدار در یک طول موج ثابت بیشتر تغییر می‌کند. معیار درست برای چنین قله‌ای <b>ارتفاع و مکان قله</b> است؛ برای همین طیف کامل ۱۳۰۰ تا ۱۷۰۰ nm (گام ۱۰ nm) در همه‌ی سطوح مش حساب شد.</p>
+  <figure class="wide"><img src="{{IMG:fig_meshconv}}" alt="mesh convergence"><figcaption>همگرایی مش روی طیف کامل: (a, d) ضریب پارسل در مرکز گاف برای همه‌ی اندازه‌های المان؛ (b, e) طول موج قله و (c, f) ارتفاع قله برحسب h². مش‌های h ≤ ۵ nm روی یک خط راست در h² قرار می‌گیرند (ناحیه‌ی همگرایی مجانبی)؛ ستاره‌ی قرمز: برون‌یابی به h → ۰. ردیف بالا: دیمر (h = ۸ تا ۳ nm)، ردیف پایین: تریمر نهایی (h = ۸ تا ۳.۵ nm؛ h = ۳.۵ با تقارن یک‌چهارم، که با تقارن نصف در h = ۵ و ۴ nm تا ۰.۴٪ یکی است).</figcaption></figure>
+  <table>
+    <tr><th>ساختار</th><th>h (nm)</th><th>المان‌ها</th><th>λ قله (nm)</th><th>F<sub>p</sub> قله</th><th>η در قله</th><th>F<sub>p</sub> در ۱۵۵۰</th></tr>
+    <tr><td rowspan="5">دیمر</td><td class="num">8</td><td class="num">2448</td><td class="num">1578</td><td class="num">293</td><td class="num">86.9%</td><td class="num">289</td></tr>
+    <tr><td class="num">5</td><td class="num">6308</td><td class="num">1596</td><td class="num">300</td><td class="num">86.2%</td><td class="num">289</td></tr>
+    <tr><td class="num">4</td><td class="num">9888</td><td class="num">1605</td><td class="num">304</td><td class="num">86.1%</td><td class="num">288</td></tr>
+    <tr><td class="num">3</td><td class="num">17536</td><td class="num">1615</td><td class="num">308</td><td class="num">86.0%</td><td class="num">286</td></tr>
+    <tr style="background:var(--good-soft)"><td>h → ۰</td><td>—</td><td class="num">1625</td><td class="num">312</td><td>—</td><td class="num">284</td></tr>
+    <tr><td rowspan="7">تریمر نهایی</td><td class="num">8</td><td class="num">3588</td><td class="num">1474</td><td class="num">458</td><td class="num">58.4%</td><td class="num">275</td></tr>
+    <tr><td class="num">6</td><td class="num">6448</td><td class="num">1482</td><td class="num">469</td><td class="num">58.1%</td><td class="num">294</td></tr>
+    <tr><td class="num">5</td><td class="num">9398</td><td class="num">1488</td><td class="num">475</td><td class="num">58.0%</td><td class="num">308</td></tr>
+    <tr><td class="num">4.5</td><td class="num">11562</td><td class="num">1491</td><td class="num">480</td><td class="num">58.1%</td><td class="num">318</td></tr>
+    <tr><td class="num">4</td><td class="num">14852</td><td class="num">1495</td><td class="num">485</td><td class="num">57.9%</td><td class="num">330</td></tr>
+    <tr><td class="num">3.5</td><td class="num">19656</td><td class="num">1498</td><td class="num">490</td><td class="num">58.1%</td><td class="num">342</td></tr>
+    <tr style="background:var(--good-soft)"><td>h → ۰</td><td>—</td><td class="num">1508</td><td class="num">503</td><td>—</td><td class="num">373</td></tr>
+  </table>
+  <div class="callout g"><b>نتیجه‌ی همگرایی.</b> (۱) <b>بازده آنتن</b> در همه‌ی مش‌ها ثابت است (دیمر ۸۶٪، تریمر ۵۸٪ در قله). (۲) <b>ارتفاع قله</b> در ریزترین مش فقط ۱.۳٪ (دیمر) و ۲.۷٪ (تریمر) با مقدار حدی فاصله دارد. (۳) تنها اثر باقی‌مانده‌ی مش، <b>جابه‌جایی قله</b> حدود ۱۰ nm (۰.۶٪) به سمت قرمز است که در طراحی با کوتاه کردن میله‌ها حدود ۲ تا ۳ nm جبران می‌شود و از خطای ساخت بسیار کوچک‌تر است. نتیجه‌گیری‌های فیزیکی گزارش به مش وابسته نیستند؛ اعداد تریمر در ۱۵۵۰ nm با مش ۵ nm حدود ۱۷٪ <b>محافظه‌کارانه</b>‌اند. مش‌های ریزتر (تریمر تا ۲.۷۵ nm، دیمر تا ۲.۲۵ nm) برای کامپیوتر آزمایشگاه آماده‌اند.</div>
 </section>
 
 <section>

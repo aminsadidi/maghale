@@ -97,6 +97,10 @@ def spectral():
     fig, ax = plt.subplots(2, 3, figsize=(10, 5.6))
     for r, (pre, lab) in enumerate(cases):
         S = {h: v for h, v in spectra(pre).items() if v[1] == 6}
+        if pre.startswith('T_'):                             # add the quarter-symmetric (rotated) trimer levels
+            for h, v in spectra('Q' + pre[1:]).items():
+                if v[1] == 6 and h not in S: S[h] = v
+            S = dict(sorted(S.items(), reverse=True))
         if len(S) < 2: continue
         out += [f'## {lab}', '', '| h (nm) | faces (full) | peak lambda (nm) | peak Fp | T at peak | eta at peak | Fp(1550) | T(1550) |', '|---|---|---|---|---|---|---|---|']
         rows = []
