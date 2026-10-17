@@ -32,6 +32,6 @@ def panel(ax, L, L3, A, title, note, arrow):
 
 fig, ax = plt.subplots(1, 2, figsize=(9.4, 3.4))
 panel(ax[0], 300, 240, 35, '(a) M4 as proposed', 'peak 1660 nm, ratio 1.6 at 1550', ('38%', '24%'))
-panel(ax[1], 270, 300, 0, '(b) best directional design (R3 parallel)', 'ratio 5.0 at 1520 nm, 4.6 at 1550 nm', ('56%', '12%'))
+panel(ax[1], 285, 315, 0, '(b) final design (R3 parallel)', 'ratio 5.1 at 1550 nm, T = 196', ('62%', '12%'))
 ax[0].set_ylabel('y (nm)')
 fig.tight_layout(); fig.savefig(os.path.join(FIG, 'fig_trimer_opt.png'), dpi=150, bbox_inches='tight')
