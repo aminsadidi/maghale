@@ -68,5 +68,62 @@ def main():
     open(os.path.join(RES, 'meshconv.md'), 'w').write('\n'.join(out) + '\n'); print('\n'.join(out))
 
 
-if __name__ == '__main__':
+if __name__ == '__main__' and len(sys.argv) == 1:
     main()
+
+
+def spectra(prefix):
+    """merge the chunked spectra meshsym_<prefix>_H<h>_c<k>.csv -> {h: array}"""
+    S = {}
+    for f in glob.glob(os.path.join(EX, f'meshsym_{prefix}_H*_c*.csv')):
+        h = float(re.search(r'_H([\d.]+)_c\d+\.csv', f).group(1)); S.setdefault(h, []).append(load(f))
+    out = {}
+    for h, L in S.items():
+        d = np.concatenate(L); out[h] = (d[np.argsort(d['lambda_nm'])], len(L))
+    return dict(sorted(out.items(), reverse=True))
+
+
+def peak(lam, y):
+    i = int(np.argmax(y))
+    if 0 < i < len(y) - 1:
+        a, b, c = y[i - 1], y[i], y[i + 1]; s = 0.5 * (a - c) / (a - 2 * b + c)
+        return lam[i] + s * (lam[1] - lam[0]), b - 0.25 * (a - c) * s
+    return lam[i], y[i]
+
+
+def spectral():
+    cases = [('D_L285', 'dimer (L = 285 nm)'), ('T_L285_R315_Y160', 'trimer (L = 285, R3 = 315 nm horizontal)')]
+    out = ['# Mesh convergence of the full spectra (1300-1700 nm, mirror symmetry), gap centre, x dipole', '']
+    fig, ax = plt.subplots(2, 3, figsize=(10, 5.6))
+    for r, (pre, lab) in enumerate(cases):
+        S = {h: v for h, v in spectra(pre).items() if v[1] == 6}
+        if len(S) < 2: continue
+        out += [f'## {lab}', '', '| h (nm) | faces (full) | peak lambda (nm) | peak Fp | T at peak | eta at peak | Fp(1550) | T(1550) |', '|---|---|---|---|---|---|---|---|']
+        rows = []
+        cols = plt.cm.viridis(np.linspace(0, 0.85, len(S)))
+        for (h, (d, _)), c in zip(S.items(), cols):
+            lam = d['lambda_nm']; lp, Fpk = peak(lam, d['Fp_x']); Tp = np.interp(lp, lam, d['T_x'])
+            F55, T55 = np.interp(1550, lam, d['Fp_x']), np.interp(1550, lam, d['T_x'])
+            rows.append((h, lp, Fpk, Tp, F55, T55))
+            out.append(f"| {h:g} | {int(d['faces_full'][0])} | {lp:.1f} | {Fpk:.1f} | {Tp:.1f} | {100*Tp/Fpk:.1f}% | {F55:.1f} | {T55:.1f} |")
+            ax[r, 0].plot(lam, d['Fp_x'], c=c, lw=1.1, label=f'h = {h:g} nm')
+        R = np.array(rows); fine = R[:, 0] <= 5
+        fits = {k: np.polyfit(R[fine, 0] ** 2, R[fine, k], 1) for k in (1, 2, 4)}
+        out += ['', 'Richardson (h^2 -> 0, h <= 5 nm): peak lambda = %.1f nm, peak Fp = %.1f, Fp(1550) = %.1f' % (fits[1][1], fits[2][1], fits[4][1]),
+                'Change from the finest computed mesh to the extrapolated limit: peak lambda %+.1f nm, peak Fp %+.1f%%, Fp(1550) %+.1f%%' % (
+                    fits[1][1] - R[-1, 1], 100 * (fits[2][1] / R[-1, 2] - 1), 100 * (fits[4][1] / R[-1, 4] - 1)), '']
+        x = np.linspace(0, R[:, 0].max() ** 2, 50)
+        for k, a, yl in ((1, ax[r, 1], 'peak wavelength (nm)'), (2, ax[r, 2], r'peak $F_p$')):
+            a.plot(R[:, 0] ** 2, R[:, k], 'o', c='#1f4e9c'); a.plot(x, np.polyval(fits[k], x), 'k--', lw=0.8)
+            a.plot(0, fits[k][1], '*', c='#c0392b', ms=9); a.set_xlabel(r'$h^2$ (nm$^2$)'); a.set_ylabel(yl)
+            a2 = a.secondary_xaxis('top', functions=(lambda v: np.sqrt(np.maximum(v, 0)), lambda v: v ** 2)); a2.set_xlabel('h (nm)', fontsize=7)
+        ax[r, 0].axvline(1550, c='0.6', lw=0.8, ls=':'); ax[r, 0].set_xlabel('wavelength (nm)'); ax[r, 0].set_ylabel(r'$F_p$ (gap centre)')
+        ax[r, 0].legend(fontsize=6); ax[r, 0].set_title(f'({"ad"[r]}) {lab}', loc='left', fontsize=8)
+        ax[r, 1].set_title(f'({"be"[r]})', loc='left', fontsize=8); ax[r, 2].set_title(f'({"cf"[r]})', loc='left', fontsize=8)
+    fig.text(0.01, 0.005, r'red stars: Richardson extrapolation (h$^2$ $\to$ 0) from h $\leq$ 5 nm', fontsize=7)
+    fig.tight_layout(); fig.savefig(os.path.join(FIG, 'fig_meshconv.png'), dpi=150)
+    open(os.path.join(RES, 'meshconv_spectra.md'), 'w').write('\n'.join(out) + '\n'); print('\n'.join(out))
+
+
+if __name__ == '__main__' and len(sys.argv) > 1 and sys.argv[1] == 'spectra':
+    spectral()
