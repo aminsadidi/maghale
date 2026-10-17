@@ -28,8 +28,10 @@ else
     r3 = halfrod(D, L3, h, 'axial', op);                        % x >= 0 half of a rod along x
     parts = {shift(r2, [xc, 0, 0]), shift(r3, [0, Y3, 0])};  mult = 2;
 end
-np_ = numel(parts);  cl = num2cell(1:np_);
-p = comparticlemirror({epsconst(n^2), gold}, parts, repmat([2, 1], np_, 1), cl{:}, op);
+np_ = numel(parts);
+%  comparticlemirror accepts only one closed argument at construction; further closed surfaces are added afterwards
+p = comparticlemirror({epsconst(n^2), gold}, parts, repmat([2, 1], np_, 1), 1, op);
+for k = 2:np_, p = closed(p, k); end
 pt = compoint(p, [0 0 0], op);
 dip = dipole(pt, [1 0 0], op);
 bem = bemsolver(p, op);
