@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>گزارش هندسه‌ی سه‌نانومیله‌ای</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --paper:#ffffff; --ink:#1d2330; --ink2:#4a5263; --muted:#7a8191; --line:#e3e1da;
+  --accent:#1f4e9c; --accent-soft:#e8eef8; --gold:#b8892a; --gold-soft:#faf3e3; --good:#2a7a4b; --good-soft:#e7f4ec;
+  --warn:#9a5b00; --warn-soft:#fbf1e1;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Vazirmatn",Tahoma,sans-serif;line-height:1.95}
+.page{max-width:900px;margin:0 auto;padding:28px 16px 60px}
+header.cover{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:34px 34px 28px;position:relative;overflow:hidden}
+header.cover::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.kicker{color:var(--gold);font-weight:600;font-size:.92rem;letter-spacing:.02em}
+h1{font-size:1.75rem;line-height:1.6;margin:.4rem 0 .6rem;font-weight:800}
+.en{direction:ltr;unicode-bidi:isolate;font-family:Georgia,"Times New Roman",serif}
+.entitle{display:block;direction:ltr;text-align:left;color:var(--ink2);font-family:Georgia,serif;font-size:1rem;line-height:1.6;margin:.3rem 0 1rem}
+.meta{color:var(--ink2);font-size:.95rem}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{font-size:.82rem;padding:3px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.badge.g{background:var(--good-soft);color:var(--good)} .badge.o{background:var(--gold-soft);color:var(--gold)}
+section{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px 30px;margin-top:20px}
+h2{font-size:1.3rem;margin:0 0 .8rem;font-weight:800;display:flex;align-items:center;gap:10px}
+h2 .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--accent);color:#fff;font-size:.95rem}
+h3{font-size:1.05rem;margin:1.2rem 0 .4rem;color:var(--accent)}
+p{margin:.5rem 0}
+.lead{font-size:1.05rem;color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 4px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fbfbf9}
+.tile .v{font-size:1.55rem;font-weight:800;color:var(--accent);direction:ltr;text-align:right}
+.tile .l{font-size:.86rem;color:var(--ink2);line-height:1.7}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92rem}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:right;vertical-align:top}
+th{background:#f3f2ed;font-weight:600}
+td.before{color:var(--ink2)} td.after{color:var(--ink)}
+tr:hover td{background:#fafaf7}
+.tl{position:relative;margin:10px 0 0;padding-right:26px}
+.tl::before{content:"";position:absolute;right:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.step{position:relative;margin:0 0 16px}
+.step::before{content:"";position:absolute;right:-24px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:3px solid var(--accent)}
+.step.key::before{border-color:var(--gold)}
+.step b{display:block}
+.step .d{color:var(--ink2);font-size:.95rem}
+figure{margin:16px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff;padding:6px}
+figcaption{font-size:.86rem;color:var(--ink2);margin-top:6px;line-height:1.8}
+.callout{border-right:4px solid var(--gold);background:var(--gold-soft);padding:12px 16px;border-radius:8px;margin:14px 0}
+.callout.g{border-color:var(--good);background:var(--good-soft)}
+.callout.w{border-color:var(--warn);background:var(--warn-soft)}
+ul{margin:.4rem 0;padding-right:1.3rem} li{margin:.25rem 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:720px){.two,.tiles{grid-template-columns:1fr 1fr} header.cover,section{padding:20px 18px} h1{font-size:1.4rem}}
+.num{direction:ltr;unicode-bidi:isolate}
+footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:24px}
+.papers{display:grid;gap:10px;margin-top:16px}
+.pcard{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:#fbfbf9}
+.pcard .entitle{margin:.2rem 0 0;font-size:.95rem}
+.ptag{font-weight:700;color:var(--accent);font-size:.9rem}.ptag.g{color:var(--good)}
+.tile .v sup{font-size:.6em}
+@page{size:A4 portrait;margin:16mm 14mm 16mm 14mm}
+@media print{
+  html{font-size:10.5pt}
+  body{background:#fff;line-height:1.8;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{max-width:none;margin:0;padding:0}
+  header.cover,section{border:none;border-radius:0;padding:0;margin:0 0 6mm 0;background:#fff}
+  header.cover{padding-top:4mm}
+  section{break-before:auto;margin-bottom:5mm;padding-top:2mm;border-top:1px solid #e3e1da}
+  h2,h3{break-after:avoid;page-break-after:avoid}
+  h3+ul,h3+p{break-before:avoid}
+  h1{font-size:17pt} h2{font-size:13.5pt;break-after:avoid} h3{font-size:11.5pt;break-after:avoid}
+  .tiles{grid-template-columns:repeat(3,1fr);gap:3mm}
+  .tile{padding:3mm 4mm}.tile .v{font-size:14pt}.tile .l{font-size:8.8pt}
+  figure{margin:4mm 0;break-inside:avoid}
+  figure img{max-height:78mm;width:auto;max-width:100%;border:none;padding:0}
+  figcaption{font-size:8.8pt}
+  table{font-size:8.8pt;break-inside:auto} tr{break-inside:avoid} th,td{padding:4px 6px}
+  .two{grid-template-columns:1fr 1fr}
+  .callout,.tile,.pcard{break-inside:avoid}
+  .tl{padding-right:30px;margin-right:2px} .step,li{break-inside:avoid}
+  table{break-inside:avoid}
+  footer{margin-top:6mm}
+  tr:hover td{background:none}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="cover">
+  <div class="kicker">گزارش پیشرفت پروژه — هندسه‌های پیشنهادی استاد (M2 و M4)</div>
+  <h1>منبع تک‌فوتون مخابراتی (۱۵۵۰ nm) با سه‌نانومیله‌ی طلا: نتایج محاسبات اولیه</h1>
+  <span class="entitle">Gold-nanorod dimer/trimer antennas for a telecom (1550 nm) single-photon source: Green-function analysis, directionality and quantum metrics</span>
+  <div class="meta">امین حسین صدیدی، سید محمدپارسا مولائی طبری — استاد راهنما: دکتر مالک باقری هارونی — دانشگاه اصفهان</div>
+  <div class="badges"><span class="badge">BEM (MNPBEM17، کاملاً تأخیری)</span><span class="badge g">۳۶۰+ اجرای محاسباتی روی GitHub</span><span class="badge o">تابع گرین، LDOS، Purcell، جمع‌آوری، g<sup>(2)</sup>، I</span></div>
+</header>
+
+<section>
+  <h2><span class="n">۱</span>خلاصه‌ی نتایج</h2>
+  <div class="tiles">
+    <div class="tile"><div class="v num">87%</div><div class="l">بازده آنتن دیمر (D = ۶۰ nm، گاف ۴۰ nm) در ۱۵۵۰ nm — نزدیک چهار برابر میله‌ی نازک مقاله‌ی ۲ (۲۳٪)</div></div>
+    <div class="tile"><div class="v num">F<sub>p</sub> ≈ 270</div><div class="l">ضریب پارسل در مرکز گاف ۴۰ نانومتری در ۱۵۵۰ nm؛ T ≈ ۲۴۰</div></div>
+    <div class="tile"><div class="v num">5 : 1</div><div class="l">نسبت تابش به سمت میله‌ی سوم به سمت مقابل (R3 موازی، ۱۵۲۰ nm)؛ در ۱۵۵۰ nm حدود ۴.۶</div></div>
+  </div>
+  <div class="tiles">
+    <div class="tile"><div class="v num">0.012</div><div class="l">g<sup>(2)</sup>(0) با پالس ۱۰۰ fs (دمای ۴ K)</div></div>
+    <div class="tile"><div class="v num">0.98</div><div class="l">تمایزناپذیری I در ۴ K؛ در دمای اتاق کمتر از ۰.۰۱</div></div>
+    <div class="tile"><div class="v num">±2%</div><div class="l">همگرایی مش (h = ۴.۵ در برابر ۴ nm) برای دیمر و تریمر</div></div>
+  </div>
+  <div class="callout g"><b>برداشت اصلی.</b> دیمر نانومیله‌ی ضخیم با گاف واقع‌بینانه (۴۰ nm، مناسب برای نقطه‌ی کوانتومی) در ۱۵۵۰ nm هم‌زمان Purcell حدود ۲۷۰ و بازده ۸۷٪ می‌دهد. میله‌ی سوم پارسل را چندان بالا نمی‌برد، اما <b>جهت تابش</b> را کنترل می‌کند (تا ۵ برابر به یک سمت) — که برای جفت کردن نور به موجبر روی تراشه ارزشمند است و زاویه‌ی نوآوری اصلی کار است.</div>
+</section>
+
+<section>
+  <h2><span class="n">۲</span>روش و معیارهای صحت</h2>
+  <ul>
+    <li><b>روش:</b> روش المان مرزی (BEM) با بسته‌ی MNPBEM17، حل کامل معادلات ماکسول (تأخیری)، طلای Johnson–Christy (بالای ۱۹۳۷ nm با برازش Drude ادامه داده شده)، محیط همگن n = ۱.۵.</li>
+    <li><b>کمیت‌ها در هر طول موج:</b> تابع گرین پراکنده در محل گسیلنده (Re G و Im G؛ LDOS − 1 = Im G، جابه‌جایی لمب ∝ Re G)، ضریب پارسل F<sub>p</sub>، آهنگ تابشی T، بازده آنتن η = T/F<sub>p</sub>، سهم توان وارد شده به عدسی (NA ۱.۳ و ۰.۹) و به دو مخروط ±y، و طیف خاموشی برای دو قطبش.</li>
+    <li><b>گسیلنده:</b> وسط گاف، و دو مکان جابه‌جا (۵ nm به سمت R2، ۱۰ nm به سمت R3)، دوقطبی در سه جهت x، y و z.</li>
+    <li><b>چک‌های داخلی:</b> رابطه‌ی F<sub>p</sub> = 1 + Im G (دو مسیر مستقل) در همه‌ی اجراها با خطای کمتر از ۱۰<sup>−۶</sup> برقرار است؛ پیوستگی منحنی‌ها در مرز تکه‌های طول موج و در مرز جدول طلا؛ همگرایی مش (بخش ۷).</li>
+    <li><b>زیرساخت:</b> هر طول موج مستقل حل می‌شود؛ محاسبات در ۳۶۰+ اجرای موازی روی ماشین‌های رایگان GitHub Actions انجام شد (۴ هسته، ۱۶ GB).</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۳</span>هندسه‌ی کروی M2: چرا ادامه ندادیم</h2>
+  <p>طبق حل دقیق Mie، کره‌ی طلای ۲۳۰ nm در n = ۱.۵ تشدیدش در <span class="num">630 nm</span> است (کره‌ی ۱۸۰ nm در <span class="num">580 nm</span>) و خاموشی در ۱۵۵۰ nm حدود ۴.۵ برابر کمتر از قله است. گاف ۲۴ nm تشدید را فقط حدود ۱۰٪ جابه‌جا می‌کند؛ پس M2 در ۱۵۵۰ nm <b>غیرتشدیدی</b> است. دیمر و تریمر کروی نیز در ادبیات بسیار مطالعه شده‌اند. پیشنهاد: M2 فقط به‌عنوان مرجع مقایسه در یک پاراگراف.</p>
+</section>
+
+<section>
+  <h2><span class="n">۴</span>محاسبه‌ی اولیه‌ی M4 (ابعاد پیشنهادی استاد)</h2>
+  <figure><img src="{{IMG:fig_trimer_geom}}" alt="هندسه"><figcaption>هندسه: دو میله‌ی R1 و R2 (قطر ۶۰ nm) با گاف ۴۰ nm و گسیلنده‌ی وسط گاف؛ میله‌ی سوم R3 با طول L<sub>3</sub>، زاویه‌ی θ<sub>3</sub> و مرکز (X<sub>3</sub>, Y<sub>3</sub>).</figcaption></figure>
+  <p>ابتدا ابعاد پایه‌ی M4 (میله‌های ۳۰۰ nm، R3 به طول ۲۴۰ nm و زاویه‌ی ۳۵°) در بازه‌ی ۱۰۰۰ تا ۲۲۰۰ nm حساب شد و با میله‌ی تنها، دیمر و شکل T مقایسه شد. نمودارها به سبک کارهای گروه Hughes برحسب بسامد رسم شده‌اند.</p>
+  <figure><img src="{{IMG:fig_trimer}}" alt="تریمر پایه"><figcaption>(a) Re G، (b) Im G = LDOS − ۱ (لگاریتمی)، (c) T، (d) بازده آنتن، (e) سهم توان وارد شده به عدسی NA ۱.۳، (f) خاموشی (خط‌چین: قطبش y که مُد R3 را نشان می‌دهد). خطوط نقطه‌چین: ۱۳۱۰ و ۱۵۵۰ nm.</figcaption></figure>
+  <table>
+    <tr><th>هندسه (ابعاد M4)</th><th>قله‌ی T</th><th>T / F<sub>p</sub> در قله</th><th>η</th><th>F<sub>p</sub> در ۱۵۵۰</th><th>سهم +y / −y در ۱۵۵۰</th></tr>
+    <tr><td>میله‌ی تنها (۲۰ nm از نوک)</td><td class="num">1480 nm</td><td class="num">84 / 102</td><td class="num">82%</td><td class="num">90</td><td class="num">0.30 / 0.30</td></tr>
+    <tr><td>دیمر (گاف ۴۰ nm)</td><td class="num">1660 nm</td><td class="num">283 / 327</td><td class="num">87%</td><td class="num">268</td><td class="num">0.31 / 0.31</td></tr>
+    <tr><td>تریمر (R3 = ۲۴۰ nm، ۳۵°)</td><td class="num">1660 nm</td><td class="num">251 / 292</td><td class="num">86%</td><td class="num">248</td><td class="num">0.38 / 0.24</td></tr>
+    <tr><td>شکل T (R3 عمود)</td><td class="num">1660 nm</td><td class="num">272 / 315</td><td class="num">86%</td><td class="num">249</td><td class="num">0.32 / 0.30</td></tr>
+  </table>
+  <p>نتیجه: میله‌های ۳۰۰ nm برای دیمر کمی بلندند (قله در ۱۶۶۰ nm). در شکل T، به دلیل تقارن آینه‌ای، دوقطبی x اصلاً به R3 جفت نمی‌شود؛ اما برای دوقطبی y، F<sub>p</sub> از ۰.۷ به ۱۳ می‌رسد.</p>
+</section>
+
+<section>
+  <h2><span class="n">۵</span>تنظیم دیمر روی ۱۳۱۰ و ۱۵۵۰ nm</h2>
+  <figure><img src="{{IMG:fig_tri2}}" alt="تنظیم"><figcaption>(a) T دیمر برای طول بازوی ۲۴۰ تا ۲۸۰ nm؛ (b) اثر طول R3 (۲۶۰، ۳۰۰، ۳۴۰ nm، زاویه‌ی ۳۵°) روی T؛ (c) نسبت تابش به سمت R3 به سمت مقابل.</figcaption></figure>
+  <table>
+    <tr><th>طول بازو L</th><th>قله‌ی T</th><th>T max</th><th>η</th><th>T / F<sub>p</sub> در ۱۵۵۰</th><th>T در ۱۳۱۰</th></tr>
+    <tr><td class="num">240</td><td class="num">1405</td><td class="num">196</td><td class="num">88%</td><td class="num">149 / 170</td><td class="num">157</td></tr>
+    <tr><td class="num">260</td><td class="num">1490</td><td class="num">224</td><td class="num">88%</td><td class="num">211 / 242</td><td class="num">110</td></tr>
+    <tr><td class="num">270</td><td class="num">1532</td><td class="num">239</td><td class="num">87%</td><td class="num">237 / 272</td><td class="num">89</td></tr>
+    <tr><td class="num">280</td><td class="num">1573</td><td class="num">253</td><td class="num">87%</td><td class="num">251 / 288</td><td class="num">72</td></tr>
+  </table>
+  <p>برازش خطی: L(1550) ≈ ۲۷۴ nm و L(1310) ≈ ۲۱۷ nm (با تصحیح مش حدود ۷ nm کوتاه‌تر). در همه‌ی طول‌ها بازده ۸۷ تا ۸۸٪ و حدود ۳۱٪ از نور وارد عدسی NA ۱.۳ می‌شود.</p>
+  <div class="callout"><b>نکته‌ی فیزیکی (مُد تاریک).</b> وقتی تشدید R3 به تشدید دیمر نزدیک می‌شود (L<sub>3</sub> = ۳۴۰ nm)، مُدها ترکیب می‌شوند: قله‌ی T باریک‌تر و بلندتر می‌شود (۲۹۱ در برابر ۲۳۹) و فرورفتگی شبیه فانو ظاهر می‌شود. با بلند شدن R3 جهت تابش هم برعکس می‌شود (رفتار بازتابنده/هدایت‌کننده‌ی آنتن Yagi–Uda).</div>
+</section>
+
+<section>
+  <h2><span class="n">۶</span>جاروب زاویه، مکان و طول میله‌ی سوم</h2>
+  <p>۱۵ هندسه برای R3 روی دیمر ۲۷۰ nm حساب شد (زاویه‌ی ۰ تا ۶۵°، ارتفاع ۱۶۰ تا ۲۲۰ nm، جابه‌جایی جانبی ±۵۰ nm، طول ۲۶۰ تا ۳۴۰ nm).</p>
+  <figure><img src="{{IMG:fig_tri3}}" alt="جاروب R3"><figcaption>(a) نسبت تابش +y/−y برای زاویه‌های مختلف R3 (طول ۳۰۰ nm، ارتفاع ۱۶۰ nm)؛ (b) T همان هندسه‌ها؛ (c) سازش جهت‌دهی و T در ۱۵۵۰ nm برای همه‌ی هندسه‌ها (برچسب: L<sub>3</sub>/θ<sub>3</sub>/Y<sub>3</sub>).</figcaption></figure>
+  <table>
+    <tr><th>R3 (L<sub>3</sub>، زاویه، Y<sub>3</sub>)</th><th>T در ۱۵۵۰</th><th>η</th><th>+y / −y در ۱۵۵۰</th><th>بیشینه‌ی نسبت (طول موج)</th></tr>
+    <tr><td>بدون R3 (دیمر)</td><td class="num">237</td><td class="num">87%</td><td class="num">0.31 / 0.31</td><td class="num">1.0</td></tr>
+    <tr><td>۳۰۰، <b>۰°</b>، ۱۶۰</td><td class="num">158</td><td class="num">75%</td><td class="num"><b>0.56 / 0.12</b></td><td class="num"><b>5.0 (1520)</b></td></tr>
+    <tr><td>۳۰۰، ۲۰°، ۱۶۰</td><td class="num">162</td><td class="num">76%</td><td class="num">0.52 / 0.14</td><td class="num">3.8 (1540)</td></tr>
+    <tr><td>۳۰۰، ۳۵°، ۱۶۰</td><td class="num">164</td><td class="num">77%</td><td class="num">0.46 / 0.17</td><td class="num">2.7 (1560)</td></tr>
+    <tr><td>۳۰۰، ۳۵°، ۱۹۰</td><td class="num">204</td><td class="num">79%</td><td class="num">0.44 / 0.21</td><td class="num">2.1 (1560)</td></tr>
+    <tr><td>۳۰۰، ۳۵°، ۲۲۰</td><td class="num">230</td><td class="num">81%</td><td class="num">0.42 / 0.25</td><td class="num">1.7 (1600)</td></tr>
+    <tr><td>۳۰۰، ۶۵°، ۱۹۰</td><td class="num">207</td><td class="num">84%</td><td class="num">0.34 / 0.26</td><td class="num">1.4 (1600)</td></tr>
+    <tr><td>۳۴۰، ۳۵°، ۱۶۰</td><td class="num">228</td><td class="num">73%</td><td class="num">0.27 / 0.38</td><td class="num">2.2 (1720)، معکوس</td></tr>
+  </table>
+  <ul>
+    <li><b>بهترین جهت‌دهی</b> با R3 <b>موازی</b> با دیمر (θ<sub>3</sub> = ۰) به دست آمد: نسبت ۵ به ۱ (حدود ۷ dB) در ۱۵۲۰ nm و ۴.۶ در ۱۵۵۰ nm. زاویه‌ی بیشتر و فاصله‌ی بیشتر جهت‌دهی را کم و T را زیاد می‌کند — یک منحنی سازش روشن (شکل c).</li>
+    <li><b>کاهش T در ۱۵۵۰ عمدتاً ناشی از جابه‌جایی تشدید است، نه اتلاف:</b> R3 قله‌ی T را به حدود ۱۴۴۰ nm می‌برد بدون اینکه ارتفاع آن کم شود (حدود ۲۵۰ در برابر ۲۳۹ دیمر). برای همین طرح‌های بزرگ‌تر (حدود ۵ تا ۸٪ بزرگ‌نمایی) در حال محاسبه‌اند تا قله دوباره روی ۱۵۵۰ بنشیند (بخش ۹).</li>
+    <li>سهم نور وارد شده به عدسی بالایی (NA ۱.۳) در همه‌ی هندسه‌ها ۲۷ تا ۳۰٪ است؛ یعنی جهت‌دهی در صفحه‌ی ساختار است (به سمت موجبر روی تراشه)، نه به سمت عدسی بالا.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۷</span>همگرایی مش</h2>
+  <table>
+    <tr><th>ساختار</th><th>h (nm)</th><th>تعداد المان</th><th>F<sub>p</sub> در ۱۴۸۰</th><th>F<sub>p</sub> در ۱۵۵۰</th><th>F<sub>p</sub> در ۱۶۶۰</th></tr>
+    <tr><td>دیمر L = ۲۷۰</td><td class="num">5 / 4.5 / 4</td><td class="num">5920 / 7298 / 9306</td><td class="num">259.8 / 259.0 / 258.0</td><td class="num">271.9 / 273.9 / 276.0</td><td class="num">224.8 / 228.5 / 232.7</td></tr>
+    <tr><td>تریمر (۳۰۰، ۳۵°، ۱۶۰)</td><td class="num">5 / 4.5 / 4</td><td class="num">7506 / 9299 / 11847</td><td class="num">303.9 / 310.8 / 318.4</td><td class="num">214.2 / 217.4 / 221.3</td><td class="num">170.8 / 172.4 / 174.1</td></tr>
+    <tr><td>میله‌ی تنها L = ۳۰۰</td><td class="num">6 → 3</td><td class="num">2170 → 8804</td><td class="num">101.7 → 102.5</td><td class="num">86.9 → 97.1</td><td class="num">57.8 → 66.0</td></tr>
+  </table>
+  <p>اختلاف مش ۴.۵ و ۴ nm حدود ۲٪ است. ارتفاع قله‌ی میله‌ی تنها کاملاً همگراست (کمتر از ۱٪)، اما مش درشت قله را حدود ۲٪ (حدود ۳۰ nm) به سمت طول موج کوتاه‌تر می‌برد. با برون‌یابی (h<sup>2</sup> → ۰)، مقادیر h = ۵ nm در ۱۵۵۰ nm برای دیمر حدود ۴٪ و برای تریمر حدود ۹٪ <b>کمتر</b> از مقدار حدی‌اند؛ یعنی اعداد این گزارش محافظه‌کارانه‌اند. طرح‌های نهایی مقاله با مش ریزتر حساب خواهند شد.</p>
+</section>
+
+<section>
+  <h2><span class="n">۸</span>معیارهای کوانتومی (g<sup>(2)</sup> و تمایزناپذیری)</h2>
+  <p>معادله‌ی master لیندبلاد (QuTiP) برای گسیلنده‌ی دوترازه با برانگیزش پالسی π تشدیدی؛ گسیلنده‌ی روشن با طول عمر ۱ ns، آهنگ کل Γ = F<sub>p</sub>/τ<sub>0</sub>؛ واهمدوسی خالص ۱ μeV (۴ K) یا ۱۰ meV (دمای اتاق).</p>
+  <table>
+    <tr><th>طرح</th><th>F<sub>p</sub></th><th>η</th><th>پالس</th><th>g<sup>(2)</sup>(0) در ۴ K</th><th>I در ۴ K</th><th>I در دمای اتاق</th></tr>
+    <tr><td>دیمر L = ۲۷۰</td><td class="num">272</td><td class="num">87%</td><td class="num">100 fs</td><td class="num">0.012</td><td class="num">0.979</td><td class="num">0.009</td></tr>
+    <tr><td>دیمر L = ۲۷۰</td><td class="num">272</td><td class="num">87%</td><td class="num">1 ps</td><td class="num">0.094</td><td class="num">0.909</td><td class="num">0.009</td></tr>
+    <tr><td>تریمر (۳۰۰، ۳۵°)</td><td class="num">215</td><td class="num">77%</td><td class="num">100 fs</td><td class="num">0.009</td><td class="num">0.978</td><td class="num">0.007</td></tr>
+    <tr><td>تریمر (۳۴۰، ۳۵°)</td><td class="num">315</td><td class="num">73%</td><td class="num">100 fs</td><td class="num">0.013</td><td class="num">0.979</td><td class="num">0.010</td></tr>
+  </table>
+  <p>در دمای پایین همه‌ی طرح‌ها منبع تک‌فوتون بسیار خوبی‌اند. در دمای اتاق تمایزناپذیری از بین می‌رود، چون ħΓ (حدود ۰.۲ meV) خیلی کوچک‌تر از پهنای واهمدوسی (حدود ۱۰ meV) است.</p>
+</section>
+
+<section>
+  <h2><span class="n">۹</span>محدودیت‌ها و گام‌های بعدی</h2>
+  <h3>محدودیت‌هایی که صادقانه باید گفت</h3>
+  <ul>
+    <li><b>محیط:</b> نقطه‌ی کوانتومی InAs/InP داخل InP (n ≈ ۳.۱۷) رشد می‌کند، نه در n = ۱.۵. محیط n = ۱.۵ با نقطه‌ی کوانتومی کلوئیدی (PbS/PbSe در پلیمر یا شیشه) سازگار است؛ حالت InP (آنتن روی سطح و نقطه‌ی کوانتومی زیر آن) باید جدا بررسی شود.</li>
+    <li><b>نوآوری:</b> دیمر نانومیله به‌عنوان منبع تک‌فوتون قبلاً توسط Ge و Hughes (Opt. Lett. 2014) بررسی شده و ساختار «دیمر + یک میله» (dolmen) برای فانو شناخته‌شده است (Verellen و همکاران، Nano Lett. 2009). نوآوری ما باید روی <b>کنترل جهت تابش در ۱۵۵۰ nm با بازده بالا</b>، تحلیل کامل تابع گرین و معیارهای کوانتومی، و جفت‌شدن به موجبر روی تراشه متمرکز شود.</li>
+    <li>بستر (substrate) هنوز در مدل نیست.</li>
+  </ul>
+  <h3>در حال اجرا روی GitHub</h3>
+  <p>طرح‌های بزرگ‌نمایی‌شده با R3 موازی (L = ۲۸۵ تا ۲۹۰ nm، L<sub>3</sub> = ۳۱۵ تا ۳۲۰ nm) تا قله‌ی T و بیشینه‌ی جهت‌دهی هر دو روی ۱۵۵۰ nm بنشینند.</p>
+  <h3>مسیر مقاله</h3>
+  <table>
+    <tr><th>هدف</th><th>کارهای لازم</th><th>توان محاسباتی</th><th>زمان تقریبی</th></tr>
+    <tr><td>Q2 (مطمئن)</td><td>طرح نهایی با مش ریز، جاروب تحمل ساخت، g<sup>(2)</sup> و I، نوشتن</td><td>GitHub رایگان کافی است</td><td>۳ تا ۴ هفته</td></tr>
+    <tr><td>Q1</td><td>موارد بالا + آنتن روی بستر InP یا گسیلنده‌ی کلوئیدی + جفت‌شدن نور به موجبر روی تراشه + تأیید مستقل با FDTD/FEM</td><td>سیستم با حافظه‌ی زیاد (بخش ۱۰)</td><td>۶ تا ۸ هفته</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="n">۱۰</span>نیاز محاسباتی برای مسیر Q1</h2>
+  <p>بخش سنگین مسیر Q1 مدل موجبر و بستر است که با FDTD (Meep یا Lumerical) یا FEM (COMSOL) حل می‌شود؛ این روش‌ها کل فضای اطراف را شبکه‌بندی می‌کنند و حافظه‌ی زیادی می‌خواهند.</p>
+  <table>
+    <tr><th>کار</th><th>با کامپیوتر فعلی (۶ هسته، ۳۲ GB)</th><th>با سیستم قوی‌تر (۱۶+ هسته، ۶۴–۱۲۸ GB)</th></tr>
+    <tr><td>تریمر با مش ریز (۳ طرح نهایی)</td><td>حدود ۳ روز</td><td>کمتر از ۱ روز</td></tr>
+    <tr><td>تأیید مستقل دیمر با FDTD/FEM</td><td>۱ تا ۲ روز (Meep)؛ نیم روز (Lumerical/COMSOL)</td><td>چند ساعت</td></tr>
+    <tr><td>جفت‌شدن به موجبر (۵ تا ۱۰ اجرا)</td><td>۵ تا ۱۰ روز (Meep، شبکه‌ی ۵ nm)؛ ۱ تا ۳ روز (Lumerical/COMSOL)</td><td>۱ تا ۳ روز، با شبکه‌ی ریزتر نزدیک گاف</td></tr>
+    <tr><td><b>جمع</b></td><td><b>حدود ۱.۵ تا ۲ هفته</b></td><td><b>حدود ۳ تا ۵ روز</b></td></tr>
+  </table>
+  <p>کامپیوتر آزمایشگاه به‌صورت «runner اختصاصی» به مخزن GitHub پروژه وصل می‌شود و کارها را خودکار دریافت، اجرا و نتیجه را برمی‌گرداند (راهنمای نصب آماده است). دسترسی به MATLAB و در صورت امکان Lumerical یا COMSOL کار را به‌طور چشمگیری سریع‌تر می‌کند.</p>
+</section>
+
+<footer>تمام کدها، داده‌ها و نمودارها در مخزن پروژه روی GitHub (شاخه‌ی claude/sleepy-rubin-e80q4k) نگه‌داری می‌شوند.</footer>
+</div>
+</body>
+</html>
