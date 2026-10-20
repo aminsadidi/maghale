@@ -43,7 +43,15 @@ jobs:
           create-args: python=3.11 pymeep=*=mpi_mpich* scipy matplotlib
           init-shell: bash
           cache-environment: true
-      - run: mkdir -p runs && mpiexec -n $(nproc) python ${{ matrix.args }} --out runs/${{ matrix.name }}.npz 2>&1 | tee runs/${{ matrix.name }}.log | grep -v "on time step"
+      - name: simulate
+        env:
+          UCX_TLS: self,sm      # MPICH's UCX netmod fails to start on some runners otherwise
+        run: |
+          set -o pipefail
+          mkdir -p runs
+          sim() { mpiexec -n $(nproc) python ${{ matrix.args }} --out runs/${{ matrix.name }}.npz 2>&1 | tee runs/${{ matrix.name }}.log | grep -v "on time step"; }
+          sim || { echo "MPI start failed, retrying with the shared-memory netmod off"; UCX_TLS=tcp,self sim; }
+          test -s runs/${{ matrix.name }}.npz
       - uses: actions/upload-artifact@v4
         if: always()
         with:
