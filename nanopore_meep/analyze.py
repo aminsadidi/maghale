@@ -36,7 +36,9 @@ def hotspot(d, I0, dmin_nm=0.0):
 
 
 # ---------- bowl / conventional pores: every case found in runs/ ----------
-LABEL = {"bowl": "bowl", "conv": "conventional"}
+SPECTRA = {"rf_bowl_R10_r1000": ("bowl R = 10, h3 = 5", "C0-"), "rf_bowl_R10_h2.5_r1000": ("bowl R = 10, h3 = 2.5", "C0--"),
+           "rf_bowl_R2.5_r1500": ("bowl R = 2.5, h3 = 5", "C2-"), "rf_bowl_R1_r1500": ("bowl R = 1, h3 = 5", "C1-"),
+           "rf_conv_R10_r1000": ("conventional R = 10, Au 5", "C3-"), "rf_conv_R2.5_r1500": ("conventional R = 2.5, Au 5", "C4-")}
 fig, ax = plt.subplots(figsize=(5.5, 3.8))
 for f in sorted(glob.glob("runs/bowl_*.npz") + glob.glob("runs/conv_*.npz") + glob.glob("runs/rf_*.npz")):
     name = os.path.basename(f)[:-4]
@@ -50,12 +52,33 @@ for f in sorted(glob.glob("runs/bowl_*.npz") + glob.glob("runs/conv_*.npz") + gl
     i785 = np.argmin(np.abs(lam - 785))
     summary[name] = dict(args=str(d["args"]), grid_nm=round(1e3 / res, 2), lam_res_nm=float(lam[mx.argmax()]),
                          max_at_res=float(mx.max()), max_at_785=float(mx[i785]))
-    if name in ("rf_bowl_R10_r1500", "rf_bowl_R2.5_r1500", "rf_bowl_R1_r1500", "rf_conv_R10_r1000",
-                "rf_conv_R2.5_r1500", "bowl_R10_jc_r1500"):
-        ax.semilogy(lam, mx, label=name)
+    if name in SPECTRA:
+        ax.semilogy(lam, mx, SPECTRA[name][1], label=SPECTRA[name][0])
 ax.set_xlabel("wavelength (nm)"); ax.set_ylabel(r"max $|E|^2/|E_0|^2$ in water")
 ax.axvline(785, color="0.6", ls=":"); ax.legend(fontsize=7); fig.tight_layout()
 fig.savefig("figures/hotspot_spectra.png", dpi=200); plt.close(fig)
+
+
+# ---------- bowl sweeps: lip thickness h3 and pore radius R (refitted Rakic gold) ----------
+def sweep(cases, xs, xlabel, fname):
+    pts = [(x, summary[c]) for x, c in zip(xs, cases) if c in summary]
+    if len(pts) < 2:
+        return
+    fig, ax = plt.subplots(figsize=(4.6, 3.4))
+    x = [p[0] for p in pts]
+    ax.plot(x, [p[1]["lam_res_nm"] for p in pts], "o-", color="C0")
+    ax.axhline(785, color="0.6", ls=":")
+    ax.set_xlabel(xlabel); ax.set_ylabel("resonance wavelength (nm)", color="C0")
+    ax2 = ax.twinx()
+    ax2.semilogy(x, [p[1]["max_at_785"] for p in pts], "s--", color="C3")
+    ax2.set_ylabel(r"max $|E|^2/|E_0|^2$ at 785 nm", color="C3")
+    fig.tight_layout(); fig.savefig(f"figures/{fname}", dpi=200); plt.close(fig)
+
+
+sweep(["rf_bowl_R10_h2.5_r1000", "rf_bowl_R10_r1000", "rf_bowl_R10_h7.5_r1000", "rf_bowl_R10_h10_r1000"],
+      [2.5, 5, 7.5, 10], "Au thickness at the pore h3 (nm), R = 10 nm", "bowl_sweep_h3.png")
+sweep(["rf_bowl_R1_r1500", "rf_bowl_R2.5_r1500", "rf_bowl_R10_r1000", "rf_bowl_R20_r1000"],
+      [1, 2.5, 10, 20], "pore radius R (nm), h3 = 5 nm", "bowl_sweep_R.png")
 
 
 def side_map(name, res, fname, title):
@@ -158,13 +181,15 @@ for res in (667, 500):
     if e is None:
         continue
     I0 = e["I_xz"].mean()
-    for tag in ("g5", "hole"):
+    for tag in ("g5", "g10", "hole"):
         d = load(f"pip_{tag}_r{res}")
         if d is None:
             continue
         water = d["eps_xz"].squeeze() == 0
         Ixz, Ixy = d["I_xz"] / I0, d["I_xy"] / I0
-        summary[f"pip_{tag}_r{res}"] = dict(max_xz=float(Ixz[water].max()),
+        ix = np.argmin(np.abs(d["x_xz"] - (d["xp"] + d["Rp"] + 0.5e-3 * float(d["gap"]))))
+        iz = np.argmin(np.abs(d["z_xz"] - d["zp"]))
+        summary[f"pip_{tag}_r{res}"] = dict(gap_centre=float(Ixz.squeeze()[ix, iz]), max_xz=float(Ixz[water].max()),
                                             max_xy=float(Ixy[d["eps_xy"].squeeze() == 0].max()))
         if res != 667 and load("pip_g5_r667") is not None:
             continue
