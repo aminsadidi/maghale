@@ -38,7 +38,7 @@ def hotspot(d, I0, dmin_nm=0.0):
 # ---------- bowl / conventional pores: every case found in runs/ ----------
 LABEL = {"bowl": "bowl", "conv": "conventional"}
 fig, ax = plt.subplots(figsize=(5.5, 3.8))
-for f in sorted(glob.glob("runs/bowl_*.npz") + glob.glob("runs/conv_*.npz")):
+for f in sorted(glob.glob("runs/bowl_*.npz") + glob.glob("runs/conv_*.npz") + glob.glob("runs/rf_*.npz")):
     name = os.path.basename(f)[:-4]
     d = load(name)
     res = int(name.rsplit("_r", 1)[1])
@@ -50,8 +50,8 @@ for f in sorted(glob.glob("runs/bowl_*.npz") + glob.glob("runs/conv_*.npz")):
     i785 = np.argmin(np.abs(lam - 785))
     summary[name] = dict(args=str(d["args"]), grid_nm=round(1e3 / res, 2), lam_res_nm=float(lam[mx.argmax()]),
                          max_at_res=float(mx.max()), max_at_785=float(mx[i785]))
-    if name in ("bowl_R10_c25_r1500", "bowl_R2.5_r1500", "bowl_R1_r1500", "conv_R10_r1000", "conv_R2.5_r1500",
-                "bowl_R10_jc_r1000"):
+    if name in ("rf_bowl_R10_r1500", "rf_bowl_R2.5_r1500", "rf_bowl_R1_r1500", "rf_conv_R10_r1000",
+                "rf_conv_R2.5_r1500", "bowl_R10_jc_r1500"):
         ax.semilogy(lam, mx, label=name)
 ax.set_xlabel("wavelength (nm)"); ax.set_ylabel(r"max $|E|^2/|E_0|^2$ in water")
 ax.axvline(785, color="0.6", ls=":"); ax.legend(fontsize=7); fig.tight_layout()
@@ -107,7 +107,7 @@ def top_map(name, res, fname):
     fig.savefig(f"figures/{fname}", dpi=200); plt.close(fig)
 
 
-main = next(n for n in ("bowl_R10_c25_r1500", "bowl_R10_c25_r1000", "bowl_R10_jc_r1500", "bowl_R10_jc_r1000")
+main = next(n for n in ("rf_bowl_R10_r1500", "rf_bowl_R10_r1000", "bowl_R10_jc_r1500", "bowl_R10_jc_r1000")
             if load(n) is not None)                     # finest stable R = 10 nm run available
 best = int(main.rsplit("_r", 1)[1])
 summary["main_bowl_case"] = main

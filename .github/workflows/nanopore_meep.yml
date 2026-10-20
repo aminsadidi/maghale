@@ -44,6 +44,17 @@ jobs:
           - {name: bowl_R10_h2.5_c25_r1000, args: bowl_cyl.py --shape bowl --R 10 --h3 2.5 --res 1000 --courant 0.25}
           - {name: bowl_R2.5_c25_r1500,   args: bowl_cyl.py --shape bowl --R 2.5 --res 1500 --courant 0.25}
           - {name: bowl_R10_jc_r1500,     args: bowl_cyl.py --shape bowl --R 10 --gold jc --res 1500}
+          - {name: rf_bowl_R10_r1000,  args: bowl_cyl.py --shape bowl --R 10 --res 1000}
+          - {name: rf_bowl_R10_r1500,  args: bowl_cyl.py --shape bowl --R 10 --res 1500}
+          - {name: rf_bowl_R10_r2000,  args: bowl_cyl.py --shape bowl --R 10 --res 2000}
+          - {name: rf_bowl_R2.5_r1500, args: bowl_cyl.py --shape bowl --R 2.5 --res 1500}
+          - {name: rf_bowl_R1_r1500,   args: bowl_cyl.py --shape bowl --R 1 --res 1500}
+          - {name: rf_bowl_R20_r1000,  args: bowl_cyl.py --shape bowl --R 20 --res 1000}
+          - {name: rf_bowl_R10_h2.5_r1000, args: bowl_cyl.py --shape bowl --R 10 --h3 2.5 --res 1000}
+          - {name: rf_bowl_R10_h7.5_r1000, args: bowl_cyl.py --shape bowl --R 10 --h3 7.5 --res 1000}
+          - {name: rf_bowl_R10_h10_r1000,  args: bowl_cyl.py --shape bowl --R 10 --h3 10 --res 1000}
+          - {name: rf_conv_R10_r1000,  args: bowl_cyl.py --shape conv --R 10 --res 1000}
+          - {name: rf_conv_R2.5_r1500, args: bowl_cyl.py --shape conv --R 2.5 --res 1500}
           - {name: pip_empty_r500,    args: particle_in_pore_3d.py --mode empty --res 500}
           - {name: pip_g5_r500,       args: particle_in_pore_3d.py --gap 5 --res 500}
           - {name: pip_hole_r500,     args: particle_in_pore_3d.py --mode hole --res 500}

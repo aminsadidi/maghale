@@ -22,7 +22,7 @@ p.add_argument("--R", type=float, default=10, help="pore radius (nm)")
 p.add_argument("--h3", type=float, default=5, help="Au thickness at the pore (nm)")
 p.add_argument("--shape", choices=["bowl", "conv", "sphere", "empty"], default="bowl")
 p.add_argument("--res", type=int, default=1000, help="pixels per um (1000 = 1 nm)")
-p.add_argument("--gold", choices=["rakic", "jc"], default="rakic")
+p.add_argument("--gold", choices=["rakicfit", "rakic", "jc"], default="rakicfit")
 p.add_argument("--w0", type=float, default=0, help="Gaussian waist (nm); 0 = plane wave")
 p.add_argument("--courant", type=float, default=0.5,
                help="0.25 keeps the 6-pole Rakic gold stable on <= 1 nm grids with a 5 nm lip")
@@ -30,7 +30,15 @@ p.add_argument("--out", default="out.npz")
 a = p.parse_args()
 
 nm = 1e-3
-gold = Au if a.gold == "rakic" else Au_JC_visible
+# Rakic (1998) gold refitted over 500-1050 nm with Drude + 2 Lorentz poles (max error 0.19 %).
+# The 6-pole meep.materials.Au has poles up to 10.7 um^-1 and goes unstable (NaN) on <= 1 nm grids
+# when the Au lip is 5 nm or thinner; the low-frequency poles of the refit do not.
+au_fit = mp.Medium(epsilon=3.86539, E_susceptibilities=[
+    mp.DrudeSusceptibility(frequency=1, gamma=0.05919, sigma=42.64695),
+    mp.LorentzianSusceptibility(frequency=2.68573, gamma=1.10225, sigma=2.51656),
+    mp.LorentzianSusceptibility(frequency=1.5959, gamma=0.75444, sigma=0.03578)])
+assert abs(au_fit.epsilon(1 / 0.785)[0, 0] - Au.epsilon(1 / 0.785)[0, 0]) < 0.01 * abs(Au.epsilon(1 / 0.785)[0, 0])
+gold = {"rakicfit": au_fit, "rakic": Au, "jc": Au_JC_visible}[a.gold]
 water = mp.Medium(index=1.33)
 sin_ = mp.Medium(index=2.0)
 h1, h2, D = 100 * nm, 30 * nm, 250 * nm
