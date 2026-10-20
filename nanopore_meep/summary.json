@@ -90,6 +90,13 @@
   "max_at_res": 1932.6650896652043,
   "max_at_785": 551.19136651172
  },
+ "rf_bowl_R10_r1500": {
+  "args": "{'R': 10.0, 'h3': 5, 'shape': 'bowl', 'res': 1500, 'gold': 'rakicfit', 'w0': 0, 'courant': 0.5, 'out': 'runs/rf_bowl_R10_r1500.npz'}",
+  "grid_nm": 0.67,
+  "lam_res_nm": 720.0,
+  "max_at_res": 2964.9738467426414,
+  "max_at_785": 912.856974497355
+ },
  "rf_bowl_R1_r1500": {
   "args": "{'R': 1.0, 'h3': 5, 'shape': 'bowl', 'res': 1500, 'gold': 'rakicfit', 'w0': 0, 'courant': 0.5, 'out': 'runs/rf_bowl_R1_r1500.npz'}",
   "grid_nm": 0.67,
@@ -125,7 +132,7 @@
   "max_at_res": 11.569086982664619,
   "max_at_785": 6.220572210301348
  },
- "main_bowl_case": "rf_bowl_R10_r1000",
+ "main_bowl_case": "rf_bowl_R10_r1500",
  "mie_validation": [
   {
    "res_nm": 1.0,
@@ -334,6 +341,11 @@
   "gap_centre": 67.9616397221011,
   "max_xz": 74.15760995364687,
   "max_xy": 70.88882751403743
+ },
+ "pip_g10_r500": {
+  "gap_centre": 9.54467561605862,
+  "max_xz": 28.15545141747403,
+  "max_xy": 17.9776717677967
  },
  "pip_hole_r500": {
   "gap_centre": 0.6188037182911991,
