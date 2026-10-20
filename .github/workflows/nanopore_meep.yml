@@ -46,16 +46,18 @@ jobs:
           - {name: pip_g5_r667,       args: particle_in_pore_3d.py --gap 5 --res 667}
           - {name: pip_hole_r667,     args: particle_in_pore_3d.py --mode hole --res 667}
     name: ${{ matrix.name }}
-    if: ${{ !inputs.only || contains(format(' {0} ', inputs.only), format(' {0} ', matrix.name)) }}
     steps:
       - uses: actions/checkout@v4
+        if: ${{ !inputs.only || contains(format(' {0} ', inputs.only), format(' {0} ', matrix.name)) }}
       - uses: mamba-org/setup-micromamba@v2
+        if: ${{ !inputs.only || contains(format(' {0} ', inputs.only), format(' {0} ', matrix.name)) }}
         with:
           environment-name: mp
           create-args: python=3.11 pymeep=*=mpi_mpich* scipy matplotlib
           init-shell: bash
           cache-environment: true
       - name: simulate
+        if: ${{ !inputs.only || contains(format(' {0} ', inputs.only), format(' {0} ', matrix.name)) }}
         env:
           UCX_TLS: self,sm      # MPICH's UCX netmod fails to start on some runners otherwise
         run: |
@@ -65,7 +67,7 @@ jobs:
           sim || { echo "MPI start failed, retrying with the shared-memory netmod off"; UCX_TLS=tcp,self sim; }
           test -s runs/${{ matrix.name }}.npz
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: ${{ always() && (!inputs.only || contains(format(' {0} ', inputs.only), format(' {0} ', matrix.name))) }}
         with:
           name: case-${{ matrix.name }}
           path: nanopore_meep/runs/${{ matrix.name }}.*
