@@ -55,6 +55,8 @@ jobs:
           - {name: rf_bowl_R10_h10_r1000,  args: bowl_cyl.py --shape bowl --R 10 --h3 10 --res 1000}
           - {name: rf_conv_R10_r1000,  args: bowl_cyl.py --shape conv --R 10 --res 1000}
           - {name: rf_conv_R2.5_r1500, args: bowl_cyl.py --shape conv --R 2.5 --res 1500}
+          - {name: pip_g10_r500,     args: particle_in_pore_3d.py --gap 10 --res 500}
+          - {name: pip_g10_r667,     args: particle_in_pore_3d.py --gap 10 --res 667}
           - {name: pip_empty_r500,    args: particle_in_pore_3d.py --mode empty --res 500}
           - {name: pip_g5_r500,       args: particle_in_pore_3d.py --gap 5 --res 500}
           - {name: pip_hole_r500,     args: particle_in_pore_3d.py --mode hole --res 500}
