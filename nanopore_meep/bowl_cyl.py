@@ -93,7 +93,8 @@ sim.run(until_after_sources=mp.stop_when_dft_decayed(1e-6, 0))
 
 
 def grab(d, vol, nf):
-    F = {c: np.array([sim.get_dft_array(d, c, i) for i in range(nf)]) for c in comps}
+    # Meep returns cylindrical DFT arrays as (z, r); store them as (r, z)
+    F = {c: np.array([sim.get_dft_array(d, c, i).T for i in range(nf)]) for c in comps}
     nr, nz = F[mp.Er].shape[1:]   # get_array_metadata is not available in cylindrical
     c, s = vol.center, vol.size
     return (F, np.linspace(c.x - s.x / 2, c.x + s.x / 2, nr),

@@ -114,33 +114,42 @@ side_map(f"bowl_R10_r{best}", best, "bowl_R10_side.png", "bowl nanopore, R = 10 
 side_map("conv_R10_r1000", 1000, "conv_R10_side.png", "conventional pore, R = 10 nm, Au 5 nm")
 top_map(f"bowl_R10_r{best}", best, "bowl_R10_top.png")
 
-# ---------- Mie validation ----------
-d = load("sphere_r1000")
-if d is not None:
-    from meep.materials import Au
-    from scattnlay import fieldnlay
-    e = load("empty_r1000")
+# ---------- Mie validation (and grid convergence) ----------
+from meep.materials import Au
+from scattnlay import fieldnlay
+mie_rows, fig, ax = [], None, None
+for res in (1000, 1500, 2000):
+    d, e = load(f"sphere_r{res}"), load(f"empty_r{res}")
+    if d is None or e is None:
+        continue
     iz = np.argmin(np.abs(d["zs"]))
-    fig, ax = plt.subplots(figsize=(5, 3.6))
-    errs = []
-    for lam, c in [(0.53, "C0"), (0.785, "C3")]:
+    for lam in (0.53, 0.785):
         i = np.argmin(np.abs(d["lam"] - lam))
         I0 = np.abs(e["Er"][i]).mean() ** 2
-        r = d["rs"]; sel = r > 0.0255
+        r = d["rs"]; sel = r > 0.0251
         I = (np.abs(d["Er"][i, sel, iz]) ** 2 + np.abs(d["Ez"][i, sel, iz]) ** 2) / I0
         k = 2 * np.pi * 1.33 / d["lam"][i]
         m = np.sqrt(complex(Au.epsilon(1 / d["lam"][i])[0, 0])) / 1.33
         _, E, _ = fieldnlay(np.array([k * 0.025]), np.array([m]), k * r[sel], 0 * r[sel], 0 * r[sel])
         Im = np.sum(np.abs(E) ** 2, axis=1)
-        ax.semilogy((r[sel] - 0.025) * 1e3, Im, c, label=f"Mie {d['lam'][i]*1e3:.0f} nm")
-        ax.semilogy((r[sel] - 0.025) * 1e3, I, c + "o", ms=3, label=f"Meep {d['lam'][i]*1e3:.0f} nm")
         g = (r[sel] - 0.025) * 1e3
         for gg in (1, 2, 5, 10):
-            j = np.argmin(np.abs(g - gg)); errs.append((float(d["lam"][i] * 1e3), float(g[j]), float(I[j]), float(Im[j])))
-    ax.set_xlim(0, 30); ax.set_xlabel("distance from Au sphere surface along E (nm)")
-    ax.set_ylabel(r"$|E|^2/|E_0|^2$"); ax.legend(fontsize=8); ax.set_title("50 nm Au sphere in water: Meep vs exact Mie", fontsize=9)
+            j = np.argmin(np.abs(g - gg))
+            mie_rows.append(dict(res_nm=round(1e3 / res, 2), lam_nm=float(d["lam"][i] * 1e3), dist_nm=float(g[j]),
+                                 meep=float(I[j]), mie=float(Im[j]), err_pct=float(100 * (I[j] / Im[j] - 1))))
+        if fig is None:
+            fig, ax = plt.subplots(figsize=(5, 3.6))
+        c = "C0" if lam < 0.6 else "C3"
+        if res == 1000:
+            ax.semilogy(g, Im, c, label=f"Mie, {d['lam'][i]*1e3:.0f} nm")
+        ax.semilogy(g, I, c, ls="", marker={1000: "o", 1500: "s", 2000: "^"}[res], ms=3, mfc="none",
+                    label=f"Meep {1e3/res:.2g} nm grid, {d['lam'][i]*1e3:.0f} nm")
+if fig is not None:
+    ax.set_xlim(0, 25); ax.set_xlabel("distance from Au sphere surface along E (nm)")
+    ax.set_ylabel(r"$|E|^2/|E_0|^2$"); ax.legend(fontsize=7)
+    ax.set_title("50 nm Au sphere in water: Meep vs exact Mie", fontsize=9)
     fig.tight_layout(); fig.savefig("figures/mie_validation.png", dpi=200); plt.close(fig)
-    summary["mie_validation"] = [dict(lam_nm=a, dist_nm=b, meep=c, mie=dd, err_pct=100 * (c / dd - 1)) for a, b, c, dd in errs]
+    summary["mie_validation"] = mie_rows
 
 # ---------- particle in pore (3D) ----------
 for res in (667, 500):

@@ -22,6 +22,9 @@ jobs:
           - {name: bowl_R10_r1000,    args: bowl_cyl.py --shape bowl --R 10 --res 1000}
           - {name: conv_R10_r1000,    args: bowl_cyl.py --shape conv --R 10 --res 1000}
           - {name: sphere_r1000,      args: bowl_cyl.py --shape sphere --R 25 --res 1000}
+          - {name: sphere_r1500,      args: bowl_cyl.py --shape sphere --R 25 --res 1500}
+          - {name: empty_r2000,       args: bowl_cyl.py --shape empty --res 2000}
+          - {name: sphere_r2000,      args: bowl_cyl.py --shape sphere --R 25 --res 2000}
           - {name: bowl_R10_jc_r1000, args: bowl_cyl.py --shape bowl --R 10 --gold jc --res 1000}
           - {name: empty_r1500,       args: bowl_cyl.py --shape empty --res 1500}
           - {name: bowl_R10_r1500,    args: bowl_cyl.py --shape bowl --R 10 --res 1500}
@@ -49,7 +52,7 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p runs
-          sim() { mpiexec -n $(nproc) python ${{ matrix.args }} --out runs/${{ matrix.name }}.npz 2>&1 | tee runs/${{ matrix.name }}.log | grep -v "on time step"; }
+          sim() { mpiexec -n $(nproc) python ${{ matrix.args }} --out runs/${{ matrix.name }}.npz 2>&1 | grep -v "on time step" | tee runs/${{ matrix.name }}.log; }
           sim || { echo "MPI start failed, retrying with the shared-memory netmod off"; UCX_TLS=tcp,self sim; }
           test -s runs/${{ matrix.name }}.npz
       - uses: actions/upload-artifact@v4
@@ -59,7 +62,7 @@ jobs:
           path: nanopore_meep/runs/${{ matrix.name }}.*
   analyze:
     needs: sim
-    if: always()
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
