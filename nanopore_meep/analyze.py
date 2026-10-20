@@ -35,28 +35,26 @@ def hotspot(d, I0, dmin_nm=0.0):
     return np.where(mask[None], I, 0).max(axis=(1, 2)), I
 
 
-# ---------- bowl / conventional pores ----------
+# ---------- bowl / conventional pores: every case found in runs/ ----------
+LABEL = {"bowl": "bowl", "conv": "conventional"}
 fig, ax = plt.subplots(figsize=(5.5, 3.8))
-for name, lab in [("bowl_R10_r1500", "bowl, R = 10 nm"), ("bowl_R2.5_r1500", "bowl, R = 2.5 nm"),
-                  ("bowl_R1_r1500", "bowl, R = 1 nm"), ("conv_R10_r1000", "conventional, R = 10 nm"),
-                  ("conv_R2.5_r1500", "conventional, R = 2.5 nm"), ("bowl_R10_r1000", "bowl, R = 10 nm (1 nm grid)"),
-                  ("bowl_R10_jc_r1000", None)]:
+for f in sorted(glob.glob("runs/bowl_*.npz") + glob.glob("runs/conv_*.npz")):
+    name = os.path.basename(f)[:-4]
     d = load(name)
-    if d is None:
-        continue
     res = int(name.rsplit("_r", 1)[1])
+    if d is None or load(f"empty_r{res}") is None:
+        continue
     I0 = I0_cyl(res)
     mx, _ = hotspot(d, I0)
-    mx1, _ = hotspot(d, I0, 1.0)
     lam = d["lam"] * 1e3
     i785 = np.argmin(np.abs(lam - 785))
-    summary[name] = dict(lam_res_nm=float(lam[mx.argmax()]), max_at_res=float(mx.max()),
-                         max_at_785=float(mx[i785]), max_at_785_1nm_from_gold=float(mx1[i785]),
-                         lam_res_1nm=float(lam[mx1.argmax()]))
-    if lab:
-        ax.semilogy(lam, mx, label=lab)
+    summary[name] = dict(args=str(d["args"]), grid_nm=round(1e3 / res, 2), lam_res_nm=float(lam[mx.argmax()]),
+                         max_at_res=float(mx.max()), max_at_785=float(mx[i785]))
+    if name in ("bowl_R10_c25_r1500", "bowl_R2.5_r1500", "bowl_R1_r1500", "conv_R10_r1000", "conv_R2.5_r1500",
+                "bowl_R10_jc_r1000"):
+        ax.semilogy(lam, mx, label=name)
 ax.set_xlabel("wavelength (nm)"); ax.set_ylabel(r"max $|E|^2/|E_0|^2$ in water")
-ax.axvline(785, color="0.6", ls=":"); ax.legend(fontsize=8); fig.tight_layout()
+ax.axvline(785, color="0.6", ls=":"); ax.legend(fontsize=7); fig.tight_layout()
 fig.savefig("figures/hotspot_spectra.png", dpi=200); plt.close(fig)
 
 
@@ -109,10 +107,13 @@ def top_map(name, res, fname):
     fig.savefig(f"figures/{fname}", dpi=200); plt.close(fig)
 
 
-best = 1500 if load("bowl_R10_r1500") is not None else 1000   # finest grid available
-side_map(f"bowl_R10_r{best}", best, "bowl_R10_side.png", "bowl nanopore, R = 10 nm, Au 5 nm at the pore")
+main = next(n for n in ("bowl_R10_c25_r1500", "bowl_R10_c25_r1000", "bowl_R10_jc_r1500", "bowl_R10_jc_r1000")
+            if load(n) is not None)                     # finest stable R = 10 nm run available
+best = int(main.rsplit("_r", 1)[1])
+summary["main_bowl_case"] = main
+side_map(main, best, "bowl_R10_side.png", "bowl nanopore, R = 10 nm, Au 5 nm at the pore")
 side_map("conv_R10_r1000", 1000, "conv_R10_side.png", "conventional pore, R = 10 nm, Au 5 nm")
-top_map(f"bowl_R10_r{best}", best, "bowl_R10_top.png")
+top_map(main, best, "bowl_R10_top.png")
 
 # ---------- Mie validation (and grid convergence) ----------
 from meep.materials import Au
@@ -126,7 +127,7 @@ for res in (1000, 1500, 2000):
     for lam in (0.53, 0.785):
         i = np.argmin(np.abs(d["lam"] - lam))
         I0 = np.abs(e["Er"][i]).mean() ** 2
-        r = d["rs"]; sel = r > 0.0251
+        r = d["rs"]; sel = r > 0.0259     # skip the staircased surface pixel
         I = (np.abs(d["Er"][i, sel, iz]) ** 2 + np.abs(d["Ez"][i, sel, iz]) ** 2) / I0
         k = 2 * np.pi * 1.33 / d["lam"][i]
         m = np.sqrt(complex(Au.epsilon(1 / d["lam"][i])[0, 0])) / 1.33
@@ -161,10 +162,10 @@ for res in (667, 500):
         d = load(f"pip_{tag}_r{res}")
         if d is None:
             continue
-        water = d["eps_xz"] == 0
+        water = d["eps_xz"].squeeze() == 0
         Ixz, Ixy = d["I_xz"] / I0, d["I_xy"] / I0
         summary[f"pip_{tag}_r{res}"] = dict(max_xz=float(Ixz[water].max()),
-                                            max_xy=float(Ixy[d["eps_xy"] == 0].max()))
+                                            max_xy=float(Ixy[d["eps_xy"].squeeze() == 0].max()))
         if res != 667 and load("pip_g5_r667") is not None:
             continue
         fig, axs = plt.subplots(1, 2, figsize=(10, 3.8))
