@@ -24,6 +24,8 @@ p.add_argument("--shape", choices=["bowl", "conv", "sphere", "empty"], default="
 p.add_argument("--res", type=int, default=1000, help="pixels per um (1000 = 1 nm)")
 p.add_argument("--gold", choices=["rakic", "jc"], default="rakic")
 p.add_argument("--w0", type=float, default=0, help="Gaussian waist (nm); 0 = plane wave")
+p.add_argument("--courant", type=float, default=0.5,
+               help="0.25 keeps the 6-pole Rakic gold stable on <= 1 nm grids with a 5 nm lip")
 p.add_argument("--out", default="out.npz")
 a = p.parse_args()
 
@@ -77,7 +79,7 @@ sources = [mp.Source(mp.GaussianSource(fcen, fwidth=df, is_integrated=True), com
 
 sim = mp.Simulation(cell_size=cell, resolution=a.res, dimensions=mp.CYLINDRICAL, m=1,
                     boundary_layers=[mp.PML(dpml)], geometry=geom, default_material=water,
-                    sources=sources, force_complex_fields=True)
+                    sources=sources, force_complex_fields=True, Courant=a.courant)
 
 # hot-spot region (all wavelengths) and wide map (785 nm only)
 zt = h3 if a.shape in ("bowl", "conv") else 0
