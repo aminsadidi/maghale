@@ -43,6 +43,7 @@ jobs:
           - {name: bowl_R10_c25_r1500,    args: bowl_cyl.py --shape bowl --R 10 --res 1500 --courant 0.25}
           - {name: bowl_R10_h2.5_c25_r1000, args: bowl_cyl.py --shape bowl --R 10 --h3 2.5 --res 1000 --courant 0.25}
           - {name: bowl_R2.5_c25_r1500,   args: bowl_cyl.py --shape bowl --R 2.5 --res 1500 --courant 0.25}
+          - {name: bowl_R10_jc_r1500,     args: bowl_cyl.py --shape bowl --R 10 --gold jc --res 1500}
           - {name: pip_empty_r500,    args: particle_in_pore_3d.py --mode empty --res 500}
           - {name: pip_g5_r500,       args: particle_in_pore_3d.py --gap 5 --res 500}
           - {name: pip_hole_r500,     args: particle_in_pore_3d.py --mode hole --res 500}
