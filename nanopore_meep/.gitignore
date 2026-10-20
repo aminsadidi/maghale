@@ -1,3 +1,2 @@
-runs/
-figures/
+runs/*.log
 __pycache__/

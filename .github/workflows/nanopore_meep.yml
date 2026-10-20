@@ -1,0 +1,76 @@
+name: nanopore-meep
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/blissful-tesla-koo9fh]
+    paths: [nanopore_meep/*.py, .github/workflows/nanopore_meep.yml]
+permissions:
+  contents: write
+defaults:
+  run:
+    shell: bash -el {0}
+    working-directory: nanopore_meep
+jobs:
+  sim:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {name: empty_r1000,       args: bowl_cyl.py --shape empty --res 1000}
+          - {name: bowl_R10_r1000,    args: bowl_cyl.py --shape bowl --R 10 --res 1000}
+          - {name: conv_R10_r1000,    args: bowl_cyl.py --shape conv --R 10 --res 1000}
+          - {name: sphere_r1000,      args: bowl_cyl.py --shape sphere --R 25 --res 1000}
+          - {name: bowl_R10_jc_r1000, args: bowl_cyl.py --shape bowl --R 10 --gold jc --res 1000}
+          - {name: empty_r1500,       args: bowl_cyl.py --shape empty --res 1500}
+          - {name: bowl_R10_r1500,    args: bowl_cyl.py --shape bowl --R 10 --res 1500}
+          - {name: bowl_R2.5_r1500,   args: bowl_cyl.py --shape bowl --R 2.5 --res 1500}
+          - {name: bowl_R1_r1500,     args: bowl_cyl.py --shape bowl --R 1 --res 1500}
+          - {name: conv_R2.5_r1500,   args: bowl_cyl.py --shape conv --R 2.5 --res 1500}
+          - {name: pip_empty_r500,    args: particle_in_pore_3d.py --mode empty --res 500}
+          - {name: pip_g5_r500,       args: particle_in_pore_3d.py --gap 5 --res 500}
+          - {name: pip_hole_r500,     args: particle_in_pore_3d.py --mode hole --res 500}
+          - {name: pip_empty_r667,    args: particle_in_pore_3d.py --mode empty --res 667}
+          - {name: pip_g5_r667,       args: particle_in_pore_3d.py --gap 5 --res 667}
+          - {name: pip_hole_r667,     args: particle_in_pore_3d.py --mode hole --res 667}
+    name: ${{ matrix.name }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: mp
+          create-args: python=3.11 pymeep=*=mpi_mpich* scipy matplotlib
+          init-shell: bash
+          cache-environment: true
+      - run: mkdir -p runs && mpiexec -n $(nproc) python ${{ matrix.args }} --out runs/${{ matrix.name }}.npz 2>&1 | tee runs/${{ matrix.name }}.log | grep -v "on time step"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: case-${{ matrix.name }}
+          path: nanopore_meep/runs/${{ matrix.name }}.*
+  analyze:
+    needs: sim
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: mp
+          create-args: python=3.11 pymeep=*=mpi_mpich* scipy matplotlib
+          init-shell: bash
+          cache-environment: true
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: case-*
+          merge-multiple: true
+          path: nanopore_meep/runs
+      - run: pip install scattnlay && python analyze.py
+      - name: commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f runs/*.npz figures summary.json
+          git commit -m "Simulation results from run ${{ github.run_id }}" || exit 0
+          git pull --rebase origin ${{ github.ref_name }} && git push origin HEAD:${{ github.ref_name }}
