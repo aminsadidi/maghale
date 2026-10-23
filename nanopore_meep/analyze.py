@@ -140,9 +140,28 @@ main = next(n for n in ("fit_bowl_R10_h3_r1500", "fit_bowl_R10_h3_r1000", "rf_bo
             if load(n) is not None)                     # finest stable R = 10 nm run available
 best = int(main.rsplit("_r", 1)[1])
 summary["main_bowl_case"] = main
-side_map(main, best, "bowl_R10_side.png", "bowl nanopore, R = 10 nm, Au 5 nm at the pore")
+args = eval(str(load(main)["args"]))   # the run's own argparse namespace, written by bowl_cyl.py
+side_map(main, best, "bowl_R10_side.png",
+         f"bowl nanopore, R = {args['R']:g} nm, Au {args['h3']:g} nm at the pore"
+         + (f", rim rounded {args['round']:g} nm" if args.get("round") else ""))
 side_map("conv_R10_r1000", 1000, "conv_R10_side.png", "conventional pore, R = 10 nm, Au 5 nm")
 top_map(main, best, "bowl_R10_top.png")
+
+# ---------- resonance vs pore radius: paper (Fig. S4) vs Meep ----------
+PAPER = {10: 785, 2.5: 710, 1: 640}
+fig, ax = plt.subplots(figsize=(4.6, 3.4))
+ax.plot(list(PAPER), list(PAPER.values()), "ko-", label="Zhao et al. 2023, Fig. S4 (COMSOL)")
+for cases, style, lab in (
+        ({10: "rf_bowl_R10_r1500", 2.5: "rf_bowl_R2.5_r1500", 1: "rf_bowl_R1_r1500"}, "C3s--",
+         "Meep: h3 = 5 nm, sharp rim, plane wave"),
+        ({10: "fit_bowl_R10_h3_r1500", 2.5: "fit_bowl_R2.5_h3_r1500", 1: "fit_bowl_R1_h3_r1500"}, "C0^-",
+         "Meep: h3 = 3 nm, rim rounded 1 nm, Gaussian beam")):
+    pts = [(R_, summary[c]["lam_res_nm"]) for R_, c in cases.items() if c in summary]
+    if pts:
+        ax.plot(*zip(*pts), style, label=lab)
+ax.set_xlabel("pore radius R (nm)"); ax.set_ylabel("resonance wavelength (nm)")
+ax.legend(fontsize=7); fig.tight_layout(); fig.savefig("figures/resonance_vs_R_paper.png", dpi=200); plt.close(fig)
+
 
 # ---------- Mie validation (and grid convergence) ----------
 from meep.materials import Au
@@ -200,9 +219,10 @@ for res in (667, 500):
         if res != 667 and load("pip_g5_r667") is not None:
             continue
         fig, axs = plt.subplots(1, 2, figsize=(10, 3.8))
+        vmax = max(Ixz.max(), Ixy.max(), 10)   # one colour scale for both panels
         for ax, I, eps, a1, a2, lab in [(axs[0], Ixz, d["eps_xz"], d["x_xz"], d["z_xz"], "z"),
                                          (axs[1], Ixy, d["eps_xy"], d["x_xy"], d["y_xy"], "y")]:
-            m = ax.pcolormesh(a1 * 1e3, a2 * 1e3, I.squeeze().T, norm=LogNorm(0.1, max(I.max(), 10)), cmap="inferno", shading="auto")
+            m = ax.pcolormesh(a1 * 1e3, a2 * 1e3, I.squeeze().T, norm=LogNorm(0.1, vmax), cmap="inferno", shading="auto")
             ax.contour(a1 * 1e3, a2 * 1e3, (eps.squeeze() > 0).T, levels=[0.5], colors="c", linewidths=0.6)
             ax.set_aspect("equal"); ax.set_xlabel("x (nm)  [E along x]"); ax.set_ylabel(f"{lab} (nm)")
         axs[0].set_title("side view (y = 0)", fontsize=9); axs[1].set_title("top view (mid-height of Au)", fontsize=9)

@@ -2,23 +2,18 @@ Subject: Re: Near-field simulations for your plasmonic nanopore SERS work
 
 Dear Dr. Huang,
 
-Thank you for suggesting the bowl-shaped nanopore. I have simulated it, together with the particle-in-pore case from your first message, using Meep (open-source FDTD, MIT). Code, data and figures are public: https://github.com/aminsadidi/maghale/tree/claude/blissful-tesla-koo9fh/nanopore_meep
+Thank you for suggesting the bowl-shaped nanopore. I have simulated it, together with the particle-in-nanohole case from your earlier message, using the open-source FDTD code Meep. A short technical report is attached; the main points are:
 
-1. Validation. For a 50 nm Au sphere in water the solver reproduces exact Mie theory to within 1-5 % at 2-10 nm from the surface on a 0.5 nm grid, and the error decreases with mesh refinement.
+1. The solver reproduces exact Mie theory for a 50 nm Au sphere in water to within 1-2 % at 5-10 nm from the surface, and the conventional-pore results of your Fig. S4 (e.g. 640 nm and |E|^2/|E0|^2 of about 10 for R = 2.5 nm).
 
-2. Bowl-shaped nanopore (Nano Lett. 2023, geometry of Fig. S2/Table S1, Rakic gold refitted with a stable 3-pole model, water 1.33, SiN 2.0, plane wave from the Au side). Because the structure is axisymmetric, I solve it exactly in cylindrical coordinates (m = +1 and its mirror image for linear polarisation), which allows 0.5-1 nm grids.
-   - The bowl pore gives a single hot spot at the pore rim, about 25 times stronger at 785 nm than a conventional cylindrical pore with the same 5 nm Au edge (Fig. S3/S4).
-   - The conventional pore agrees well with Fig. S4: resonance at 640 nm and |E|^2/|E0|^2 of about 10 for R = 2.5 nm; 880 nm (vs 840 nm) for R = 10 nm.
-   - For the bowl with R = 10 nm and h3 = 5 nm I find the resonance at 710-720 nm (1 and 0.67 nm grids) instead of 785 nm. The resonance is very sensitive to the Au thickness at the rim: it moves from 650 nm (h3 = 10 nm) to 800 nm (h3 = 2.5 nm), so with h3 of about 3 nm, within the 2.5-10 nm range of Table S1, it falls at 785 nm. A 40 nm pore with h3 = 5 nm resonates at 750 nm.
-   - The resonance position is mesh-converged, but the peak intensity at the sharp 90-degree rim is not (it keeps rising with refinement), so I would round the rim edge (e.g. 1 nm radius) before quoting absolute enhancement values.
+2. For the bowl pore, the resonance is set mainly by the Au thickness at the rim: it moves from 650 to 800 nm as h3 goes from 10 to 2.5 nm. With h3 = 3 nm, a slightly rounded rim and the 500 nm Gaussian beam of your SI, I obtain 790, 710 and 700 nm for R = 10, 2.5 and 1 nm, against 785, 710 and 640 nm in Fig. S4.
 
-3. Particle in the 200 nm Au nanohole (Nat. Commun. 2019), 50 nm Au sphere at 5 nm from the wall, 785 nm, full 3D.
-   - The bare hole gives |E|^2/|E0|^2 of about 23 at its upper rim; the particle creates a gap hot spot along the polarisation, as in Fig. 1e.
-   - In a 5 nm gap the intensity is not yet mesh-converged on 2 and 1.5 nm grids (74 and 41 at the maximum); a 10 nm gap is running for a converged reference, and sub-nanometre gaps or urchin tips would need a finer local mesh than a uniform 3D FDTD grid allows on our hardware.
+3. The resonance positions are mesh-converged, but the peak enhancement at the rim is not, because the rim is a nearly sharp metal edge; absolute values depend on the edge radius and the mesh.
 
-The nanourchin was replaced by a smooth sphere, as you suggested the real shape is complicated; adding sharp tips would be the natural next step.
+4. In the 200 nm nanohole, a 50 nm Au particle near the wall creates a gap hot spot as in Fig. 1e of your Nat. Commun. paper; the gap values need a finer local mesh to converge.
 
-If you can share the exact bowl profile and the excitation (Gaussian beam from the Au side?) used in your COMSOL model, I can make the comparison quantitative, and I would be glad to continue with any geometry that is useful for your current experiments.
+To make the comparison fully quantitative, could you share the rim profile and mesh size used in your COMSOL model, and the illumination side? I would be glad to continue with the geometries that matter most for your current experiments, for example the clustering states of Au particles in the pore.
 
 Best regards,
 Amin Hossain Sadidi
+University of Isfahan

@@ -62,6 +62,69 @@
   "max_at_res": 12.637335943190184,
   "max_at_785": 6.653265445944257
  },
+ "fit_bowl_R10_h3.5_r1000": {
+  "args": "{'R': 10.0, 'h3': 3.5, 'shape': 'bowl', 'res': 1000, 'gold': 'rakicfit', 'w0': 500.0, 'round': 1.0, 'rphys': 1.0, 'courant': 0.5, 'out': 'runs/fit_bowl_R10_h3.5_r1000.npz'}",
+  "grid_nm": 1.0,
+  "lam_res_nm": 760.0,
+  "max_at_res": 1254.404306782283,
+  "max_at_785": 1004.7828566317269
+ },
+ "fit_bowl_R10_h3_r1000": {
+  "args": "{'R': 10.0, 'h3': 3.0, 'shape': 'bowl', 'res': 1000, 'gold': 'rakicfit', 'w0': 500.0, 'round': 1.0, 'rphys': 1.0, 'courant': 0.5, 'out': 'runs/fit_bowl_R10_h3_r1000.npz'}",
+  "grid_nm": 1.0,
+  "lam_res_nm": 770.0,
+  "max_at_res": 1515.4175342684453,
+  "max_at_785": 1421.9776049016057
+ },
+ "fit_bowl_R10_h3_r1500": {
+  "args": "{'R': 10.0, 'h3': 3.0, 'shape': 'bowl', 'res': 1500, 'gold': 'rakicfit', 'w0': 500.0, 'round': 1.0, 'rphys': 1.0, 'courant': 0.5, 'out': 'runs/fit_bowl_R10_h3_r1500.npz'}",
+  "grid_nm": 0.67,
+  "lam_res_nm": 790.0,
+  "max_at_res": 2856.8149858438765,
+  "max_at_785": 2791.737150077046
+ },
+ "fit_bowl_R10_h5_r1000": {
+  "args": "{'R': 10.0, 'h3': 5.0, 'shape': 'bowl', 'res': 1000, 'gold': 'rakicfit', 'w0': 500.0, 'round': 1.0, 'rphys': 1.0, 'courant': 0.5, 'out': 'runs/fit_bowl_R10_h5_r1000.npz'}",
+  "grid_nm": 1.0,
+  "lam_res_nm": 710.0,
+  "max_at_res": 431.93251848276,
+  "max_at_785": 173.08123446734172
+ },
+ "fit_bowl_R10_h5_r1500": {
+  "args": "{'R': 10.0, 'h3': 5.0, 'shape': 'bowl', 'res': 1500, 'gold': 'rakicfit', 'w0': 500.0, 'round': 1.0, 'rphys': 1.0, 'courant': 0.5, 'out': 'runs/fit_bowl_R10_h5_r1500.npz'}",
+  "grid_nm": 0.67,
+  "lam_res_nm": 720.0,
+  "max_at_res": 1016.085189478914,
+  "max_at_785": 432.33287874014184
+ },
+ "fit_bowl_R1_h3_r1500": {
+  "args": "{'R': 1.0, 'h3': 3.0, 'shape': 'bowl', 'res': 1500, 'gold': 'rakicfit', 'w0': 500.0, 'round': 1.0, 'rphys': 1.0, 'courant': 0.5, 'out': 'runs/fit_bowl_R1_h3_r1500.npz'}",
+  "grid_nm": 0.67,
+  "lam_res_nm": 700.0,
+  "max_at_res": 2855.1519039952873,
+  "max_at_785": 877.7567379735996
+ },
+ "fit_bowl_R2.5_h3_r1500": {
+  "args": "{'R': 2.5, 'h3': 3.0, 'shape': 'bowl', 'res': 1500, 'gold': 'rakicfit', 'w0': 500.0, 'round': 1.0, 'rphys': 1.0, 'courant': 0.5, 'out': 'runs/fit_bowl_R2.5_h3_r1500.npz'}",
+  "grid_nm": 0.67,
+  "lam_res_nm": 710.0,
+  "max_at_res": 1266.5631656993253,
+  "max_at_785": 453.72838373728763
+ },
+ "fit_conv_R10_r1000": {
+  "args": "{'R': 10.0, 'h3': 5.0, 'shape': 'conv', 'res': 1000, 'gold': 'rakicfit', 'w0': 500.0, 'round': 1.0, 'rphys': 1.0, 'courant': 0.5, 'out': 'runs/fit_conv_R10_r1000.npz'}",
+  "grid_nm": 1.0,
+  "lam_res_nm": 890.0,
+  "max_at_res": 15.082501008303725,
+  "max_at_785": 12.913147718316887
+ },
+ "fit_conv_R2.5_r1500": {
+  "args": "{'R': 2.5, 'h3': 5.0, 'shape': 'conv', 'res': 1500, 'gold': 'rakicfit', 'w0': 500.0, 'round': 1.0, 'rphys': 1.0, 'courant': 0.5, 'out': 'runs/fit_conv_R2.5_r1500.npz'}",
+  "grid_nm": 0.67,
+  "lam_res_nm": 630.0,
+  "max_at_res": 8.318774052369028,
+  "max_at_785": 6.081706823610982
+ },
  "rf_bowl_R10_h10_r1000": {
   "args": "{'R': 10.0, 'h3': 10.0, 'shape': 'bowl', 'res': 1000, 'gold': 'rakicfit', 'w0': 0, 'courant': 0.5, 'out': 'runs/rf_bowl_R10_h10_r1000.npz'}",
   "grid_nm": 1.0,
@@ -96,6 +159,13 @@
   "lam_res_nm": 720.0,
   "max_at_res": 2964.9738467426414,
   "max_at_785": 912.856974497355
+ },
+ "rf_bowl_R10_r2000": {
+  "args": "{'R': 10.0, 'h3': 5, 'shape': 'bowl', 'res': 2000, 'gold': 'rakicfit', 'w0': 0, 'courant': 0.5, 'out': 'runs/rf_bowl_R10_r2000.npz'}",
+  "grid_nm": 0.5,
+  "lam_res_nm": 720.0,
+  "max_at_res": 3802.9002531240953,
+  "max_at_785": 1115.7851038052702
  },
  "rf_bowl_R1_r1500": {
   "args": "{'R': 1.0, 'h3': 5, 'shape': 'bowl', 'res': 1500, 'gold': 'rakicfit', 'w0': 0, 'courant': 0.5, 'out': 'runs/rf_bowl_R1_r1500.npz'}",
@@ -132,7 +202,7 @@
   "max_at_res": 11.569086982664619,
   "max_at_785": 6.220572210301348
  },
- "main_bowl_case": "rf_bowl_R10_r1500",
+ "main_bowl_case": "fit_bowl_R10_h3_r1500",
  "mie_validation": [
   {
    "res_nm": 1.0,
@@ -331,6 +401,11 @@
   "gap_centre": 13.662548681997094,
   "max_xz": 41.33967012420702,
   "max_xy": 33.232165870813006
+ },
+ "pip_g10_r667": {
+  "gap_centre": 5.312791787825295,
+  "max_xz": 24.132226477828176,
+  "max_xy": 12.39491899384094
  },
  "pip_hole_r667": {
   "gap_centre": 0.45453806023608284,
