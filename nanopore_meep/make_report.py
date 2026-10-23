@@ -41,6 +41,19 @@ def fig(path, width, caption):
     return KeepTogether([Image(path, width=width, height=width * h / w), P(caption, small), Spacer(1, 4)])
 
 
+def fig_pair(p1, p2, caption):
+    """Two figures side by side at equal height, one caption."""
+    from reportlab.lib.utils import ImageReader
+    h = 5.2 * cm
+    ims = []
+    for p in (p1, p2):
+        w0, h0 = ImageReader(p).getSize()
+        ims.append(Image(p, width=h * w0 / h0, height=h))
+    t = Table([ims], hAlign="CENTER")
+    t.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "MIDDLE")]))
+    return KeepTogether([t, P(caption, small), Spacer(1, 4)])
+
+
 def table(rows, widths=None):
     t = Table(rows, colWidths=widths, hAlign="LEFT")
     t.setStyle(TableStyle([("FONTNAME", (0, 0), (-1, -1), "DejaVu"), ("FONTSIZE", (0, 0), (-1, -1), 8), ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e8e8e8")),
@@ -55,6 +68,13 @@ def lam(k):
 
 def mx(k, key="max_at_res"):
     return f"{S[k][key]:.0f}" if k in S else "-"
+
+
+HS = S.get("hotspot_size", {})
+
+
+def hs(k, key, fmt="{:.1f}"):
+    return fmt.format(HS[k][key]) if k in HS and HS[k][key] == HS[k][key] else "-"
 
 
 mie = {(round(r["res_nm"], 2), round(r["lam_nm"]), round(r["dist_nm"])): r["err_pct"] for r in S["mie_validation"]}
@@ -80,11 +100,15 @@ story = [
       f"a 1 nm rounded rim and the 500 nm Gaussian beam of SI Note 2, the resonances are {lam('fit_bowl_R10_h3_r1500')} nm "
       f"(R = 10 nm), {lam('fit_bowl_R2.5_h3_r1500')} nm (R = 2.5 nm) and {lam('fit_bowl_R1_h3_r1500')} nm (R = 1 nm), "
       f"against 785, 710 and 640 nm in Fig. S4.<br/>"
+      f"&bull; <b>Hot-spot size.</b> Along the pore wall (the direction in which DNA translocates) the intensity stays "
+      f"above half maximum over {hs('fit_bowl_R10_h5_r1500', 'vertical_above_half_nm')}-"
+      f"{hs('fit_bowl_R10_h3_r1500', 'vertical_above_half_nm')} nm, and it falls to 20-30 % within 2 nm of the "
+      f"metal, consistent with the 2.4-3.1 nm hot spot and the 2 nm decay reported in the paper.<br/>"
       f"&bull; <b>Absolute enhancement.</b> The resonance position is mesh-converged, the peak |E|<super>2</super> at the "
       f"rim is not: it keeps rising with refinement because the rim is a (near-)sharp metal edge. Absolute values such as "
       f"the ~140 of Fig. S4 therefore depend on the edge radius and the mesh, and I report them with that caveat.<br/>"
       f"&bull; <b>Particle in the 200 nm nanohole.</b> A 50 nm Au sphere near the wall creates a gap hot spot along the "
-      f"polarisation, as in Fig. 1e of the Nat. Commun. paper; 3D values are given in Section 5 with their mesh dependence."),
+      f"polarisation, as in Fig. 1e of the Nat. Commun. paper; 3D values are given in Section 6 with their mesh dependence."),
     fig("figures/resonance_vs_R_paper.png", 0.62 * W,
         "Figure 1. Resonance wavelength of the bowl nanopore versus pore radius: Fig. S4 of the paper (black) and Meep, "
         "for the nominal h<sub>3</sub> = 5 nm with a sharp rim (red) and for h<sub>3</sub> = 3 nm with a 1 nm rounded rim "
@@ -110,6 +134,10 @@ story = [
       "identical run without the structure (water only), on the same grid and with the same source (plane wave or Gaussian)."),
     P("<b>Rim shape.</b> Runs marked 'rounded' replace the two 90&deg; Au corners of the rim (top and bottom of the "
       "h<sub>3</sub> edge) by quarter circles of 1 nm radius."),
+    fig("figures/geometry.png", W,
+        "Figure 2. Modelled cross-section (R = 10 nm, h<sub>3</sub> = 3 nm) with the dimensions of Table S1; right: the rim "
+        "with its two corners rounded by 1 nm. The structure is rotationally symmetric about the pore axis (x = 0)."),
+    PageBreak(),
     P("2. Validation against Mie theory", h1),
     table([["grid", "1 nm", "2 nm", "5 nm", "10 nm  (distance from surface)"]] +
           [[f"{g:g} nm"] + [f"{mie.get((g, 780, d), float('nan')):+.1f} %" for d in (1, 2, 5, 10)]
@@ -117,7 +145,7 @@ story = [
     P("Table 1. Relative error of |E|<super>2</super>/|E<sub>0</sub>|<super>2</super> along the polarisation for a 50 nm "
       "Au sphere in water at 780 nm, Meep versus exact Mie theory (scattnlay), same Rakic permittivity.", small),
     fig("figures/mie_validation.png", 0.6 * W,
-        "Figure 2. Near field of a 50 nm Au sphere in water: Meep on 1, 0.67 and 0.5 nm grids (symbols) and exact Mie "
+        "Figure 3. Near field of a 50 nm Au sphere in water: Meep on 1, 0.67 and 0.5 nm grids (symbols) and exact Mie "
         "theory (lines), at 550 and 780 nm."),
     PageBreak(),
 
@@ -137,23 +165,51 @@ story = [
     P("Table 2. Resonance wavelengths (maximum |E|<super>2</super> in the water next to the rim). Paper values are read "
       "from Fig. S4.", small),
     P("The conventional pore reproduces Fig. S4 (exactly for R = 2.5 nm; 880-890 nm against 840 nm for R = 10 nm). The bowl "
-      "pore concentrates the field in a single hot spot on the few-nanometre metal edge of the rim (Fig. 3, 4), where "
+      "pore concentrates the field in a single hot spot on the few-nanometre metal edge of the rim (Fig. 4, 5), where "
       "the bowl funnels the incident light, and is resonant anywhere in the 650-800 nm range depending on the rim, as "
-      "discussed in Section 4."),
+      "discussed in Section 5."),
     fig("figures/bowl_R10_side.png", W,
-        "Figure 3. |E|<super>2</super>/|E<sub>0</sub>|<super>2</super> at 785 nm (log scale), cross-section of the bowl pore; "
+        "Figure 4. |E|<super>2</super>/|E<sub>0</sub>|<super>2</super> at 785 nm (log scale), cross-section of the bowl pore; "
         "left half in the plane perpendicular to E, right half in the plane of E. Right: zoom on the pore."),
     fig("figures/bowl_R10_top.png", 0.42 * W,
-        "Figure 4. Top view in the plane of the hot spot, 785 nm: two lobes on the rim along the polarisation, "
+        "Figure 5. Top view in the plane of the hot spot, 785 nm: two lobes on the rim along the polarisation, "
         "as in Fig. 1E of the paper."),
     PageBreak(),
 
-    P("4. What sets the resonance and the enhancement", h1),
-    fig("figures/bowl_sweep_h3.png", 0.55 * W,
-        "Figure 5. Bowl pore, R = 10 nm, sharp rim, plane wave, 1 nm grid: resonance wavelength (blue) and |E|<super>2</super> "
-        "at 785 nm (red) versus the Au thickness at the rim h<sub>3</sub>."),
+    P("4. Size of the hot spot", h1),
+    P("For single-molecule SERS the size of the probed volume matters as much as the enhancement. The paper infers a hot spot "
+      "of 2.4-3.1 nm (7-9 consecutive bases) from the Raman time traces and states that the plasmonic field drops "
+      "significantly 2 nm from the metal surface. Figure 6 shows the intensity at 785 nm along two lines through the hot "
+      "spot: from the Au wall into the pore, and along the pore wall, which is the direction of DNA translocation."),
+    fig("figures/hotspot_profiles.png", 0.9 * W,
+        "Figure 6. |E|<super>2</super> normalised to its maximum at 785 nm, R = 10 nm. Left: from the Au wall towards the pore "
+        "axis at the height of the hot spot. Right: along the pore wall (z), just inside the pore; the two maxima are the upper "
+        "and lower edges of the Au rim."),
+    table([["case", "grid", "length > half max", "at 2 nm from Au", "azimuthal FWHM"],
+           ["bowl R = 10, h3 = 3, rounded", "0.67 nm", hs("fit_bowl_R10_h3_r1500", "vertical_above_half_nm") + " nm", hs("fit_bowl_R10_h3_r1500", "at_2nm_from_wall", "{:.2f}"),
+            hs("fit_bowl_R10_h3_r1500", "azimuthal_fwhm_deg", "{:.0f}") + "°"],
+           ["bowl R = 10, h3 = 5, rounded", "0.67 nm", hs("fit_bowl_R10_h5_r1500", "vertical_above_half_nm") + " nm", hs("fit_bowl_R10_h5_r1500", "at_2nm_from_wall", "{:.2f}"),
+            hs("fit_bowl_R10_h5_r1500", "azimuthal_fwhm_deg", "{:.0f}") + "°"],
+           ["bowl R = 10, h3 = 5, sharp", "0.5 nm", hs("rf_bowl_R10_r2000", "vertical_above_half_nm") + " nm", hs("rf_bowl_R10_r2000", "at_2nm_from_wall", "{:.2f}"),
+            hs("rf_bowl_R10_r2000", "azimuthal_fwhm_deg", "{:.0f}") + "°"],
+           ["Zhao et al. 2023 (experiment)", "", "2.4-3.1 nm", "drops within 2 nm", ""]], [5.2 * cm, 1.5 * cm, 3.6 * cm, 3.6 * cm, 2.4 * cm]),
+    P("Table 3. Extent of the rim hot spot at 785 nm. 'Length &gt; half max' is the total length of the pore wall where "
+      "|E|<super>2</super> exceeds half its maximum; 'at 2 nm from Au' is |E|<super>2</super>/|E|<super>2</super><sub>max</sub> "
+      "2 nm from the wall towards the pore axis; the azimuthal width is that of each of the two lobes along the "
+      "polarisation.", small),
+    P(f"Along the pore wall the hot spot covers the thickness of the Au rim, with maxima at its upper and lower edges, and "
+      f"stays above half maximum over {hs('fit_bowl_R10_h5_r1500', 'vertical_above_half_nm')}-"
+      f"{hs('fit_bowl_R10_h3_r1500', 'vertical_above_half_nm')} nm, the same scale as the 2.4-3.1 nm inferred from the "
+      f"Raman data. Away from the metal the intensity halves within the first nanometre (resolved by only one or two grid "
+      f"cells) and is down to 20-30 % at 2 nm, in line with the 2 nm decay discussed in the paper. Azimuthally the hot spot "
+      f"forms two lobes along the polarisation, each about 100&deg; wide (~17 nm of rim for R = 10 nm, Fig. 5). For "
+      f"R = 2.5 and 1 nm the intensity does not fall below half maximum anywhere inside the pore: the hot spot fills the "
+      f"whole pore, the 'no cut-off' behaviour the paper attributes to the bowl geometry."),
+    PageBreak(),
+
+    P("5. What sets the resonance and the enhancement", h1),
     P(f"<b>Rim thickness.</b> Thinning the Au at the rim from 10 to 2.5 nm moves the resonance from "
-      f"{lam('rf_bowl_R10_h10_r1000')} to {lam('rf_bowl_R10_h2.5_r1000')} nm (Fig. 5), about 12-36 nm per nanometre of "
+      f"{lam('rf_bowl_R10_h10_r1000')} to {lam('rf_bowl_R10_h2.5_r1000')} nm (Fig. 7), about 12-36 nm per nanometre of "
       f"Au, most steeply for the thinnest rims. Table S1 gives h<sub>3</sub> as 2.5-10 nm and Fig. S2 as 5-10 nm, so the 785 nm of Fig. S4 lies inside the range "
       f"spanned by the published geometry; with h<sub>3</sub> = 3 nm the model resonates at {lam('fit_bowl_R10_h3_r1500')} nm. "
       f"Details not given in the paper (exact bowl profile near the pore, the 2 nm Ti adhesion layer, the 5-10 nm Au "
@@ -167,12 +223,23 @@ story = [
       f"itself only resolved on grids well below 0.5 nm. Converged absolute enhancements therefore require the actual edge "
       f"radius of the fabricated rim and a mesh finer than that radius; the value reported in Fig. S4 depends on the same "
       f"choices in the COMSOL model."),
-    fig("figures/hotspot_spectra.png", 0.62 * W,
-        "Figure 6. Maximum |E|<super>2</super>/|E<sub>0</sub>|<super>2</super> next to the rim versus wavelength for "
-        "bowl and conventional pores. Absolute values are mesh dependent (see text); the peak positions are converged."),
+    table([["case", "1 nm", "0.67 nm", "0.5 nm"],
+           ["sharp rim, h3 = 5: resonance (nm)", lam("rf_bowl_R10_r1000"), lam("rf_bowl_R10_r1500"), lam("rf_bowl_R10_r2000")],
+           ["sharp rim, h3 = 5: peak |E|²/|E0|²", mx("rf_bowl_R10_r1000"), mx("rf_bowl_R10_r1500"), mx("rf_bowl_R10_r2000")],
+           ["rounded, h3 = 5: resonance (nm)", lam("fit_bowl_R10_h5_r1000"), lam("fit_bowl_R10_h5_r1500"), "-"],
+           ["rounded, h3 = 5: peak |E|²/|E0|²", mx("fit_bowl_R10_h5_r1000"), mx("fit_bowl_R10_h5_r1500"), "-"],
+           ["rounded, h3 = 3: resonance (nm)", lam("fit_bowl_R10_h3_r1000"), lam("fit_bowl_R10_h3_r1500"), "-"],
+           ["Johnson-Christy, sharp, h3 = 5: resonance (nm)", lam("bowl_R10_jc_r1000"), lam("bowl_R10_jc_r1500"), "-"]], [7.2 * cm, 2.2 * cm, 2.2 * cm, 2.2 * cm]),
+    P("Table 4. Grid convergence for the bowl pore, R = 10 nm: the resonance wavelength changes by at most one 10 nm "
+      "spectral step (20 nm for the thinnest rim) under refinement, whereas the peak intensity at the rim keeps growing.", small),
+    fig_pair("figures/bowl_sweep_h3.png", "figures/hotspot_spectra.png",
+             "Figure 7 (left). Bowl pore, R = 10 nm, sharp rim, plane wave, 1 nm grid: resonance wavelength (blue) and "
+             "|E|<super>2</super> at 785 nm (red) versus the Au thickness at the rim h<sub>3</sub>. "
+             "Figure 8 (right). Maximum |E|<super>2</super>/|E<sub>0</sub>|<super>2</super> next to the rim versus wavelength "
+             "for bowl and conventional pores; absolute values are mesh dependent, the peak positions are converged."),
     PageBreak(),
 
-    P("5. Particle in the 200 nm Au nanohole (Nat. Commun. 2019)", h1),
+    P("6. Particle in the 200 nm Au nanohole (Nat. Commun. 2019)", h1),
     P("Full 3D model at 785 nm: 200 nm hole through 100 nm Au on 100 nm SiN, water, plane wave from the Au side polarised "
       "along x; one period of a 400 nm hole array (the device is an array; the periodic cell also keeps the incident wave "
       "clean). Gold is a single Drude pole fitted exactly to the Rakic permittivity at 785 nm, which gives the exact "
@@ -185,7 +252,7 @@ story = [
            ["sphere, 5 nm gap: maximum", mx("pip_g5_r500", "max_xz"), mx("pip_g5_r667", "max_xz")],
            ["sphere, 5 nm gap: gap centre", mx("pip_g5_r500", "gap_centre"), mx("pip_g5_r667", "gap_centre")]],
           [7 * cm, 3 * cm, 3 * cm]),
-    P("Table 3. |E|<super>2</super>/|E<sub>0</sub>|<super>2</super> at 785 nm in the water.", small),
+    P("Table 5. |E|<super>2</super>/|E<sub>0</sub>|<super>2</super> at 785 nm in the water.", small),
     P("The sphere couples to the hole wall and creates a hot spot in the particle-wall gap along the polarisation, as in "
       "Fig. 1e of the paper. For a 5 nm gap it is the strongest field in the hole; for a 10 nm gap it is comparable to the "
       "hole rim. The hole-rim value is stable between the two grids; the gap values are not yet converged "
@@ -193,11 +260,11 @@ story = [
       "exceeds the computing time available to me (one 1.5 nm run takes 3 h on 4 cores); a locally refined mesh (FEM, or "
       "FDTD with mesh override) would be needed."),
     fig("figures/pip_g10_maps.png", W,
-        "Figure 7. 50 nm Au sphere 10 nm from the wall of a 200 nm Au nanohole, 785 nm, 1.5 nm grid: side view in the plane of "
+        "Figure 9. 50 nm Au sphere 10 nm from the wall of a 200 nm Au nanohole, 785 nm, 1.5 nm grid: side view in the plane of "
         "E (left) and top view at mid-height of the Au (right)."),
     PageBreak(),
 
-    P("6. Summary and next steps", h1),
+    P("7. Summary and next steps", h1),
     P("The open-source workflow reproduces exact Mie theory and the conventional-pore results of Fig. S4, and the bowl-pore "
       "resonances of Fig. S4 within the range allowed by the published geometry. The remaining differences come from the "
       "rim geometry (thickness, edge radius, Ti and Au overcoat) and, for absolute enhancements, from the mesh at the rim."),
@@ -206,6 +273,18 @@ story = [
       "maps of the bowl pore for your current pore sizes and laser, (ii) the clustering states of Au particles in the pore "
       "from your Raman-feedback work, and (iii) Purcell/LDOS maps for the SERS emission inside the hot spot, which is the "
       "subject of my current work with Dr. Bagheri Harouni."),
+    P("References", h1),
+    P("[1] Y. Zhao, A. Hubarevich, A. F. De Fazio, M. Iarossi, J.-A. Huang, F. De Angelis, Plasmonic bowl-shaped nanopore "
+      "for Raman detection of single DNA molecules in flow-through, Nano Lett. 23, 4830 (2023), and Supporting Information.<br/>"
+      "[2] J.-A. Huang, M. Z. Mousavi, Y. Zhao, A. Hubarevich, F. Omeis <i>et al.</i>, SERS discrimination of single DNA bases "
+      "in single oligonucleotides by electro-plasmonic trapping, Nat. Commun. 10, 5321 (2019).<br/>"
+      "[3] A. D. Rakic, A. B. Djurisic, J. M. Elazar, M. L. Majewski, Optical properties of metallic films for "
+      "vertical-cavity optoelectronic devices, Appl. Opt. 37, 5271 (1998).<br/>"
+      "[4] P. B. Johnson, R. W. Christy, Optical constants of the noble metals, Phys. Rev. B 6, 4370 (1972).<br/>"
+      "[5] A. F. Oskooi, D. Roundy, M. Ibanescu, P. Bermel, J. D. Joannopoulos, S. G. Johnson, MEEP: A flexible free-software "
+      "package for electromagnetic simulations by the FDTD method, Comput. Phys. Commun. 181, 687 (2010).<br/>"
+      "[6] O. Pena, U. Pal, Scattering of electromagnetic radiation by a multilayered sphere, Comput. Phys. Commun. 180, "
+      "2348 (2009) (scattnlay).", body),
     P("Appendix: numerical notes", h1),
     P("&bull; Cylindrical runs: 2D (r, z) cell of 1.25 x 0.88 &mu;m (Gaussian beam) or 0.75 x 0.88 &mu;m (plane wave) with "
       "0.25 &mu;m PML on all sides; broadband pulse, DFT fields recorded until they decay to 10<sup>-6</sup>.<br/>"

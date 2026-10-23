@@ -147,6 +147,104 @@ side_map(main, best, "bowl_R10_side.png",
 side_map("conv_R10_r1000", 1000, "conv_R10_side.png", "conventional pore, R = 10 nm, Au 5 nm")
 top_map(main, best, "bowl_R10_top.png")
 
+# ---------- hot-spot size at 785 nm (Nano Lett. 2023: ~3 nm hot spot, field drops within 2 nm) ----------
+def half_width(x, y):
+    """Distance from x[0] at which y (falling from y[0]) first drops below y[0]/2, linearly interpolated."""
+    k = np.argmax(y < y[0] / 2)
+    if k == 0:
+        return float("nan")
+    return float(x[k - 1] + (y[k - 1] - y[0] / 2) / (y[k - 1] - y[k]) * (x[k] - x[k - 1]))
+
+
+def hotspot_size(name):
+    """Half-intensity extents of the rim hot spot: radial (into the pore), vertical, azimuthal."""
+    res = int(name.rsplit("_r", 1)[1])
+    d = load(name)
+    il = np.argmin(np.abs(d["lam"] - L785))
+    A = np.abs(d["Er"][il]) ** 2 + np.abs(d["Ez"][il]) ** 2          # phi = 0 (plane of E)
+    B = np.abs(d["Ep"][il]) ** 2                                      # phi = 90 deg
+    water = d["eps"] == 0
+    i0, j0 = np.unravel_index(np.where(water, A, 0).argmax(), A.shape)
+    r, z = d["rs"] * 1e3, d["zs"] * 1e3
+    col = np.arange(i0, -1, -1)
+    col = col[: np.argmax(~water[col, j0]) or len(col)]               # stay in the water of the pore
+    radial = half_width(r[i0] - r[col], A[col, j0])
+    up, dn = np.arange(j0, len(z)), np.arange(j0, -1, -1)
+    up = up[: np.argmax(~water[i0, up]) or len(up)]
+    dn = dn[: np.argmax(~water[i0, dn]) or len(dn)]
+    a, b = A[i0, j0], B[i0, j0]
+    zz = np.r_[z[dn][::-1], z[up][1:]]
+    prof = np.r_[A[i0, dn][::-1], A[i0, up][1:]] / a
+    near = np.abs(zz - z[j0]) <= 8
+    vertical = float((prof[near] >= 0.5).sum() * (z[1] - z[0]))     # length of the pore wall above half maximum
+    phi = 2 * np.arccos(np.sqrt(max(0.0, (a / 2 - b) / (a - b)))) if a > 2 * b else float("nan")
+    return dict(grid_nm=round(1e3 / res, 2), r_nm=float(r[i0]), z_nm=float(z[j0]), radial_half_nm=radial,
+                vertical_above_half_nm=vertical,
+                at_2nm_from_wall=float(np.interp(2.0, r[i0] - r[col], A[col, j0] / a)), azimuthal_fwhm_deg=float(np.degrees(phi)),
+                azimuthal_fwhm_nm=float(phi * r[i0])), (r[i0] - r[col], A[col, j0] / a), \
+        (zz - z[j0], prof)
+
+
+SIZE_CASES = {"fit_bowl_R10_h3_r1500": "R = 10, h3 = 3, rounded", "fit_bowl_R10_h5_r1500": "R = 10, h3 = 5, rounded",
+              "rf_bowl_R10_r2000": "R = 10, h3 = 5, sharp (0.5 nm grid)",
+              "fit_bowl_R2.5_h3_r1500": "R = 2.5, h3 = 3, rounded", "fit_bowl_R1_h3_r1500": "R = 1, h3 = 3, rounded"}
+fig, axs = plt.subplots(1, 2, figsize=(8.4, 3.2))
+summary["hotspot_size"] = {}
+for k, (name, lab) in enumerate(SIZE_CASES.items()):
+    if load(name) is None:
+        continue
+    sz, (xr, yr), (xz_, yz) = hotspot_size(name)
+    summary["hotspot_size"][name] = sz
+    if name.startswith("fit_bowl_R10") or name.startswith("rf_"):
+        axs[0].plot(xr, yr, f"C{k}.-", ms=3, label=lab)
+        axs[1].plot(xz_, yz, f"C{k}.-", ms=3, label=lab)
+for ax, xl in zip(axs, ("distance from the Au wall into the pore (nm)", "z - z_hot (nm), along the pore wall")):
+    ax.axhline(0.5, color="0.6", ls=":"); ax.set_xlabel(xl); ax.set_ylabel(r"$|E|^2 / |E|^2_{max}$ at 785 nm")
+axs[0].set_xlim(0, 10); axs[1].set_xlim(-8, 8); axs[0].legend(fontsize=7)
+fig.tight_layout(); fig.savefig("figures/hotspot_profiles.png", dpi=200); plt.close(fig)
+
+
+# ---------- schematic of the modelled bowl geometry ----------
+def schematic(R=10, h3=3, rho=1, h1=100, h2=30, D=250, fname="figures/geometry.png"):
+    H = h1 - h3
+    u = ((D / 2) ** 2 - R ** 2 - H ** 2) / (2 * H)
+    Rs = np.hypot(D / 2, u)
+    bowl = lambda r: h1 + u - np.sqrt(Rs ** 2 - r ** 2)
+    rc = R + rho
+    zt = bowl(rc)
+    t = np.linspace(0, np.pi / 2, 20)
+    rr = np.linspace(rc, D / 2, 200)
+    gold = np.r_[np.c_[rc - rho * np.sin(t), rho - rho * np.cos(t)],                         # lower rounded corner
+                 np.c_[[R, R], [rho, zt - rho]],
+                 np.c_[rc - rho * np.cos(t), zt - rho + rho * np.sin(t)],                   # upper rounded corner
+                 np.c_[rr, bowl(rr)], [[220, h1], [220, 0], [rc, 0]]]
+    fig, axs = plt.subplots(1, 2, figsize=(9, 3.2), gridspec_kw=dict(width_ratios=[2.2, 1]))
+    for ax in axs:
+        ax.set_facecolor("#d6eaf8")
+        for sgn in (1, -1):
+            ax.fill(sgn * gold[:, 0], gold[:, 1], color="#e8b730", lw=0)
+            ax.fill(sgn * np.array([R, 220, 220, R]), [0, 0, -h2, -h2], color="#9e9e9e", lw=0)
+        ax.set_aspect("equal"); ax.set_xlabel("x (nm)"); ax.set_ylabel("z (nm)")
+    a = axs[0]
+    a.set_xlim(-170, 170); a.set_ylim(-45, 135)
+    a.annotate("", (-D / 2, 112), (D / 2, 112), arrowprops=dict(arrowstyle="<->"))
+    a.text(0, 116, f"D = {D} nm", ha="center", fontsize=8)
+    a.annotate("", (150, 0), (150, h1), arrowprops=dict(arrowstyle="<->")); a.text(153, 50, f"h1 = {h1}", fontsize=8)
+    a.annotate("", (150, -h2), (150, 0), arrowprops=dict(arrowstyle="<->")); a.text(153, -20, f"h2 = {h2}", fontsize=8)
+    a.text(-150, 60, "Au", fontsize=9); a.text(-150, -22, "Si$_3$N$_4$", fontsize=8); a.text(-30, 60, "water", fontsize=9)
+    a.annotate("", (40, 100), (40, 130), arrowprops=dict(arrowstyle="->")); a.text(44, 120, "light, E along x", fontsize=7)
+    b = axs[1]
+    b.set_xlim(0, 26); b.set_ylim(-6, 12)
+    b.annotate("", (0, -3), (R, -3), arrowprops=dict(arrowstyle="<->")); b.text(R / 2, -2.4, f"R = {R}", ha="center", fontsize=8)
+    b.annotate("", (R + 7, 0), (R + 7, bowl(R + 7)), arrowprops=dict(arrowstyle="<->"))
+    b.text(R + 7.6, 1.2, f"h3 = {h3} nm", fontsize=7)
+    b.set_title(f"rim (zoom), corners rounded by {rho} nm", fontsize=8)
+    fig.tight_layout(); fig.savefig(fname, dpi=200); plt.close(fig)
+
+
+schematic()
+
+
 # ---------- resonance vs pore radius: paper (Fig. S4) vs Meep ----------
 PAPER = {10: 785, 2.5: 710, 1: 640}
 fig, ax = plt.subplots(figsize=(4.6, 3.4))
