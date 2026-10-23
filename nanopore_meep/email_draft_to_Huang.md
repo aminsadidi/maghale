@@ -12,6 +12,8 @@ Thank you for suggesting the bowl-shaped nanopore. I have simulated it, together
 
 4. In the 200 nm nanohole, a 50 nm Au particle near the wall creates a gap hot spot as in Fig. 1e of your Nat. Commun. paper; the gap values need a finer local mesh to converge.
 
+I also have hands-on experience with Ansys Lumerical FDTD and COMSOL Multiphysics from my earlier projects. Following your question about licences, I did this work entirely with open-source software, so that it raises no licensing issue for your group; if you can give me access to a licensed COMSOL or Lumerical installation, I can repeat or extend the calculations there directly.
+
 To make the comparison fully quantitative, could you share the rim profile and mesh size used in your COMSOL model, and the illumination side? I would be glad to continue with the geometries that matter most for your current experiments, for example the clustering states of Au particles in the pore.
 
 Best regards,
