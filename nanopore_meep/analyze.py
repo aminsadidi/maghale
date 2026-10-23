@@ -20,8 +20,13 @@ def load(name):
     return np.load(f) if os.path.exists(f) and os.path.getsize(f) else None   # 0-byte = skipped run
 
 
-def I0_cyl(res):
-    e = load(f"empty_r{res}")
+def ref_name(name, res):
+    """Incident-field run for a case: fit_* cases use the Gaussian-beam reference fit_empty_r*."""
+    return f"{'fit_' if name.startswith('fit_') else ''}empty_r{res}"
+
+
+def I0_cyl(res, name=""):
+    e = load(ref_name(name, res))
     return np.abs(e["Er"]).mean(axis=(1, 2)) ** 2      # |E_inc|^2 per wavelength
 
 
@@ -36,17 +41,18 @@ def hotspot(d, I0, dmin_nm=0.0):
 
 
 # ---------- bowl / conventional pores: every case found in runs/ ----------
-SPECTRA = {"rf_bowl_R10_r1000": ("bowl R = 10, h3 = 5", "C0-"), "rf_bowl_R10_h2.5_r1000": ("bowl R = 10, h3 = 2.5", "C0--"),
+SPECTRA = {"fit_bowl_R10_h3_r1000": ("bowl R = 10, h3 = 3, rounded, Gaussian", "k-"),"rf_bowl_R10_r1000": ("bowl R = 10, h3 = 5", "C0-"), "rf_bowl_R10_h2.5_r1000": ("bowl R = 10, h3 = 2.5", "C0--"),
            "rf_bowl_R2.5_r1500": ("bowl R = 2.5, h3 = 5", "C2-"), "rf_bowl_R1_r1500": ("bowl R = 1, h3 = 5", "C1-"),
            "rf_conv_R10_r1000": ("conventional R = 10, Au 5", "C3-"), "rf_conv_R2.5_r1500": ("conventional R = 2.5, Au 5", "C4-")}
 fig, ax = plt.subplots(figsize=(5.5, 3.8))
-for f in sorted(glob.glob("runs/bowl_*.npz") + glob.glob("runs/conv_*.npz") + glob.glob("runs/rf_*.npz")):
+for f in sorted(glob.glob("runs/bowl_*.npz") + glob.glob("runs/conv_*.npz") + glob.glob("runs/rf_*.npz")
+                + glob.glob("runs/fit_bowl_*.npz") + glob.glob("runs/fit_conv_*.npz")):
     name = os.path.basename(f)[:-4]
     d = load(name)
     res = int(name.rsplit("_r", 1)[1])
-    if d is None or load(f"empty_r{res}") is None:
+    if d is None or load(ref_name(name, res)) is None:
         continue
-    I0 = I0_cyl(res)
+    I0 = I0_cyl(res, name)
     mx, _ = hotspot(d, I0)
     lam = d["lam"] * 1e3
     i785 = np.argmin(np.abs(lam - 785))
@@ -86,7 +92,7 @@ def side_map(name, res, fname, title):
     if d is None:
         return
     i = 0
-    I0 = I0_cyl(res)[np.argmin(np.abs(load(f"empty_r{res}")["lam"] - L785))]
+    I0 = I0_cyl(res, name)[np.argmin(np.abs(d["lam"] - L785))]
     Ixz = (np.abs(d["Erw"]) ** 2 + np.abs(d["Ezw"]) ** 2) / I0        # phi = 0 (along E)
     Iyz = np.abs(d["Epw"]) ** 2 / I0                                   # phi = 90 deg
     r, z = d["rw"] * 1e3, d["zw"] * 1e3
@@ -108,7 +114,7 @@ def top_map(name, res, fname):
     if d is None:
         return
     il = np.argmin(np.abs(d["lam"] - L785))
-    I0 = I0_cyl(res)[il]
+    I0 = I0_cyl(res, name)[il]
     z = d["zs"]; iz = np.argmin(np.abs(z - 0.005 + 0.0005))       # just below the rim plane
     best = None
     for k in range(len(z)):   # plane of the hot spot
@@ -130,7 +136,7 @@ def top_map(name, res, fname):
     fig.savefig(f"figures/{fname}", dpi=200); plt.close(fig)
 
 
-main = next(n for n in ("rf_bowl_R10_r1500", "rf_bowl_R10_r1000", "bowl_R10_jc_r1500", "bowl_R10_jc_r1000")
+main = next(n for n in ("fit_bowl_R10_h3_r1500", "fit_bowl_R10_h3_r1000", "rf_bowl_R10_r1500", "rf_bowl_R10_r1000", "bowl_R10_jc_r1500", "bowl_R10_jc_r1000")
             if load(n) is not None)                     # finest stable R = 10 nm run available
 best = int(main.rsplit("_r", 1)[1])
 summary["main_bowl_case"] = main

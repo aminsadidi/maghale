@@ -24,6 +24,8 @@ p.add_argument("--shape", choices=["bowl", "conv", "sphere", "empty"], default="
 p.add_argument("--res", type=int, default=1000, help="pixels per um (1000 = 1 nm)")
 p.add_argument("--gold", choices=["rakicfit", "rakic", "jc"], default="rakicfit")
 p.add_argument("--w0", type=float, default=0, help="Gaussian waist (nm); 0 = plane wave")
+p.add_argument("--round", type=float, default=0, help="radius (nm) rounding the Au corners at the pore rim")
+p.add_argument("--rphys", type=float, default=0.5, help="radial extent of the cell inside the PML (um)")
 p.add_argument("--courant", type=float, default=0.5,
                help="0.25 keeps the 6-pole Rakic gold stable on <= 1 nm grids with a 5 nm lip")
 p.add_argument("--out", default="out.npz")
@@ -45,7 +47,7 @@ h1, h2, D = 100 * nm, 30 * nm, 250 * nm
 R, h3 = a.R * nm, a.h3 * nm
 
 dpml = 0.25
-r_phys, z_below, z_above = 0.5, 0.1, 0.15
+r_phys, z_below, z_above = a.rphys, 0.1, 0.15
 sr = r_phys + dpml
 z_lo = -h2 - z_below - dpml           # Au/SiN interface at z = 0
 z_hi = h1 + z_above + dpml
@@ -59,17 +61,43 @@ def blk(r0, r1, z0, z1, mat):
                     size=mp.Vector3(r1 - r0, mp.inf, z1 - z0), material=mat)
 
 
+# spherical bowl through (D/2, h1) and (R, h3), centre on the axis
+H = h1 - h3
+u = ((D / 2) ** 2 - R ** 2 - H ** 2) / (2 * H)
+Rs = np.hypot(D / 2, u)
+rho = a.round * nm
+
+
+def label(r, z):
+    """0 water, 1 gold, 2 SiN at physical (r, z); also defines the structure when --round > 0."""
+    r, z = np.broadcast_arrays(np.asarray(r, float), np.asarray(z, float))
+    lab = np.zeros(r.shape, int)
+    if a.shape == "sphere":
+        lab[np.hypot(r, z) < R] = 1
+    elif a.shape in ("bowl", "conv"):
+        top = h1 if a.shape == "bowl" else h3
+        lab[(z >= 0) & (z <= top)] = 1
+        lab[(z >= -h2) & (z < 0)] = 2
+        if a.shape == "bowl":
+            lab[(lab == 1) & (np.hypot(r, z - h1 - u) < Rs)] = 0
+        lab[(r < R) & (z >= -h2) & (z <= top)] = 0
+        if rho > 0:   # quarter-circle rounding of the upper and lower Au corners of the rim
+            rc = R + rho
+            zt = h1 + u - np.sqrt(Rs ** 2 - rc ** 2) if a.shape == "bowl" else h3
+            for zcen, side in ((zt - rho, z > zt - rho), (rho, z < rho)):
+                cut = (lab == 1) & (r >= R) & (r < rc) & side & (np.hypot(r - rc, z - zcen) > rho)
+                lab[cut] = 0
+    return lab
+
+
+MAT = {0: water, 1: gold, 2: sin_}
 geom = []
-if a.shape == "bowl":
-    # spherical bowl through (D/2, h1) and (R, h3), centre on the axis
-    H = h1 - h3
-    u = ((D / 2) ** 2 - R ** 2 - H ** 2) / (2 * H)
-    Rs = np.hypot(D / 2, u)
+if a.shape == "bowl" and rho == 0:
     geom = [blk(0, sr, -h2, 0, sin_), blk(0, sr, 0, h1, gold),
             mp.Sphere(center=mp.Vector3(0, 0, h1 + u - zc), radius=Rs, material=water),
             blk(0, sr, h1, z_hi, water),   # sphere cap above the film is water anyway
             blk(0, R, -h2, h1, water)]
-elif a.shape == "conv":
+elif a.shape == "conv" and rho == 0:
     geom = [blk(0, sr, -h2, 0, sin_), blk(0, sr, 0, h3, gold), blk(0, R, -h2, h3, water)]
 elif a.shape == "sphere":   # validation against Mie theory: Au sphere of radius R at z = 0
     geom = [mp.Sphere(center=mp.Vector3(0, 0, -zc), radius=R, material=gold)]
@@ -86,7 +114,8 @@ sources = [mp.Source(mp.GaussianSource(fcen, fwidth=df, is_integrated=True), com
                      amplitude=1j, **src_kw)]
 
 sim = mp.Simulation(cell_size=cell, resolution=a.res, dimensions=mp.CYLINDRICAL, m=1,
-                    boundary_layers=[mp.PML(dpml)], geometry=geom, default_material=water,
+                    boundary_layers=[mp.PML(dpml)], geometry=geom,
+                    default_material=water if rho == 0 else (lambda p: MAT[int(label(p.x, p.z + zc))]),
                     sources=sources, force_complex_fields=True, Courant=a.courant)
 
 # hot-spot region (all wavelengths) and wide map (785 nm only)
@@ -115,23 +144,7 @@ Fs, rs, zs = grab(d_small, small, len(freqs))
 Fw, rw, zw = grab(d_wide, wide, 1)
 
 
-def label(r, z):
-    """0 water, 1 gold, 2 SiN on the output grid (get_array(Dielectric) is unreliable here)."""
-    r, z = np.meshgrid(r, z, indexing="ij")
-    lab = np.zeros(r.shape, int)
-    if a.shape == "sphere":
-        lab[np.hypot(r, z) < R] = 1
-    elif a.shape in ("bowl", "conv"):
-        top = h1 if a.shape == "bowl" else h3
-        lab[(z >= 0) & (z <= top)] = 1
-        lab[(z >= -h2) & (z < 0)] = 2
-        if a.shape == "bowl":
-            lab[(lab == 1) & (np.hypot(r, z - h1 - u) < Rs)] = 0
-        lab[(r < R) & (z >= -h2) & (z <= top)] = 0
-    return lab
-
-
-eps, epw = label(rs, zs), label(rw, zw)
+eps, epw = label(rs[:, None], zs[None, :]), label(rw[:, None], zw[None, :])
 if mp.am_master():   # every MPI rank holds the gathered arrays
     np.savez_compressed(a.out, lam=lam, rs=rs, zs=zs, Er=Fs[mp.Er], Ep=Fs[mp.Ep], Ez=Fs[mp.Ez],
                     rw=rw, zw=zw, Erw=Fw[mp.Er][0], Epw=Fw[mp.Ep][0], Ezw=Fw[mp.Ez][0],
