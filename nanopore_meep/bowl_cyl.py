@@ -116,7 +116,8 @@ sources = [mp.Source(mp.GaussianSource(fcen, fwidth=df, is_integrated=True), com
 sim = mp.Simulation(cell_size=cell, resolution=a.res, dimensions=mp.CYLINDRICAL, m=1,
                     boundary_layers=[mp.PML(dpml)], geometry=geom,
                     default_material=water if rho == 0 else (lambda p: MAT[int(label(p.x, p.z + zc))]),
-                    sources=sources, force_complex_fields=True, Courant=a.courant)
+                    sources=sources, force_complex_fields=True, Courant=a.courant,
+                    extra_materials=[gold])   # a material function must declare its dispersive media
 
 # hot-spot region (all wavelengths) and wide map (785 nm only)
 zt = h3 if a.shape in ("bowl", "conv") else 0
