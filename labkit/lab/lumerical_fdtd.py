@@ -90,11 +90,22 @@ open(os.path.join(a.work, a.name + '.lsf'), 'w').write(script + '\n')
 if a.dry:
     print('script written'); sys.exit(0)
 
+# older lumapi versions do not register their DLL folders (needed with Python >= 3.8 on Windows)
+_root = os.path.dirname(os.path.dirname(os.path.abspath(a.lumapi)))
+for _d in (a.lumapi, os.path.join(_root, 'bin'), os.path.join(_root, 'api', 'c')):
+    if os.path.isdir(_d):
+        os.environ['PATH'] = _d + os.pathsep + os.environ.get('PATH', '')
+        if hasattr(os, 'add_dll_directory'):
+            try: os.add_dll_directory(_d)
+            except OSError: pass
 sys.path.append(a.lumapi)
 import lumapi  # noqa: E402
 import numpy as np  # noqa: E402
 
-fdtd = lumapi.FDTD(hide=True)
+try:
+    fdtd = lumapi.FDTD(hide=True)
+except TypeError:                                    # very old lumapi without the hide option
+    fdtd = lumapi.FDTD()
 fdtd.eval(script)
 proj = os.path.join(a.work, a.name + '.fsp')
 fdtd.save(proj)

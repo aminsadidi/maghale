@@ -22,6 +22,7 @@ MNPBEM = os.environ.get('LABKIT_MNPBEM') or os.path.join(KIT, 'vendor', 'MNPBEM'
 CAL = os.path.join(OUT, 'calibration.json')
 STATUS_EVERY = int(os.environ.get('LABKIT_STATUS_EVERY', 30))   # s; the monitor thread only reads small log files
 
+TIER_ORDER = [2, 1, 3, 4]        # FDTD cross-check first (short runs, new method), then the long BEM mesh study
 DEFAULT_CAL = {'mnpbem': {'a': 2.2, 'p': 2.6, 'samples': []},          # s per step per unit (Xeon E5-1650 guess)
                'lumerical': {'a': 2.0e-4, 'samples': []}}              # s per unit (rough guess, refined after 1 run)
 
@@ -254,28 +255,61 @@ class Runner:
              f'  predicted remaining time for everything planned: {fmt_dt(rem)}']
         for k in sorted(per_tier): L.append(f'    tier {k} ({T.TIER_NAMES.get(k, "")}): {fmt_dt(per_tier[k])}')
         days = rem / 86400
-        if days <= 3: L.append('  -> fine: let it run, nothing to change.')
-        elif days <= 10: L.append('  -> long but feasible. To shorten: stop (Ctrl+C) and restart with  RUN.bat --tiers 1,2  (finished tasks are kept).')
+        if days <= 10: L.append('  -> fine: let it run, nothing to change.')
         else: L.append('  -> too long for this machine: restart with  RUN.bat --tiers 1,2 --max-days 5  and run the rest on a stronger system.')
         skipped = [t for t in self.P if t['state'].startswith('skip: needs')]
         if skipped: L.append(f'  {len(skipped)} task(s) were skipped for lack of RAM; they need a machine with >= '
                              f"{max(t['mem_gb'] for t in skipped) / 0.9:.0f} GB.")
         return '\n'.join(L)
 
+    def smoke_banner(self):
+        """once, after the smoke tests: a clear message whether the user can leave the machine alone"""
+        if getattr(self, 'bannered', False): return
+        self.bannered = True
+        L, bad = [], False
+        for be, name in (('mnpbem', 'MATLAB + MNPBEM'), ('lumerical', 'Lumerical FDTD')):
+            sm = [t for t in self.P if t['backend'] == be and t.get('smoke')]
+            st = sm[0]['state'] if sm else 'not planned'
+            if st == 'done': L.append(f'  {name:<16}: OK')
+            elif st.startswith('skip') and 'not available' in st:
+                info = self.S.get('matlab' if be == 'mnpbem' else 'lumerical')
+                if info and info.get('ok') is False:            # installed, but the licence test failed
+                    L.append(f'  {name:<16}: PROBLEM - installed but the licence test failed'); bad = True
+                else: L.append(f'  {name:<16}: not installed on this PC (its tasks are skipped)')
+            else: L.append(f'  {name:<16}: PROBLEM ({st})'); bad = True
+        left = [t for t in self.P if t['state'] == 'todo']
+        if not left: bad = True
+        msg = ['=' * 70, 'CHECK AFTER THE SHORT TESTS:'] + L
+        if bad:
+            msg += ['', '  >>> PROBLEM: take a photo of this window and send it. <<<',
+                    '      (the tasks that work keep running; do not close this window)']
+        else:
+            msg += ['', f'  >>> ALL GOOD. {len(left)} simulations are queued. You can leave now. <<<',
+                    '      Do NOT close this window. Finished results are kept even if the PC restarts',
+                    '      (then just run START.bat again).']
+        msg.append('=' * 70)
+        txt = '\n'.join(msg)
+        print('\n' + txt + '\n', flush=True)
+        try: open(os.path.join(OUT, 'CHECK.txt'), 'w', encoding='utf-8').write(txt + '\n')
+        except OSError: pass
+
     def go(self):
         os.makedirs(LOGS, exist_ok=True)
         prevent_sleep(True)
         mon = Monitor(self); mon.start()
         try:
-            order = sorted([t for t in self.P if t['state'] == 'todo'], key=lambda t: (not t.get('smoke'), t['tier']))
+            order = sorted([t for t in self.P if t['state'] == 'todo'],
+                           key=lambda t: (not t.get('smoke'), TIER_ORDER.index(t['tier']) if t['tier'] in TIER_ORDER else 9))
             for t in order:
                 if t['state'] != 'todo': continue
+                if not t.get('smoke'): self.smoke_banner()
                 ok = self.run_task(t)
                 if t.get('smoke') and not ok:                 # broken installation: do not waste hours on this backend
                     for u in self.P:
                         if u['backend'] == t['backend'] and u['state'] == 'todo':
                             u['state'] = f"skip: smoke test failed (see logs/{t['id'].replace(':', '_')}.log)"
                     print(f"!!! {t['backend']} smoke test failed - its other tasks are skipped. Send me the log file.", flush=True)
+            self.smoke_banner()
         except KeyboardInterrupt:
             print('\nstopped by the user; finished tasks are kept, run RUN.bat again to continue.')
             if self.current: self.current['state'] = 'todo'
@@ -283,6 +317,20 @@ class Runner:
             mon.stop = True; self.update_status(); prevent_sleep(False)
         z = pack()
         print(f'\nresults packed into {z}')
+
+
+def console_setup():
+    """Windows console: never crash on unusual characters, and switch off QuickEdit (a mouse click into the window
+    would otherwise freeze the program until a key is pressed)"""
+    try: sys.stdout.reconfigure(errors='replace'); sys.stderr.reconfigure(errors='replace')
+    except Exception: pass
+    if os.name != 'nt': return
+    try:
+        import ctypes
+        k = ctypes.windll.kernel32; h = k.GetStdHandle(-10); m = ctypes.c_uint32()
+        if k.GetConsoleMode(h, ctypes.byref(m)): k.SetConsoleMode(h, (m.value & ~0x0040) | 0x0080)
+    except Exception:
+        pass
 
 
 def prevent_sleep(on):
@@ -325,6 +373,13 @@ def main():
     ap.add_argument('--tiers', default='1,2,3,4'); ap.add_argument('--max-days', type=float); ap.add_argument('--only', choices=['mnpbem', 'lumerical'])
     ap.add_argument('--redetect', action='store_true', help='repeat the software detection (licence tests)')
     a = ap.parse_args()
+    console_setup()
+    try:
+        KIT.encode('ascii')
+    except UnicodeEncodeError:
+        print(f'\nERROR: the folder path contains non-English characters:\n  {KIT}\n'
+              'Move the folder maghale_lab directly to C:\\ (so that this file is C:\\maghale_lab\\START.bat) and start again.')
+        sys.exit(2)
     os.makedirs(OUT, exist_ok=True)
     if a.cmd == 'status':
         try: st = json.load(open(os.path.join(OUT, 'status.json')))
@@ -341,7 +396,13 @@ def main():
     P = plan(S, tiers, a.only, a.max_days)
     print(plan_text(P, S), flush=True)
     if a.cmd == 'run':
-        if not any(t['state'] == 'todo' for t in P): print('\nnothing to run.'); pack(); return
+        if not any(t['state'] == 'todo' for t in P):
+            if any(t['state'] == 'done' for t in P):
+                print('\n' + '=' * 70 + '\n  All possible simulations are FINISHED. Send the results_*.zip file in this folder.\n' + '=' * 70)
+            else:
+                print('\n' + '=' * 70 + '\n  >>> PROBLEM: nothing can run on this PC (see the MATLAB / Lumerical lines above).\n'
+                      '      Take a photo of this window and send it. <<<\n' + '=' * 70)
+            pack(); return
         Runner(S, P, a).go()
 
 

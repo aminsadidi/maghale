@@ -51,7 +51,7 @@ def physical_cores():
 
 def run(cmd, timeout, cwd=None):
     try:
-        r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, cwd=cwd)
+        r = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=timeout, cwd=cwd)
         return r.returncode, (r.stdout or '') + (r.stderr or '')
     except subprocess.TimeoutExpired:
         return -9, 'timeout'
@@ -104,17 +104,41 @@ def find_comsol():
 
 
 def test_matlab(exe):
-    t = time.time(); code, out = run([exe, '-batch', "disp(['LABKIT_OK ' version]); disp(maxNumCompThreads)"], timeout=600)
+    t = time.time(); code, out = run([exe, '-batch', "disp(['LABKIT_OK ' version]); disp(maxNumCompThreads)"], timeout=1500)
     ok = code == 0 and 'LABKIT_OK' in out
     ver = re.search(r'LABKIT_OK (\S+)', out)
     return {'ok': ok, 'version': ver.group(1) if ver else None, 'seconds': round(time.time() - t, 1), 'message': out.strip()[-400:]}
 
 
+LUMAPI_IMPORT = r"""
+import os, sys
+api = r'%s'
+root = os.path.dirname(os.path.dirname(api))
+for d in (api, os.path.join(root, 'bin'), os.path.join(root, 'api', 'c')):
+    if os.path.isdir(d):
+        os.environ['PATH'] = d + os.pathsep + os.environ.get('PATH', '')
+        if hasattr(os, 'add_dll_directory'):
+            try: os.add_dll_directory(d)
+            except OSError: pass
+sys.path.append(api)
+import lumapi
+"""
+
+
 def test_lumerical(info, py_fallback):
-    py = info['python'] or py_fallback
-    code_s = ("import sys; sys.path.append(r'%s'); import lumapi; f = lumapi.FDTD(hide=True); "
-              "print('LABKIT_OK', f.version() if hasattr(f, 'version') else ''); f.close()") % info['lumapi_dir']
-    t = time.time(); code, out = run([py, '-c', code_s], timeout=900)
+    r = _test_lumerical(info, info['python'] or py_fallback)
+    if not r['ok'] and info['python'] and info['python'] != py_fallback:     # bundled Python failed: try ours
+        r2 = _test_lumerical(info, py_fallback)
+        if r2['ok']: return r2
+    return r
+
+
+def _test_lumerical(info, py):
+    os.makedirs(OUT, exist_ok=True)
+    scr = os.path.join(OUT, 'lumerical_test.py')         # a script file (not -c) so that every Python version accepts it
+    with open(scr, 'w') as f:
+        f.write((LUMAPI_IMPORT % info['lumapi_dir']) + "try:\n    f = lumapi.FDTD(hide=True)\nexcept TypeError:\n    f = lumapi.FDTD()\nprint('LABKIT_OK')\nf.close()\n")
+    t = time.time(); code, out = run([py, scr], timeout=900)
     return {'ok': code == 0 and 'LABKIT_OK' in out, 'python': py, 'seconds': round(time.time() - t, 1), 'message': out.strip()[-400:]}
 
 
