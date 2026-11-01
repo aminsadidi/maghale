@@ -1,0 +1,140 @@
+% =====================================================================================================
+%  قالب پایان‌نامه‌ی فارسی (XeLaTeX + xepersian، قلم یاس)
+%  کامپایلر Overleaf: XeLaTeX     |     ساخت محلی: scripts/build.sh main.tex
+%  تصاویر با \figbox{name.png}{width} درج می‌شوند؛ اگر فایل نباشد کادر جای‌خالی چاپ می‌شود.
+% =====================================================================================================
+\documentclass[12pt,a4paper]{report}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage[a4paper,top=2.8cm,bottom=2.6cm,right=2.6cm,left=2.4cm,headheight=16pt]{geometry}
+\usepackage{setspace}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{xepersian}   % باید آخرین بسته باشد
+
+% ---------------------------------------- قلم یاس ----------------------------------------------------
+% به ترتیب امتحان می‌شود: فایل قلم بارگذاری‌شده در پروژه، سپس قلم‌های نصب‌شده با نام‌های رایج «یاس».
+% Scale=1.12 متن را حدود ۱۲ درصد بزرگ‌تر از نسخه‌ی قبلی می‌کند.
+% اگر در پروژه‌ی قبلی‌تان خطی مثل \settextfont{...} داشتید، می‌توانید کل این بلوک را با همان خط
+% (با افزودن Scale=1.12) جایگزین کنید.
+\IfFontExistsTF{BYas.ttf}{%
+  \IfFontExistsTF{BYasBd.ttf}%
+    {\settextfont[Scale=1.12,BoldFont=BYasBd.ttf]{BYas.ttf}}%
+    {\IfFontExistsTF{BYasBold.ttf}%
+      {\settextfont[Scale=1.12,BoldFont=BYasBold.ttf]{BYas.ttf}}%
+      {\settextfont[Scale=1.12]{BYas.ttf}}}}%
+{\IfFontExistsTF{BYas}{\settextfont[Scale=1.12]{BYas}}%
+{\IfFontExistsTF{B Yas}{\settextfont[Scale=1.12]{B Yas}}%
+{\IfFontExistsTF{XB Yas}{\settextfont[Scale=1.12]{XB Yas}}%
+{\IfFontExistsTF{Yas}{\settextfont[Scale=1.12]{Yas}}%
+{\IfFontExistsTF{XB Niloofar}{\settextfont[Scale=1.12]{XB Niloofar}}%
+{\IfFontExistsTF{Vazirmatn}{\settextfont[Scale=1.05]{Vazirmatn}}%
+{\IfFontExistsTF{Nazli}{\settextfont[Scale=1.12]{Nazli}}%
+{\settextfont[Scale=1.05]{Amiri}}}}}}}}}
+
+% ---------------------------------------- فاصله‌ی خطوط --------------------------------------------
+\setstretch{1.55}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=4pt,topsep=4pt}
+\setlength{\emergencystretch}{3em}
+
+% ---------------------------------------- سرصفحه ---------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\small\leftmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+% ---------------------------------------- فرمان‌های کمکی ------------------------------------------
+\newcommand{\sub}[1]{\mathrm{#1}}               % زیرنویس لاتین در فرمول‌ها (مثل rad، tot)
+\newcommand{\Imag}{\operatorname{Im}}
+\newcommand{\Real}{\operatorname{Re}}
+% محل تصویر: اگر فایل وجود داشته باشد درج می‌شود، وگرنه کادر خالی با نام فایل
+\newcommand{\figbox}[2]{%
+  \IfFileExists{#1}{\includegraphics[width=#2]{#1}}{%
+    \fbox{\parbox[c][\dimexpr#2*42/100\relax][c]{\dimexpr#2-2\fboxsep-2\fboxrule\relax}{\centering\textbf{محل قرارگیری نمودار لومریکال}\\[4pt]
+    فایل تصویر را با نام \lr{\texttt{\detokenize{#1}}} بارگذاری کنید.}}}}
+
+\begin{document}
+
+% ======================================== صفحه‌ی عنوان ============================================
+\begin{titlepage}
+\begin{center}
+\vspace*{1.5cm}
+{\Large\textbf{دانشگاه ...}}\\[6pt]
+{\large دانشکده‌ی ...}\\[4pt]
+{\large گروه ...}\\[2.2cm]
+\rule{\textwidth}{0.6pt}\\[10pt]
+{\LARGE\textbf{عنوان پایان‌نامه}}\\[14pt]
+{\large\textbf{زیرعنوان}}\\[10pt]
+\rule{\textwidth}{0.6pt}\\[2.5cm]
+\begin{minipage}[t]{0.48\textwidth}
+\textbf{پژوهشگر:}\\ نام دانشجو\\[12pt]
+\textbf{شماره‌ی دانشجویی:}\\ ۰۰۰۰۰۰۰۰۰۰
+\end{minipage}\hfill
+\begin{minipage}[t]{0.42\textwidth}
+\textbf{استاد راهنما:}\\ نام استاد
+\end{minipage}
+\end{center}
+\end{titlepage}
+
+% ======================================== چکیده =====================================================
+\chapter*{چکیده}
+\addcontentsline{toc}{chapter}{چکیده}
+\markboth{چکیده}{چکیده}
+متن چکیده (بدون ارجاع). واژه‌های لاتین همیشه داخل \lr{Latin text}.
+
+\vspace{6pt}
+\noindent\textbf{واژگان کلیدی:} ...، ...، ....
+
+\tableofcontents
+
+% ======================================== فصل‌ها ======================================================
+\chapter{مقدمه}
+\section{بیان مسئله}
+متن با ارجاع \cite{key1}. معادله:
+\begin{equation}\label{eq:example}
+F_P=\frac{P_{\sub{tot}}}{P_0}
+\end{equation}
+ارجاع به رابطه‌ی (\ref{eq:example})، شکل \ref{fig:example} و جدول \ref{tab:example}.
+
+\begin{figure}[htbp]
+\centering
+\figbox{example.png}{0.85\textwidth}
+\caption{توضیح شکل؛ واحدها به فارسی (نانومتر)، اعشار با «/» مثل ۵۴/۵.}
+\label{fig:example}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{عنوان جدول (بالای جدول).}
+\label{tab:example}
+\renewcommand{\arraystretch}{1.3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{ccc}
+\toprule
+ستون ۱ & ستون ۲ & ستون ۳ \\
+\midrule
+۳ & ۴۲۰۰ & حدود ۶ درصد \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+% ======================================== منابع ======================================================
+\chapter*{منابع و مآخذ}
+\addcontentsline{toc}{chapter}{منابع و مآخذ}
+\markboth{منابع و مآخذ}{منابع و مآخذ}
+\begin{latin}
+\renewcommand{\bibname}{\rl{منابع و مآخذ}}
+\renewcommand{\chapter}[2]{}   % عنوان لاتین تکراری حذف می‌شود
+\begin{thebibliography}{99}
+\bibitem{key1} A. Author, ``Title,'' \textit{Journal}, vol. 1, no. 1, pp. 1--10, 2020.
+\end{thebibliography}
+\end{latin}
+
+\end{document}
