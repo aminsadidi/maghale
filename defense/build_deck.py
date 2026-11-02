@@ -70,6 +70,53 @@ def picture(slide, path, x, y, w=None, h=None, name=None):
     return pic
 
 
+# ---------- 0. text corrections on the original slides ----------
+def set_text(slide, shape_id, new, rtl_on=True):
+    sh = next(x for x in slide.shapes if x.shape_id == shape_id)
+    p = sh.text_frame.paragraphs[0]; runs = p.runs
+    runs[0].text = new
+    for r in runs[1:]: r._r.getparent().remove(r._r)
+    if rtl_on: p._p.get_or_add_pPr().set('rtl', '1')
+    return sh
+
+
+def drop(slide, ids):
+    for x in [x for x in slide.shapes if x.shape_id in ids]: x._element.getparent().remove(x._element)
+
+
+S = prs.slides
+set_text(S[0], 86, 'دفاع از پروژه‌ی کارشناسی')
+set_text(S[0], 88, 'تحلیل و بهینه‌سازی برهم‌کنش گسیلنده‌ی کوانتومی با نانومیله‌ی کلاهک‌دار به روش FDTD سه‌بعدی')
+set_text(S[1], 101, 'نیاز حیاتی به تولید فوتون‌های کاملاً منفرد و پرسرعت')
+set_text(S[1], 103, 'تسریع چشمگیر نرخ گسیل توسط محیط ساختاریافته')
+set_text(S[2], 115, 'جفت‌شدگی گسیلنده با مد پلاسمونی و تابش به فضای دوردست')
+set_text(S[2], 117, 'اتلاف شدید اهمی و حرارتی در فواصل زیر ۵ نانومتر')
+set_text(S[3], 127, 'حل سه‌بعدی معادلات ماکسول با روش FDTD')
+set_text(S[3], 129, 'جداسازی دقیق نرخ تابش مفید از اتلاف اهمی')
+set_text(S[3], 131, 'یافتن فاصله‌ی بهینه برای بیشینه‌سازی بازده کوانتومی')
+set_text(S[4], 144, ' شرایط مرزی : جذب امواج بدون بازتاب')
+for x in S[4].shapes:
+    if x.shape_id == 5: x.left = Inches(6.85)
+set_text(S[4], 5, 'PML', rtl_on=False)
+s8 = S[7]
+set_text(s8, 182, 'افزایش نرخ تابش فوتون‌ها نسبت به خلأ در طول موج تشدید')
+ref = next(x for x in s8.shapes if x.shape_id == 182)
+note = copy.deepcopy(ref._element); s8.shapes._spTree.append(note)
+from pptx.shapes.autoshape import Shape as _Shape
+nsh = _Shape(note, s8.shapes); nsh.top = ref.top + ref.height + Inches(0.1)
+nsh.text_frame.paragraphs[0].runs[0].text = 'در گاف ۳ نانومتر؛ اما بازده در همین فاصله فقط ۶٪ است'
+nsh.text_frame.paragraphs[0].runs[0].font.size = Pt(16); nsh.text_frame.paragraphs[0].runs[0].font.color.rgb = ACC
+nsh._element.nvSpPr.cNvPr.set('id', '900'); nsh.name = 'Efficiency note'
+set_text(S[9], 208, 'بازده کوانتومی در گاف ۲۰ نانومتر (نقطه‌ی بهینه‌ی محاسبه‌شده)')
+set_text(S[11], 231, 'عملکرد به عنوان فیلتر قطبشی نانومتری؛ در نانوکره‌ی هم‌حجم این نسبت فقط ۲/۴ است')
+set_text(S[12], 240, 'پرهیز از فواصل زیر ۵ نانومتر (خاموشی)')
+set_text(S[12], 241, 'بهترین بازده (۷۴٪) در گاف ۲۰ نانومتر')
+set_text(S[12], 242, 'تقویت تابشی ۳۵ تا ۶۰ برابر نسبت به کره‌ی هم‌حجم')
+s15 = S[14]
+drop(s15, {255, 258, 259, 261, 266, 267})
+for x in s15.shapes:
+    if x.shape_id in (262, 268, 269): x.top = x.top - Inches(0.84)
+
 # ---------- 1. slide 6: real geometry schematic instead of the generic nanoparticle picture ----------
 s6 = prs.slides[5]
 pics = [sh for sh in s6.shapes if sh.shape_type == 13]
