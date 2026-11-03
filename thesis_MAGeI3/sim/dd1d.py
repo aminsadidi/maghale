@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import os
 import numpy as np
+_trapz = getattr(np, "trapezoid", None) or np.trapz
 import scipy.sparse as sp
 import scipy.sparse.linalg as spla
 
@@ -468,7 +469,12 @@ class Device:
             # per-component logarithmic damping (Sesame/Bank-Rose type)
             a = self.Vt
             dx = np.sign(dx) * a * np.log1p(np.abs(dx) / a)
-            dx = np.clip(dx, -damp, damp)
+            if poisson_only:
+                dx = np.clip(dx, -damp, damp)
+            else:
+                dx[0::3] = np.clip(dx[0::3], -damp, damp)
+                dx[1::3] = np.clip(dx[1::3], -3.0, 3.0)
+                dx[2::3] = np.clip(dx[2::3], -3.0, 3.0)
             if poisson_only:
                 X = X.copy(); X[0::3] += dx
             else:
@@ -478,6 +484,128 @@ class Device:
             if mx < tol:
                 return X, True
         return X, False
+
+    # ------------------------------------------------------------ Gummel
+    def _cont_coeffs(self, psi):
+        """Link coefficients so that jn_k = cjn*n_{k+1} - cin*n_k and
+        jp_k = cip*p_k - cjp*p_{k+1} (SG inside layers, TE at interfaces)."""
+        Vt = self.Vt
+        Ec = -self.chi - psi
+        Ev = Ec - self.Eg
+        same = self.same
+        h = self.h
+        dEc = (Ec[1:] - Ec[:-1]) / Vt
+        dEv = (Ev[1:] - Ev[:-1]) / Vt
+        Dn = self.mun[:-1] * Vt
+        Dp = self.mup[:-1] * Vt
+        dEc_s = np.where(same, dEc, 0.0)
+        dEv_s = np.where(same, dEv, 0.0)
+        v = self.te_velocity
+        bn = np.where(same, 0.0, np.maximum(0.0, self.chi[:-1] - self.chi[1:]) / Vt)
+        bp = np.where(same, 0.0, np.maximum(0.0, (self.chi[1:] + self.Eg[1:]) -
+                                            (self.chi[:-1] + self.Eg[:-1])) / Vt)
+        argn = np.where(same, 0.0, dEc - bn)
+        argp = np.where(same, 0.0, -dEv - bp)
+        cjn = np.where(same, Dn / h * bern(-dEc_s), v * (self.Nc[:-1] / self.Nc[1:]) * np.exp(argn))
+        cin = np.where(same, Dn / h * bern(dEc_s), v * np.exp(-bn))
+        cip = np.where(same, Dp / h * bern(-dEv_s), v * np.exp(-bp))
+        cjp = np.where(same, Dp / h * bern(dEv_s), v * (self.Nv[:-1] / self.Nv[1:]) * np.exp(argp))
+        return cin, cjn, cip, cjp
+
+    def _rec_linear(self, n, p, for_n=True):
+        """R = a*x - b with x=n (for_n) or x=p, lagged denominators.
+        Returns per-node a, b including interface recombination (per volume
+        converted to per node: a_it, b_it already integrated)."""
+        Vt = self.Vt
+        a = np.zeros(self.N); b = np.zeros(self.N)
+        for lv in self.levels:
+            Nt = lv["Nt"]
+            if not np.any(Nt):
+                continue
+            n1 = self.Nc * np.exp(-(self.Eg - lv["Et"]) / Vt)
+            p1 = self.Nv * np.exp(-lv["Et"] / Vt)
+            cn = lv["sn"] * self.vthn; cp = lv["sp"] * self.vthp
+            den = cn * (n + n1) + cp * (p + p1)
+            k = Nt * cn * cp / den
+            if for_n:
+                a += k * p; b += k * n1 * p1
+            else:
+                a += k * n; b += k * n1 * p1
+        a = a * self.vol; b = b * self.vol
+        for it in self.iface:
+            i = it["node"]
+            Sn = it["sn"] * self.vthn[i] * it["Nit"]
+            Spp = it["sp"] * self.vthp[i] * it["Nit"]
+            n1 = self.Nc[i] * np.exp(-(self.Eg[i] - it["Et"]) / Vt)
+            p1 = self.Nv[i] * np.exp(-it["Et"] / Vt)
+            den = (n[i] + n1) / Spp + (p[i] + p1) / Sn
+            a[i] += (p[i] if for_n else n[i]) / den
+            b[i] += n1 * p1 / den
+        return a, b
+
+    def gummel(self, X, V, G, maxit=400, tol=1e-7, verbose=False):
+        N = self.N
+        Vt = self.Vt
+        X = X.copy()
+        for it in range(maxit):
+            Xold = X.copy()
+            X, ok = self.newton(X, V, G, poisson_only=True, maxit=50, tol=1e-9)
+            psi = X[0::3]
+            n, p, Ec, Ev = self.carriers(psi, X[1::3], X[2::3])
+            cin, cjn, cip, cjp = self._cont_coeffs(psi)
+            EF_back = self.EF0 - V
+            nf0 = self.Nc[0] * np.exp((self.EF0 - Ec[0]) / Vt)
+            pf0 = self.Nv[0] * np.exp((Ev[0] - self.EF0) / Vt)
+            nb0 = self.Nc[-1] * np.exp((EF_back - Ec[-1]) / Vt)
+            pb0 = self.Nv[-1] * np.exp((Ev[-1] - EF_back) / Vt)
+            Gv = G * self.vol
+            # ---- electrons: node i: jn_i - jn_{i-1} - (a n_i - b) + Gv = 0
+            a, b = self._rec_linear(n, p, True)
+            diag = np.zeros(N); up = np.zeros(N - 1); lo = np.zeros(N - 1); rhs = np.zeros(N)
+            # jn_k (k=i, right link) = cjn[i] n_{i+1} - cin[i] n_i
+            diag[:-1] += -cin; up += cjn
+            # -jn_{k=i-1} = -(cjn[i-1] n_i - cin[i-1] n_{i-1})
+            diag[1:] += -cjn; lo += cin
+            # left boundary: -jn_left = -Sn(n0 - nf0)
+            diag[0] += -self.front_Sn; rhs[0] += -self.front_Sn * nf0
+            # right boundary: jn_right = -Sn(nN - nb0)
+            diag[-1] += -self.back_Sn; rhs[-1] += -self.back_Sn * nb0
+            diag += -a; rhs += -b - Gv
+            A = sp.diags([lo, diag, up], [-1, 0, 1], format="csc")
+            rs = np.abs(diag); rs[rs == 0] = 1
+            n_new = spla.spsolve(sp.diags(1 / rs) @ A, rhs / rs)
+            # ---- holes: jp_i - jp_{i-1} + (a p - b) - Gv = 0 ; jp_k = cip p_k - cjp p_{k+1}
+            a, b = self._rec_linear(np.maximum(n_new, 1e-300), p, False)
+            diag = np.zeros(N); up = np.zeros(N - 1); lo = np.zeros(N - 1); rhs = np.zeros(N)
+            diag[:-1] += cip; up += -cjp
+            diag[1:] += cjp; lo += -cip
+            # left: -jp_left = Sp(p0 - pf0)
+            diag[0] += self.front_Sp; rhs[0] += self.front_Sp * pf0
+            # right: jp_right = Sp(pN - pb0)
+            diag[-1] += self.back_Sp; rhs[-1] += self.back_Sp * pb0
+            diag += a; rhs += b + Gv
+            A = sp.diags([lo, diag, up], [-1, 0, 1], format="csc")
+            rs = np.abs(diag); rs[rs == 0] = 1
+            p_new = spla.spsolve(sp.diags(1 / rs) @ A, rhs / rs)
+            n_new = np.maximum(n_new, 1e-200); p_new = np.maximum(p_new, 1e-200)
+            X[1::3] = Ec + Vt * np.log(n_new / self.Nc)
+            X[2::3] = Ev - Vt * np.log(p_new / self.Nv)
+            ch = np.max(np.abs(X - Xold))
+            if verbose:
+                print("gummel", it, ch)
+            if ch < tol:
+                return X, True
+        return X, False
+
+    def robust_solve(self, X, V, G):
+        Xn, ok = self.newton(X.copy(), V, G)
+        if ok:
+            return Xn, True
+        Xg, okg = self.gummel(X, V, G)
+        Xn, ok = self.newton(Xg.copy(), V, G)
+        if ok:
+            return Xn, True
+        return Xg, okg
 
     def solve_equilibrium(self, verbose=False):
         X = self.equilibrium_guess()
@@ -499,7 +627,7 @@ class Device:
             Vn = V + step
             if (V1 - Vn) * np.sign(step) < 0:
                 Vn = V1
-            Xn, ok = self.newton(X.copy(), Vn, G)
+            Xn, ok = self.robust_solve(X, Vn, G)
             if ok:
                 X, V = Xn, Vn
             else:
@@ -510,11 +638,9 @@ class Device:
 
     def ramp_light(self, X, V, Gfull, nsteps=6):
         for s in np.logspace(-4, 0, nsteps):
-            X, ok = self.newton(X, V, Gfull * s)
+            X, ok = self.robust_solve(X, V, Gfull * s)
             if not ok:
-                X, ok = self.newton(X, V, Gfull * s, damp=0.05, maxit=300)
-                if not ok:
-                    raise RuntimeError("light ramp failed")
+                raise RuntimeError("light ramp failed")
         return X
 
 
@@ -526,7 +652,7 @@ class Simulation:
         self.dev = device
         self.lam, self.flux = load_am15g(*lam_range, dlam)
         self.Gl = device.generation(self.lam, self.flux)       # (N, nlam)
-        self.G = np.trapezoid(self.Gl, self.lam, axis=1)
+        self.G = _trapz(self.Gl, self.lam, axis=1)
         self.Xeq = device.solve_equilibrium()
         self.Xsc = None
 
@@ -593,7 +719,7 @@ class Simulation:
             dR[2::3] = +g * dev.vol
             dx = lu.solve(-dR)
             dJ = dJdX @ dx                                   # A/cm2 per (photon/cm2/s)
-            qe.append(dJ / Q * 100)
+            qe.append(-dJ / Q * 100)
         return self.lam.copy(), np.array(qe)
 
     # AC -----------------------------------------------------------------

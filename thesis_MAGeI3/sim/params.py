@@ -65,7 +65,7 @@ NIT_DEFAULT = 1.1e5
 
 
 def build_device(d_abs=600, d_etl=100, d_htl=100, buffer=None, d_buf=10,
-                 Nit=NIT_DEFAULT, T=300.0, Nt_abs=1e16, buffer_overrides=None):
+                 Nit=NIT_DEFAULT, T=300.0, Nt_abs=1e16, buffer_overrides=None, back_wf=5.1):
     layers = [ITO(200), TiO2(d_etl), MAGeI3(d_abs, Nt=Nt_abs)]
     if buffer is not None and d_buf > 0:
         b = BUFFERS[buffer](d_buf)
@@ -80,5 +80,5 @@ def build_device(d_abs=600, d_etl=100, d_htl=100, buffer=None, d_buf=10,
     return Device(layers, T=T,
                   front_Sn=1e7, front_Sp=1e7,     # SCAPS default values  # ASSUMPTION
                   back_Sn=1e7, back_Sp=1e7,
-                  back_wf=5.1,                    # Au, chapter 3
+                  back_wf=back_wf,                # Au = 5.1 eV, chapter 3
                   interface_defects=ifd, absorber_index=absorber)
