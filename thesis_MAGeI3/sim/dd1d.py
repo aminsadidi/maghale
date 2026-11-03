@@ -210,7 +210,8 @@ class Device:
             m = (self.lid == k).astype(float)
             for dft in L.defects:
                 if dft["dist"] == "gauss":
-                    Es = dft["Et"] + np.sqrt(2) * dft["Echar"] * gh_x
+                    # SCAPS gauss: N(E) ~ exp(-((E-Et)/Ekar)^2)  ->  E = Et + Ekar*x_k
+                    Es = dft["Et"] + dft["Echar"] * gh_x
                     ws = gh_w / np.sqrt(np.pi)
                 else:
                     Es, ws = np.array([dft["Et"]]), np.array([1.0])
