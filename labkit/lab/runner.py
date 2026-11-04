@@ -11,7 +11,7 @@ usage (from the labkit folder):
 import argparse, json, math, os, re, shutil, socket, subprocess, sys, threading, time, zipfile
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from lab import detect, tasks as T  # noqa: E402
+from lab import detect, tasks as T, select_design  # noqa: E402
 
 KIT = detect.KIT
 REPO = os.path.dirname(KIT)
@@ -22,7 +22,7 @@ MNPBEM = os.environ.get('LABKIT_MNPBEM') or os.path.join(KIT, 'vendor', 'MNPBEM'
 CAL = os.path.join(OUT, 'calibration.json')
 STATUS_EVERY = int(os.environ.get('LABKIT_STATUS_EVERY', 30))   # s; the monitor thread only reads small log files
 
-TIER_ORDER = [2, 1, 3, 4]        # FDTD cross-check first (short runs, new method), then the long BEM mesh study
+TIER_ORDER = [2, 4, 3, 1]        # FDTD sweep -> FDTD of the selected design -> BEM of the selected design -> (BEM mesh study, done)
 DEFAULT_CAL = {'mnpbem': {'a': 2.2, 'p': 2.6, 'samples': []},          # s per step per unit (Xeon E5-1650 guess)
                'lumerical': {'a': 2.0e-4, 'samples': []}}              # s per unit (rough guess, refined after 1 run)
 
@@ -93,6 +93,9 @@ def plan(S, tiers, only=None, max_days=None, cal=None, quiet=False):
     for t in T.catalogue():
         if t['tier'] not in tiers or (only and t['backend'] != only): continue
         t = dict(t)
+        if t.get('auto'):
+            sel = select_design.load(OUT)
+            if sel: t = T.resolve(t, sel)
         if not have[t['backend']]:
             t['state'] = 'skip: ' + ('MATLAB/MNPBEM not available' if t['backend'] == 'mnpbem' else 'Lumerical not available')
         elif t['mem_gb'] > 0.9 * ram:
@@ -303,6 +306,19 @@ class Runner:
             for t in order:
                 if t['state'] != 'todo': continue
                 if not t.get('smoke'): self.smoke_banner()
+                if t.get('pending_sel'):                      # the design is chosen once, after the FDTD sweep
+                    sel = select_design.make(OUT, T.SWEEP)
+                    if not sel:
+                        t['state'] = 'skip: no design could be selected (FDTD sweep missing)'; self.update_status(); continue
+                    if not getattr(self, 'sel_printed', False):
+                        self.sel_printed = True
+                        print(f"\n*** selected design: L = {sel['L']} nm, R3 = {sel['L3']} nm  ({sel['chosen']['measure']}: +y/-y = "
+                              f"{sel['chosen']['ratio']:.2f}, eta = {sel['chosen']['eta']:.0%} at 1550 nm)", flush=True)
+                    t.update(T.resolve(t, sel))
+                    ram = float(os.environ.get('LABKIT_RAM_GB') or self.S.get('ram_gb') or 0)
+                    if t['mem_gb'] > 0.9 * ram:
+                        t['state'] = f"skip: needs ~{t['mem_gb']:.0f} GB RAM (this machine {ram:.0f} GB)"; continue
+                    if is_done(t): t['state'] = 'done'; continue
                 ok = self.run_task(t)
                 if t.get('smoke') and not ok:                 # broken installation: do not waste hours on this backend
                     for u in self.P:
