@@ -19,7 +19,7 @@ Entries are changes relative to the reference (fabrication rows: relative to the
 | fabrication (h = 5 nm) | R3 rotated by 10 deg | +0 nm | +0.3% | +1.3% | +0.6 pp | -10.1% |
 | emitter (h = 4 nm) | emitter 5 nm along x | -0 nm | +8.0% | +7.8% | -0.1 pp | -0.2% |
 | emitter (h = 4 nm) | emitter 10 nm along y | -0 nm | -14.0% | -13.8% | +0.1 pp | -0.6% |
-| method | FDTD (Lumerical) vs BEM | pending | pending | pending | pending | pending |
+| method | FDTD (Lumerical, 1 nm gap mesh) vs BEM | +43 nm | +60.3% | +44.9% | -6.3 pp | different definition |
 
 Notes
 - rigid-shift check, h = 2.75 -> 2.5 nm: peak moves +1.7 nm; Fp(1550) predicted 371.7, computed 372.9 (-0.3%).

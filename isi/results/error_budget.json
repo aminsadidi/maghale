@@ -126,12 +126,12 @@
   },
   {
    "group": "method",
-   "source": "FDTD (Lumerical) vs BEM",
-   "lT": "pending",
-   "Fp": "pending",
-   "T": "pending",
-   "eta": "pending",
-   "ratio": "pending"
+   "source": "FDTD (Lumerical, 1 nm gap mesh) vs BEM",
+   "lT": 42.79951363639998,
+   "Fp": 60.30088889753251,
+   "T": 44.85505828031933,
+   "eta": -6.277449787698575,
+   "ratio": "different definition"
   }
  ]
 }
