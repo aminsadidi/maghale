@@ -52,11 +52,19 @@ def numeric_table(text, min_cols=2):
     return best_head, np.array([r[:n] for r in best])
 
 
+def last_block(t, marker):
+    """SCAPS script saves append every simulation of the session: keep the last one."""
+    i = t.rfind(marker)
+    return t[i:] if i >= 0 else t
+
+
 def iv_params(path):
-    t = read_text(path)
+    t = last_block(read_text(path), "Single shot simulation #")
+    t = t.split("solar cell parameters")[0] + ("solar cell parameters" + t.split("solar cell parameters")[1] if "solar cell parameters" in t else "")
     out = {}
     for key, pat in (("Voc", r"Voc\s*=\s*(" + NUM + r")"), ("Jsc", r"Jsc\s*=\s*(" + NUM + r")"),
-                     ("FF", r"FF\s*=\s*(" + NUM + r")"), ("PCE", r"eta\s*=\s*(" + NUM + r")")):
+                     ("FF", r"FF\s*=\s*(" + NUM + r")"), ("PCE", r"eta\s*=\s*(" + NUM + r")"),
+                     ("Vmp", r"V_MPP\s*=\s*(" + NUM + r")"), ("Jmp", r"J_MPP\s*=\s*(" + NUM + r")")):
         m = re.search(pat, t)
         out[key] = float(m.group(1)) if m else float("nan")
     head, tab = numeric_table(t)
@@ -96,7 +104,23 @@ def main(src, dst):
     os.makedirs(dst, exist_ok=True)
     files = {os.path.splitext(os.path.basename(p))[0]: p for p in glob.glob(os.path.join(src, "**", "MG_*"), recursive=True)}
     print(len(files), "SCAPS output files")
-    P = {k: iv_params(p) for k, p in files.items() if p.lower().endswith(".iv")}
+    # script order of saved files -> detect runs that failed (no new simulation appended)
+    import make_script
+    order = [ln.split()[-1].rsplit(".", 1)[0] for ln in make_script.L if ln.startswith("save results.")]
+    simno = {}
+    for k, p in files.items():
+        nums = re.findall(r"Single shot simulation #\s*(\d+)", read_text(p))
+        simno[k] = int(nums[-1]) if nums else -1
+    failed = set()
+    prev = None
+    for k in order:
+        if k in simno and prev is not None and simno[k] <= simno.get(prev, -1):
+            failed.add(k)
+        if k in simno:
+            prev = k
+    print("failed (not converged) runs:", sorted(failed))
+    P = {k: iv_params(p) for k, p in files.items() if p.lower().endswith(".iv") and k not in failed}
+    files = {k: v for k, v in files.items() if k not in failed}
     par = lambda k: P[k][0] if k in P else dict(Voc=np.nan, Jsc=np.nan, FF=np.nan, PCE=np.nan)
     row = lambda k: [par(k)["Voc"], par(k)["Jsc"], par(k)["FF"], par(k)["PCE"]]
     H = ["Voc_V", "Jsc_mAcm2", "FF_pct", "PCE_pct"]
@@ -115,7 +139,7 @@ def main(src, dst):
     rows = []
     for s, n in names.items():
         p = par(f"MG_S56_{s}")
-        rows.append([n] + row(f"MG_S56_{s}") + [np.nan, np.nan])
+        rows.append([n] + row(f"MG_S56_{s}") + [p.get("Vmp", np.nan), abs(p.get("Jmp", np.nan))])
     w(os.path.join(dst, "Step5_6_optimum_structures.csv"), ["structure"] + H + ["Vmp_V", "Jmp_mAcm2"], rows)
     Vg = np.round(np.arange(0, 1.6001, 0.01), 3)
     cols = []
@@ -137,13 +161,61 @@ def main(src, dst):
     for s, n in names.items():
         k = f"MG_QE_{s}"
         if k in files:
-            head, tab = numeric_table(read_text(files[k]))
+            head, tab = numeric_table(last_block(read_text(files[k]), "Single shot simulation #"))
             if tab is not None:
                 qe[n] = tab
     if qe:
         lam = np.arange(300, 901, 10.0)
-        from_tab = {n: np.interp(lam, t[:, 0], t[:, -1] if t[:, -1].max() > 1.5 else 100 * t[:, -1]) for n, t in qe.items()}
-        w(os.path.join(dst, "Step7_EQE.csv"), ["lambda_nm"] + [f"EQE_{n}" for n in from_tab], [[lam[i]] + [from_tab[n][i] for n in from_tab] for i in range(len(lam))])
+        from_tab = {n: np.clip(np.interp(lam, t[:, 0], t[:, 1], right=0.0), 0, None) for n, t in qe.items()}
+        spec = np.loadtxt(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "sim", "ASTM_G173_AM15G.csv"),
+                          delimiter=",", skiprows=1)
+        flux = np.interp(lam, spec[:, 0], spec[:, 1]) / (6.62607015e-34 * 2.99792458e8 / (lam * 1e-9)) * 1e-4
+        jint = {n: np.concatenate([[0], np.cumsum(1.602176634e-19 * flux[1:] * q[1:] / 100 * 10.0)]) * 1e3
+                for n, q in from_tab.items()}
+        w(os.path.join(dst, "Step7_EQE.csv"), ["lambda_nm"] + [f"EQE_{n}" for n in from_tab] + [f"Jint_{n}" for n in from_tab],
+          [[lam[i]] + [from_tab[n][i] for n in from_tab] + [jint[n][i] for n in from_tab] for i in range(len(lam))])
+    # C-V / Mott-Schottky
+    cv = {}
+    for s_, n in names.items():
+        k = f"MG_CV_{s_}"
+        if k in files:
+            head, tab = numeric_table(last_block(read_text(files[k]), "Single shot simulation #"))
+            if tab is not None:
+                cv[n] = tab
+    if cv:
+        Vc = cv[list(cv)[0]][:, 0]
+        rows, fit = [], []
+        for n, t in cv.items():
+            C = t[:, 1] * 1e-9
+            m = (t[:, 0] >= -0.4) & (t[:, 0] <= 0.6)
+            k_, c0 = np.polyfit(t[m, 0], 1 / C[m] ** 2, 1)
+            fit.append([n, -c0 / k_, 2 / (1.602176634e-19 * 10.0 * 8.8541878128e-14 * abs(k_)), k_])
+        w(os.path.join(dst, "CV_MottSchottky_1kHz.csv"), ["V"] + [f"C_{n}_nFcm2" for n in cv] + [f"invC2_{n}" for n in cv],
+          [[Vc[i]] + [np.interp(Vc[i], cv[n][:, 0], cv[n][:, 1]) for n in cv] +
+           [1 / (np.interp(Vc[i], cv[n][:, 0], cv[n][:, 1]) * 1e-9) ** 2 for n in cv] for i in range(len(Vc))])
+        w(os.path.join(dst, "MottSchottky_fit.csv"), ["structure", "Vbi_V", "N_cm3", "slope"], fit)
+
+    # recombination-current components (SCAPS I-V columns) for the optimum structures
+    comp_rows, vrows = [], {}
+    for s_, n in (("none", "No buffer"), ("WOx", "WOx"), ("NiOx", "NiOx")):
+        k = f"MG_S56_{s_}"
+        if k not in files:
+            continue
+        t = last_block(read_text(files[k]), "Single shot simulation #")
+        rows_ = [l.split() for l in t.replace("\r", "").split("\n") if re.match(r"^\s+-?\d", l) and len(l.split()) == 11]
+        a = np.array(rows_, float)
+        vrows[n] = a
+        for V in (0.0, 1.34):
+            i = int(np.argmin(abs(a[:, 0] - V)))
+            r = a[i]
+            comp_rows.append([n, r[0], abs(r[1]), r[3], r[4], r[5], r[6], r[7]])
+    if comp_rows:
+        w(os.path.join(dst, "Recombination_components.csv"),
+          ["structure", "V", "Jtot_mAcm2", "Jgen_mAcm2", "Jbulk_mAcm2", "Jinterface_mAcm2", "Jleft_contact_mAcm2", "Jright_contact_mAcm2"], comp_rows)
+        Vg = np.round(np.arange(0, 1.501, 0.02), 3)
+        w(os.path.join(dst, "Recombination_vs_V.csv"), ["V"] + [f"Jbulk_{n}" for n in vrows] + [f"Jif_{n}" for n in vrows],
+          [[Vg[i]] + [np.interp(Vg[i], a[:, 0], a[:, 4], right=np.nan) for a in vrows.values()]
+           + [np.interp(Vg[i], a[:, 0], a[:, 5], right=np.nan) for a in vrows.values()] for i in range(len(Vg))])
     print("converted ->", dst)
 
 

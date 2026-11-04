@@ -1,0 +1,176 @@
+// MAGeI3 thesis - supplementary SCAPS runs
+set errorhandling.overwritefile
+clear all
+// dark J-V
+clear actions
+action dark
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.6
+action iv.increment 0.01
+action iv.stopaftervoc 0
+load definitionfile 02_noBuffer_reference.def
+set layer1.thickness 0.05
+set layer2.thickness 0.8
+set layer3.thickness 0.05
+calculate singleshot
+save results.iv MG_X_dark_none.iv
+load definitionfile 03_WOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+calculate singleshot
+save results.iv MG_X_dark_WOx.iv
+load definitionfile 04_NiOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+calculate singleshot
+save results.iv MG_X_dark_NiOx.iv
+// HTL (Spiro) acceptor doping
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.6
+action iv.increment 0.01
+action iv.stopaftervoc 1
+load definitionfile 02_noBuffer_reference.def
+set layer1.thickness 0.05
+set layer2.thickness 0.8
+set layer3.thickness 0.05
+set layer1.na 1E16
+calculate singleshot
+save results.iv MG_X_htlNA_none_1E16.iv
+load definitionfile 02_noBuffer_reference.def
+set layer1.thickness 0.05
+set layer2.thickness 0.8
+set layer3.thickness 0.05
+set layer1.na 1E17
+calculate singleshot
+save results.iv MG_X_htlNA_none_1E17.iv
+load definitionfile 02_noBuffer_reference.def
+set layer1.thickness 0.05
+set layer2.thickness 0.8
+set layer3.thickness 0.05
+set layer1.na 1E18
+calculate singleshot
+save results.iv MG_X_htlNA_none_1E18.iv
+load definitionfile 02_noBuffer_reference.def
+set layer1.thickness 0.05
+set layer2.thickness 0.8
+set layer3.thickness 0.05
+set layer1.na 1E19
+calculate singleshot
+save results.iv MG_X_htlNA_none_1E19.iv
+load definitionfile 03_WOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer1.na 1E16
+calculate singleshot
+save results.iv MG_X_htlNA_WOx_1E16.iv
+load definitionfile 03_WOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer1.na 1E17
+calculate singleshot
+save results.iv MG_X_htlNA_WOx_1E17.iv
+load definitionfile 03_WOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer1.na 1E18
+calculate singleshot
+save results.iv MG_X_htlNA_WOx_1E18.iv
+load definitionfile 03_WOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer1.na 1E19
+calculate singleshot
+save results.iv MG_X_htlNA_WOx_1E19.iv
+// WOx buffer acceptor doping
+load definitionfile 03_WOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.na 1E14
+calculate singleshot
+save results.iv MG_X_bufNA_WOx_1E14.iv
+load definitionfile 03_WOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.na 1E15
+calculate singleshot
+save results.iv MG_X_bufNA_WOx_1E15.iv
+load definitionfile 03_WOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.na 1E16
+calculate singleshot
+save results.iv MG_X_bufNA_WOx_1E16.iv
+load definitionfile 03_WOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.na 1E17
+calculate singleshot
+save results.iv MG_X_bufNA_WOx_1E17.iv
+load definitionfile 03_WOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.na 1E18
+calculate singleshot
+save results.iv MG_X_bufNA_WOx_1E18.iv
+// WOx buffer permittivity
+load definitionfile 03_WOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.epsilon 3
+calculate singleshot
+save results.iv MG_X_bufEPS_WOx_3.iv
+load definitionfile 03_WOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.epsilon 6
+calculate singleshot
+save results.iv MG_X_bufEPS_WOx_6.iv
+load definitionfile 03_WOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.epsilon 12
+calculate singleshot
+save results.iv MG_X_bufEPS_WOx_12.iv
+load definitionfile 03_WOx_buffer_10nm.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.epsilon 24
+calculate singleshot
+save results.iv MG_X_bufEPS_WOx_24.iv
+// finished

@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-RES = os.path.join(HERE, "..", "results")
-FIG = os.path.join(HERE, "..", "figures")
+RES = os.environ.get("MG_RESULTS", os.path.join(HERE, "..", "results"))
+FIG = os.environ.get("MG_FIGURES", os.path.join(HERE, "..", "figures"))
 os.makedirs(FIG, exist_ok=True)
 
 plt.rcParams.update({
@@ -153,6 +153,8 @@ def fig_jv(s):
     fig, (a, b) = plt.subplots(1, 2, figsize=(7.4, 3.3))
     for k in STRUCTS:
         V = np.array(d["V"]); J = np.array(d[f"J_{k}"], float); P_ = np.array(d[f"P_{k}"], float)
+        if not np.any(np.isfinite(J)):
+            continue
         m = np.isfinite(J) & (J > -2)
         a.plot(V[m], J[m], color=COL[k], label=LBL[k])
         m2 = np.isfinite(P_) & (P_ > -1)
@@ -179,7 +181,7 @@ def fig_jv(s):
 def fig_eqe():
     d = read("Step7_EQE.csv")
     fig, (a, b) = plt.subplots(1, 2, figsize=(7.4, 3.3))
-    for k in STRUCTS:
+    for k in [k for k in STRUCTS if f"EQE_{k}" in d]:
         a.plot(d["lambda_nm"], d[f"EQE_{k}"], color=COL[k], label=LBL[k], marker=MK[k], markevery=4, mfc="white")
         b.plot(d["lambda_nm"], d[f"Jint_{k}"], color=COL[k], label=LBL[k])
     a.set_xlabel("Wavelength (nm)"); a.set_ylabel("EQE / IPCE (%)"); a.set_ylim(0, 100); a.set_xlim(300, 900)
@@ -255,7 +257,7 @@ def fig_field_rec():
 def fig_cv():
     d = read("CV_MottSchottky_1kHz.csv")
     fig, (a, b) = plt.subplots(1, 2, figsize=(7.4, 3.3))
-    for k in STRUCTS:
+    for k in [k for k in STRUCTS if f"C_{k}_nFcm2" in d]:
         a.plot(d["V"], d[f"C_{k}_nFcm2"], color=COL[k], label=LBL[k], marker=MK[k], markevery=4, mfc="white")
         b.plot(d["V"], np.array(d[f"invC2_{k}"]) / 1e14, color=COL[k], label=LBL[k], marker=MK[k], markevery=4, mfc="white")
     a.set_xlabel("Voltage (V)"); a.set_ylabel(r"Capacitance (nF cm$^{-2}$)")
@@ -342,18 +344,45 @@ def fig_dark_intensity():
     save(fig, "Fig4_21_light_intensity.png")
 
 
+def fig_recomb():
+    d = read("Recombination_vs_V.csv")
+    c = read("Recombination_components.csv")
+    fig, (a, b) = plt.subplots(1, 2, figsize=(7.4, 3.3))
+    for k in ("No buffer", "WOx", "NiOx"):
+        if f"Jbulk_{k}" in d:
+            a.semilogy(d["V"], d[f"Jbulk_{k}"], color=COL[k], label=LBL[k])
+    a.set_xlabel("Voltage (V)"); a.set_ylabel(r"Bulk SRH recombination current (mA cm$^{-2}$)")
+    a.legend(frameon=False); tag(a, "a")
+    ks = [k for k in ("No buffer", "WOx", "NiOx") if k in c["structure"]]
+    idx = [i for i, (s, v) in enumerate(zip(c["structure"], c["V"])) if v == 0]
+    x = np.arange(len(idx))
+    bulk = [c["Jbulk_mAcm2"][i] for i in idx]; front = [c["Jright_contact_mAcm2"][i] for i in idx]
+    other = [c["Jinterface_mAcm2"][i] + c["Jleft_contact_mAcm2"][i] for i in idx]
+    b.bar(x, bulk, color=[COL[c["structure"][i]] for i in idx], width=0.55, label="bulk SRH (absorber)")
+    b.bar(x, front, bottom=bulk, color="#bbbbbb", width=0.55, label="front contact (minority)")
+    for xi, v in zip(x, bulk):
+        b.text(xi, v / 2, f"{v:.2f}", ha="center", va="center", color="white", fontsize=8.5, fontweight="bold")
+    b.set_xticks(x); b.set_xticklabels([LBL[c["structure"][i]] for i in idx])
+    b.set_ylabel(r"Recombination loss at $V=0$ (mA cm$^{-2}$)"); b.legend(frameon=False, fontsize=7.5, loc="upper right")
+    b.set_ylim(0, max(bulk) * 1.35); tag(b, "b")
+    save(fig, "Fig4_10_recombination_components.png")
+
+
 def main():
     fig_structure()
-    fig_validation()
+    if os.path.exists(os.path.join(RES, "Validation_V1_Shockley.csv")):
+        fig_validation()
     fig_steps(None)
     fig_jv(None)
     fig_eqe()
-    fig_bands()
-    fig_field_rec()
-    fig_cv()
-    fig_nyquist()
+    for fn, need in ((fig_bands, "Bands_Nobuffer.csv"), (fig_field_rec, "Bands_Nobuffer.csv"),
+                     (fig_recomb, "Recombination_components.csv"), (fig_cv, "CV_MottSchottky_1kHz.csv"),
+                     (fig_nyquist, "Impedance_Nyquist_Voc.csv")):
+        if os.path.exists(os.path.join(RES, need)):
+            fn()
     fig_series("Temperature.csv", "T_K", "Temperature (K)", "Fig4_15_temperature.png", STRUCTS)
-    fig_series("Interface_Nit.csv", "Nit_cm2", r"Interface defect density $N_{it}$ (cm$^{-2}$)",
+    if os.path.exists(os.path.join(RES, "Interface_Nit.csv")):
+      fig_series("Interface_Nit.csv", "Nit_cm2", r"Interface defect density $N_{it}$ (cm$^{-2}$)",
                "Fig4_16_interface_Nit.png", ["No buffer", "WOx", "NiOx"], logx=True)
     fig_series("Absorber_Nt.csv", "Nt_cm3", r"MAGeI$_3$ defect density $N_t$ (cm$^{-3}$)",
                "Fig4_17_absorber_Nt.png", ["No buffer", "NiOx"], logx=True)

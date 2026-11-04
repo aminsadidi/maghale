@@ -11,8 +11,8 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-RES = os.path.join(HERE, "..", "results")
-OUT = os.path.join(HERE, "..", "origin", "Origin_Data_MAGeI3.xlsx")
+RES = os.environ.get("MG_RESULTS", os.path.join(HERE, "..", "results"))
+OUT = os.environ.get("MG_XLSX", os.path.join(HERE, "..", "origin", "Origin_Data_MAGeI3.xlsx"))
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 
 UNITS = [(r"_V$|^V$|Vbi_V", "V"), (r"mAcm2", "mA/cm2"), (r"_pct$", "%"), (r"_nm$|^x_nm", "nm"),
