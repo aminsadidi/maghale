@@ -115,7 +115,18 @@ def spectral():
         fits = {k: np.polyfit(R[fine, 0] ** 2, R[fine, k], 1) for k in (1, 2, 4)}
         out += ['', 'Richardson (h^2 -> 0, h <= 5 nm): peak lambda = %.1f nm, peak Fp = %.1f, Fp(1550) = %.1f' % (fits[1][1], fits[2][1], fits[4][1]),
                 'Change from the finest computed mesh to the extrapolated limit: peak lambda %+.1f nm, peak Fp %+.1f%%, Fp(1550) %+.1f%%' % (
-                    fits[1][1] - R[-1, 1], 100 * (fits[2][1] / R[-1, 2] - 1), 100 * (fits[4][1] / R[-1, 4] - 1)), '']
+                    fits[1][1] - R[-1, 1], 100 * (fits[2][1] / R[-1, 2] - 1), 100 * (fits[4][1] / R[-1, 4] - 1))]
+        # observed order of convergence y(h) = y0 + b h^p, fitted on h <= 4 nm (p scanned, y0 and b by least squares)
+        sel = R[:, 0] <= 4
+        if sel.sum() >= 4:
+            for k, nm_ in ((1, 'peak lambda (nm)'), (2, 'peak Fp')):
+                best = min(((np.sum((np.polyval(np.polyfit(R[sel, 0] ** p, R[sel, k], 1), R[sel, 0] ** p) - R[sel, k]) ** 2), p)
+                            for p in np.arange(0.3, 3.01, 0.01)))
+                p = best[1]; y0 = np.polyfit(R[sel, 0] ** p, R[sel, k], 1)[1]
+                out.append(f'Observed order (fit y0 + b h^p on h <= 4 nm): {nm_}: p = {p:.2f}, limit {y0:.1f} '
+                           f'(finest mesh h = {R[-1, 0]:g} nm: {R[-1, k]:.1f}; h^2-Richardson above: {fits[k][1]:.1f})')
+            out.append('-> p < 2: the h^2 extrapolation underestimates the remaining shift; the limit lies between the h^2 and the fitted-p value.')
+        out.append('')
         x = np.linspace(0, R[:, 0].max() ** 2, 50)
         for k, a, yl in ((1, ax[r, 1], 'peak wavelength (nm)'), (2, ax[r, 2], r'peak $F_p$')):
             a.plot(R[:, 0] ** 2, R[:, k], 'o', c='#1f4e9c'); a.plot(x, np.polyval(fits[k], x), 'k--', lw=0.8)
