@@ -9,17 +9,18 @@ from docx.oxml.ns import qn
 from docx.shared import Cm, Pt
 
 FA_DIGITS = str.maketrans("0123456789", "۰۱۲۳۴۵۶۷۸۹")
-LATIN = re.compile(r"([A-Za-z₀-ₜ°±α-ωΔΩ≤≥×]"
-                   r"[A-Za-z0-9₀-ₜ⁰-ⁿ°±α-ωΔΩ≤≥×"
-                   r"\-\+\./\(\)%:=\^_,\*' ]*[A-Za-z0-9₀-ₜ⁰-ⁿ\)%°'\*]"
-                   r"|[A-Za-z₀-ₜ])")
+_LC = (r"A-Za-z0-9\u2080-\u209C\u2070-\u207F\u00B0\u00B1\u00B2\u00B3\u00B9\u03B1-\u03C9\u0391-\u03A9\u2264\u2265\u00D7"
+       r"\u2212\u2248\u221D\u221A\u222B\u2192\u03D5\u03C6\u00B7")
+_LS = _LC.replace("\\u2212", "")
+LATIN = re.compile(r"\(?[" + _LS + r"]"                          # start: Latin/digit/greek, optional '('
+                   r"(?:[" + _LC + r"\-\+\./\(\)%:=\^_,\*'{}\[\]\u00A0 ]*[" + _LC + r"\)%'\*}\]])?")
 
 
 def fa(x, nd=2):
     """Number -> Persian digits with '/' as decimal separator (thesis style)."""
     if isinstance(x, str):
         return x.translate(FA_DIGITS)
-    s = f"{x:.{nd}f}".replace(".", "/")
+    s = f"{x:.{nd}f}".replace(".", "\u066B")
     return s.translate(FA_DIGITS)
 
 
@@ -83,7 +84,16 @@ def _ppr(jc="both", line=288, before=0, after=120, bidi=True, keep_next=False, i
     return pPr
 
 
+def _fa_fix(text):
+    """Persian decimals '۳/۷۰' -> '۳٫۷۰'; trailing minus '۳٫۷۰−' -> '−۳٫۷۰'."""
+    text = re.sub(r"([\u06F0-\u06F9])/([\u06F0-\u06F9])", "\\1\u066B\\2", text)
+    text = re.sub(r"([\u06F0-\u06F9][\u06F0-\u06F9\u066B]*)\u2212", "\u2212\\1", text)
+    text = re.sub(r"([\u06F0-\u06F9][\u06F0-\u06F9\u066B]*)\+(?=[\s)،])", "+\\1", text)
+    return text
+
+
 def add_runs_mixed(p, text, size=12, bold=False, font_cs="B Nazanin", latin_size=None, color=None):
+    text = _fa_fix(text)
     """Split text into Persian (rtl) and Latin (ltr) runs. ^{..} = superscript,
     _{..} = subscript (Latin only)."""
     pos = 0
