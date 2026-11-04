@@ -368,6 +368,18 @@ def fig_recomb():
     save(fig, "Fig4_10_recombination_components.png")
 
 
+def fig_scaps_extra():
+    if os.path.exists(os.path.join(RES, "HTL_doping.csv")):
+        fig_series("HTL_doping.csv", "NA_cm3", r"Spiro-OMeTAD acceptor density $N_A$ (cm$^{-3}$)",
+                   "Fig4_19_HTL_doping.png", ["No buffer", "WOx"], logx=True)
+    if os.path.exists(os.path.join(RES, "Buffer_doping.csv")):
+        fig_series("Buffer_doping.csv", "NA_cm3", r"WO$_x$ buffer acceptor density $N_A$ (cm$^{-3}$)",
+                   "Fig4_20_buffer_doping.png", ["WOx"], logx=True)
+    if os.path.exists(os.path.join(RES, "Buffer_permittivity.csv")):
+        fig_series("Buffer_permittivity.csv", "eps", r"WO$_x$ buffer relative permittivity $\varepsilon_r$",
+                   "Fig4_21_buffer_permittivity.png", ["WOx"])
+
+
 def main():
     fig_structure()
     if os.path.exists(os.path.join(RES, "Validation_V1_Shockley.csv")):
@@ -387,6 +399,7 @@ def main():
     fig_series("Absorber_Nt.csv", "Nt_cm3", r"MAGeI$_3$ defect density $N_t$ (cm$^{-3}$)",
                "Fig4_17_absorber_Nt.png", ["No buffer", "NiOx"], logx=True)
     fig_vbo()
+    fig_scaps_extra()
     if os.path.exists(os.path.join(RES, 'Back_contact_workfunction.csv')):
         fig_wf()
     if os.path.exists(os.path.join(RES, 'Light_intensity.csv')) and os.path.exists(os.path.join(RES, 'Dark_JV.csv')):
