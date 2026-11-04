@@ -145,7 +145,7 @@ def fig_steps(s):
     for k in ys:
         ys[k].pop("V2O5", None)
     four_panel(None, ys, "Buffer thickness (nm)", "Fig4_06_step4_buffer.png", series=["WOx", "NiOx"],
-               note=r"V$_2$O$_5$ (10-50 nm): PCE < 0.01 % (hole blocking)")
+               note=os.environ.get("MG_NOTE", r"V$_2$O$_5$ (10-50 nm): PCE < 0.01 % (hole blocking)"))
 
 
 def fig_jv(s):
