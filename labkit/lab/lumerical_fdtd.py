@@ -107,7 +107,39 @@ try:
 except TypeError:                                    # very old lumapi without the hide option
     fdtd = lumapi.FDTD()
 fdtd.eval(script)
-proj = os.path.join(a.work, a.name + '.fsp')
+
+# Spectral range, set explicitly on the dipole and on every monitor. In Lumerical 2024 a new dipole overrides the global
+# source settings with its own 400-700 nm default, so setglobalsource alone gave 400-700 nm spectra (first lab run).
+WL0, WL1, NPTS = 1.3e-6, 1.7e-6, 41
+
+
+def tryset(obj, prop, val):
+    try: fdtd.setnamed(obj, prop, val); return True
+    except Exception as e: print(f'  note: {obj}.{prop} not set ({str(e)[:80]})', flush=True); return False
+
+
+tryset('dip', 'override global source settings', 1)
+tryset('dip', 'wavelength start', WL0); tryset('dip', 'wavelength stop', WL1)
+mons = ['bx1', 'bx2', 'by1', 'by2', 'bz1', 'bz2'] + (['wgm', 'wgp'] if P['waveguide'] else [])
+for mo in mons:
+    tryset(mo, 'override global monitor settings', 1); tryset(mo, 'use source limits', 0)
+    tryset(mo, 'minimum wavelength', WL0); tryset(mo, 'maximum wavelength', WL1); tryset(mo, 'frequency points', NPTS)
+
+
+def check_range(lo, hi, what):
+    ok = abs(lo - WL0) < 0.02 * WL0 and abs(hi - WL1) < 0.02 * WL1
+    print(f'  {what}: {lo*1e9:.0f} - {hi*1e9:.0f} nm  ->  {"OK" if ok else "WRONG"}', flush=True)
+    if not ok:
+        print('LABKIT_ERROR wrong wavelength range: the simulation is NOT run. Send this log.', flush=True)
+        sys.exit(3)
+
+
+print('checking the wavelength range before the run:', flush=True)
+for obj, a0, a1 in (('dip', 'wavelength start', 'wavelength stop'), ('bx2', 'minimum wavelength', 'maximum wavelength')):
+    try: lo, hi = float(fdtd.getnamed(obj, a0)), float(fdtd.getnamed(obj, a1))
+    except Exception as e: print(f'  {obj}: range not readable ({str(e)[:60]}), checked after the run', flush=True); continue
+    check_range(lo, hi, obj)
+proj =os.path.join(a.work, a.name + '.fsp')
 fdtd.save(proj)
 print(f'project saved: {proj}', flush=True)
 
@@ -137,6 +169,7 @@ g = lambda k: np.real(np.asarray(fdtd.getv(k))).ravel()
 cols = {'lambda_nm': g('lam') * 1e9, 'Fp': g('Fp'), 'T': g('T')}
 cols['eta'] = cols['T'] / cols['Fp']; cols['f_py'] = g('fpy'); cols['f_my'] = g('fmy')
 if P['waveguide']: cols['beta_py'] = g('bpy'); cols['beta_my'] = g('bmy')
+check_range(cols['lambda_nm'].min() * 1e-9, cols['lambda_nm'].max() * 1e-9, 'computed spectrum')   # no CSV if wrong
 order = np.argsort(cols['lambda_nm'])
 with open(a.out, 'w') as f:
     f.write(f'# Lumerical FDTD {a.name}: {json.dumps(P)}\n' + ','.join(cols) + '\n')

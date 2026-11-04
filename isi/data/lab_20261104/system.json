@@ -1,0 +1,27 @@
+{
+  "time": "2026-11-03 12:10:35",
+  "os": "Windows-10-10.0.19045-SP0",
+  "python": "3.11.9",
+  "cpu": "Intel64 Family 6 Model 79 Stepping 1, GenuineIntel",
+  "logical_cpus": 12,
+  "physical_cores": 6,
+  "ram_gb": 63.9,
+  "ram_free_gb": 59.7,
+  "disk_free_gb": 88.0,
+  "matlab": {
+    "exe": "C:\\Program Files\\MATLAB\\R2018b\\bin\\matlab.EXE",
+    "ok": true,
+    "version": "9.5.0.944444",
+    "seconds": 12.6,
+    "message": "LABKIT_OK 9.5.0.944444 (R2018b)\n     6"
+  },
+  "lumerical": {
+    "root": "C:\\Program Files\\Lumerical\\v241",
+    "lumapi_dir": "C:\\Program Files\\Lumerical\\v241\\api\\python",
+    "python": "C:\\Program Files\\Lumerical\\v241\\python\\python.exe",
+    "ok": true,
+    "seconds": 5.1,
+    "message": "LABKIT_OK"
+  },
+  "comsol": null
+}
