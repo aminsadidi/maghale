@@ -147,8 +147,7 @@ for i, (img, cap) in enumerate(rows):
 # ---------- 3. new: Purcell spectrum ----------
 ps = new_slide('طیف فاکتور پورسل (خروجی FDTD، گاف ۳ نانومتر)', 'نتایج شبیه‌سازی')
 card(ps, 0.6, 1.9, 12.1, 4.15)
-picture(ps, os.path.join(IMG, 'purcell.png'), 0.8, 2.15, w=11.7, name='Purcell spectrum')
-text(ps, 'محور افقی: طول موج (متر)  |  محور عمودی: فاکتور پورسل', 0.6, 5.55, 12.1, 0.35, 12, LIGHT, align='center')
+pp = picture(ps, os.path.join(IMG, 'purcell_big.png'), 0.8, 2.0, h=3.9, name='Purcell spectrum'); pp.left = (SW - pp.width) // 2
 for x, t1, t2 in ((7.2, 'قله‌ی ۵۱۵ نانومتر: ۷۲۰۰', 'جذب بین‌نواری؛ تقریباً بدون تابش'),
                   (0.6, 'قله‌ی ۶۰۷ نانومتر: ۴۲۱۱', 'مد طولی؛ پنجره‌ی تابشی')):
     card(ps, x, 6.2, 5.5, 0.95, WHITE)
@@ -159,7 +158,8 @@ bx = new_slide('توان عبوری از وجوه جعبه‌ی تابشی', 'پ
 for i, (img, cap) in enumerate((('box_x2_T.png', 'وجه جانبی (+x): قله‌ی ۵۴/۵'), ('box_z2_T.png', 'وجه انتهایی (+z، امتداد محور میله): قله‌ی ۱۶/۵'))):
     x = 6.75 - i * 6.15
     card(bx, x, 1.9, 5.95, 4.2)
-    picture(bx, os.path.join(IMG, img), x + 0.55, 2.0, h=3.45, name=f'Monitor {i+1}')
+    pb = picture(bx, os.path.join(IMG, img.replace('_T.png', '_big.png')), x + 0.2, 2.0, h=3.45, name=f'Monitor {i+1}')
+    pb.left = Inches(x) + (Inches(5.95) - pb.width) // 2
     text(bx, cap, x + 0.2, 5.55, 5.55, 0.45, 15, INK, align='center')
 text(bx, ['چهار وجه جانبی (±x و ±y) هر کدام ۵۴/۵ و دو وجه انتهایی ۱۷/۵ و ۱۶/۵ ← مجموع ۲۵۲ برابر خلأ',
           'دوقطبی و میله در راستای z هستند؛ الگوی تابش ∝ sin²θ است و در امتداد محور میله تابش کمی دارد.'],
@@ -168,7 +168,7 @@ text(bx, ['چهار وجه جانبی (±x و ±y) هر کدام ۵۴/۵ و دو
 # ---------- 5. new: rod vs sphere charts ----------
 ch = new_slide('نانومیله در برابر نانوکره‌ی هم‌حجم', 'شرایط یکسان: ۶۰۷ نانومتر، خلأ، جانسون-کریستی، دوقطبی عمود بر سطح')
 cats = ['۳', '۵', '۱۰', '۲۰']
-specs = [('بازده کوانتومی ظاهری (درصد)', [5.5, 7.1, 7.5, 8.7], [1.4, 4.5, 18.5, 60.5], False, '0.#'),
+specs = [('بازده کوانتومی ظاهری (درصد، لگاریتمی)', [5.5, 7.1, 7.5, 8.7], [1.4, 4.5, 18.5, 60.5], 'eta', '0.#'),
          ('تقویت نرخ تابشی نسبت به خلأ (لگاریتمی)', [232, 104, 41, 7.8], [6.9, 4.85, 2.66, 1.53], True, '0.#')]
 for i, (ttl, rod, sph, log, fmt) in enumerate(specs):
     x = 6.75 - i * 6.15
@@ -188,7 +188,7 @@ for i, (ttl, rod, sph, log, fmt) in enumerate(specs):
     va.format.line.fill.background(); va.tick_labels.font.size = Pt(11)
     if log:
         sc = va._element.find(qn('c:scaling')); lb = etree.SubElement(sc, qn('c:logBase')); lb.set('val', '10'); sc.remove(lb); sc.insert(0, lb)
-        va.minimum_scale = 1; va.maximum_scale = 1000
+        va.minimum_scale = 1; va.maximum_scale = 100 if log == 'eta' else 1000
     else:
         va.minimum_scale = 0; va.maximum_scale = 100
     c.category_axis.tick_labels.font.size = Pt(12); c.category_axis.format.line.color.rgb = RGBColor.from_string('A8A29E')
@@ -197,7 +197,15 @@ for i, (ttl, rod, sph, log, fmt) in enumerate(specs):
         s.marker.style = XL_MARKER_STYLE.CIRCLE; s.marker.size = 8
         s.marker.format.fill.solid(); s.marker.format.fill.fore_color.rgb = col; s.marker.format.line.color.rgb = col
         s.data_labels.show_value = True; s.data_labels.number_format = fmt; s.data_labels.number_format_is_linked = False
-        s.data_labels.position = lp; s.data_labels.font.size = Pt(11); s.data_labels.font.color.rgb = col
+        s.data_labels.position = lp; s.data_labels.font.size = Pt(12); s.data_labels.font.color.rgb = col
+    if log == 'eta':                             # efficiency chart: each label on the side away from the other series
+        A_, B_ = XL_LABEL_POSITION.ABOVE, XL_LABEL_POSITION.BELOW
+        for s, poss in zip(c.plots[0].series, ((A_, A_, B_, B_), (B_, B_, A_, A_))):
+            for k, pos_ in enumerate(poss):
+                dl = s.points[k].data_label; dl.position = pos_; dl.font.size = Pt(12); dl.font.color.rgb = s.format.line.color.rgb
+                dl.has_text_frame = False
+                try: dl.show_value = True
+                except AttributeError: pass
 for shp in ch.shapes:
     if shp.has_chart:
         for t in ('a:defRPr', 'a:rPr'):
