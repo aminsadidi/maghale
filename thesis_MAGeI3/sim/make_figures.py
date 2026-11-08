@@ -14,6 +14,7 @@ FIG = os.environ.get("MG_FIGURES", os.path.join(HERE, "..", "figures"))
 os.makedirs(FIG, exist_ok=True)
 
 plt.rcParams.update({
+    "axes.formatter.useoffset": False,
     "font.family": "serif", "font.serif": ["DejaVu Serif", "Times New Roman"],
     "font.size": 10, "axes.labelsize": 10.5, "axes.titlesize": 10.5,
     "legend.fontsize": 8.5, "xtick.direction": "in", "ytick.direction": "in",
@@ -46,12 +47,7 @@ FA_TAG = {"a": "الف", "b": "ب", "c": "ج", "d": "د"}
 
 
 def tag(ax, s):
-    try:
-        import arabic_reshaper
-        from bidi.algorithm import get_display
-        lab = get_display(arabic_reshaper.reshape("(" + FA_TAG.get(s, s) + ")"))
-    except ImportError:
-        lab = f"({s})"
+    lab = "(" + FA_TAG.get(s, s) + ")"      # matplotlib >= 3.10 shapes Persian text itself
     ax.text(0.0, 1.02, lab, transform=ax.transAxes, fontweight="bold", fontsize=12, family="DejaVu Sans", va="bottom")
 
 
@@ -177,11 +173,13 @@ def fig_jv(s):
     fig, axs = plt.subplots(2, 2, figsize=(7.2, 5.4))
     for ax, (c, yl), t in zip(axs.flat, [("Voc_V", r"$V_{oc}$ (V)"), ("Jsc_mAcm2", r"$J_{sc}$ (mA cm$^{-2}$)"),
                                          ("FF_pct", "FF (%)"), ("PCE_pct", "PCE (%)")], "abcd"):
-        vals = [o[c][o["structure"].index(k)] for k in STRUCTS]
-        vals = [0 if (not isinstance(v, float) or v != v) else v for v in vals]
+        raw = [o[c][o["structure"].index(k)] for k in STRUCTS]
+        vals = [0 if (not isinstance(v, float) or v != v) else v for v in raw]
         bars = ax.bar(range(4), vals, color=[COL[k] for k in STRUCTS], width=0.6)
-        for bb, v in zip(bars, vals):
-            ax.text(bb.get_x() + bb.get_width() / 2, v, f"{v:.2f}", ha="center", va="bottom", fontsize=8)
+        for bb, v, r in zip(bars, vals, raw):
+            lab = f"{v:.2f}" if (isinstance(r, float) and r == r) else "n.c."
+            ax.text(bb.get_x() + bb.get_width() / 2, v, lab, ha="center", va="bottom", fontsize=8,
+                    color="k" if lab != "n.c." else COL["V2O5"])
         ax.set_xticks(range(4)); ax.set_xticklabels([LBL[k] for k in STRUCTS]); ax.set_ylabel(yl)
         ax.set_ylim(0, max(vals) * 1.18 if max(vals) > 0 else 1); tag(ax, t)
     save(fig, "Fig4_08_comparison_bars.png")
@@ -401,7 +399,8 @@ def main():
                      (fig_nyquist, "Impedance_Nyquist_Voc.csv")):
         if os.path.exists(os.path.join(RES, need)):
             fn()
-    fig_series("Temperature.csv", "T_K", "Temperature (K)", "Fig4_15_temperature.png", STRUCTS)
+    fig_series("Temperature.csv", "T_K", "Temperature (K)", "Fig4_15_temperature.png",
+               [s for s in STRUCTS if s != "V2O5" or os.environ.get("MG_RESULTS") is None])
     if os.path.exists(os.path.join(RES, "Interface_Nit.csv")):
       fig_series("Interface_Nit.csv", "Nit_cm2", r"Interface defect density $N_{it}$ (cm$^{-2}$)",
                "Fig4_16_interface_Nit.png", ["No buffer", "WOx", "NiOx"], logx=True)
