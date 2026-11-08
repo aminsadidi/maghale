@@ -107,11 +107,18 @@ nsh = _Shape(note, s8.shapes); nsh.top = ref.top + ref.height + Inches(0.1)
 nsh.text_frame.paragraphs[0].runs[0].text = 'در گاف ۳ نانومتر؛ اما بازده در همین فاصله فقط ۶٪ است'
 nsh.text_frame.paragraphs[0].runs[0].font.size = Pt(16); nsh.text_frame.paragraphs[0].runs[0].font.color.rgb = ACC
 nsh._element.nvSpPr.cNvPr.set('id', '900'); nsh.name = 'Efficiency note'
-set_text(S[9], 208, 'بازده کوانتومی در گاف ۲۰ نانومتر (نقطه‌ی بهینه‌ی محاسبه‌شده)')
+for sid, t in ((190, 'پویش فاصله (گاف) در طول موج تشدید ۶۰۷ نانومتر'), (192, '۵/۵٪'), (195, '۷/۱٪'), (198, '۸/۷٪'),
+               (193, 'تقویت تابشی ۲۳۲×؛ خاموشی شدید'), (196, 'تقویت تابشی ۱۰۴×'), (199, 'تقویت تابشی فقط ۸×')):
+    set_text(S[8], sid, t)
+set_text(S[9], 206, 'بازده در طول موج تشدید')
+set_text(S[9], 207, '۵ تا ۹٪')
+s208 = set_text(S[9], 208, 'از گاف ۳ تا ۲۰ نانومتر بازده فقط از ۵/۵ به ۸/۷ درصد می‌رسد؛ سقف آن را جذب طلا تعیین می‌کند، نه فاصله')
+s208.left = Inches(3.25); s208.width = Inches(6.85); s208.height = Inches(0.8); s208.text_frame.word_wrap = True
+set_text(S[10], 221, 'در گاف ۳ تا ۵ نانومتر، ۲۱ تا ۳۴ برابر تقویت تابشی بیشتر نسبت به کره‌ی هم‌حجم')
 set_text(S[11], 231, 'عملکرد به عنوان فیلتر قطبشی نانومتری؛ در نانوکره‌ی هم‌حجم این نسبت فقط ۲/۴ است')
 set_text(S[12], 240, 'پرهیز از فواصل زیر ۵ نانومتر (خاموشی)')
-set_text(S[12], 241, 'بهترین بازده (۷۴٪) در گاف ۲۰ نانومتر')
-set_text(S[12], 242, 'تقویت تابشی ۳۵ تا ۶۰ برابر نسبت به کره‌ی هم‌حجم')
+set_text(S[12], 241, 'بازده در تشدید ۵ تا ۹ درصد؛ محدود به جذب طلا')
+set_text(S[12], 242, 'تقویت تابشی ۲۱ تا ۳۴ برابر کره‌ی هم‌حجم (گاف ۳ تا ۵ نانومتر)')
 s15 = S[14]
 drop(s15, {255, 258, 259, 261, 266, 267})
 for x in s15.shapes:
@@ -160,9 +167,9 @@ text(bx, ['چهار وجه جانبی (±x و ±y) هر کدام ۵۴/۵ و دو
 
 # ---------- 5. new: rod vs sphere charts ----------
 ch = new_slide('نانومیله در برابر نانوکره‌ی هم‌حجم', 'شرایط یکسان: ۶۰۷ نانومتر، خلأ، جانسون-کریستی، دوقطبی عمود بر سطح')
-cats = ['۳', '۵', '۲۰']
-specs = [('بازده کوانتومی ظاهری (درصد)', [6, 19, 74], [1.5, 4.7, 77], False, '0.#'),
-         ('تقویت نرخ تابشی نسبت به خلأ (لگاریتمی)', [252, 284, 67], [6.9, 4.85, 1.53], True, '0.#')]
+cats = ['۳', '۵', '۱۰', '۲۰']
+specs = [('بازده کوانتومی ظاهری (درصد)', [5.5, 7.1, 7.5, 8.7], [1.4, 4.5, 18.5, 60.5], False, '0.#'),
+         ('تقویت نرخ تابشی نسبت به خلأ (لگاریتمی)', [232, 104, 41, 7.8], [6.9, 4.85, 2.66, 1.53], True, '0.#')]
 for i, (ttl, rod, sph, log, fmt) in enumerate(specs):
     x = 6.75 - i * 6.15
     card(ch, x, 1.9, 5.95, 4.6)
@@ -185,7 +192,7 @@ for i, (ttl, rod, sph, log, fmt) in enumerate(specs):
     else:
         va.minimum_scale = 0; va.maximum_scale = 100
     c.category_axis.tick_labels.font.size = Pt(12); c.category_axis.format.line.color.rgb = RGBColor.from_string('A8A29E')
-    for s, col, lp in zip(c.plots[0].series, (ACC, GREY), (XL_LABEL_POSITION.ABOVE, XL_LABEL_POSITION.BELOW if log else XL_LABEL_POSITION.RIGHT)):
+    for s, col, lp in zip(c.plots[0].series, (ACC, GREY), (XL_LABEL_POSITION.ABOVE, XL_LABEL_POSITION.BELOW)):
         s.format.line.color.rgb = col; s.format.line.width = Pt(2.5); s.smooth = False
         s.marker.style = XL_MARKER_STYLE.CIRCLE; s.marker.size = 8
         s.marker.format.fill.solid(); s.marker.format.fill.fore_color.rgb = col; s.marker.format.line.color.rgb = col
@@ -195,14 +202,14 @@ for shp in ch.shapes:
     if shp.has_chart:
         for t in ('a:defRPr', 'a:rPr'):
             for rPr in shp.chart._chartSpace.iter(qn(t)): setfont(rPr); rPr.attrib.pop('lang', None)
-text(ch, 'در هر فاصله، تقویت تابشی نانومیله ۳۵ تا ۶۰ برابر نانوکره است؛ بازده بالای کره در ۲۰ نانومتر فقط به این دلیل است که تقریباً اثری ندارد (۱/۵ برابر).',
+text(ch, 'در گاف ۳ تا ۵ نانومتر تقویت تابشی نانومیله ۲۱ تا ۳۴ برابر کره است و در ۲۰ نانومتر ۵ برابر؛ بازده بالاتر کره در فواصل دور فقط به این دلیل است که تقویتش عملاً ناچیز است (۱/۵ برابر).',
      0.6, 6.62, 12.1, 0.7, 14, MUTED)
 
 # ---------- 6. new: limitations and next steps ----------
 lm = new_slide('محدودیت‌ها و گام‌های بعدی', 'جمع‌بندی صادقانه')
 items = [('عدم قطعیت مش', 'در گاف ۳ نانومتر ارتفاع قله‌ها با ریز شدن مش تا حدود ۴۰ درصد تغییر می‌کند؛ مکان قله و روندها پایدارند.'),
          ('مدل ماده', 'داده‌ی توده‌ای جانسون-کریستی؛ میرایی سطحی در قطر ۲۰ نانومتر قله‌ها را کمی پهن‌تر می‌کند.'),
-         ('گام بعدی', 'شبیه‌سازی گاف ۱۰ نانومتر، دایمر و آنتن پاپیونی، و جفت‌شدن به موجبر روی تراشه.')]
+         ('گام بعدی', 'دایمر و آنتن پاپیونی، میله‌ی بزرگ‌تر برای بازده بیشتر، و جفت‌شدن به موجبر روی تراشه.')]
 for i, (h, b) in enumerate(items):
     x = 8.8 - i * 4.1
     card(lm, x, 2.5, 3.9, 2.75)
@@ -213,11 +220,45 @@ for i, (h, b) in enumerate(items):
     text(lm, h, x + 0.25, 3.55, 3.4, 0.5, 20, INK, bold=True)
     text(lm, b, x + 0.25, 4.15, 3.4, 1.6, 15, MUTED)
 
-# ---------- order ----------
+# ---------- 7. revision 2: LDOS of the rod, two sphere slides (figures: make_figures2.py) ----------
+def fig_slide(title, kicker, img, w, cap):
+    sl = new_slide(title, kicker)
+    pic = picture(sl, os.path.join(IMG, img), 0, 1.9, w=w); pic.left = (SW - pic.width) // 2
+    text(sl, cap, 0.6, Emu(pic.top + pic.height).inches + 0.12, 12.1, 0.9, 14, MUTED)
+    return sl
+ld = fig_slide('نقشه‌ی چگالی موضعی حالات (LDOS) نانومیله', 'نتایج شبیه‌سازی', 'ldos_rod.png', 10.4,
+               ['محاسبه‌ی مستقل با روش المان مرزی (BEM) [۶] برای همین نانومیله در خلأ؛ نقاط نارنجی: نتایج FDTD همین پروژه در ۶۰۷ نانومتر.',
+                'LDOS در نوک‌ها متمرکز است و با فاصله به‌شدت افت می‌کند، اما بازده در تشدید فقط از ۵/۵ به ۸/۷ درصد می‌رسد.'])
+sp1 = fig_slide('نانوکره‌ی طلا: طیف پورسل و تقویت تابشی', 'مرجع مقایسه: نانوکره‌ی هم‌حجم (قطر ۳۲ نانومتر)', 'sphere_spectrum.png', 11.9,
+                ['حل تحلیلی دقیق شبه‌استاتیک چندقطبی [۱، ۲]، دوقطبی عمود بر سطح، داده‌ی طلای جانسون-کریستی [۵]؛ دایره‌ها: شبیه‌سازی FDTD همین پروژه در فاصله‌ی ۵ نانومتری.',
+                 'تشدید کره در ۵۳۰ نانومتر و روی ناحیه‌ی پرتلفات بین‌نواری است؛ تقویت تابشی آن حتی در گاف ۳ نانومتر از ۹ برابر فراتر نمی‌رود.'])
+sp2 = fig_slide('نانوکره‌ی طلا: خاموشی در فواصل کم', 'مرجع مقایسه: نانوکره‌ی هم‌حجم', 'sphere_distance.png', 11.9,
+                ['نرخ کل = تابشی + غیرتابشی [۱–۴]. زیر حدود ۱۰ نانومتر نرخ غیرتابشی (متناسب با عکس مکعب فاصله) غالب است و بازده کره به چند درصد می‌رسد؛',
+                 'بازده کره فقط در فواصلی بالا می‌رود که تقویت عملاً از بین رفته است (در ۶۰۷ نانومتر و فاصله‌ی ۲۰ نانومتری: نرخ کل ۲/۵ و تابشی ۱/۵ برابر).'])
+
+# references (scientific) on the sources slide, under the remaining image sources
+REFS = ['[1] J. Gersten and A. Nitzan, J. Chem. Phys. 75, 1139 (1981).',
+        '[2] R. Ruppin, J. Chem. Phys. 76, 1681 (1982).',
+        '[3] P. Anger, P. Bharadwaj, and L. Novotny, Phys. Rev. Lett. 96, 113002 (2006).',
+        '[4] H. Mertens, A. F. Koenderink, and A. Polman, Phys. Rev. B 76, 115123 (2007).',
+        '[5] P. B. Johnson and R. W. Christy, Phys. Rev. B 6, 4370 (1972).',
+        '[6] U. Hohenester and A. Trügler, Comput. Phys. Commun. 183, 370 (2012) (MNPBEM).']
+src = S[14]
+text(src, 'References', 0.62, 3.0, 12.08, 0.45, 18, INK, bold=True, align='left')
+rb = text(src, REFS, 0.62, 3.55, 12.08, 3.3, 14, MUTED, align='left')
+for p in rb.text_frame.paragraphs: p._p.get_or_add_pPr().set('rtl', '0')
+
+# ---------- order (Q&A slide removed) ----------
 lst = prs.slides._sldIdLst; ids = list(lst)
-orig, new = ids[:15], ids[15:]           # new: theory, purcell, boxes, charts, limits
-th_, ps_, bx_, ch_, lm_ = new
-order = orig[:5] + [th_] + orig[5:7] + [ps_] + [orig[7]] + [bx_] + orig[8:11] + [ch_] + [orig[11]] + [lm_] + orig[12:]
+orig, new = ids[:15], ids[15:]           # new: theory, purcell, boxes, charts, limits, LDOS, sphere 1, sphere 2
+th_, ps_, bx_, ch_, lm_, ld_, s1_, s2_ = new
+order = (orig[:5] + [th_] + orig[5:7] + [ps_] + [orig[7]] + [bx_] + [ld_] + orig[8:10] + [s1_, s2_] + [orig[10]] + [ch_] + [orig[11]]
+         + [lm_] + [orig[12]] + [orig[14]])
+qa = orig[13]; prs.part.drop_rel(qa.get(qn('r:id')))
 for e in ids: lst.remove(e)
 for e in order: lst.append(e)
+
+FA = str.maketrans('0123456789', '۰۱۲۳۴۵۶۷۸۹')
+for i, sl in enumerate(prs.slides, 1):                  # slide number in the bottom-left corner
+    text(sl, str(i).translate(FA), 0.25, 6.95, 0.6, 0.4, 14, GREY, align='left', name='Slide number')
 prs.save(os.path.join(D, 'defense_final.pptx')); print('saved', len(order), 'slides')
