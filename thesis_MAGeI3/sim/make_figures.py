@@ -42,8 +42,17 @@ def read(name):
     return data
 
 
+FA_TAG = {"a": "الف", "b": "ب", "c": "ج", "d": "د"}
+
+
 def tag(ax, s):
-    ax.text(0.03, 0.93, f"({s})", transform=ax.transAxes, fontweight="bold", fontsize=11)
+    try:
+        import arabic_reshaper
+        from bidi.algorithm import get_display
+        lab = get_display(arabic_reshaper.reshape("(" + FA_TAG.get(s, s) + ")"))
+    except ImportError:
+        lab = f"({s})"
+    ax.text(0.0, 1.02, lab, transform=ax.transAxes, fontweight="bold", fontsize=12, family="DejaVu Sans", va="bottom")
 
 
 def save(fig, name):
@@ -87,17 +96,17 @@ def fig_structure():
     layers = [P.ITO(), P.TiO2(), P.MAGeI3(), P.NiOx(), P.WOx(), P.V2O5(), P.Spiro()]
     names = ["ITO", r"TiO$_2$", r"MAGeI$_3$", r"NiO$_x$", r"WO$_x$", r"V$_2$O$_5$", "Spiro-\nOMeTAD"]
     fig, (a, b) = plt.subplots(1, 2, figsize=(7.4, 3.9), gridspec_kw=dict(width_ratios=[1, 1.9]))
-    stack = [("Au (back contact)", "#d4af37"), ("Spiro-OMeTAD (HTL)", "#c9a0dc"),
-             (r"Buffer: V$_2$O$_5$ / WO$_x$ / NiO$_x$", "#9ad0ec"),
-             (r"MAGeI$_3$ (absorber)", "#e8743b"), (r"TiO$_2$ (ETL)", "#f5e663"),
-             ("ITO (front contact)", "#9e9e9e"), ("Glass", "#c8e6c9")]
+    stack = [("Glass", "#c8e6c9"), ("ITO (front contact)", "#9e9e9e"), (r"TiO$_2$ (ETL, n-type)", "#f5e663"),
+             (r"MAGeI$_3$ (absorber, i)", "#e8743b"), (r"Buffer: V$_2$O$_5$ / WO$_x$ / NiO$_x$", "#9ad0ec"),
+             ("Spiro-OMeTAD (HTL, p-type)", "#c9a0dc"), ("Au (back contact)", "#d4af37")]
     for i, (t, c) in enumerate(stack):
         a.add_patch(plt.Rectangle((0, i), 1, 0.9, color=c, ec="k", lw=0.7))
         a.text(0.5, i + 0.45, t, ha="center", va="center", fontsize=8.3)
     for xx in (0.2, 0.5, 0.8):
         a.annotate("", xy=(xx, -0.05), xytext=(xx, -0.9), arrowprops=dict(arrowstyle="-|>", color="#e0a800", lw=2))
-    a.text(0.5, -1.25, "AM1.5G, 100 mW cm$^{-2}$", ha="center", fontsize=8.5)
-    a.set_xlim(-0.05, 1.05); a.set_ylim(-1.5, 7.1); a.axis("off"); tag(a, "a")
+    a.text(0.5, -1.25, "AM1.5G light, 100 mW cm$^{-2}$ (through glass/ITO)", ha="center", fontsize=8.0)
+    a.text(1.08, 3.0, "n-i-p", rotation=90, va="center", fontsize=9, fontweight="bold")
+    a.set_xlim(-0.05, 1.15); a.set_ylim(-1.5, 8.0); a.axis("off"); tag(a, "a")
     for i, (L, n) in enumerate(zip(layers, names)):
         Ec, Ev = -L.chi, -(L.chi + L.Eg)
         b.add_patch(plt.Rectangle((i, Ev), 0.8, Ec - Ev, fc="#e8eef8", ec="#1f3b73", lw=1))

@@ -12,6 +12,7 @@ FA_DIGITS = str.maketrans("0123456789", "۰۱۲۳۴۵۶۷۸۹")
 _LC = (r"A-Za-z0-9\u2080-\u209C\u2070-\u207F\u00B0\u00B1\u00B2\u00B3\u00B9\u03B1-\u03C9\u0391-\u03A9\u2264\u2265\u00D7"
        r"\u2212\u2248\u221D\u221A\u222B\u2192\u03D5\u03C6\u00B7")
 _LS = _LC.replace("\\u2212", "")
+_LC = _LC + r"\u06F0-\u06F9\u066B"
 LATIN = re.compile(r"\(?[" + _LS + r"]"                          # start: Latin/digit/greek, optional '('
                    r"(?:[" + _LC + r"\-\+\./\(\)%:=\^_,\*'{}\[\]\u00A0 ]*[" + _LC + r"\)%'\*}\]])?")
 
@@ -92,18 +93,40 @@ def _fa_fix(text):
     return text
 
 
+_SCI = re.compile(r"(?<![A-Za-z])([0-9]+(?:\.[0-9]+)?)[Ee]([+\-\u2212]?)0*([0-9]+)(?![A-Za-z0-9])")
+_NUM = re.compile(r"(?<![A-Za-z\u0370-\u03FF])([0-9]+(?:\.[0-9]+)*)(?![A-Za-z0-9])")
+
+
+def to_fa_numbers(text):
+    """1.00E+18 -> 1.00×10^{18}; then ASCII numbers -> Persian digits with '٫' (not inside identifiers like 1D, AM1.5G)."""
+    text = _SCI.sub(lambda m: f"{m.group(1)}×10^{{{'−' if m.group(2) in '-−' and m.group(2) else ''}{m.group(3)}}}", text)
+    return _NUM.sub(lambda m: m.group(1).replace(".", "\u066B").translate(FA_DIGITS), text)
+
+
+def _persian(p, seg, size, bold, font_cs, color):
+    for part in re.split(r"(\^\{[^}]*\}|_\{[^}]*\})", seg):
+        if not part:
+            continue
+        if part.startswith("^{"):
+            p.append(_run(part[2:-1], size=size, bold=bold, font_cs=font_cs, rtl=True, color=color, superscript=True))
+        elif part.startswith("_{"):
+            p.append(_run(part[2:-1], size=size, bold=bold, font_cs=font_cs, rtl=True, color=color, subscript=True))
+        else:
+            p.append(_run(part, size=size, bold=bold, font_cs=font_cs, rtl=True, color=color))
+
+
 def add_runs_mixed(p, text, size=12, bold=False, font_cs="B Nazanin", latin_size=None, color=None):
-    text = _fa_fix(text)
+    text = _fa_fix(to_fa_numbers(text))
     """Split text into Persian (rtl) and Latin (ltr) runs. ^{..} = superscript,
     _{..} = subscript (Latin only)."""
     pos = 0
     for m in LATIN.finditer(text):
         if m.start() > pos:
-            p.append(_run(text[pos:m.start()], size=size, bold=bold, font_cs=font_cs, rtl=True, color=color))
+            _persian(p, text[pos:m.start()], size, bold, font_cs, color)
         _latin(p, m.group(0), size=size, bold=bold, latin_size=latin_size, color=color)
         pos = m.end()
     if pos < len(text):
-        p.append(_run(text[pos:], size=size, bold=bold, font_cs=font_cs, rtl=True, color=color))
+        _persian(p, text[pos:], size, bold, font_cs, color)
 
 
 def _latin(p, s, size=12, bold=False, latin_size=None, color=None):
@@ -165,14 +188,14 @@ class Writer:
     def h1(self, num, text):
         p = OxmlElement("w:p")
         p.append(_ppr(jc="right", line=288, before=240, after=120, keep_next=True, outline=1))
-        p.append(_run(f"{num}- ", size=16, bold=True, font_cs="B Titr", rtl=True))
+        p.append(_run(f"{num}- ".translate(FA_DIGITS), size=16, bold=True, font_cs="B Titr", rtl=True))
         add_runs_mixed(p, text, size=16, bold=True, font_cs="B Titr")
         return self._insert(p)
 
     def h2(self, num, text):
         p = OxmlElement("w:p")
         p.append(_ppr(jc="right", line=288, before=180, after=100, keep_next=True, outline=2))
-        p.append(_run(f"{num}- ", size=14, bold=True, font_cs="B Titr", rtl=True))
+        p.append(_run(f"{num}- ".translate(FA_DIGITS), size=14, bold=True, font_cs="B Titr", rtl=True))
         add_runs_mixed(p, text, size=14, bold=True, font_cs="B Titr")
         return self._insert(p)
 
@@ -198,7 +221,7 @@ class Writer:
             else:
                 p.append(_run(part, **kw))
         r = OxmlElement("w:r"); r.append(_rpr(rtl=False)); r.append(OxmlElement("w:tab")); p.append(r)
-        p.append(_run(f"({self.chapter}-{self.eq_n})", rtl=False, size=12))
+        p.append(_run(f"({self.chapter}-{self.eq_n})".translate(FA_DIGITS), rtl=False, size=12))
         self._insert(p)
         return f"{self.chapter}-{self.eq_n}"
 
@@ -214,7 +237,7 @@ class Writer:
         self._insert(pic_p)
         p = OxmlElement("w:p")
         p.append(_ppr(jc="center", line=288, after=200))
-        p.append(_run(f"شکل {self.chapter}-{self.fig_n}- ", size=11, bold=True))
+        p.append(_run(f"شکل {self.chapter}-{self.fig_n}- ".translate(FA_DIGITS), size=11, bold=True))
         add_runs_mixed(p, caption, size=11)
         self._insert(p)
         return f"{self.chapter}-{self.fig_n}"
@@ -223,7 +246,7 @@ class Writer:
         self.tab_n += 1
         p = OxmlElement("w:p")
         p.append(_ppr(jc="center", line=288, before=120, after=60, keep_next=True))
-        p.append(_run(f"جدول {self.chapter}-{self.tab_n}- ", size=11, bold=True))
+        p.append(_run(f"جدول {self.chapter}-{self.tab_n}- ".translate(FA_DIGITS), size=11, bold=True))
         add_runs_mixed(p, caption, size=11, bold=True)
         self._insert(p)
         tbl = OxmlElement("w:tbl")
