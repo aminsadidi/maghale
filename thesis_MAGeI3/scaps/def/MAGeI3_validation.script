@@ -1,0 +1,68 @@
+// Validation of the SCAPS set-up against Bhattarai & Das, Solar Energy 217 (2021) 200
+// outputs: SCAPS results folder, files MG_VAL_*.iv / MG_VAL_*.qe
+set errorhandling.overwritefile
+clear all
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.9
+action iv.increment 0.01
+action iv.stopaftervoc 1
+action qe.doqe
+action qe.startlambda 300
+action qe.stoplambda 900
+action qe.increment 10
+load definitionfile 00_validation_Bhattarai2021.def
+calculate singleshot
+save results.iv MG_VAL_base.iv
+save results.qe MG_VAL_base.qe
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.9
+action iv.increment 0.01
+action iv.stopaftervoc 1
+load definitionfile 00_validation_Bhattarai2021.def
+set layer2.defect1.ntotal 1E13
+calculate singleshot
+save results.iv MG_VAL_Nt1e13.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.9
+action iv.increment 0.01
+action iv.stopaftervoc 1
+load definitionfile 00_validation_Bhattarai2021.def
+set layer2.defect1.ntotal 1E15
+calculate singleshot
+save results.iv MG_VAL_Nt1e15.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.9
+action iv.increment 0.01
+action iv.stopaftervoc 1
+load definitionfile 00_validation_Bhattarai2021.def
+set layer2.defect1.ntotal 1E16
+calculate singleshot
+save results.iv MG_VAL_Nt1e16.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.9
+action iv.increment 0.01
+action iv.stopaftervoc 1
+load definitionfile 00_validation_Bhattarai2021.def
+set layer2.defect1.ntotal 1E17
+calculate singleshot
+save results.iv MG_VAL_Nt1e17.iv
