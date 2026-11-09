@@ -387,6 +387,29 @@ def fig_scaps_extra():
                    "Fig4_21_buffer_permittivity.png", ["WOx"])
 
 
+def fig_scaps_validation():
+    """SCAPS reproduction of Bhattarai & Das (2021): J-V for several absorber Nt and EQE."""
+    d = read("Validation_JV.csv")
+    q = read("Validation_QE.csv")
+    fig, (a, b) = plt.subplots(1, 2, figsize=(7.4, 3.3))
+    cols = {1e14: "#1f77b4", 1e15: "#2ca02c", 1e16: "#d62728"}
+    for nt, c in cols.items():
+        V = [v for n, v in zip(d["Nt_abs_cm3"], d["V"]) if n == nt]
+        J = [j for n, j in zip(d["Nt_abs_cm3"], d["J_mAcm2"]) if n == nt]
+        a.plot(V, J, color=c, label=r"SCAPS, $N_t$ = 10$^{%d}$ cm$^{-3}$" % round(np.log10(nt)))
+    a.plot([0], [16.27], "k*", ms=10, clip_on=False, label=r"Bhattarai & Das (2021): $J_{sc}$, $V_{oc}$")
+    a.plot([1.74], [0], "k*", ms=10, clip_on=False)
+    a.set_xlim(-0.04, 2.05); a.set_ylim(0, 18)
+    a.set_xlabel("Voltage (V)"); a.set_ylabel(r"$J$ (mA cm$^{-2}$)")
+    a.legend(frameon=False, fontsize=7.5, loc="lower left"); a.grid(alpha=0.25, lw=0.5); tag(a, "a")
+    b.plot(q["lambda_nm"], q["QE_pct"], "o-", color="#1f3b73", mfc="white", ms=3.5, label=r"SCAPS ($N_t$ = 10$^{14}$)")
+    b.hlines(85, 300, 680, colors="k", linestyles="--", lw=1.1, label="Reported average (300-680 nm)")
+    b.set_xlim(300, 750); b.set_ylim(0, 105)
+    b.set_xlabel("Wavelength (nm)"); b.set_ylabel("EQE (%)")
+    b.legend(frameon=False, fontsize=7.5, loc="lower left"); b.grid(alpha=0.25, lw=0.5); tag(b, "b")
+    save(fig, "Fig4_22_validation_Bhattarai.png")
+
+
 def main():
     fig_structure()
     if os.path.exists(os.path.join(RES, "Validation_V1_Shockley.csv")):
@@ -408,6 +431,8 @@ def main():
                "Fig4_17_absorber_Nt.png", ["No buffer", "NiOx"], logx=True)
     fig_vbo()
     fig_scaps_extra()
+    if os.path.exists(os.path.join(RES, 'Validation_JV.csv')):
+        fig_scaps_validation()
     if os.path.exists(os.path.join(RES, 'Back_contact_workfunction.csv')):
         fig_wf()
     if os.path.exists(os.path.join(RES, 'Light_intensity.csv')) and os.path.exists(os.path.join(RES, 'Dark_JV.csv')):
