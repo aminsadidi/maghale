@@ -1,0 +1,72 @@
+// Robustness check with MAGeI3/Spiro/ITO parameters of refs [65,66]
+set errorhandling.overwritefile
+clear all
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.9
+action iv.increment 0.01
+action iv.stopaftervoc 1
+load definitionfile 06_REF_noBuffer.def
+calculate singleshot
+save results.iv MG_REF_none_Nt1e16.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.9
+action iv.increment 0.01
+action iv.stopaftervoc 1
+load definitionfile 06_REF_noBuffer.def
+set layer2.defect1.ntotal 1E14
+calculate singleshot
+save results.iv MG_REF_none_Nt1e14.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.9
+action iv.increment 0.01
+action iv.stopaftervoc 1
+load definitionfile 07_REF_WOx.def
+calculate singleshot
+save results.iv MG_REF_WOx_Nt1e16.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.9
+action iv.increment 0.01
+action iv.stopaftervoc 1
+load definitionfile 07_REF_WOx.def
+set layer3.defect1.ntotal 1E14
+calculate singleshot
+save results.iv MG_REF_WOx_Nt1e14.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.9
+action iv.increment 0.01
+action iv.stopaftervoc 1
+load definitionfile 08_REF_NiOx.def
+calculate singleshot
+save results.iv MG_REF_NiOx_Nt1e16.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.9
+action iv.increment 0.01
+action iv.stopaftervoc 1
+load definitionfile 08_REF_NiOx.def
+set layer3.defect1.ntotal 1E14
+calculate singleshot
+save results.iv MG_REF_NiOx_Nt1e14.iv
