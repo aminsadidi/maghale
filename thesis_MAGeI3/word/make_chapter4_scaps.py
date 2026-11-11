@@ -248,7 +248,7 @@ def build(w):
     w.h2("4-2-6", "پارامترهای مشخصه‌ی خروجی سلول")
     w.para("عملکرد هر ساختار با چهار پارامتر اصلی مشخصه‌ی J-V تحت تابش توصیف می‌شود. جریان اتصال کوتاه J_{sc} چگالی "
            "جریان در ولتاژ صفر و ولتاژ مدار باز V_{oc} ولتاژی است که در آن جریان خالص صفر می‌شود. برای یک دیود با ضریب "
-           "ایده‌آلی n_{id} و جریان اشباع معکوس J_{0}:", keep_next=True)
+           "ایده‌آلی n_{id} و جریان اشباع معکوس J₀:", keep_next=True)
     w.equation("V_{oc} = (n_{id} k T / q) ln( J_{sc}/J_{0} + 1 )")
     w.para("ضریب پرشدگی FF و بازده تبدیل توان PCE به صورت زیر تعریف می‌شوند:", keep_next=True)
     w.equation("FF = (V_{mp} J_{mp}) / (V_{oc} J_{sc}) ,     PCE = (V_{oc} J_{sc} FF) / P_{in}")
@@ -267,8 +267,8 @@ def build(w):
     w.para("برای اطمینان از اینکه فایل‌های تعریف ساختار، شرایط مرزی، مدل جذب و اسکریپت‌های این پژوهش درست کار می‌کنند، "
            "پیش از اجرای پروتکل اصلی یک سلول منتشرشده در SCAPS بازسازی شد. مرجع [65] برای این کار انتخاب شد، زیرا همان "
            "جاذب MAGeI₃، همان HTL (Spiro-OMeTAD)، همان اتصال پشتی (Au) و همان پیکربندی n-i-p را دارد. سلول بهینه‌ی این مرجع "
-           "ساختار ITO/ZnO (50 nm)/MAGeI₃ (400 nm)/Spiro-OMeTAD (50 nm)/Au با J_{sc} = 16.27 mA/cm²، V_{oc} = 1.74 V، "
-           "FF = 64.5% و PCE = 18.3% است. پارامترهای ZnO، MAGeI₃ و Spiro-OMeTAD دقیقاً از جدول ۱ همان مرجع وارد شد. "
+           "ساختار ITO/ZnO (50 nm)/MAGeI₃ (400 nm)/Spiro-OMeTAD (50 nm)/Au دارد. چگالی جریان اتصال کوتاه این سلول ۱۶٫۲۷ "
+           "میلی‌آمپر بر سانتی‌متر مربع، ولتاژ مدار باز ۱٫۷۴ ولت، ضریب پرشدگی ۶۴٫۵ درصد و بازده آن ۱۸٫۳ درصد گزارش شده است. پارامترهای ZnO، MAGeI₃ و Spiro-OMeTAD دقیقاً از جدول ۱ همان مرجع وارد شد. "
            "مرجع [65] پارامترهای ITO، مشخصات نقص‌ها و داده‌های جذب را گزارش نکرده است. برای این موارد از فرض‌های زیر استفاده شد. "
            "پارامترهای ITO از مرجع [66] گرفته شد. چگالی نقص جاذب برابر 10^{14} cm^{-3} (مقدار مرجع [66]) و چگالی نقص ZnO و "
            "Spiro-OMeTAD برابر 10^{15} cm^{-3} در نظر گرفته شد (نقص خنثی در میانه‌ی گاف با σ = 10^{-15} cm²). برای جذب نیز همان "
@@ -468,8 +468,9 @@ def build(w):
            f"گام چهارم ({fa(d_buf['WOx'],0)} نانومتر) است.")
     w.figure(os.path.join(FIG, "Fig4_07_JV_PV.png"),
              "(الف) مشخصه‌ی J-V و (ب) مشخصه‌ی P-V ساختارهای بهینه‌ی بدون بافر و دارای بافرهای WOₓ و NiOₓ تحت تابش AM1.5G.", key="jv")
-    w.para(f"ساختار دارای بافر WOₓ با Voc = {fa(WO['Voc_V'],3)} V، Jsc = {fa(WO['Jsc_mAcm2'])} mA/cm²، FF = {fa(WO['FF_pct'])}% و "
-           f"PCE = {fa(WO['PCE_pct'])}% بهترین عملکرد را دارد. پس از آن ساختار NiOₓ با بازده {fa(NI['PCE_pct'])} درصد و ساختار بدون بافر "
+    w.para(f"ساختار دارای بافر WOₓ بهترین عملکرد را دارد: ولتاژ مدار باز {fa(WO['Voc_V'],3)} ولت، چگالی جریان اتصال کوتاه "
+           f"{fa(WO['Jsc_mAcm2'])} میلی‌آمپر بر سانتی‌متر مربع، ضریب پرشدگی {fa(WO['FF_pct'])} درصد و بازده {fa(WO['PCE_pct'])} درصد. "
+           f"پس از آن ساختار NiOₓ با بازده {fa(NI['PCE_pct'])} درصد و ساختار بدون بافر "
            f"با {fa(NB['PCE_pct'])} درصد قرار دارند. بهبود نسبی بازده با WOₓ برابر {fa(pct(WO['PCE_pct'],NB['PCE_pct']),1)} درصد و با "
            f"NiOₓ برابر {fa(pct(NI['PCE_pct'],NB['PCE_pct']),1)} درصد است. منحنی‌های J-V در ولتاژهای پایین شیب کمی دارند. این شیب "
            "ناشی از افزایش تدریجی بازترکیب حجمی با ولتاژ است. زانوی منحنی‌ها در حدود ۱/۳۴ ولت قرار دارد و ولتاژ نقطه‌ی بیشینه‌ی "
@@ -757,8 +758,8 @@ def build(w):
            "فصل سوم بررسی شد. مهم‌ترین نتایج به شرح زیر است:")
     items = [
         f"بهترین ضخامت‌ها در بازه‌های بررسی‌شده برای ساختار بدون بافر {fa(d_abs,0)} نانومتر برای MAGeI₃ (مرز بازه)، {fa(d_etl,0)} نانومتر برای TiO₂ و {fa(d_htl,0)} "
-        f"نانومتر برای Spiro-OMeTAD به دست آمد. این ساختار بازده {fa(NB['PCE_pct'])} درصد (Voc = {fa(NB['Voc_V'],3)} V، "
-        f"Jsc = {fa(NB['Jsc_mAcm2'])} mA/cm²، FF = {fa(NB['FF_pct'])}%) دارد. بازده در ضخامت‌های جاذب بالاتر از ۶۰۰ نانومتر عملاً "
+        f"نانومتر برای Spiro-OMeTAD به دست آمد. بازده این ساختار {fa(NB['PCE_pct'])} درصد است (ولتاژ مدار باز {fa(NB['Voc_V'],3)} ولت، "
+        f"چگالی جریان {fa(NB['Jsc_mAcm2'])} میلی‌آمپر بر سانتی‌متر مربع و ضریب پرشدگی {fa(NB['FF_pct'])} درصد). بازده در ضخامت‌های جاذب بالاتر از ۶۰۰ نانومتر عملاً "
         "اشباع می‌شود. بیشترین حساسیت به ضخامت در لایه‌ی جاذب و کمترین حساسیت در Spiro-OMeTAD مشاهده شد.",
         f"بافر WOₓ بهترین عملکرد را داشت و بازده را به {fa(WO['PCE_pct'])} درصد ({fa(pct(WO['PCE_pct'],NB['PCE_pct']),1)} درصد بهبود "
         f"نسبی) رساند. NiOₓ بازده را به {fa(NI['PCE_pct'])} درصد افزایش داد. بیشتر این بهبود از Jsc و FF حاصل می‌شود و تغییر Voc "
@@ -804,12 +805,33 @@ def build(w):
         "در نظر گرفتن بازترکیب تابشی و اوژه، جذب واقعی لایه‌ها با داده‌های n و k اندازه‌گیری‌شده و بازتاب‌های چندگانه برای پیش‌بینی "
         "دقیق‌تر Jsc.",
         "تحلیل طیف امپدانس (C-f و نمودار نایکوئیست) و وابستگی Voc به شدت تابش برای تعیین ضریب ایده‌آلی و سازوکار غالب بازترکیب.",
-        "ساخت تجربی ساختار بهینه‌ی ITO/TiO₂/MAGeI₃/WOₓ/Spiro-OMeTAD/Au و مقایسه‌ی نتایج اندازه‌گیری J-V، IPCE و C-V با پیش‌بینی‌های "
-        "این فصل.",
+        "ساخت تجربی ساختار بهینه‌ی ITO/TiO₂/MAGeI₃/WOₓ/Spiro-OMeTAD/Au، اندازه‌گیری مشخصه‌های J-V و C-V و طیف IPCE آن و "
+        "مقایسه‌ی نتایج با پیش‌بینی‌های این فصل.",
     ]
     for i, t in enumerate(fut, 1):
         w.para(f"{num(i)}- {t}")
     w.page_break()
+
+
+def nobreak_hyphens(path):
+    """Replace '-' in J-V, C-V, P-V, I-V, C-f, n-i-p by Word non-breaking hyphens (w:noBreakHyphen)."""
+    import re as _re, zipfile, shutil, tempfile
+    tmp = tempfile.mktemp(suffix=".docx")
+    shutil.copy(path, tmp)
+    with zipfile.ZipFile(tmp) as zin, zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as zout:
+        for item in zin.infolist():
+            data = zin.read(item.filename)
+            if item.filename == "word/document.xml":
+                x = data.decode("utf-8")
+                def fix(m):
+                    open_tag, txt = m.group(1), m.group(2)
+                    new = _re.sub(r"(?<![A-Za-z])(J|C|P|I|n|i)-(?=(V|f|i|p)(?![A-Za-z]))",
+                                  lambda k: k.group(1) + "</w:t><w:noBreakHyphen/>" + open_tag, txt)
+                    return open_tag + new + "</w:t>"
+                x = _re.sub(r'(<w:t(?: xml:space="preserve")?>)([^<]*)</w:t>', fix, x)
+                data = x.encode("utf-8")
+            zout.writestr(item, data)
+    os.remove(tmp)
 
 
 def main():
@@ -819,6 +841,7 @@ def main():
     w = Real(doc, anchor._p)
     build(w)                           # pass 2: write
     doc.save(OUT)
+    nobreak_hyphens(OUT)
     print("wrote", os.path.abspath(OUT), "| figures:", w.fig_n, "tables:", w.tab_n, "equations:", w.eq_n)
 
 

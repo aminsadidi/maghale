@@ -214,7 +214,7 @@ class Writer:
             if not part:
                 continue
             kw = dict(rtl=False, latin_font="Cambria Math", font_cs="B Nazanin", size=12, italic=False)
-            if "AM1.5G" not in part:          # numbers in equations -> Persian digits (fractions keep '/')
+            if "AM1.5G" not in part and not part.startswith("_{"):   # numbers -> Persian digits; subscript labels (J_0, n_1) stay Latin
                 part = re.sub(r"(?<![A-Za-z])\d+(?:\.\d+)?",
                               lambda m: m.group(0).replace(".", "\u066B").translate(FA_DIGITS), part)
             if part.startswith("^{"):
