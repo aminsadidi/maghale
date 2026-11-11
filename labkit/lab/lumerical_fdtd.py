@@ -217,7 +217,9 @@ def far_field():
     for sg in (1, -1):
         _, U1, _, _ = FFm.project([faces[5]], lam_ff[fi:fi + 1], P['n'], sign=sg, dirs=dirs)
         corr[sg] = float(np.corrcoef(U1[0], E2.ravel()[sub])[0, 1])
-    sign = 1 if corr[1] >= corr[-1] else -1
+    # exp(-i w t) (sign +1) unless farfield3d clearly prefers the other one; a symmetric structure gives a tie (both ~1),
+    # and a tie must not flip the convention (campaign 2: two dimers took -1 on a 1e-5 tie, P_ff/P_box = 1.5)
+    sign = -1 if corr[-1] > corr[1] + 0.05 else 1
     print(f'  sign check vs farfield3d: corr(+1) = {corr[1]:.4f}, corr(-1) = {corr[-1]:.4f} -> sign {sign:+d}', flush=True)
     d, U, Pb, ratio = FFm.project(faces, lam_ff, P['n'], ndir=4000, sign=sign)
     th13, th09 = np.arcsin(1.3 / P['n']), np.arcsin(0.9 / P['n'])
