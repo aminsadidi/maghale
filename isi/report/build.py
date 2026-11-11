@@ -3,7 +3,8 @@ writes <src>.html and prints <src>.pdf (A4) with headless Chromium.
 usage: python isi/report/build.py isi/report/report_trimer"""
 import base64, os, re, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); FIG = os.path.join(HERE, '..', 'figures')
-CHROME = '/opt/pw-browsers/chromium-1194/chrome-linux/chrome'
+import glob
+CHROME = (sorted(glob.glob('/opt/pw-browsers/chromium-*/chrome-linux*/chrome')) or ['/opt/pw-browsers/chromium/chrome-linux/chrome'])[-1]
 stem = sys.argv[1]
 html = open(stem + '.src.html', encoding='utf-8').read()
 def img(m):

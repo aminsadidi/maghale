@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>منبع تک‌فوتون ۱۵۵۰</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --paper:#ffffff; --ink:#1d2330; --ink2:#4a5263; --muted:#7a8191; --line:#e3e1da;
+  --accent:#1f4e9c; --accent-soft:#e8eef8; --gold:#b8892a; --gold-soft:#faf3e3; --good:#2a7a4b; --good-soft:#e7f4ec;
+  --warn:#9a5b00; --warn-soft:#fbf1e1;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Vazirmatn",Tahoma,sans-serif;line-height:1.95}
+.page{max-width:900px;margin:0 auto;padding:28px 16px 60px}
+header.cover{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:34px 34px 28px;position:relative;overflow:hidden}
+header.cover::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.kicker{color:var(--gold);font-weight:600;font-size:.92rem;letter-spacing:.02em}
+h1{font-size:1.75rem;line-height:1.6;margin:.4rem 0 .6rem;font-weight:800}
+.en{direction:ltr;unicode-bidi:isolate;font-family:Georgia,"Times New Roman",serif}
+.entitle{display:block;direction:ltr;text-align:left;color:var(--ink2);font-family:Georgia,serif;font-size:1rem;line-height:1.6;margin:.3rem 0 1rem}
+.meta{color:var(--ink2);font-size:.95rem}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{font-size:.82rem;padding:3px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.badge.g{background:var(--good-soft);color:var(--good)} .badge.o{background:var(--gold-soft);color:var(--gold)}
+section{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px 30px;margin-top:20px}
+h2{font-size:1.3rem;margin:0 0 .8rem;font-weight:800;display:flex;align-items:center;gap:10px}
+h2 .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--accent);color:#fff;font-size:.95rem}
+h3{font-size:1.05rem;margin:1.2rem 0 .4rem;color:var(--accent)}
+p{margin:.5rem 0}
+.lead{font-size:1.05rem;color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 4px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fbfbf9}
+.tile .v{font-size:1.55rem;font-weight:800;color:var(--accent);direction:ltr;text-align:right}
+.tile .l{font-size:.86rem;color:var(--ink2);line-height:1.7}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92rem}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:right;vertical-align:top}
+th{background:#f3f2ed;font-weight:600}
+td.before{color:var(--ink2)} td.after{color:var(--ink)}
+tr:hover td{background:#fafaf7}
+.tl{position:relative;margin:10px 0 0;padding-right:26px}
+.tl::before{content:"";position:absolute;right:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.step{position:relative;margin:0 0 16px}
+.step::before{content:"";position:absolute;right:-24px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:3px solid var(--accent)}
+.step.key::before{border-color:var(--gold)}
+.step b{display:block}
+.step .d{color:var(--ink2);font-size:.95rem}
+figure{margin:16px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff;padding:6px}
+figcaption{font-size:.86rem;color:var(--ink2);margin-top:6px;line-height:1.8}
+.callout{border-right:4px solid var(--gold);background:var(--gold-soft);padding:12px 16px;border-radius:8px;margin:14px 0}
+.callout.g{border-color:var(--good);background:var(--good-soft)}
+.callout.w{border-color:var(--warn);background:var(--warn-soft)}
+ul{margin:.4rem 0;padding-right:1.3rem} li{margin:.25rem 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:720px){.two,.tiles{grid-template-columns:1fr 1fr} header.cover,section{padding:20px 18px} h1{font-size:1.4rem}}
+.num{direction:ltr;unicode-bidi:isolate}
+footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:24px}
+.papers{display:grid;gap:10px;margin-top:16px}
+.pcard{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:#fbfbf9}
+.pcard .entitle{margin:.2rem 0 0;font-size:.95rem}
+.ptag{font-weight:700;color:var(--accent);font-size:.9rem}.ptag.g{color:var(--good)}
+.tile .v sup{font-size:.6em}
+@page{size:A4 portrait;margin:16mm 14mm 16mm 14mm}
+@media print{
+  html{font-size:10.5pt}
+  body{background:#fff;line-height:1.8;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{max-width:none;margin:0;padding:0}
+  header.cover,section{border:none;border-radius:0;padding:0;margin:0 0 6mm 0;background:#fff}
+  header.cover{padding-top:4mm}
+  section{break-before:auto;margin-bottom:5mm;padding-top:2mm;border-top:1px solid #e3e1da}
+  h2,h3{break-after:avoid;page-break-after:avoid}
+  h3+ul,h3+p{break-before:avoid}
+  h1{font-size:17pt} h2{font-size:13.5pt;break-after:avoid} h3{font-size:11.5pt;break-after:avoid}
+  .tiles{grid-template-columns:repeat(3,1fr);gap:3mm}
+  .tile{padding:3mm 4mm}.tile .v{font-size:14pt}.tile .l{font-size:8.8pt}
+  figure{margin:4mm 0;break-inside:avoid}
+  figure img{max-height:78mm;width:auto;max-width:100%;border:none;padding:0}
+  figcaption{font-size:8.8pt}
+  table{font-size:8.8pt;break-inside:auto} tr{break-inside:avoid} th,td{padding:4px 6px}
+  .two{grid-template-columns:1fr 1fr}
+  .callout,.tile,.pcard{break-inside:avoid}
+  .tl{padding-right:30px;margin-right:2px} .step,li{break-inside:avoid}
+  table{break-inside:avoid}
+  footer{margin-top:6mm}
+  tr:hover td{background:none}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="cover">
+  <div class="kicker">گزارش پس از جلسه‌ی ۲۰ آبان ۱۴۰۵: پاسخ به پرسش‌های استاد</div>
+  <h1>منبع تک‌فوتون مخابراتی (۱۵۵۰ nm) روی آنتن سه‌نانومیله‌ای طلا: انتخاب گسیلنده، دینامیک گسیل و کیفیت کوانتومی</h1>
+  <span class="entitle">A telecom single-photon source on the retuned gold-nanorod trimer: emitter material and size, Purcell dynamics, g<sup>(2)</sup>(0) and indistinguishability</span>
+  <div class="meta">امین حسین صدیدی، سید محمدپارسا مولائی طبری؛ استاد راهنما: دکتر مالک باقری هارونی؛ دانشگاه اصفهان</div>
+  <div class="badges"><span class="badge">FDTD (Lumerical 2024) و BEM (MNPBEM)</span><span class="badge g">۸۹ شبیه‌سازی روی رایانه‌ی آزمایشگاه (۳/۷ روز)</span><span class="badge o">QuTiP: g<sup>(2)</sup>(0) و تمیزناپذیری</span></div>
+</header>
+
+<section>
+  <h2><span class="n">۱</span>خلاصه</h2>
+  <div class="tiles">
+    <div class="tile"><div class="v num">6.1 : 1</div><div class="l">نسبت گسیل به +y به −y در ۱۵۵۰ nm برای طرح نهایی (L = ۲۷۵، R3 = ۲۹۵ nm)، در تعریف میدان دوردست</div></div>
+    <div class="tile"><div class="v num">70%</div><div class="l">بازده آنتن در ۱۵۵۰ nm؛ F<sub>p</sub> = ۲۸۶ و تقویت تابشی ۱۹۹ (FDTD)</div></div>
+    <div class="tile"><div class="v num">1560 / 1565</div><div class="l">قله‌ی جهت‌دهی (nm): BEM برون‌یابی‌شده در برابر FDTD؛ دو روش مستقل هم‌خوان‌اند</div></div>
+  </div>
+  <div class="tiles">
+    <div class="tile"><div class="v num">InAs/InP, PbS</div><div class="l">گسیلنده‌ی مناسب ۱۵۵۰ nm؛ GaAs به ۱۵۵۰ nm نمی‌رسد (گاف ۱.۴۲ eV، حداکثر ۸۷۰ nm)</div></div>
+    <div class="tile"><div class="v num">0.97</div><div class="l">تمیزناپذیری در ۴ K با آنتن (γ* = ۱ µeV)؛ بدون آنتن ۰.۱۴</div></div>
+    <div class="tile"><div class="v num">0.012</div><div class="l">g<sup>(2)</sup>(0) با پالس π به طول ۲۰۰ fs؛ طول عمر گسیلنده از ۲ ns به ۷ ps کوتاه می‌شود</div></div>
+  </div>
+  <div class="callout g"><b>برداشت اصلی.</b> مهم‌ترین اثر کوانتومی آنتن، <b>تمیزناپذیری</b> است: با کوتاه شدن طول عمر به ۷ ps، ناهمدوسی خالص فرصت اثر ندارد و I از ۰.۱۴ به ۰.۹۷ می‌رسد. خلوص تک‌فوتون (g<sup>(2)</sup>) با پالس کوتاه‌تر از طول عمر حفظ می‌شود. برای کار کوانتومی در ۱۵۵۰ nm گسیلنده‌ی پیشنهادی <b>نقطه‌ی کوانتومی InAs/InP</b> (ارتفاع حدود ۳ تا ۴ nm، قطر ۳۰ تا ۵۰ nm، دمای ۴ K) است. برای آزمایش ساده‌تر در دمای اتاق و سازگار با گاف ۴۰ nm آنتن، <b>نقطه‌ی کلوییدی PbS با قطر حدود ۵.۶ nm</b> مناسب است، ولی در دمای اتاق فوتون‌ها تمیزپذیرند.</div>
+</section>
+
+<section>
+  <h2><span class="n">۲</span>پرسش‌های جلسه و پاسخ کوتاه</h2>
+  <table>
+    <tr><th>پرسش استاد</th><th>پاسخ</th><th>بخش</th></tr>
+    <tr><td>داده‌ی Johnson–Christy مشکل دارد</td><td>درست است: در کل بازه‌ی ۱۳۰۰ تا ۱۹۰۰ nm فقط ۳ نقطه‌ی اندازه‌گیری دارد و پراکندگی سطحی میله‌ی ۶۰ nm را ندارد. اثرش را اندازه گرفتیم: جهت‌دهی با CRC تقریباً همان است و با Palik تا ۵۵٪ کم می‌شود.</td><td>۴</td></tr>
+    <tr><td>در قله‌ی سیستم پلاسمونی منبع تک‌فوتون طراحی شود؛ گسیلنده چه ماده‌ای باشد؟</td><td>نقطه‌ی کوانتومی InAs/InP (۴ K، کیفیت کوانتومی بالا) یا PbS کلوییدی (دمای اتاق، سازگار با هندسه). GaAs به ۱۵۵۰ nm نمی‌رسد.</td><td>۵</td></tr>
+    <tr><td>اندازه‌ی گسیلنده</td><td>PbS: قطر ۵.۵ تا ۵.۹ nm. InAs/InP: ارتفاع حدود ۲.۶ تا ۴.۵ nm با قطر ۳۰ تا ۵۰ nm.</td><td>۶</td></tr>
+    <tr><td>مشخصات گسیل: g<sup>(2)</sup>(0)، تمیزناپذیری، دینامیک</td><td>با معادله‌ی مادر (QuTiP) و پالس π محاسبه شد: g<sup>(2)</sup>(0) = ۰.۰۱۲ و I = ۰.۹۷ (۴ K)؛ در دمای اتاق I ≈ ۰.</td><td>۷ و ۸</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="n">۳</span>طرح نهایی آنتن پس از شبیه‌سازی‌های آزمایشگاه</h2>
+  <p>اجرای اول FDTD نشان داد BEM با مش ۴ nm تشدید را حدود ۴۵ nm آبی‌تر از مقدار همگرا نشان می‌دهد؛ بنابراین طرح قبلی (L = ۲۸۵، R3 = ۳۱۵ nm) در واقع در ۱۵۵۰ nm جهت‌دهی چندانی نداشت (نسبت ۱.۷). با جاروب ۱۲ تریمر و ۴ دیمر در FDTD و محاسبه‌ی میدان دوردست با همان تعریف BEM، طرح <b>L = ۲۷۵ nm و R3 = ۲۹۵ nm</b> (مرکز R3 در y = ۱۶۰ nm) به‌طور خودکار انتخاب شد.</p>
+  <figure><img src="{{IMG:fig_sel_design}}" alt="طرح نهایی"><figcaption>(الف) فاکتور پورسل و تقویت تابشی؛ (ب) نسبت توان دوردست در مخروط ۶۰ درجه حول +y به −y: BEM با ریز شدن مش (۴ و ۳ nm) به سمت FDTD حرکت می‌کند؛ (ج) حساسیت جهت‌دهی به داده‌ی طلا. خط نقطه‌چین: ۱۵۵۰ nm.</figcaption></figure>
+  <table>
+    <tr><th></th><th>BEM h = ۴ nm</th><th>BEM h = ۳ nm</th><th>BEM برون‌یابی‌شده</th><th>FDTD</th></tr>
+    <tr><td>قله‌ی تقویت تابشی</td><td class="num">1443 nm</td><td class="num">1448 nm</td><td class="num">1456–1469 nm</td><td class="num">1479 nm</td></tr>
+    <tr><td>قله‌ی جهت‌دهی</td><td class="num">1510 nm</td><td class="num">1521 nm</td><td class="num">1534–1560 nm</td><td class="num">1565 nm</td></tr>
+    <tr><td>بیشینه‌ی نسبت +y/−y</td><td class="num">5.5</td><td class="num">5.7</td><td>رو به افزایش</td><td class="num">6.3</td></tr>
+    <tr><td>بازده آنتن در ۱۵۵۰ nm</td><td class="num">76%</td><td class="num">75%</td><td></td><td class="num">70%</td></tr>
+  </table>
+  <h3>پایداری طرح نهایی (FDTD، ۱۵۵۰ nm)</h3>
+  <table>
+    <tr><th>آزمون</th><th>نسبت +y/−y</th><th>بازده</th></tr>
+    <tr><td>مرجع (گاف با مش ۱ nm، میله‌ها ۲ nm)</td><td class="num">6.1</td><td class="num">70%</td></tr>
+    <tr><td>مش گاف ۰.۵ nm</td><td class="num">5.9</td><td class="num">68%</td></tr>
+    <tr><td>مش میله ۱ nm</td><td class="num">6.1</td><td class="num">70%</td></tr>
+    <tr><td>مش منطبق بر سطح فلز (conformal)</td><td class="num">5.3</td><td class="num">63%</td></tr>
+    <tr><td>R3 در y = ۱۵۰ / ۱۷۰ nm (تلرانس ساخت)</td><td class="num">7.9 / 4.7</td><td class="num">69% / 70%</td></tr>
+    <tr><td>جفت‌شدگی به موجبر Si<sub>3</sub>N<sub>4</sub> (توان هدایت‌شده به +y / −y)</td><td class="num">14% / 6%</td><td></td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="n">۴</span>داده‌ی طلای Johnson–Christy: مشکل و اثر آن</h2>
+  <ul>
+    <li><b>نقاط کم در فروسرخ:</b> جدول Johnson–Christy (۱۹۷۲) ۴۹ نقطه از ۰.۶۴ تا ۶.۶ eV دارد و در کل بازه‌ی کاری ما (۱۳۰۰ تا ۱۹۰۰ nm) فقط <b>سه نقطه</b> (۰.۶۴، ۰.۷۷ و ۰.۸۹ eV). مقدار بین آن‌ها حاصل درون‌یابی (BEM) یا برازش (Lumerical) است.</li>
+    <li><b>نمونه‌ی لایه‌ی نازک:</b> اندازه‌گیری روی لایه‌های تبخیری چند ده نانومتری انجام شده و میرایی آن با طلای امروزی و تک‌بلور تفاوت دارد؛ داده‌های جدیدتر (Olmon ۲۰۱۲، McPeak ۲۰۱۵) در فروسرخ نمونه‌برداری متراکم دارند.</li>
+    <li><b>پراکندگی سطحی الکترون:</b> داده‌ی حجمی برای میله‌ی ۶۰ nm میرایی سطحی <span class="en">ħγ<sub>s</sub> ≈ A ħv<sub>F</sub>/L<sub>eff</sub> ≈ 15–23 meV</span> کم دارد. در ۱۵۵۰ nm (<span class="en">ε = −116 + 11.4i</span>) این یعنی <b>۲۱ تا ۳۲ درصد اتلاف بیشتر</b> (Im ε) و بازده تخمینی حدود ۶۳ تا ۶۵ درصد به‌جای ۷۰ درصد. این عدد تخمین است و محاسبه‌ی مستقیم آن در برنامه‌ی بعدی است.</li>
+  </ul>
+  <table>
+    <tr><th>داده‌ی طلا (FDTD، طرح نهایی)</th><th>قله‌ی تقویت تابشی</th><th>F<sub>p</sub> / T در ۱۵۵۰</th><th>بازده</th><th>نسبت +y/−y در ۱۵۵۰</th><th>بیشینه‌ی نسبت</th></tr>
+    <tr><td>Johnson–Christy</td><td class="num">1483 nm</td><td class="num">286 / 199</td><td class="num">69%</td><td class="num">6.1</td><td class="num">6.3 (1567 nm)</td></tr>
+    <tr><td>CRC</td><td class="num">1503 nm</td><td class="num">402 / 325</td><td class="num">81%</td><td class="num">6.4</td><td class="num">10.1 (1579 nm)</td></tr>
+    <tr><td>Palik</td><td class="num">1535 nm</td><td class="num">465 / 253</td><td class="num">54%</td><td class="num">2.7</td><td class="num">5.6 (1613 nm)</td></tr>
+  </table>
+  <div class="callout">داده‌ی طلا بزرگ‌ترین عدم قطعیت طرح است (جابه‌جایی قله تا ۵۰ nm). پیشنهاد: Johnson–Christy به‌علاوه‌ی میرایی سطحی به‌عنوان مرجع، و گزارش CRC، Palik، Olmon و McPeak به‌عنوان بازه‌ی خطا. در عمل، طول میله‌ها پس از اندازه‌گیری طیف پراکندگی نمونه‌ی ساخته‌شده تنظیم می‌شود.</div>
+</section>
+
+<section>
+  <h2><span class="n">۵</span>انتخاب ماده‌ی گسیلنده برای ۱۵۵۰ nm</h2>
+  <p>شرط‌ها: گسیل در ۱۵۵۰ nm (۰.۸۰ eV)، گسیل تک‌فوتونی (سیستم دوترازی منفرد)، دوقطبی گذار هم‌راستا با محور میله‌ها (x)، و جای گرفتن در گاف ۴۰ nm آنتن. <b>GaAs مناسب نیست:</b> گاف آن ۱.۴۲ eV است (۸۷۳ nm) و محدودسازی کوانتومی انرژی را فقط بالاتر می‌برد؛ نقطه‌های GaAs و InAs/GaAs معمولی در ۸۰۰ تا ۱۳۰۰ nm گسیل می‌کنند. برای ۱۵۵۰ nm ماده‌ای با گاف کوچک‌تر لازم است.</p>
+  <table>
+    <tr><th>گسیلنده</th><th>مزیت</th><th>محدودیت</th><th>جمع‌بندی</th></tr>
+    <tr><td><b>نقطه‌ی کوانتومی InAs/InP</b> (اپیتکسیال)</td><td>گسیل ذاتی در باند C، سیستم دوترازی تمیز در ۴ K، دوقطبی درون صفحه</td><td>در InP (n ≈ ۳.۲) رشد می‌کند، نه در محیط n = ۱.۵؛ نیاز به دمای پایین</td><td>گزینه‌ی اصلی برای منبع کوانتومی</td></tr>
+    <tr><td><b>نقطه‌ی کلوییدی PbS</b> (یا PbS/CdS)</td><td>اندازه‌ی ۵ تا ۶ nm، جای‌گذاری در گاف آنتن، دمای اتاق، طول موج قابل تنظیم با اندازه</td><td>پهنای خط دمای اتاق (ده‌ها meV)، چشمک‌زنی، گسیل بای‌اکسیتون</td><td>گزینه‌ی آزمایش اولیه و دمای اتاق</td></tr>
+    <tr><td>یون Er<sup>3+</sup></td><td>۱۵۳۶ nm، خط بسیار باریک</td><td>طول عمر میلی‌ثانیه؛ حتی با F<sub>p</sub> = ۳۰۰ کند است</td><td>مناسب حافظه، نه منبع سریع</td></tr>
+    <tr><td>نقطه‌ی GaAs یا InAs/GaAs معمولی</td><td>فناوری بالغ</td><td>۸۰۰ تا ۱۳۰۰ nm؛ بدون لایه‌ی میانی به ۱۵۵۰ nm نمی‌رسد</td><td>برای ۱۵۵۰ nm مناسب نیست</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="n">۶</span>اندازه‌ی گسیلنده</h2>
+  <figure><img src="{{IMG:fig_sps_size}}" alt="اندازه"><figcaption>(الف) طول موج اکسیتون نقطه‌ی PbS بر حسب قطر (منحنی تجربی Moreels و همکاران، ۲۰۰۹)؛ (ب) طول موج نقطه‌ی InAs/InP بر حسب ارتفاع: مدل چاه محدود برای الکترون و حفره‌ی سنگین در راستای رشد و قرص سخت در صفحه، پارامترهای Vurgaftman (۲۰۰۱)، با دو مقدار گاف InAs (بدون کرنش ۰.۴۱۷ و با کرنش فشاری حدود ۰.۵۳ eV).</figcaption></figure>
+  <ul>
+    <li><b>PbS:</b> <span class="en">E(d) = 0.41 + 1/(0.0252 d² + 0.283 d) eV</span>. اکسیتون جذبی در ۱۵۵۰ nm برای <span class="num">d = 5.9 nm</span>؛ با جابه‌جایی استوکس ۲۰ تا ۴۰ meV، گسیل در ۱۵۵۰ nm برای <span class="num">d = 5.5–5.7 nm</span>.</li>
+    <li><b>InAs/InP:</b> ارتفاع <span class="num">h ≈ 2.6–2.9 nm</span> (گاف بدون کرنش) تا <span class="num">3.8–4.5 nm</span> (با کرنش) برای قطر ۳۰ تا ۵۰ nm. مدل ساده است و فقط مرتبه‌ی بزرگی را می‌دهد (کرنش سه‌بعدی و میدان پیزوالکتریک در نظر گرفته نشده).</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۷</span>جفت‌شدگی گسیلنده و آنتن</h2>
+  <table>
+    <tr><th>جهت دوقطبی (مرکز گاف، ۱۵۵۰ nm)</th><th>F<sub>p</sub></th><th>T</th><th>بازده</th></tr>
+    <tr><td>x (هم‌راستای میله‌ها)، FDTD</td><td class="num">286</td><td class="num">199</td><td class="num">69%</td></tr>
+    <tr><td>x، BEM (h = ۳ nm)</td><td class="num">240</td><td class="num">181</td><td class="num">75%</td></tr>
+    <tr><td>y و z، BEM</td><td class="num">0.8 و 0.7</td><td class="num">0.3</td><td>بدون تقویت</td></tr>
+    <tr><td>دوقطبی همسانگرد (میانگین سه جهت)</td><td class="num">96</td><td></td><td></td></tr>
+  </table>
+  <ul>
+    <li><b>جهت‌گیری:</b> فقط مؤلفه‌ی x تقویت می‌شود. برای InAs/InP یکی از دو اکسیتون درون‌صفحه هم‌راستا با میله‌ها قرار می‌گیرد و فوتون‌های خروجی قطبیده‌اند. برای PbS (دوقطبی تقریباً همسانگرد) نرخ مؤثر میانگین سه جهت است.</li>
+    <li><b>پهنای آنتن:</b> پهنای طیف تابشی ۱۳۸۰ تا ۱۸۲۰ nm است (Q ≈ ۳)؛ بنابراین تطبیق دقیق طول موج گسیلنده لازم نیست و پهنای خط گسیلنده در همه‌ی حالات بسیار کوچک‌تر از پهنای آنتن است (رژیم جفت‌شدگی ضعیف).</li>
+    <li><b>طول عمر:</b> InAs/InP از حدود ۲ ns به <span class="num">7 ps</span>؛ PbS از حدود ۱ µs به <span class="num">26 ns</span> (با بازده کوانتومی ذاتی ۰.۴). آنتن بازده مؤثر گسیلنده‌ی کم‌بازده را نیز بالا می‌برد: برای PbS از ۰.۴۰ به ۰.۶۸ فوتون در هر تحریک.</li>
+    <li><b>جمع‌آوری:</b> با عدسی NA = ۱.۳ از پشت، ۲۸٪ توان تابشی جمع می‌شود (NA = ۰.۹: ۱۳٪). در جهت +y در صفحه، ۶ برابر بیشتر از −y گسیل می‌شود که برای جفت کردن به موجبر روی تراشه مناسب است.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۸</span>دینامیک گسیل، g<sup>(2)</sup>(0) و تمیزناپذیری</h2>
+  <p>گسیلنده سیستم دوترازی است که با یک پالس π گاوسی تشدیدی تحریک می‌شود. معادله‌ی مادر لیندبلاد با QuTiP حل شد: واپاشی کل <span class="en">Γ = F<sub>p</sub> Γ<sub>0</sub></span> (تابشی و جذب در طلا) و ناهمدوسی خالص γ*. از تابع‌های همبستگی دوزمانی G<sup>(1)</sup> و G<sup>(2)</sup>، خلوص g<sup>(2)</sup>(0) و تمیزناپذیری I (روش Fischer و همکاران) محاسبه شد. در حد پالس کوتاه، <span class="en">I ≈ Γ/(Γ + 2γ*)</span>: هرچه طول عمر کوتاه‌تر باشد، ناهمدوسی اثر کمتری دارد.</p>
+  <figure><img src="{{IMG:fig_sps_quantum}}" alt="کیفیت کوانتومی"><figcaption>(الف) تمیزناپذیری بر حسب ناهمدوسی خالص برای نقطه‌ی InAs/InP (طول عمر ذاتی ۲ ns)، با و بدون آنتن؛ خطوط نقطه‌چین: ۱، ۱۰ و ۵۰ µeV. (ب) g<sup>(2)</sup>(0) بر حسب طول پالس تحریک: با آنتن پالس باید کوتاه‌تر از ۷ ps باشد.</figcaption></figure>
+  <table>
+    <tr><th>گسیلنده</th><th>آنتن</th><th>طول عمر</th><th>پالس</th><th>ناهمدوسی</th><th>g<sup>(2)</sup>(0)</th><th>I</th><th>فوتون در هر پالس (دوردست / NA ۱.۳)</th></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>ندارد</td><td class="num">2 ns</td><td class="num">2 ps</td><td class="num">1 µeV</td><td class="num">&lt;0.001</td><td class="num">0.14</td><td class="num">1.00 / ~0.25</td></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>دارد</td><td class="num">7 ps</td><td class="num">200 fs</td><td class="num">1 µeV</td><td class="num">0.012</td><td class="num"><b>0.97</b></td><td class="num">0.69 / 0.20</td></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>دارد</td><td class="num">7 ps</td><td class="num">200 fs</td><td class="num">10 µeV</td><td class="num">0.012</td><td class="num">0.82</td><td class="num">0.69 / 0.20</td></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>دارد</td><td class="num">7 ps</td><td class="num">200 fs</td><td class="num">50 µeV</td><td class="num">0.012</td><td class="num">0.48</td><td class="num">0.69 / 0.20</td></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>دارد</td><td class="num">7 ps</td><td class="num">2 ps</td><td class="num">1 µeV</td><td class="num">0.098</td><td class="num">0.90</td><td class="num">0.69 / 0.20</td></tr>
+    <tr><td>PbS، ۳۰۰ K</td><td>ندارد</td><td class="num">1 µs</td><td class="num">ps</td><td class="num">20 meV</td><td>≈ ۰ (مدل دوترازی)</td><td class="num">≈ 0</td><td class="num">0.40 / ~0.10</td></tr>
+    <tr><td>PbS، ۳۰۰ K</td><td>دارد</td><td class="num">26 ns</td><td class="num">ps</td><td class="num">20 meV</td><td>≈ ۰ (مدل دوترازی)</td><td class="num">≈ 0</td><td class="num">0.68 / 0.19</td></tr>
+  </table>
+  <ul>
+    <li><b>خلوص تک‌فوتون:</b> g<sup>(2)</sup>(0) فقط به نسبت طول پالس به طول عمر بستگی دارد. با آنتن، پالس ۲۰۰ fs مقدار ۰.۰۱۲ می‌دهد؛ پالس ۲ ps به ۰.۱ می‌رسد. برای نقطه‌ی PbS حد واقعی g<sup>(2)</sup>، گسیل بای‌اکسیتون است (<span class="en">g<sup>(2)</sup> ≈ QY<sub>XX</sub>/QY<sub>X</sub></span>) و آنتن ممکن است آن را بالا ببرد؛ این باید آزمایشی سنجیده شود.</li>
+    <li><b>تمیزناپذیری:</b> بدون آنتن، حتی ناهمدوسی ۱ µeV در ۴ K تمیزناپذیری را به ۰.۱۴ محدود می‌کند؛ با آنتن ۰.۹۷ و حتی با ۱۰ µeV پخش طیفی ۰.۸۲. در دمای اتاق (ناهمدوسی ده‌ها meV) هیچ آنتن پلاسمونی فوتون‌های تمیزناپذیر نمی‌دهد. با احتساب سهم خط صفر-فونون (حدود ۹۰٪ برای نقطه‌های InAs)، بدون فیلتر طیفی I حدود ۰.۷۸ است.</li>
+    <li><b>روشنایی:</b> آنتن نرخ گسیل را ۲۸۶ برابر می‌کند (آهنگ تکرار تا ده‌ها گیگاهرتز ممکن است) و جهت گسیل را کنترل می‌کند. ولی ۳۰٪ تحریک‌ها در طلا جذب می‌شوند و تعداد فوتون جمع‌شده در هر پالس از گسیلنده‌ی بدون آنتن بیشتر نیست. پس سود آنتن در <b>سرعت، تمیزناپذیری و جهت</b> است، نه در روشنایی هر پالس.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۹</span>محدودیت‌ها و گام‌های بعدی</h2>
+  <ol>
+    <li><b>محیط InP برای نقطه‌ی InAs/InP:</b> طرح فعلی برای محیط n = ۱.۵ است. نقطه‌ی اپیتکسیال در InP (n ≈ ۳.۲) قرار دارد و تشدید آنتن در آن محیط بسیار سرخ‌تر می‌شود. گام بعد: طراحی دوباره برای ساختار ترکیبی (نقطه در غشای نازک InP زیر آنتن طلا) یا ماندن با PbS در پلیمر.</li>
+    <li><b>داده‌ی طلا:</b> اجرای BEM و FDTD با Olmon و McPeak و با میرایی سطحی (داده‌ها آماده‌اند).</li>
+    <li><b>ناهمدوسی ناشی از فونون:</b> با طول عمر ۷ ps، جفت‌شدگی به فونون‌های آکوستیک (ps) در مدل باید وارد شود (مدل پولارون)؛ برآورد فعلی سقف بالای I است.</li>
+    <li><b>متن مقاله:</b> نتایج آنتن (BEM + FDTD) و فصل منبع تک‌فوتون آماده‌ی نگارش است.</li>
+  </ol>
+  <p class="meta">روش‌ها و داده‌ها: <span class="en">isi/analysis/single_photon.py, final_design2.py; isi/results/single_photon.md; isi/data/lab_20261111</span></p>
+</section>
+
+<section>
+  <h2><span class="n">۱۰</span>منابع</h2>
+  <ol class="en" style="direction:ltr;text-align:left;font-size:.88rem;line-height:1.7">
+    <li>P. B. Johnson and R. W. Christy, Phys. Rev. B 6, 4370 (1972).</li>
+    <li>R. L. Olmon et al., Phys. Rev. B 86, 235147 (2012).</li>
+    <li>K. M. McPeak et al., ACS Photonics 2, 326 (2015).</li>
+    <li>I. Moreels et al., ACS Nano 3, 3023 (2009): size-dependent optical properties of colloidal PbS quantum dots.</li>
+    <li>I. Vurgaftman, J. R. Meyer, and L. R. Ram-Mohan, J. Appl. Phys. 89, 5815 (2001): band parameters for III–V semiconductors.</li>
+    <li>K. A. Fischer, K. Müller, K. G. Lagoudakis, and J. Vučković, New J. Phys. 18, 113053 (2016): dynamical modeling of pulsed two-photon interference.</li>
+    <li>J. R. Johansson, P. D. Nation, and F. Nori, Comput. Phys. Commun. 183, 1760 (2012): QuTiP.</li>
+    <li>U. Hohenester and A. Trügler, Comput. Phys. Commun. 183, 370 (2012): MNPBEM.</li>
+  </ol>
+</section>
+
+</div>
+</body>
+</html>
