@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>گزارش جامع آنتن و منبع تک‌فوتون</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --paper:#ffffff; --ink:#1d2330; --ink2:#4a5263; --muted:#7a8191; --line:#e3e1da;
+  --accent:#1f4e9c; --accent-soft:#e8eef8; --gold:#b8892a; --gold-soft:#faf3e3; --good:#2a7a4b; --good-soft:#e7f4ec;
+  --warn:#9a5b00; --warn-soft:#fbf1e1;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Vazirmatn",Tahoma,sans-serif;line-height:1.95}
+.page{max-width:900px;margin:0 auto;padding:28px 16px 60px}
+header.cover{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:34px 34px 28px;position:relative;overflow:hidden}
+header.cover::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.kicker{color:var(--gold);font-weight:600;font-size:.92rem;letter-spacing:.02em}
+h1{font-size:1.75rem;line-height:1.6;margin:.4rem 0 .6rem;font-weight:800}
+.en{direction:ltr;unicode-bidi:isolate;font-family:Georgia,"Times New Roman",serif}
+.entitle{display:block;direction:ltr;text-align:left;color:var(--ink2);font-family:Georgia,serif;font-size:1rem;line-height:1.6;margin:.3rem 0 1rem}
+.meta{color:var(--ink2);font-size:.95rem}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{font-size:.82rem;padding:3px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.badge.g{background:var(--good-soft);color:var(--good)} .badge.o{background:var(--gold-soft);color:var(--gold)}
+section{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px 30px;margin-top:20px}
+h2{font-size:1.3rem;margin:0 0 .8rem;font-weight:800;display:flex;align-items:center;gap:10px}
+h2 .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--accent);color:#fff;font-size:.95rem}
+h3{font-size:1.05rem;margin:1.2rem 0 .4rem;color:var(--accent)}
+p{margin:.5rem 0}
+.lead{font-size:1.05rem;color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 4px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fbfbf9}
+.tile .v{font-size:1.55rem;font-weight:800;color:var(--accent);direction:ltr;text-align:right}
+.tile .l{font-size:.86rem;color:var(--ink2);line-height:1.7}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92rem}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:right;vertical-align:top}
+th{background:#f3f2ed;font-weight:600}
+td.before{color:var(--ink2)} td.after{color:var(--ink)}
+tr:hover td{background:#fafaf7}
+.tl{position:relative;margin:10px 0 0;padding-right:26px}
+.tl::before{content:"";position:absolute;right:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.step{position:relative;margin:0 0 16px}
+.step::before{content:"";position:absolute;right:-24px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:3px solid var(--accent)}
+.step.key::before{border-color:var(--gold)}
+.step b{display:block}
+.step .d{color:var(--ink2);font-size:.95rem}
+figure{margin:16px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff;padding:6px}
+figcaption{font-size:.86rem;color:var(--ink2);margin-top:6px;line-height:1.8}
+.callout{border-right:4px solid var(--gold);background:var(--gold-soft);padding:12px 16px;border-radius:8px;margin:14px 0}
+.callout.g{border-color:var(--good);background:var(--good-soft)}
+.callout.w{border-color:var(--warn);background:var(--warn-soft)}
+ul{margin:.4rem 0;padding-right:1.3rem} li{margin:.25rem 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:720px){.two,.tiles{grid-template-columns:1fr 1fr} header.cover,section{padding:20px 18px} h1{font-size:1.4rem}}
+.num{direction:ltr;unicode-bidi:isolate}
+footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:24px}
+.papers{display:grid;gap:10px;margin-top:16px}
+.pcard{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:#fbfbf9}
+.pcard .entitle{margin:.2rem 0 0;font-size:.95rem}
+.ptag{font-weight:700;color:var(--accent);font-size:.9rem}.ptag.g{color:var(--good)}
+.tile .v sup{font-size:.6em}
+@page{size:A4 portrait;margin:16mm 14mm 16mm 14mm}
+@media print{
+  html{font-size:10.5pt}
+  body{background:#fff;line-height:1.8;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{max-width:none;margin:0;padding:0}
+  header.cover,section{border:none;border-radius:0;padding:0;margin:0 0 6mm 0;background:#fff}
+  header.cover{padding-top:4mm}
+  section{break-before:auto;margin-bottom:5mm;padding-top:2mm;border-top:1px solid #e3e1da}
+  h2,h3{break-after:avoid;page-break-after:avoid}
+  h3+ul,h3+p{break-before:avoid}
+  h1{font-size:17pt} h2{font-size:13.5pt;break-after:avoid} h3{font-size:11.5pt;break-after:avoid}
+  .tiles{grid-template-columns:repeat(3,1fr);gap:3mm}
+  .tile{padding:3mm 4mm}.tile .v{font-size:14pt}.tile .l{font-size:8.8pt}
+  figure{margin:4mm 0;break-inside:avoid}
+  figure img{max-height:78mm;width:auto;max-width:100%;border:none;padding:0}
+  figcaption{font-size:8.8pt}
+  table{font-size:8.8pt;break-inside:auto} tr{break-inside:avoid} th,td{padding:4px 6px}
+  .two{grid-template-columns:1fr 1fr}
+  .callout,.tile,.pcard{break-inside:avoid}
+  .tl{padding-right:30px;margin-right:2px} .step,li{break-inside:avoid}
+  table{break-inside:avoid}
+  footer{margin-top:6mm}
+  tr:hover td{background:none}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="cover">
+  <div class="kicker">گزارش جامع پروژه: از همگرایی مش تا منبع تک‌فوتون (پس از جلسه‌ی ۲۰ آبان ۱۴۰۵)</div>
+  <h1>آنتن سه‌نانومیله‌ای طلا برای منبع تک‌فوتون جهت‌دار در ۱۵۵۰ nm: شبیه‌سازی دوروشی، طراحی دوباره، تحلیل عدم قطعیت و طراحی گسیلنده‌ی کوانتومی</h1>
+  <span class="entitle">Gold-nanorod trimer antenna for a directional 1550 nm single-photon source: two-method simulation (BEM + FDTD), retuning, uncertainty budget, emitter choice and quantum dynamics</span>
+  <div class="meta">امین حسین صدیدی، سید محمدپارسا مولائی طبری؛ استاد راهنما: دکتر مالک باقری هارونی؛ دانشگاه اصفهان، دانشکده‌ی فیزیک</div>
+  <div class="badges"><span class="badge">BEM (MNPBEM17، کاملاً تأخیری)</span><span class="badge">FDTD (Ansys Lumerical 2024 R1)</span><span class="badge g">۱۳۸ اجرای شبیه‌سازی روی رایانه‌ی آزمایشگاه</span><span class="badge o">QuTiP: g<sup>(2)</sup>(0) و تمیزناپذیری</span></div>
+</header>
+
+<section>
+  <h2><span class="n">۰</span><span>فهرست</span></h2>
+  <ol style="columns:2;column-gap:40px;margin:0">
+    <li>خلاصه‌ی اجرایی</li><li>هدف و مسیر کار</li><li>هندسه، روش‌ها و کمیت‌ها</li><li>همگرایی مش در BEM</li><li>تأیید مستقل با FDTD</li>
+    <li>جاروب طراحی و انتخاب طرح نهایی</li><li>طرح نهایی: BEM در برابر FDTD</li><li>پایداری عددی و تلرانس ساخت</li><li>جفت‌شدگی به موجبر روی تراشه</li>
+    <li>داده‌ی طلا (Johnson–Christy) و میرایی سطحی</li><li>بودجه‌ی عدم قطعیت</li><li>انتخاب ماده‌ی گسیلنده</li><li>اندازه‌ی گسیلنده</li>
+    <li>جفت‌شدگی گسیلنده و آنتن</li><li>دینامیک، g<sup>(2)</sup>(0) و تمیزناپذیری</li><li>کنترل کیفیت و خطاهای یافته‌شده</li><li>محدودیت‌ها، گام‌های بعدی و پرسش‌ها</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="n">۱</span><span>خلاصه‌ی اجرایی</span></h2>
+  <div class="tiles">
+    <div class="tile"><div class="v num">6.1 : 1</div><div class="l">نسبت گسیل به +y به −y در ۱۵۵۰ nm برای طرح نهایی (L = ۲۷۵، R3 = ۲۹۵ nm)، در تعریف میدان دوردست (مخروط ۶۰ درجه)</div></div>
+    <div class="tile"><div class="v num">70%</div><div class="l">بازده آنتن در ۱۵۵۰ nm؛ F<sub>p</sub> = ۲۸۶ و تقویت تابشی T = ۱۹۹ (FDTD)</div></div>
+    <div class="tile"><div class="v num">1560 / 1565</div><div class="l">قله‌ی جهت‌دهی (nm): BEM برون‌یابی‌شده به مش صفر در برابر FDTD</div></div>
+  </div>
+  <div class="tiles">
+    <div class="tile"><div class="v num">14% / 6%</div><div class="l">سهم توان هدایت‌شده در موجبر Si<sub>3</sub>N<sub>4</sub> به +y و −y در ۱۵۵۰ nm</div></div>
+    <div class="tile"><div class="v num">0.97</div><div class="l">تمیزناپذیری با آنتن در ۴ K (γ* = ۱ µeV)؛ بدون آنتن ۰.۱۴</div></div>
+    <div class="tile"><div class="v num">0.012</div><div class="l">g<sup>(2)</sup>(0) با پالس π به طول ۲۰۰ fs؛ طول عمر از ۲ ns به ۷ ps</div></div>
+  </div>
+  <ul>
+    <li><b>همگرایی:</b> مکان تشدید در BEM با مرتبه‌ی ۰.۵ تا ۰.۹ (نه ۲) همگرا می‌شود؛ مش ۴ nm قله‌ها را حدود ۴۵ nm آبی‌تر نشان می‌دهد. بازده و جهت‌دهی تقریباً مستقل از مش‌اند.</li>
+    <li><b>تأیید دوروشی:</b> FDTD در همه‌ی موارد درون بازه‌ی برون‌یابی BEM قرار گرفت. با این یافته طرح قبلی (۲۸۵/۳۱۵) در ۱۵۵۰ nm جهت‌دهی چندانی نداشت و طرح دوباره انجام شد.</li>
+    <li><b>عدم قطعیت اصلی:</b> داده‌ی طلا (جابه‌جایی تا ۵۰ nm بین Johnson–Christy و Palik) و دقت ساخت (۱۰ nm جابه‌جایی R3: ‎−۲۲٪ تا ‎+۳۱٪ در جهت‌دهی). خطای عددی کمتر از ۱۵٪ است.</li>
+    <li><b>گسیلنده:</b> GaAs به ۱۵۵۰ nm نمی‌رسد. منبع کوانتومی: نقطه‌ی InAs/InP (ارتفاع حدود ۳ تا ۴ nm) در ۴ K. آزمایش دمای اتاق: نقطه‌ی کلوییدی PbS (قطر حدود ۵.۶ nm).</li>
+    <li><b>سود کوانتومی آنتن:</b> سرعت (طول عمر ۲۸۶ برابر کوتاه‌تر)، تمیزناپذیری و جهت. روشنایی هر پالس افزایش نمی‌یابد چون ۳۰٪ انرژی در طلا جذب می‌شود.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۲</span><span>هدف و مسیر کار</span></h2>
+  <p>هدف، یک منبع تک‌فوتون در باند مخابراتی C است که فوتون‌ها را <b>سریع</b> (اثر پورسل)، <b>با بازده</b> و <b>در یک جهت مشخص درون صفحه</b> گسیل کند تا بتوان آن‌ها را به موجبر روی تراشه هدایت کرد. آنتن شامل دو نانومیله‌ی طلا (R1 و R2) با گاف ۴۰ nm است که گسیلنده در مرکز آن قرار می‌گیرد، و میله‌ی سوم (R3) موازی و کنار آن‌ها که تقارن ±y را می‌شکند.</p>
+  <table>
+    <tr><th>مرحله</th><th>کار انجام‌شده</th><th>نتیجه</th></tr>
+    <tr><td>۱</td><td>طراحی اولیه با BEM (GitHub، مش ۵ nm) و درخواست استاد برای همگرایی مش</td><td>طرح ۲۸۵/۳۱۵ nm؛ جهت‌دهی حدود ۵ در ۱۵۵۰ nm (BEM)</td></tr>
+    <tr><td>۲</td><td>اجرای اول آزمایشگاه: مش BEM تا ۲ nm و FDTD مستقل</td><td>همگرایی کند مکان تشدید؛ FDTD قله را حدود ۴۵ nm سرخ‌تر داد</td></tr>
+    <tr><td>۳</td><td>اجرای دوم (۳.۷ روز): جاروب ۱۶ ساختار با میدان دوردست، انتخاب خودکار طرح، آزمون‌های پایداری، BEM با مش ۴ و ۳ nm</td><td>طرح نهایی ۲۷۵/۲۹۵ nm؛ تأیید دوروشی</td></tr>
+    <tr><td>۴</td><td>پس از جلسه‌ی ۲۰ آبان: داده‌ی طلا، انتخاب گسیلنده، دینامیک کوانتومی</td><td>این گزارش</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="n">۳</span><span>هندسه، روش‌ها و کمیت‌ها</span></h2>
+  <figure><img src="{{IMG:fig_geom_final}}" alt="هندسه"><figcaption>هندسه‌ی طرح نهایی (نمای بالا، مقیاس واقعی): R1 و R2 به طول ۲۷۵ nm و قطر ۶۰ nm با گاف ۴۰ nm (نوک به نوک) و گسیلنده در مرکز گاف؛ R3 به طول ۲۹۵ nm، موازی با محور x، با مرکز در (۰، ۱۶۰ nm). همه در محیط همگن n = ۱.۵؛ گسیل ترجیحی به سمت +y.</figcaption></figure>
+  <h3>دو روش مستقل</h3>
+  <table>
+    <tr><th></th><th>BEM (MNPBEM17)</th><th>FDTD (Lumerical 2024 R1)</th></tr>
+    <tr><td>معادله</td><td>معادلات ماکسول کاملاً تأخیری روی سطح ذرات</td><td>معادلات ماکسول در حوزه‌ی زمان روی شبکه‌ی Yee سه‌بعدی</td></tr>
+    <tr><td>گسسته‌سازی</td><td>المان‌های سطحی منحنی، اندازه‌ی h (R3 با ۱.۴h)؛ تقارن آینه‌ای در جاروب مش</td><td>مش ۲ nm روی میله‌ها، ۱ nm در گاف (آزمون ۰.۵ nm و میله‌ی ۱ nm)؛ PML؛ ۷۰۰ nm فضای آزاد</td></tr>
+    <tr><td>طلا</td><td>جدول Johnson–Christy (درون‌یابی)</td><td>برازش چندضریبی Lumerical بر Johnson–Christy؛ آزمون CRC و Palik</td></tr>
+    <tr><td>خروجی تابشی</td><td>انتگرال میدان دوردست روی کره</td><td>شار جعبه‌ی توان + تبدیل میدان نزدیک به دور روی جعبه‌ی دوم</td></tr>
+  </table>
+  <h3>کمیت‌ها</h3>
+  <ul>
+    <li><b>فاکتور پورسل:</b> <span class="en">F<sub>p</sub> = Γ/Γ<sub>0</sub> = 1 + (6πc/ω n²) n̂·Im G<sub>s</sub>(r<sub>0</sub>, r<sub>0</sub>)·n̂</span>؛ در FDTD: توان دوقطبی تقسیم بر توان آن در محیط همگن.</li>
+    <li><b>تقویت تابشی و بازده آنتن:</b> T = توان رسیده به دوردست تقسیم بر همان در محیط همگن؛ <span class="en">η = T/F<sub>p</sub></span> (بقیه در طلا جذب می‌شود).</li>
+    <li><b>جهت‌دهی:</b> f(±y) = سهم توان دوردست درون مخروط ۶۰ درجه حول ±y؛ نسبت <span class="en">f(+y)/f(−y)</span>. در FDTD با تبدیل میدان نزدیک به دور (جریان‌های معادل <span class="en">J = n̂×H، M = −n̂×E</span> روی شش وجه یک جعبه و ۴۰۰۰ جهت هم‌مساحت) محاسبه شد؛ کد با میدان دقیق تحلیلی دو دوقطبی تا چهار رقم اعشار تأیید شد و در هر اجرا توان دوردست با شار جعبه مقایسه می‌شود (۰.۹۹۵ تا ۱.۰۰۵).</li>
+    <li><b>جمع‌آوری:</b> سهم توان درون مخروط عدسی <span class="en">NA = 1.3</span> یا <span class="en">0.9</span> در جهت +z. <b>موجبر:</b> β<sub>±y</sub> = توان هدایت‌شده از مقطع موجبر در <span class="en">y = ±2.5 µm</span> تقسیم بر توان کل گسیلنده.</li>
+  </ul>
+  <h3>حجم محاسبات</h3>
+  <p>اجرای اول: ۴۹ اجرای BEM و ۷ اجرای FDTD (حدود ۴ روز). اجرای دوم: ۸۹ کار (۲۶ FDTD با میدان دوردست، ۱۲ BEM، بقیه‌ی همگرایی مش)، ۳ روز و ۱۶ ساعت روی رایانه‌ی آزمایشگاه (۶ هسته، ۶۴ GB). همه‌ی کارها با اسکریپت خودکار و قابل ادامه پس از قطع برق اجرا شدند.</p>
+</section>
+
+<section>
+  <h2><span class="n">۴</span><span>همگرایی مش در BEM</span></h2>
+  <figure><img src="{{IMG:fig_meshconv}}" alt="همگرایی مش"><figcaption>طیف F<sub>p</sub> برای اندازه‌های مختلف المان (الف، د)، مکان قله (ب، ه) و بیشینه‌ی F<sub>p</sub> (ج، و) بر حسب h². بالا: دیمر L = ۲۸۵ nm؛ پایین: تریمر ۲۸۵/۳۱۵ nm.</figcaption></figure>
+  <table>
+    <tr><th>ساختار</th><th>h (nm)</th><th>تعداد المان</th><th>قله‌ی F<sub>p</sub> (nm)</th><th>F<sub>p</sub> قله</th><th>بازده در قله</th></tr>
+    <tr><td>دیمر</td><td class="num">8 / 5 / 4 / 3</td><td class="num">2448 → 17536</td><td class="num">1578 / 1596 / 1605 / 1615</td><td class="num">293 / 300 / 304 / 308</td><td class="num">86–87%</td></tr>
+    <tr><td>دیمر</td><td class="num">2.5 / 2.25 / 2</td><td class="num">24928 → 39744</td><td class="num">1620 / 1623 / 1626</td><td class="num">310 / 311 / 312</td><td class="num">86.0%</td></tr>
+    <tr><td>تریمر</td><td class="num">8 / 5 / 4 / 3</td><td class="num">3588 → 26880</td><td class="num">1474 / 1488 / 1495 / 1502</td><td class="num">458 / 475 / 485 / 495</td><td class="num">58%</td></tr>
+    <tr><td>تریمر</td><td class="num">2.75 / 2.5</td><td class="num">32620 / 38304</td><td class="num">1504 / 1506</td><td class="num">498 / 501</td><td class="num">58%</td></tr>
+  </table>
+  <div class="callout"><b>یافته.</b> برازش <span class="en">y = y<sub>0</sub> + b h<sup>p</sup></span> روی h ≤ ۴ nm مرتبه‌ی همگرایی <span class="en">p ≈ 0.55</span> (دیمر) و <span class="en">0.85</span> (تریمر) می‌دهد، نه ۲. بنابراین برون‌یابی ریچاردسون با h² خوش‌بینانه است و مقدار حدی مکان قله بین دو برآورد است: دیمر ۱۶۳۰ تا ۱۶۷۲ nm، تریمر ۱۵۱۱ تا ۱۵۲۹ nm. بازده (۸۶٪ و ۵۸٪) با تغییر مش ثابت است.</div>
+</section>
+
+<section>
+  <h2><span class="n">۵</span><span>تأیید مستقل با FDTD (اجرای اول)</span></h2>
+  <figure><img src="{{IMG:fig_fdtd_vs_bem}}" alt="FDTD در برابر BEM"><figcaption>F<sub>p</sub>، T و بازده: نقاط قرمز FDTD (گاف با مش ۱ nm)، خطوط BEM با مش ۴ nm و ریزترین مش. بالا دیمر، پایین تریمر ۲۸۵/۳۱۵.</figcaption></figure>
+  <table>
+    <tr><th></th><th>بازه‌ی BEM (h → ۰)</th><th>FDTD</th></tr>
+    <tr><td>قله‌ی F<sub>p</sub> دیمر</td><td class="num">1630–1672 nm</td><td class="num">1657 nm ✓</td></tr>
+    <tr><td>بیشینه‌ی F<sub>p</sub> دیمر</td><td class="num">314–332</td><td class="num">324 ✓</td></tr>
+    <tr><td>قله‌ی F<sub>p</sub> تریمر</td><td class="num">1511–1529 nm</td><td class="num">1533 nm (لب بازه)</td></tr>
+    <tr><td>بیشینه‌ی F<sub>p</sub> تریمر</td><td class="num">508–547</td><td class="num">533 ✓</td></tr>
+    <tr><td>بازده در قله (دیمر / تریمر)</td><td class="num">86.0% / 58.4%</td><td class="num">87.2% / 58.9%</td></tr>
+  </table>
+  <p>دو روش با گسسته‌سازی کاملاً متفاوت به یک جواب رسیدند. نتیجه‌ی عملی: تریمر ۲۸۵/۳۱۵ در واقع حدود ۱۵۳۰ nm تشدید دارد و جهت گسیل آن حدود ۱۵۵۰ nm عوض می‌شود. بنابراین طرح باید حدود ۴۰ nm به سمت آبی منتقل می‌شد.</p>
+</section>
+
+<section>
+  <h2><span class="n">۶</span><span>جاروب طراحی و انتخاب طرح نهایی</span></h2>
+  <p>۱۲ تریمر (L از ۲۶۵ تا ۲۸۰ nm و L<sub>3</sub> = L + ۲۰، ۳۰، ۴۰ nm) و ۴ دیمر با FDTD و میدان دوردست حساب شدند. معیار انتخاب (خودکار): بیشترین نسبت +y/−y در ۱۵۵۰ nm به شرط بازده ≥ ۵۰٪.</p>
+  <figure><img src="{{IMG:fig_rep_sweep}}" alt="جاروب"><figcaption>(الف) نسبت +y/−y در ۱۵۵۰ nm بر حسب طول R3؛ (ب) بازده آنتن؛ (ج) مکان قله‌ی تقویت تابشی؛ ستاره‌ها دیمر بدون R3.</figcaption></figure>
+  <table>
+    <tr><th>L / L<sub>3</sub> (nm)</th><th>+y/−y در ۱۵۵۰</th><th>بازده</th><th>قله‌ی T</th><th>F<sub>p</sub> / T در ۱۵۵۰</th></tr>
+    <tr><td>265 / 285، 295، 305</td><td class="num">5.42، 5.46، 3.20</td><td class="num">76، 69، 62 %</td><td class="num">1444، 1454، 1473</td><td class="num">227/171، 237/165، 269/168</td></tr>
+    <tr><td>270 / 290، 300، 310</td><td class="num">5.97، 4.76، 2.23</td><td class="num">73، 66، 61 %</td><td class="num">1464، 1473، 1493</td><td class="num">252/183، 278/183، 337/204</td></tr>
+    <tr style="background:#e8eef8"><td><b>275 / 295</b>، 305، 315</td><td class="num"><b>6.06</b>، 3.65، 1.51</td><td class="num"><b>69</b>، 63، 59 %</td><td class="num">1483، 1493، 1514</td><td class="num"><b>286/199</b>، 337/213، 432/254</td></tr>
+    <tr><td>280 / 300، 310، 320</td><td class="num">5.43، 2.52، 1.04</td><td class="num">67، 61، 58 %</td><td class="num">1493، 1514، 1535</td><td class="num">332/221، 419/254، 523/305</td></tr>
+  </table>
+  <p><b>روندها:</b> R3 کوتاه‌تر جهت‌دهی و بازده بیشتر و F<sub>p</sub> کمتر می‌دهد. بهترین جهت‌دهی وقتی است که L<sub>3</sub> − L ≈ ۲۰ nm باشد. افزایش L قله را به سمت سرخ می‌برد (حدود ۲ nm برای هر nm). طرح ۲۷۵/۲۹۵ بهترین مصالحه است؛ ۲۷۰/۲۹۰ تقریباً هم‌ارز است (۵.۹۷).</p>
+</section>
+
+<section>
+  <h2><span class="n">۷</span><span>طرح نهایی: BEM در برابر FDTD</span></h2>
+  <figure><img src="{{IMG:fig_sel_design}}" alt="طرح نهایی"><figcaption>(الف) F<sub>p</sub> و T؛ (ب) نسبت +y/−y: BEM با ریز شدن مش (۴ و ۳ nm) به سمت FDTD حرکت می‌کند؛ (ج) حساسیت به داده‌ی طلا.</figcaption></figure>
+  <table>
+    <tr><th></th><th>BEM h = ۴</th><th>BEM h = ۳</th><th>BEM برون‌یابی‌شده</th><th>FDTD</th></tr>
+    <tr><td>قله‌ی تقویت تابشی</td><td class="num">1443 nm</td><td class="num">1448 nm</td><td class="num">1456–1469 nm</td><td class="num">1479 nm</td></tr>
+    <tr><td>قله‌ی جهت‌دهی</td><td class="num">1510 nm</td><td class="num">1521 nm</td><td class="num">1534–1560 nm</td><td class="num">1565 nm</td></tr>
+    <tr><td>بیشینه‌ی +y/−y</td><td class="num">5.5</td><td class="num">5.7</td><td>رو به افزایش</td><td class="num">6.3</td></tr>
+    <tr><td>F<sub>p</sub> / T در ۱۵۵۰ nm</td><td class="num">235 / 179</td><td class="num">240 / 181</td><td></td><td class="num">286 / 199</td></tr>
+    <tr><td>بازده در ۱۵۵۰ nm</td><td class="num">76%</td><td class="num">75%</td><td></td><td class="num">70%</td></tr>
+    <tr><td>جمع‌آوری با NA ۱.۳ / ۰.۹</td><td class="num">29% / 13%</td><td class="num">28% / 13%</td><td></td><td class="num">26%</td></tr>
+  </table>
+  <p>اختلاف دو روش برای طرح قبلی و طرح جدید یکسان است (حدود ۴۵ nm در تشدید و ۶۸ nm در قله‌ی جهت‌دهی) و با خطای مش اندازه‌گیری‌شده در بخش ۴ توضیح داده می‌شود. پس اختلاف دو روش فیزیکی نیست، بلکه از گسسته‌سازی BEM می‌آید.</p>
+</section>
+
+<section>
+  <h2><span class="n">۸</span><span>پایداری عددی و تلرانس ساخت</span></h2>
+  <figure><img src="{{IMG:fig_rep_tolerance}}" alt="تلرانس"><figcaption>(الف) نسبت +y/−y با مش گاف ۰.۵ nm، مش میله ۱ nm و مش منطبق؛ (ب) با جابه‌جایی R3 به اندازه‌ی ±۱۰ nm در y.</figcaption></figure>
+  <table>
+    <tr><th>آزمون (FDTD، نسبت به مرجع)</th><th>قله‌ی T</th><th>F<sub>p</sub></th><th>T</th><th>بازده</th><th>+y/−y</th></tr>
+    <tr><td>مش گاف ۰.۵ nm</td><td class="num">0 nm</td><td class="num">−1%</td><td class="num">−3%</td><td class="num">−1.1 pp</td><td class="num">−2%</td></tr>
+    <tr><td>مش میله ۱ nm</td><td class="num">−10 nm</td><td class="num">−2%</td><td class="num">−1%</td><td class="num">+0.9 pp</td><td class="num">+1%</td></tr>
+    <tr><td>مش منطبق بر فلز</td><td class="num">0 nm</td><td class="num">+7%</td><td class="num">−3%</td><td class="num">−6.1 pp</td><td class="num">−13%</td></tr>
+    <tr><td>R3 در y = ۱۵۰ nm</td><td class="num">−20 nm</td><td class="num">−11%</td><td class="num">−12%</td><td class="num">−0.5 pp</td><td class="num">+31%</td></tr>
+    <tr><td>R3 در y = ۱۷۰ nm</td><td class="num">+10 nm</td><td class="num">+11%</td><td class="num">+12%</td><td class="num">+0.8 pp</td><td class="num">−22%</td></tr>
+  </table>
+  <p>از اجرای BEM پیشین (مش ۵ nm، طرح قبلی): تغییر طول R3 به اندازه‌ی ±۱۰ nm جهت‌دهی را ‎+۵٪ و ‎−۳۸٪ تغییر می‌دهد؛ چرخش ۵ و ۱۰ درجه‌ی R3 ‎−۳٪ و ‎−۱۰٪؛ جابه‌جایی ۱۰ nm در x اثری ندارد. جابه‌جایی گسیلنده ۵ nm در x یا ۱۰ nm در y، F<sub>p</sub> را ‎+۸٪ و ‎−۱۴٪ تغییر می‌دهد ولی جهت‌دهی را نه. <b>نتیجه:</b> جهت‌دهی بیش از همه به فاصله‌ی y و طول R3 حساس است و دقت ساخت حدود ۵ nm لازم دارد.</p>
+</section>
+
+<section>
+  <h2><span class="n">۹</span><span>جفت‌شدگی به موجبر روی تراشه</span></h2>
+  <p>یک موجبر Si<sub>3</sub>N<sub>4</sub> (n = ۲.۰، مقطع ۶۰۰ × ۳۰۰ nm) در امتداد y، ۲۰ nm زیر آنتن قرار داده شد و توان هدایت‌شده در دو جهت اندازه گرفته شد.</p>
+  <figure><img src="{{IMG:fig_rep_waveguide}}" alt="موجبر"><figcaption>(الف) سهم توان کل گسیلنده که در موجبر به +y (خط پر) و −y (خط‌چین) می‌رود؛ (ب) نسبت دو جهت.</figcaption></figure>
+  <table>
+    <tr><th>ساختار</th><th>β<sub>+y</sub> / β<sub>−y</sub> در ۱۵۵۰</th><th>مجموع</th><th>نسبت در ۱۵۵۰</th><th>بیشینه‌ی نسبت</th></tr>
+    <tr><td>تریمر نهایی ۲۷۵/۲۹۵</td><td class="num">13.9% / 6.2%</td><td class="num">20.2%</td><td class="num">2.2</td><td class="num">6.2 (1649 nm)</td></tr>
+    <tr><td>تریمر قبلی ۲۸۵/۳۱۵</td><td class="num">8.0% / 12.1%</td><td class="num">20.2%</td><td class="num">0.66</td><td class="num">6.2 (1700 nm)</td></tr>
+    <tr><td>دیمر (مرجع متقارن)</td><td class="num">8.0% / 8.0%</td><td class="num">16.0%</td><td class="num">1.00</td><td>—</td></tr>
+  </table>
+  <p>حضور موجبر با ضریب شکست بیشتر، قله‌ی جهت‌دهی درون موجبر را حدود ۸۰ nm به سمت سرخ می‌برد (۱۶۴۹ nm). برای بیشترین جهت‌دهی درون موجبر در ۱۵۵۰ nm، طرح باید در حضور موجبر دوباره تنظیم شود (حدود ۲۰ nm کوتاه‌تر). این یک نتیجه‌ی مهم برای کار بعدی است. رفتار وابسته به طول موج (−y زیر ۱۵۰۰ nm، +y بالای آن) کاربرد جداکننده‌ی طول موج را هم نشان می‌دهد.</p>
+</section>
+
+<section>
+  <h2><span class="n">۱۰</span><span>داده‌ی طلا (Johnson–Christy) و میرایی سطحی</span></h2>
+  <ul>
+    <li><b>نقاط کم در فروسرخ:</b> جدول Johnson–Christy (۱۹۷۲) ۴۹ نقطه از ۰.۶۴ تا ۶.۶ eV دارد و در کل بازه‌ی کاری ما (۱۳۰۰ تا ۱۹۰۰ nm) فقط <b>سه نقطه</b> (۰.۶۴، ۰.۷۷ و ۰.۸۹ eV). مقدار بین آن‌ها حاصل درون‌یابی (BEM) یا برازش (Lumerical) است.</li>
+    <li><b>نمونه:</b> لایه‌های تبخیری چند ده نانومتری؛ میرایی آن با طلای امروزی یا تک‌بلور تفاوت دارد. داده‌های Olmon (۲۰۱۲) و McPeak (۲۰۱۵) در فروسرخ متراکم‌اند.</li>
+    <li><b>پراکندگی سطحی الکترون:</b> برای میله‌ی ۶۰ nm، <span class="en">ħγ<sub>s</sub> ≈ A ħv<sub>F</sub>/L<sub>eff</sub> ≈ 15–23 meV</span> (A ≈ ۱، <span class="en">ħv<sub>F</sub> = 0.92 eV·nm</span>، L<sub>eff</sub> = ۴۰ تا ۶۰ nm). در ۱۵۵۰ nm (<span class="en">ε = −116 + 11.4i</span>، <span class="en">Δε″ = ω<sub>p</sub>² γ<sub>s</sub>/ω³</span>) یعنی <b>۲۱ تا ۳۲ درصد اتلاف بیشتر</b> و بازده تخمینی ۶۳ تا ۶۵ درصد به‌جای ۷۰ درصد.</li>
+  </ul>
+  <table>
+    <tr><th>داده‌ی طلا (FDTD، طرح نهایی)</th><th>قله‌ی T</th><th>F<sub>p</sub> / T در ۱۵۵۰</th><th>بازده</th><th>+y/−y در ۱۵۵۰</th><th>بیشینه‌ی نسبت</th></tr>
+    <tr><td>Johnson–Christy</td><td class="num">1483 nm</td><td class="num">286 / 199</td><td class="num">69%</td><td class="num">6.1</td><td class="num">6.3 (1567 nm)</td></tr>
+    <tr><td>CRC</td><td class="num">1503 nm</td><td class="num">402 / 325</td><td class="num">81%</td><td class="num">6.4</td><td class="num">10.1 (1579 nm)</td></tr>
+    <tr><td>Palik</td><td class="num">1535 nm</td><td class="num">465 / 253</td><td class="num">54%</td><td class="num">2.7</td><td class="num">5.6 (1613 nm)</td></tr>
+  </table>
+  <div class="callout">پیشنهاد: Johnson–Christy به‌علاوه‌ی میرایی سطحی به‌عنوان مرجع، و CRC، Palik، Olmon و McPeak به‌عنوان بازه‌ی خطا. در آزمایش، طول میله‌ها پس از اندازه‌گیری طیف پراکندگی نمونه‌ی ساخته‌شده تنظیم می‌شود (هر ۱ nm طول ≈ ۲ nm جابه‌جایی قله).</div>
+</section>
+
+<section>
+  <h2><span class="n">۱۱</span><span>بودجه‌ی عدم قطعیت طرح نهایی (۱۵۵۰ nm)</span></h2>
+  <table>
+    <tr><th>منبع</th><th>مکان قله</th><th>F<sub>p</sub></th><th>بازده</th><th>+y/−y</th><th>نوع</th></tr>
+    <tr><td>مش FDTD (گاف ۰.۵، میله ۱ nm)</td><td class="num">≤ 10 nm</td><td class="num">≤ 2%</td><td class="num">≤ 1 pp</td><td class="num">≤ 2%</td><td>عددی</td></tr>
+    <tr><td>مش منطبق بر فلز</td><td class="num">0</td><td class="num">7%</td><td class="num">6 pp</td><td class="num">13%</td><td>عددی</td></tr>
+    <tr><td>روش (BEM برون‌یابی‌شده در برابر FDTD)</td><td class="num">5–30 nm</td><td></td><td class="num">5 pp</td><td></td><td>عددی</td></tr>
+    <tr><td>داده‌ی طلا (CRC و Palik)</td><td class="num">+20، +52 nm</td><td class="num">+40، +63%</td><td class="num">+12، −15 pp</td><td class="num">+6، −55%</td><td>ماده</td></tr>
+    <tr><td>میرایی سطحی (تخمین)</td><td class="num">~0</td><td></td><td class="num">−5 pp</td><td></td><td>ماده</td></tr>
+    <tr><td>جای R3 (±۱۰ nm در y)</td><td class="num">−20، +10 nm</td><td class="num">±11%</td><td class="num">≤ 1 pp</td><td class="num">+31، −22%</td><td>ساخت</td></tr>
+    <tr><td>طول R3 (±۱۰ nm، BEM)</td><td class="num">±15 nm</td><td></td><td class="num">±6 pp</td><td class="num">+5، −38%</td><td>ساخت</td></tr>
+    <tr><td>جای گسیلنده (۵ nm در x، ۱۰ nm در y)</td><td class="num">0</td><td class="num">+8، −14%</td><td class="num">0</td><td class="num">~0</td><td>ساخت</td></tr>
+  </table>
+  <p>خطای عددی در همه‌ی کمیت‌ها کمتر از ۱۵٪ است؛ عدم قطعیت غالب از <b>ماده</b> و <b>ساخت</b> می‌آید.</p>
+</section>
+
+<section>
+  <h2><span class="n">۱۲</span><span>انتخاب ماده‌ی گسیلنده برای ۱۵۵۰ nm</span></h2>
+  <p>شرط‌ها: گسیل در ۱۵۵۰ nm (۰.۸۰ eV)، سیستم دوترازی منفرد، دوقطبی گذار هم‌راستا با میله‌ها (x)، و جای گرفتن در گاف ۴۰ nm. <b>GaAs مناسب نیست:</b> گاف آن ۱.۴۲ eV (۸۷۳ nm) است و محدودسازی کوانتومی انرژی را فقط بالاتر می‌برد.</p>
+  <table>
+    <tr><th>گسیلنده</th><th>مزیت</th><th>محدودیت</th><th>جمع‌بندی</th></tr>
+    <tr><td><b>نقطه‌ی کوانتومی InAs/InP</b> (اپیتکسیال)</td><td>گسیل ذاتی در باند C، سیستم دوترازی تمیز در ۴ K، دوقطبی درون صفحه، پهنای خط در حد µeV با تحریک تشدیدی</td><td>رشد درون InP (n ≈ ۳.۲)؛ نیاز به سرمایش</td><td>گزینه‌ی اصلی منبع کوانتومی</td></tr>
+    <tr><td><b>نقطه‌ی کلوییدی PbS</b> (یا PbS/CdS)</td><td>قطر ۵ تا ۶ nm، جای‌گذاری در گاف آنتن، دمای اتاق، طول موج قابل تنظیم با اندازه</td><td>پهنای خط ده‌ها meV در دمای اتاق، چشمک‌زنی، گسیل بای‌اکسیتون</td><td>آزمایش اولیه و دمای اتاق</td></tr>
+    <tr><td>یون Er<sup>3+</sup></td><td>۱۵۳۶ nm، خط بسیار باریک</td><td>طول عمر میلی‌ثانیه؛ حتی با F<sub>p</sub> = ۳۰۰ کند است</td><td>مناسب حافظه، نه منبع سریع</td></tr>
+    <tr><td>نقطه‌ی GaAs یا InAs/GaAs معمولی</td><td>فناوری بالغ</td><td>۸۰۰ تا ۱۳۰۰ nm</td><td>برای ۱۵۵۰ nm مناسب نیست</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="n">۱۳</span><span>اندازه‌ی گسیلنده</span></h2>
+  <figure><img src="{{IMG:fig_sps_size}}" alt="اندازه"><figcaption>(الف) طول موج اکسیتون نقطه‌ی PbS بر حسب قطر (Moreels ۲۰۰۹)؛ (ب) طول موج نقطه‌ی InAs/InP بر حسب ارتفاع (چاه محدود در راستای رشد، قرص سخت در صفحه، پارامترهای Vurgaftman ۲۰۰۱، دو مقدار گاف InAs).</figcaption></figure>
+  <ul>
+    <li><b>PbS:</b> <span class="en">E(d) = 0.41 + 1/(0.0252 d² + 0.283 d) eV</span>. اکسیتون جذبی در ۱۵۵۰ nm برای <span class="num">d = 5.9 nm</span>؛ با جابه‌جایی استوکس ۲۰ تا ۴۰ meV، گسیل در ۱۵۵۰ nm برای <span class="num">d = 5.5–5.7 nm</span>.</li>
+    <li><b>InAs/InP:</b> ارتفاع <span class="num">h ≈ 2.6–2.9 nm</span> (گاف بدون کرنش) تا <span class="num">3.8–4.5 nm</span> (با کرنش فشاری) برای قطر ۳۰ تا ۵۰ nm. جرم مؤثر الکترون و حفره‌ی سنگین InAs برابر ۰.۰۲۶ و ۰.۳۳۳، و ناپیوستگی نوار رسانش و ظرفیت ۰.۶۶ و ۰.۳۵ eV. این مدل فقط مرتبه‌ی بزرگی را می‌دهد.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۱۴</span><span>جفت‌شدگی گسیلنده و آنتن</span></h2>
+  <table>
+    <tr><th>جهت دوقطبی (مرکز گاف، ۱۵۵۰ nm)</th><th>F<sub>p</sub></th><th>T</th><th>بازده</th></tr>
+    <tr><td>x، FDTD</td><td class="num">286</td><td class="num">199</td><td class="num">69%</td></tr>
+    <tr><td>x، BEM (h = ۳ nm)</td><td class="num">240</td><td class="num">181</td><td class="num">75%</td></tr>
+    <tr><td>y و z، BEM</td><td class="num">0.8 و 0.7</td><td class="num">0.3</td><td>بدون تقویت</td></tr>
+    <tr><td>دوقطبی همسانگرد (میانگین)</td><td class="num">96</td><td></td><td></td></tr>
+  </table>
+  <ul>
+    <li><b>جهت‌گیری:</b> فقط مؤلفه‌ی x تقویت می‌شود؛ فوتون‌ها قطبیده‌اند. برای InAs/InP یکی از دو اکسیتون درون‌صفحه با محور میله‌ها هم‌راستا می‌شود.</li>
+    <li><b>پهنای آنتن:</b> طیف تابشی ۱۳۸۰ تا ۱۸۲۰ nm (Q ≈ ۳)؛ تطبیق دقیق طول موج گسیلنده لازم نیست و رژیم جفت‌شدگی ضعیف است.</li>
+    <li><b>طول عمر:</b> برای سیستم با بازده ذاتی q<sub>0</sub>: <span class="en">Γ = Γ<sub>0</sub>(q<sub>0</sub>F<sub>p</sub> + 1 − q<sub>0</sub>)</span> و فوتون دوردست در هر تحریک <span class="en">q<sub>0</sub>T/(q<sub>0</sub>F<sub>p</sub> + 1 − q<sub>0</sub>)</span>. InAs/InP: ۲ ns به <span class="num">7 ps</span>؛ PbS: ۱ µs به <span class="num">26 ns</span>.</li>
+  </ul>
+  <figure><img src="{{IMG:fig_rep_quantum2}}" alt="کوانتوم ۲"><figcaption>(الف) تمیزناپذیری در حد پالس کوتاه، <span class="en">I = Γ/(Γ + 2γ*)</span>، برای چند ضریب پورسل؛ (ب) فوتون دوردست در هر تحریک بر حسب بازده ذاتی گسیلنده.</figcaption></figure>
+</section>
+
+<section>
+  <h2><span class="n">۱۵</span><span>دینامیک گسیل، g<sup>(2)</sup>(0) و تمیزناپذیری</span></h2>
+  <p><b>مدل:</b> سیستم دوترازی با هامیلتونی <span class="en">H(t) = ½ Ω(t)(σ<sub>+</sub> + σ<sub>−</sub>)</span> و پالس π گاوسی تشدیدی؛ معادله‌ی مادر لیندبلاد با عملگرهای پرش <span class="en">√Γ σ<sub>−</sub></span> و <span class="en">√(2γ*) σ<sub>+</sub>σ<sub>−</sub></span> (QuTiP). از تابع‌های همبستگی دوزمانی <span class="en">G<sup>(1)</sup>(t,τ) = ⟨σ<sub>+</sub>(t+τ)σ<sub>−</sub>(t)⟩</span> و <span class="en">G<sup>(2)</sup>(t,τ)</span>: خلوص g<sup>(2)</sup>(0) (مساحت قله‌ی صفر به قله‌ی کناری) و تمیزناپذیری I (روش Fischer و همکاران، ۲۰۱۶).</p>
+  <figure><img src="{{IMG:fig_sps_quantum}}" alt="کیفیت کوانتومی"><figcaption>(الف) تمیزناپذیری بر حسب ناهمدوسی خالص برای InAs/InP (طول عمر ذاتی ۲ ns)، با و بدون آنتن؛ (ب) g<sup>(2)</sup>(0) بر حسب طول پالس.</figcaption></figure>
+  <table>
+    <tr><th>گسیلنده</th><th>آنتن</th><th>طول عمر</th><th>پالس</th><th>γ*</th><th>g<sup>(2)</sup>(0)</th><th>I</th><th>I × ZPL²</th><th>فوتون/پالس (دوردست / NA ۱.۳)</th></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>ندارد</td><td class="num">2 ns</td><td class="num">2 ps</td><td class="num">1 µeV</td><td class="num">&lt;0.001</td><td class="num">0.14</td><td class="num">0.12</td><td class="num">1.00 / ~0.25</td></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>ندارد</td><td class="num">2 ns</td><td class="num">2 ps</td><td class="num">10 µeV</td><td class="num">&lt;0.001</td><td class="num">0.03</td><td class="num">0.02</td><td class="num">1.00 / ~0.25</td></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>دارد</td><td class="num">7 ps</td><td class="num">200 fs</td><td class="num">1 µeV</td><td class="num">0.012</td><td class="num"><b>0.97</b></td><td class="num">0.78</td><td class="num">0.69 / 0.20</td></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>دارد</td><td class="num">7 ps</td><td class="num">200 fs</td><td class="num">10 µeV</td><td class="num">0.012</td><td class="num">0.82</td><td class="num">0.66</td><td class="num">0.69 / 0.20</td></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>دارد</td><td class="num">7 ps</td><td class="num">200 fs</td><td class="num">50 µeV</td><td class="num">0.012</td><td class="num">0.48</td><td class="num">0.39</td><td class="num">0.69 / 0.20</td></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>دارد</td><td class="num">7 ps</td><td class="num">2 ps</td><td class="num">1 µeV</td><td class="num">0.098</td><td class="num">0.90</td><td class="num">0.73</td><td class="num">0.69 / 0.20</td></tr>
+    <tr><td>PbS، ۳۰۰ K</td><td>ندارد</td><td class="num">1 µs</td><td class="num">ps</td><td class="num">20 meV</td><td>≈ ۰*</td><td class="num">≈ 0</td><td>—</td><td class="num">0.40 / ~0.10</td></tr>
+    <tr><td>PbS، ۳۰۰ K</td><td>دارد</td><td class="num">26 ns</td><td class="num">ps</td><td class="num">20 meV</td><td>≈ ۰*</td><td class="num">≈ 0</td><td>—</td><td class="num">0.68 / 0.19</td></tr>
+  </table>
+  <p class="meta">* مدل دوترازی؛ برای نقطه‌ی کلوییدی حد واقعی g<sup>(2)</sup> گسیل بای‌اکسیتون است (<span class="en">g<sup>(2)</sup> ≈ QY<sub>XX</sub>/QY<sub>X</sub></span>). ZPL² با سهم خط صفر-فونون ۹۰٪ (بدون فیلتر طیفی). پارامترهای گسیلنده (طول عمر ذاتی ۲ ns برای InAs/InP و ۱ µs با q<sub>0</sub> = ۰.۴ برای PbS، و مقادیر γ*) فرض‌های نوعی‌اند و با داده‌ی نمونه‌ی واقعی باید جایگزین شوند.</p>
+  <ul>
+    <li><b>خلوص:</b> g<sup>(2)</sup>(0) فقط به نسبت طول پالس به طول عمر بستگی دارد؛ با آنتن پالس باید کوتاه‌تر از حدود ۱ ps باشد.</li>
+    <li><b>تمیزناپذیری:</b> بدون آنتن، حتی ۱ µeV ناهمدوسی I را به ۰.۱۴ محدود می‌کند؛ با آنتن ۰.۹۷. در دمای اتاق هیچ آنتن پلاسمونی فوتون تمیزناپذیر نمی‌دهد (برای I = ۰.۹ با γ* = ۲۰ meV باید ħΓ حدود ۰.۴ eV باشد).</li>
+    <li><b>روشنایی:</b> آنتن نرخ را ۲۸۶ برابر می‌کند (آهنگ تکرار تا ده‌ها GHz) ولی فوتون جمع‌شده در هر پالس را افزایش نمی‌دهد. برای گسیلنده‌ی کم‌بازده (PbS) آنتن بازده را از ۰.۴۰ به ۰.۶۸ می‌برد.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۱۶</span><span>کنترل کیفیت و خطاهای یافته‌شده</span></h2>
+  <table>
+    <tr><th>مورد</th><th>اثر</th><th>اقدام</th></tr>
+    <tr><td>اجرای اول FDTD در بازه‌ی ۴۰۰ تا ۷۰۰ nm (منبع دوقطبی در Lumerical 2024 تنظیمات سراسری را نادیده می‌گیرد)</td><td>۷ اجرا بی‌اعتبار</td><td>تنظیم صریح بازه روی منبع و همه‌ی مانیتورها، توقف خودکار در صورت بازه‌ی غلط؛ تکرار اجرا</td></tr>
+    <tr><td>برون‌یابی h² در BEM</td><td>خطای مش کمتر از واقع تخمین زده می‌شد</td><td>برازش مرتبه‌ی همگرایی، گزارش بازه</td></tr>
+    <tr><td>تساوی در تشخیص علامت میدان دوردست برای دو دیمر متقارن</td><td>ستون‌های میدان دوردست دو دیمر بی‌اعتبار (کنترل توان آن را نشان داد: ۱.۵ به‌جای ۱)</td><td>کد اصلاح شد؛ نتایج تریمرها و F<sub>p</sub>، T و بازده تحت تأثیر نیستند</td></tr>
+    <tr><td>الگوی تابش ذخیره‌شده در سه طول موج از داده‌ی بسامد نخست ساخته شده بود</td><td>نمودار قطبی الگو بی‌اعتبار (کسرهای مخروط درست‌اند)</td><td>کد اصلاح و با میدان تحلیلی آزموده شد؛ الگو در اجرای بعدی</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="n">۱۷</span><span>محدودیت‌ها، گام‌های بعدی و پرسش‌ها از استاد</span></h2>
+  <ol>
+    <li><b>انتخاب مسیر گسیلنده:</b> InAs/InP (کیفیت کوانتومی بالا؛ طراحی دوباره‌ی آنتن برای محیط InP یا ساختار ترکیبی غشای InP زیر آنتن) یا PbS در پلیمر n = ۱.۵ (سازگار با طرح فعلی، دمای اتاق، بدون تمیزناپذیری). <b>تصمیم با استاد.</b></li>
+    <li><b>تنظیم طرح در حضور موجبر:</b> قله‌ی جهت‌دهی درون موجبر در ۱۶۴۹ nm است؛ جاروب کوچکی با موجبر برای رساندن آن به ۱۵۵۰ nm.</li>
+    <li><b>داده‌ی طلا:</b> اجرای BEM و FDTD با Olmon و McPeak و میرایی سطحی (داده‌ها آماده).</li>
+    <li><b>ناهمدوسی فونونی:</b> با طول عمر ۷ ps، مدل پولارون برای اثر فونون‌های آکوستیک لازم است؛ عدد فعلی I سقف بالاست.</li>
+    <li><b>الگوی تابش:</b> با کد اصلاح‌شده در اجرای بعدی.</li>
+    <li><b>نگارش مقاله:</b> نتایج آنتن (BEM + FDTD) کامل است؛ فصل منبع تک‌فوتون پس از انتخاب مسیر گسیلنده.</li>
+  </ol>
+  <p class="meta">کد و داده: <span class="en">labkit/ (lab kit), isi/analysis/{meshconv, fdtd_vs_bem, final_design2, report_figs, single_photon}.py, isi/data/lab_20261104b, lab_20261109, lab_20261111</span></p>
+</section>
+
+<section>
+  <h2><span class="n">۱۸</span><span>منابع</span></h2>
+  <ol class="en" style="direction:ltr;text-align:left;font-size:.88rem;line-height:1.7">
+    <li>P. B. Johnson and R. W. Christy, Phys. Rev. B 6, 4370 (1972).</li>
+    <li>R. L. Olmon et al., Phys. Rev. B 86, 235147 (2012).</li>
+    <li>K. M. McPeak et al., ACS Photonics 2, 326 (2015).</li>
+    <li>U. Hohenester and A. Trügler, Comput. Phys. Commun. 183, 370 (2012): MNPBEM.</li>
+    <li>I. Moreels et al., ACS Nano 3, 3023 (2009): size-dependent optical properties of colloidal PbS quantum dots.</li>
+    <li>I. Vurgaftman, J. R. Meyer, and L. R. Ram-Mohan, J. Appl. Phys. 89, 5815 (2001): band parameters for III–V semiconductors.</li>
+    <li>K. A. Fischer, K. Müller, K. G. Lagoudakis, and J. Vučković, New J. Phys. 18, 113053 (2016): dynamical modeling of pulsed two-photon interference.</li>
+    <li>J. R. Johansson, P. D. Nation, and F. Nori, Comput. Phys. Commun. 183, 1760 (2012): QuTiP.</li>
+    <li>L. Novotny and B. Hecht, Principles of Nano-Optics, 2nd ed. (Cambridge University Press, 2012).</li>
+  </ol>
+</section>
+
+</div>
+</body>
+</html>

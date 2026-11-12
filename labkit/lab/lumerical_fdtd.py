@@ -206,6 +206,8 @@ def far_field():
         H = np.asarray(rH['H']).reshape(len(xyz[0]), len(xyz[1]), len(xyz[2]), nf, 3)
         faces.append(FFm.face(axis, nrm, xyz, E, H)); lam_ff = 2.99792458e8 / f
     print(f'  far field: {sum(len(F["w"]) for F in faces)} surface points, {len(lam_ff)} wavelengths', flush=True)
+    def pick(F, j):                     # one face at frequency index j only (project() loops over the frequencies it is given)
+        return {'r': F['r'], 'w': F['w'], 'J': F['J'][:, j:j + 1], 'M': F['M'][:, j:j + 1], 'S': F['S'][:, j:j + 1]}
     # sign convention: compare the projection of the top face alone with Lumerical's farfield3d of the same face
     fi = int(np.argmin(abs(lam_ff - 1.55e-6)))
     fdtd.eval(f'ffE2 = farfield3d("ffz2", {fi + 1}); ffux = farfieldux("ffz2", {fi + 1}); ffuy = farfielduy("ffz2", {fi + 1});')
@@ -215,7 +217,7 @@ def far_field():
     dirs = np.stack([UX.ravel()[sub], UY.ravel()[sub], np.sqrt(1 - UX.ravel()[sub] ** 2 - UY.ravel()[sub] ** 2)], 1)
     corr = {}
     for sg in (1, -1):
-        _, U1, _, _ = FFm.project([faces[5]], lam_ff[fi:fi + 1], P['n'], sign=sg, dirs=dirs)
+        _, U1, _, _ = FFm.project([pick(faces[5], fi)], lam_ff[fi:fi + 1], P['n'], sign=sg, dirs=dirs)
         corr[sg] = float(np.corrcoef(U1[0], E2.ravel()[sub])[0, 1])
     # exp(-i w t) (sign +1) unless farfield3d clearly prefers the other one; a symmetric structure gives a tie (both ~1),
     # and a tie must not flip the convention (campaign 2: two dimers took -1 on a 1e-5 tie, P_ff/P_box = 1.5)
@@ -232,7 +234,7 @@ def far_field():
     for l0 in (1450, 1550, 1650):
         j = int(np.argmin(abs(lam_ff * 1e9 - l0)))
         for pl, dv in (('xy', np.stack([np.cos(phi), np.sin(phi), 0 * phi], 1)), ('xz', np.stack([np.cos(phi), 0 * phi, np.sin(phi)], 1))):
-            _, Up, _, _ = FFm.project(faces, lam_ff[j:j + 1], P['n'], sign=sign, dirs=dv); pat[f'U_{pl}_{l0}'] = Up[0] / Up[0].max()
+            _, Up, _, _ = FFm.project([pick(F, j) for F in faces], lam_ff[j:j + 1], P['n'], sign=sign, dirs=dv); pat[f'U_{pl}_{l0}'] = Up[0] / Up[0].max()
     with open(a.out[:-4] + '_pattern.csv', 'w') as fo:
         fo.write(f'# far-field patterns (normalised), {a.name}, sign {sign:+d}\n' + ','.join(pat) + '\n')
         for i in range(len(phi)): fo.write(','.join(f'{pat[k][i]:.5g}' for k in pat) + '\n')
