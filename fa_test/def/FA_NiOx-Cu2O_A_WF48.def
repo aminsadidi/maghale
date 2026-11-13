@@ -1,0 +1,313 @@
+> SCAPS 3.3.02 ELIS-UGent: Version scaps3302.exe, dated 28-08-2015, 11:48:47 Problem definition file
+> last saved by SCAPS: 	13-11-2026 at 12:00:00
+> 
+> FA_NiOx-Cu2O_A_WF48: HTL first layer touches FAPbI3
+> left = back contact (metal), right = front contact (FTO), illuminated from the right
+> 
+convergence
+
+recalculate mesh :  0 (0: fixed mesh, 1: adaptive mesh)
+Mott-Schottky analysis epsilon of sheet # :  0
+Mott-Schottky analysis epsilon of sheet side :  1	(left side = -1; right side = +1)
+
+
+back contact
+
+flatband : 0 (1: flatband contact imposed; 0: fixed Phi_m value)
+recalculate : 0 (1 = do or 0 = do not recalculate phi_m to set flatband in each batch step)
+Fi_m :   4.8000 [eV]
+Sn :  1.000e+05 [m/s]
+Sp :  1.000e+05 [m/s]
+Tunneling to contact: 0 (0: no tunneling, 1: with tunneling)
+Relative electron mass :  1.00e+00
+Relative hole mass :  1.00e+00
+
+optical filter : reflection
+wavelength independent: 1
+filter value: 0.00000000e+00
+
+layer
+
+name : Cu2O
+d : 2.500e-08 [m]
+composition grading :	  0.00000	  1.00000	  0.00000	  0.00000	  0.00000	  0.00000	  0.00000	 0	 1	[-]
+v_th_n :	 1.000e+05	 1.000e+05	 1.000e+05	 1.000e+00	 1.000e+00	 1.000e+05	 1.000e+05	 0	 2	[m/s]
+v_th_p :	 1.000e+05	 1.000e+05	 1.000e+05	 1.000e+00	 1.000e+00	 1.000e+05	 1.000e+05	 0	 2	[m/s]
+eps :	     7.110000	     7.110000	     7.110000	     1.000000	     1.000000	     7.110000	     7.110000	 0	 2	[-]
+chi :	  3.200000	  3.200000	  3.200000	  1.000000	  1.000000	  3.200000	  3.200000	 0	 2	[eV]
+Eg :	  2.170000	  2.170000	  2.170000	  1.000000	  1.000000	  2.170000	  2.170000	 0	 2	[eV]
+Nc :	 2.020000e+23	 2.020000e+23	 2.020000e+23	 1.000000e+00	 1.000000e+00	 2.020000e+23	 2.020000e+23	 0	 2	[/m^3]
+Nv :	 1.100000e+25	 1.100000e+25	 1.100000e+25	 1.000000e+00	 1.000000e+00	 1.100000e+25	 1.100000e+25	 0	 2	[/m^3]
+mu_n :	 2.000000e-02	 2.000000e-02	 2.000000e-02	 1.000000e+00	 1.000000e+00	 2.000000e-02	 2.000000e-02	 0	 2	[m^2/Vs]
+mu_p :	 8.000000e-03	 8.000000e-03	 8.000000e-03	 1.000000e+00	 1.000000e+00	 8.000000e-03	 8.000000e-03	 0	 2	[m^2/Vs]
+Tunneling in layer: 0 (0: no tunneling, 1: with tunneling)
+Relative electron mass :	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 0	 0	[-]
+Relative hole mass :	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 0	 0	[-]
+K_rad :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^3/s]
+c_n_auger :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^6/s]
+c_p_auger :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^6/s]
+Na(uniform) :	 1.000000e+24	 1.000000e+24	 1.000000e+24	 1.000000e+00	 1.000000e+00	 1.000000e+24	 1.000000e+24	 0	 2	[/m^3]
+Nd(uniform) :	 0.000000e+00	 0.000000e+00	 0.000000e+00	 1.000000e+00	 1.000000e+00	 0.000000e+00	 0.000000e+00	 0	 2	[/m^3]
+absorption grading :	  571.35	  571.35	  250.00	  250.00	    0.00	    1.20	    1.20	 0	 0	[nm]
+absorptionmodel pure A material (y=0) : coefficients A and B
+A : 1.000e+07 [/(m*sqrt(eV))]
+B : 0.000e+00 [sqrt(eV)/m]
+absorption pure B material (y=1), model : coefficients A and B
+pure B material (y=1), A : 1.000e+07 [/(m*sqrt(eV))]
+pure B material (y=1), B : 0.000e+00 [sqrt(eV)/m]
+
+srhrecombination
+
+type : neutral ( 1 level(s) )
+energy distribution : single
+Reference for defect energy :  0 ; 0 = above EV (SCAPS<2.7); 1 = above Ei; 2 = below EC
+Ekar :  0.1000 [eV]
+Nt(uniform) :	 1.000000e+21	 1.000000e+21	 1.000000e+21	 1.000000e+00	 1.000000e+00	 1.000000e+21	 1.000000e+21	 0	 2	[/m^3]
+profile : homogenous
+Lkar : 1.000e+00 [m]
+Nleft : 1.000e+21 [/m^3]
+Nright : 1.000e+21 [/m^3]
+leveltype : neutral	
+sigma_n : 1.000e-19	[m^2]
+sigma_p : 1.000e-19	[m^2]
+Et :   1.080	[eV]
+
+interface properties
+
+interfacename : Cu2O / NiOx
+Intraband tunneling : 0 (0: no tunneling, 1: with tunneling)
+Relative electron mass :  1.00e+00
+Relative hole mass :  1.00e+00
+
+
+layer
+
+name : NiOx
+d : 2.500e-08 [m]
+composition grading :	  0.00000	  1.00000	  0.00000	  0.00000	  0.00000	  0.00000	  0.00000	 0	 1	[-]
+v_th_n :	 1.000e+05	 1.000e+05	 1.000e+05	 1.000e+00	 1.000e+00	 1.000e+05	 1.000e+05	 0	 2	[m/s]
+v_th_p :	 1.000e+05	 1.000e+05	 1.000e+05	 1.000e+00	 1.000e+00	 1.000e+05	 1.000e+05	 0	 2	[m/s]
+eps :	    10.700000	    10.700000	    10.700000	     1.000000	     1.000000	    10.700000	    10.700000	 0	 2	[-]
+chi :	  1.460000	  1.460000	  1.460000	  1.000000	  1.000000	  1.460000	  1.460000	 0	 2	[eV]
+Eg :	  3.800000	  3.800000	  3.800000	  1.000000	  1.000000	  3.800000	  3.800000	 0	 2	[eV]
+Nc :	 2.800000e+25	 2.800000e+25	 2.800000e+25	 1.000000e+00	 1.000000e+00	 2.800000e+25	 2.800000e+25	 0	 2	[/m^3]
+Nv :	 1.000000e+25	 1.000000e+25	 1.000000e+25	 1.000000e+00	 1.000000e+00	 1.000000e+25	 1.000000e+25	 0	 2	[/m^3]
+mu_n :	 1.200000e-03	 1.200000e-03	 1.200000e-03	 1.000000e+00	 1.000000e+00	 1.200000e-03	 1.200000e-03	 0	 2	[m^2/Vs]
+mu_p :	 2.800000e-04	 2.800000e-04	 2.800000e-04	 1.000000e+00	 1.000000e+00	 2.800000e-04	 2.800000e-04	 0	 2	[m^2/Vs]
+Tunneling in layer: 0 (0: no tunneling, 1: with tunneling)
+Relative electron mass :	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 0	 0	[-]
+Relative hole mass :	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 0	 0	[-]
+K_rad :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^3/s]
+c_n_auger :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^6/s]
+c_p_auger :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^6/s]
+Na(uniform) :	 1.000000e+24	 1.000000e+24	 1.000000e+24	 1.000000e+00	 1.000000e+00	 1.000000e+24	 1.000000e+24	 0	 2	[/m^3]
+Nd(uniform) :	 0.000000e+00	 0.000000e+00	 0.000000e+00	 1.000000e+00	 1.000000e+00	 0.000000e+00	 0.000000e+00	 0	 2	[/m^3]
+absorption grading :	  326.27	  326.27	  250.00	  250.00	    0.00	    1.20	    1.20	 0	 0	[nm]
+absorptionmodel pure A material (y=0) : coefficients A and B
+A : 1.000e+07 [/(m*sqrt(eV))]
+B : 0.000e+00 [sqrt(eV)/m]
+absorption pure B material (y=1), model : coefficients A and B
+pure B material (y=1), A : 1.000e+07 [/(m*sqrt(eV))]
+pure B material (y=1), B : 0.000e+00 [sqrt(eV)/m]
+
+srhrecombination
+
+type : neutral ( 1 level(s) )
+energy distribution : single
+Reference for defect energy :  0 ; 0 = above EV (SCAPS<2.7); 1 = above Ei; 2 = below EC
+Ekar :  0.1000 [eV]
+Nt(uniform) :	 1.000000e+21	 1.000000e+21	 1.000000e+21	 1.000000e+00	 1.000000e+00	 1.000000e+21	 1.000000e+21	 0	 2	[/m^3]
+profile : homogenous
+Lkar : 1.000e+00 [m]
+Nleft : 1.000e+21 [/m^3]
+Nright : 1.000e+21 [/m^3]
+leveltype : neutral	
+sigma_n : 1.000e-19	[m^2]
+sigma_p : 1.000e-19	[m^2]
+Et :   1.900	[eV]
+
+interface properties
+
+interfacename : NiOx / FAPbI3
+Intraband tunneling : 0 (0: no tunneling, 1: with tunneling)
+Relative electron mass :  1.00e+00
+Relative hole mass :  1.00e+00
+
+
+layer
+
+name : FAPbI3
+d : 6.000e-07 [m]
+composition grading :	  0.00000	  1.00000	  0.00000	  0.00000	  0.00000	  0.00000	  0.00000	 0	 1	[-]
+v_th_n :	 1.000e+05	 1.000e+05	 1.000e+05	 1.000e+00	 1.000e+00	 1.000e+05	 1.000e+05	 0	 2	[m/s]
+v_th_p :	 1.000e+05	 1.000e+05	 1.000e+05	 1.000e+00	 1.000e+00	 1.000e+05	 1.000e+05	 0	 2	[m/s]
+eps :	     6.600000	     6.600000	     6.600000	     1.000000	     1.000000	     6.600000	     6.600000	 0	 2	[-]
+chi :	  4.000000	  4.000000	  4.000000	  1.000000	  1.000000	  4.000000	  4.000000	 0	 2	[eV]
+Eg :	  1.510000	  1.510000	  1.510000	  1.000000	  1.000000	  1.510000	  1.510000	 0	 2	[eV]
+Nc :	 1.200000e+25	 1.200000e+25	 1.200000e+25	 1.000000e+00	 1.000000e+00	 1.200000e+25	 1.200000e+25	 0	 2	[/m^3]
+Nv :	 2.900000e+24	 2.900000e+24	 2.900000e+24	 1.000000e+00	 1.000000e+00	 2.900000e+24	 2.900000e+24	 0	 2	[/m^3]
+mu_n :	 2.700000e-04	 2.700000e-04	 2.700000e-04	 1.000000e+00	 1.000000e+00	 2.700000e-04	 2.700000e-04	 0	 2	[m^2/Vs]
+mu_p :	 1.800000e-04	 1.800000e-04	 1.800000e-04	 1.000000e+00	 1.000000e+00	 1.800000e-04	 1.800000e-04	 0	 2	[m^2/Vs]
+Tunneling in layer: 0 (0: no tunneling, 1: with tunneling)
+Relative electron mass :	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 0	 0	[-]
+Relative hole mass :	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 0	 0	[-]
+K_rad :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^3/s]
+c_n_auger :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^6/s]
+c_p_auger :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^6/s]
+Na(uniform) :	 1.000000e+19	 1.000000e+19	 1.000000e+19	 1.000000e+00	 1.000000e+00	 1.000000e+19	 1.000000e+19	 0	 2	[/m^3]
+Nd(uniform) :	 0.000000e+00	 0.000000e+00	 0.000000e+00	 1.000000e+00	 1.000000e+00	 0.000000e+00	 0.000000e+00	 0	 2	[/m^3]
+absorption grading :	  821.09	  821.09	  250.00	  250.00	    0.00	    1.20	    1.20	 0	 0	[nm]
+absorptionmodel pure A material (y=0) : coefficients A and B
+A : 1.000e+07 [/(m*sqrt(eV))]
+B : 0.000e+00 [sqrt(eV)/m]
+absorption pure B material (y=1), model : coefficients A and B
+pure B material (y=1), A : 1.000e+07 [/(m*sqrt(eV))]
+pure B material (y=1), B : 0.000e+00 [sqrt(eV)/m]
+
+srhrecombination
+
+type : neutral ( 1 level(s) )
+energy distribution : single
+Reference for defect energy :  0 ; 0 = above EV (SCAPS<2.7); 1 = above Ei; 2 = below EC
+Ekar :  0.1000 [eV]
+Nt(uniform) :	 1.000000e+20	 1.000000e+20	 1.000000e+20	 1.000000e+00	 1.000000e+00	 1.000000e+20	 1.000000e+20	 0	 2	[/m^3]
+profile : homogenous
+Lkar : 1.000e+00 [m]
+Nleft : 1.000e+20 [/m^3]
+Nright : 1.000e+20 [/m^3]
+leveltype : neutral	
+sigma_n : 1.000e-19	[m^2]
+sigma_p : 1.000e-19	[m^2]
+Et :   0.755	[eV]
+
+interface properties
+
+interfacename : FAPbI3 / TiO2
+Intraband tunneling : 0 (0: no tunneling, 1: with tunneling)
+Relative electron mass :  1.00e+00
+Relative hole mass :  1.00e+00
+
+
+layer
+
+name : TiO2
+d : 5.000e-08 [m]
+composition grading :	  0.00000	  1.00000	  0.00000	  0.00000	  0.00000	  0.00000	  0.00000	 0	 1	[-]
+v_th_n :	 1.000e+05	 1.000e+05	 1.000e+05	 1.000e+00	 1.000e+00	 1.000e+05	 1.000e+05	 0	 2	[m/s]
+v_th_p :	 1.000e+05	 1.000e+05	 1.000e+05	 1.000e+00	 1.000e+00	 1.000e+05	 1.000e+05	 0	 2	[m/s]
+eps :	     9.000000	     9.000000	     9.000000	     1.000000	     1.000000	     9.000000	     9.000000	 0	 2	[-]
+chi :	  4.000000	  4.000000	  4.000000	  1.000000	  1.000000	  4.000000	  4.000000	 0	 2	[eV]
+Eg :	  3.200000	  3.200000	  3.200000	  1.000000	  1.000000	  3.200000	  3.200000	 0	 2	[eV]
+Nc :	 2.200000e+24	 2.200000e+24	 2.200000e+24	 1.000000e+00	 1.000000e+00	 2.200000e+24	 2.200000e+24	 0	 2	[/m^3]
+Nv :	 1.800000e+25	 1.800000e+25	 1.800000e+25	 1.000000e+00	 1.000000e+00	 1.800000e+25	 1.800000e+25	 0	 2	[/m^3]
+mu_n :	 2.000000e-03	 2.000000e-03	 2.000000e-03	 1.000000e+00	 1.000000e+00	 2.000000e-03	 2.000000e-03	 0	 2	[m^2/Vs]
+mu_p :	 1.000000e-03	 1.000000e-03	 1.000000e-03	 1.000000e+00	 1.000000e+00	 1.000000e-03	 1.000000e-03	 0	 2	[m^2/Vs]
+Tunneling in layer: 0 (0: no tunneling, 1: with tunneling)
+Relative electron mass :	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 0	 0	[-]
+Relative hole mass :	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 0	 0	[-]
+K_rad :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^3/s]
+c_n_auger :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^6/s]
+c_p_auger :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^6/s]
+Na(uniform) :	 0.000000e+00	 0.000000e+00	 0.000000e+00	 1.000000e+00	 1.000000e+00	 0.000000e+00	 0.000000e+00	 0	 2	[/m^3]
+Nd(uniform) :	 1.000000e+23	 1.000000e+23	 1.000000e+23	 1.000000e+00	 1.000000e+00	 1.000000e+23	 1.000000e+23	 0	 2	[/m^3]
+absorption grading :	  387.45	  387.45	  250.00	  250.00	    0.00	    1.20	    1.20	 0	 0	[nm]
+absorptionmodel pure A material (y=0) : coefficients A and B
+A : 1.000e+07 [/(m*sqrt(eV))]
+B : 0.000e+00 [sqrt(eV)/m]
+absorption pure B material (y=1), model : coefficients A and B
+pure B material (y=1), A : 1.000e+07 [/(m*sqrt(eV))]
+pure B material (y=1), B : 0.000e+00 [sqrt(eV)/m]
+
+srhrecombination
+
+type : neutral ( 1 level(s) )
+energy distribution : single
+Reference for defect energy :  0 ; 0 = above EV (SCAPS<2.7); 1 = above Ei; 2 = below EC
+Ekar :  0.1000 [eV]
+Nt(uniform) :	 1.000000e+21	 1.000000e+21	 1.000000e+21	 1.000000e+00	 1.000000e+00	 1.000000e+21	 1.000000e+21	 0	 2	[/m^3]
+profile : homogenous
+Lkar : 1.000e+00 [m]
+Nleft : 1.000e+21 [/m^3]
+Nright : 1.000e+21 [/m^3]
+leveltype : neutral	
+sigma_n : 1.000e-19	[m^2]
+sigma_p : 1.000e-19	[m^2]
+Et :   1.600	[eV]
+
+interface properties
+
+interfacename : TiO2 / FTO
+Intraband tunneling : 0 (0: no tunneling, 1: with tunneling)
+Relative electron mass :  1.00e+00
+Relative hole mass :  1.00e+00
+
+
+layer
+
+name : FTO
+d : 2.000e-07 [m]
+composition grading :	  0.00000	  1.00000	  0.00000	  0.00000	  0.00000	  0.00000	  0.00000	 0	 1	[-]
+v_th_n :	 1.000e+05	 1.000e+05	 1.000e+05	 1.000e+00	 1.000e+00	 1.000e+05	 1.000e+05	 0	 2	[m/s]
+v_th_p :	 1.000e+05	 1.000e+05	 1.000e+05	 1.000e+00	 1.000e+00	 1.000e+05	 1.000e+05	 0	 2	[m/s]
+eps :	     9.000000	     9.000000	     9.000000	     1.000000	     1.000000	     9.000000	     9.000000	 0	 2	[-]
+chi :	  4.000000	  4.000000	  4.000000	  1.000000	  1.000000	  4.000000	  4.000000	 0	 2	[eV]
+Eg :	  3.500000	  3.500000	  3.500000	  1.000000	  1.000000	  3.500000	  3.500000	 0	 2	[eV]
+Nc :	 2.200000e+24	 2.200000e+24	 2.200000e+24	 1.000000e+00	 1.000000e+00	 2.200000e+24	 2.200000e+24	 0	 2	[/m^3]
+Nv :	 1.800000e+25	 1.800000e+25	 1.800000e+25	 1.000000e+00	 1.000000e+00	 1.800000e+25	 1.800000e+25	 0	 2	[/m^3]
+mu_n :	 2.000000e-03	 2.000000e-03	 2.000000e-03	 1.000000e+00	 1.000000e+00	 2.000000e-03	 2.000000e-03	 0	 2	[m^2/Vs]
+mu_p :	 1.000000e-03	 1.000000e-03	 1.000000e-03	 1.000000e+00	 1.000000e+00	 1.000000e-03	 1.000000e-03	 0	 2	[m^2/Vs]
+Tunneling in layer: 0 (0: no tunneling, 1: with tunneling)
+Relative electron mass :	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 0	 0	[-]
+Relative hole mass :	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 1.000000e+00	 0	 0	[-]
+K_rad :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^3/s]
+c_n_auger :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^6/s]
+c_p_auger :	 0.000000e+00	 0.000000e+00	 1.000000e+01	 1.000000e+01	 1.000000e+01	 0.000000e+00	 0.000000e+00	 0	 0	[m^6/s]
+Na(uniform) :	 0.000000e+00	 0.000000e+00	 0.000000e+00	 1.000000e+00	 1.000000e+00	 0.000000e+00	 0.000000e+00	 0	 2	[/m^3]
+Nd(uniform) :	 1.000000e+25	 1.000000e+25	 1.000000e+25	 1.000000e+00	 1.000000e+00	 1.000000e+25	 1.000000e+25	 0	 2	[/m^3]
+absorption grading :	  354.24	  354.24	  250.00	  250.00	    0.00	    1.20	    1.20	 0	 0	[nm]
+absorptionmodel pure A material (y=0) : coefficients A and B
+A : 1.000e+07 [/(m*sqrt(eV))]
+B : 0.000e+00 [sqrt(eV)/m]
+absorption pure B material (y=1), model : coefficients A and B
+pure B material (y=1), A : 1.000e+07 [/(m*sqrt(eV))]
+pure B material (y=1), B : 0.000e+00 [sqrt(eV)/m]
+
+srhrecombination
+
+type : neutral ( 1 level(s) )
+energy distribution : single
+Reference for defect energy :  0 ; 0 = above EV (SCAPS<2.7); 1 = above Ei; 2 = below EC
+Ekar :  0.1000 [eV]
+Nt(uniform) :	 1.000000e+21	 1.000000e+21	 1.000000e+21	 1.000000e+00	 1.000000e+00	 1.000000e+21	 1.000000e+21	 0	 2	[/m^3]
+profile : homogenous
+Lkar : 1.000e+00 [m]
+Nleft : 1.000e+21 [/m^3]
+Nright : 1.000e+21 [/m^3]
+leveltype : neutral	
+sigma_n : 1.000e-19	[m^2]
+sigma_p : 1.000e-19	[m^2]
+Et :   1.750	[eV]
+
+
+front contact
+
+flatband : 1 (1: flatband contact imposed; 0: fixed Phi_m value)
+recalculate : 1 (1 = do or 0 = do not recalculate phi_m to set flatband in each batch step)
+Fi_m :  4.00 [eV]
+Sn : 1.000e+05 [m/s]
+Sp : 1.000e+05 [m/s]
+Tunneling to contact: 0 (0: no tunneling, 1: with tunneling)
+Relative electron mass :  1.00e+00
+Relative hole mass :  1.00e+00
+
+optical filter : transmission
+wavelength independent: 1
+filter value: 1.00000000e+00
+
+working point
+
+illuminated from : right
+internal Rfront :   0.00000000
+internal Tfront :  1.0000e+00
+voltage V applied to : -1 (+1: right contact; -1: left contact)
+cell reference system :  1 (1: as a consumer (consumed power = +VJ; 0: as a generator (generated power = +VJ) )

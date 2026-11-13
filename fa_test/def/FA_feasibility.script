@@ -1,0 +1,234 @@
+// Feasibility test: FAPbI3 with Cu2O / NiOx / bilayer HTL and back-contact work function
+set errorhandling.overwritefile
+clear all
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_Cu2O_WF45.def
+calculate singleshot
+save results.iv MG_FA_Cu2O_WF45.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_NiOx_A_WF45.def
+calculate singleshot
+save results.iv MG_FA_NiOx_A_WF45.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_Cu2O-NiOx_A_WF45.def
+calculate singleshot
+save results.iv MG_FA_Cu2O-NiOx_A_WF45.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_NiOx-Cu2O_A_WF45.def
+calculate singleshot
+save results.iv MG_FA_NiOx-Cu2O_A_WF45.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_NiOx_B_WF45.def
+calculate singleshot
+save results.iv MG_FA_NiOx_B_WF45.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_Cu2O-NiOx_B_WF45.def
+calculate singleshot
+save results.iv MG_FA_Cu2O-NiOx_B_WF45.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_NiOx-Cu2O_B_WF45.def
+calculate singleshot
+save results.iv MG_FA_NiOx-Cu2O_B_WF45.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_Cu2O_WF48.def
+calculate singleshot
+save results.iv MG_FA_Cu2O_WF48.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_NiOx_A_WF48.def
+calculate singleshot
+save results.iv MG_FA_NiOx_A_WF48.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_Cu2O-NiOx_A_WF48.def
+calculate singleshot
+save results.iv MG_FA_Cu2O-NiOx_A_WF48.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_NiOx-Cu2O_A_WF48.def
+calculate singleshot
+save results.iv MG_FA_NiOx-Cu2O_A_WF48.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_NiOx_B_WF48.def
+calculate singleshot
+save results.iv MG_FA_NiOx_B_WF48.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_Cu2O-NiOx_B_WF48.def
+calculate singleshot
+save results.iv MG_FA_Cu2O-NiOx_B_WF48.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_NiOx-Cu2O_B_WF48.def
+calculate singleshot
+save results.iv MG_FA_NiOx-Cu2O_B_WF48.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_Cu2O_WF51.def
+calculate singleshot
+save results.iv MG_FA_Cu2O_WF51.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_NiOx_A_WF51.def
+calculate singleshot
+save results.iv MG_FA_NiOx_A_WF51.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_Cu2O-NiOx_A_WF51.def
+calculate singleshot
+save results.iv MG_FA_Cu2O-NiOx_A_WF51.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_NiOx-Cu2O_A_WF51.def
+calculate singleshot
+save results.iv MG_FA_NiOx-Cu2O_A_WF51.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_NiOx_B_WF51.def
+calculate singleshot
+save results.iv MG_FA_NiOx_B_WF51.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_Cu2O-NiOx_B_WF51.def
+calculate singleshot
+save results.iv MG_FA_Cu2O-NiOx_B_WF51.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.3
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile FA_NiOx-Cu2O_B_WF51.def
+calculate singleshot
+save results.iv MG_FA_NiOx-Cu2O_B_WF51.iv
