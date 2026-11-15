@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>گزارش بخش ۱۵</title>
+<title>گزارش تفصیلی بخش ۱۵</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
@@ -90,228 +90,366 @@ footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:24px}
 }
 </style>
 <style>
-.eq{direction:ltr;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:1.05rem;background:#f7f8fb;border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:10px 0;line-height:1.9}
-.eq small{display:block;font-family:"Vazirmatn",sans-serif;direction:rtl;color:var(--ink2);font-size:.82rem}
-td.l{text-align:left;direction:ltr;font-family:Georgia,serif}
+.eq{direction:ltr;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:1.04rem;background:#f7f8fb;border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:10px 0;line-height:2}
+.eq small{display:block;font-family:"Vazirmatn",sans-serif;direction:rtl;color:var(--ink2);font-size:.82rem;line-height:1.8;margin-top:4px}
+.calc{direction:ltr;text-align:left;font-family:"Courier New",monospace;font-size:.88rem;background:#fbfaf6;border:1px dashed #d8d3c4;border-radius:8px;padding:10px 14px;margin:10px 0;line-height:1.75;white-space:pre-wrap}
+td.l,.l{text-align:left;direction:ltr;font-family:Georgia,serif}
 .src{color:var(--muted);font-size:.84rem}
-@media print{.eq{font-size:10pt;padding:6px 8px;break-inside:avoid}}
+.ok{color:var(--good);font-weight:700}.no{color:#9a3412;font-weight:700}
+.stepbox{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0;background:#fcfcfa}
+.stepbox b.h{color:var(--accent)}
+@media print{.eq,.calc{font-size:9.3pt;padding:5px 8px;break-inside:avoid}.stepbox{break-inside:avoid}}
 </style>
 </head>
 <body>
 <div class="page">
 <header class="cover">
-  <div class="kicker">گزارش تفصیلی بخش ۱۵ گزارش جامع، در پاسخ به پرسش‌های استاد</div>
-  <h1>دینامیک گسیل، g<sup>(2)</sup>(0) و تمیزناپذیری منبع تک‌فوتون روی آنتن سه‌نانومیله‌ای طلا: هندسه، مدل، فرمول‌ها، پارامترها و نتایج</h1>
-  <span class="entitle">Section 15 in detail: how the single-photon purity g<sup>(2)</sup>(0) and the indistinguishability of a quantum emitter on the gold-nanorod trimer (1550 nm) were computed</span>
+  <div class="kicker">گزارش تفصیلی و گام‌به‌گام بخش ۱۵ گزارش جامع، برای بررسی استاد</div>
+  <h1>منبع تک‌فوتون روی آنتن سه‌نانومیله‌ای طلا: محاسبه‌ی g<sup>(2)</sup>(0) و تمیزناپذیری، گام به گام، با همه‌ی فرمول‌ها، عددها و آزمون‌های درستی</h1>
+  <span class="entitle">Section 15, step by step: from the antenna simulation to the single-photon purity g<sup>(2)</sup>(0) and the indistinguishability, with all formulas, numbers, an independent second solver and the sensitivity analysis</span>
   <div class="meta">امین حسین صدیدی، سید محمدپارسا مولائی طبری؛ استاد راهنما: دکتر مالک باقری هارونی؛ گروه فیزیک، دانشگاه اصفهان؛ آبان ۱۴۰۵</div>
-  <div class="badges"><span class="badge">آنتن: Lumerical FDTD 2024 و MNPBEM (BEM)</span><span class="badge o">گسیلنده: معادله‌ی مادر لیندبلاد (QuTiP 5)</span><span class="badge g">همه‌ی عددها از کدها و داده‌های مخزن پروژه</span></div>
+  <div class="badges"><span class="badge">آنتن: Lumerical FDTD 2024 و MNPBEM</span><span class="badge o">گسیلنده: معادله‌ی مادر لیندبلاد</span><span class="badge g">دو حل‌کننده‌ی مستقل: QuTiP و کد نوشته‌شده از صفر</span><span class="badge g">۱۲ آزمون درستی، همه موفق</span></div>
   <div class="tiles">
-    <div class="tile"><div class="v">286</div><div class="l">ضریب پورسل در محل گسیلنده (FDTD، ۱۵۵۰ nm، دوقطبی x)</div></div>
-    <div class="tile"><div class="v">7.0 ps</div><div class="l">طول عمر گسیلنده روی آنتن (در برابر ۲ ns بدون آنتن)</div></div>
-    <div class="tile"><div class="v">69%</div><div class="l">بازده آنتن: سهم انرژی که تابش می‌شود (بقیه جذب طلا)</div></div>
-    <div class="tile"><div class="v">0.012</div><div class="l">g<sup>(2)</sup>(0) با پالس ۲۰۰ fs (هرچه کمتر، تک‌فوتونی‌تر)</div></div>
-    <div class="tile"><div class="v">0.97</div><div class="l">تمیزناپذیری با γ* = ۱ µeV (بدون آنتن: ۰.۱۴)</div></div>
-    <div class="tile"><div class="v">6.1</div><div class="l">نسبت گسیل به +y به −y (جهت‌دهی میدان دوردست)</div></div>
+    <div class="tile"><div class="v">286</div><div class="l">ضریب پورسل در محل گسیلنده، ۱۵۵۰ nm (FDTD)</div></div>
+    <div class="tile"><div class="v">6.99 ps</div><div class="l">طول عمر گسیلنده روی آنتن (بدون آنتن ۲ ns، فرض)</div></div>
+    <div class="tile"><div class="v">69.5%</div><div class="l">بازده آنتن (۳۰.۵٪ جذب در طلا)</div></div>
+    <div class="tile"><div class="v">0.0122</div><div class="l">g<sup>(2)</sup>(0) با پالس ۲۰۰ fs (هر دو حل‌کننده)</div></div>
+    <div class="tile"><div class="v">0.968</div><div class="l">تمیزناپذیری با γ* = ۱ µeV (بدون آنتن: ۰.۱۴)</div></div>
+    <div class="tile"><div class="v">0.69 / 0.18</div><div class="l">فوتون در هر پالس: به دوردست / جمع‌شده با NA ۱.۳</div></div>
   </div>
 </header>
 
 <section>
-  <h2><span class="n">۱</span><span>خلاصه در یک نگاه</span></h2>
-  <p class="lead">در بخش ۱۵ پرسیده‌ایم: اگر یک گسیلنده‌ی کوانتومی (نقطه‌ی کوانتومی) را درون گاف آنتن طراحی‌شده بگذاریم و با پالس لیزر تحریکش کنیم، فوتون‌های خروجی چقدر «تکی» (g<sup>(2)</sup>(0)) و چقدر «یکسان» (تمیزناپذیری I) هستند و چند فوتون در هر پالس به بیرون می‌رسد.</p>
-  <p>محاسبه دو طبقه دارد که به هم وصل‌اند:</p>
+  <h2><span class="n">۰</span><span>راهنمای خواندن و خلاصه‌ی آزمون‌های درستی</span></h2>
+  <p class="lead">بخش ۱۵ یک پرسش دارد: اگر یک نقطه‌ی کوانتومی را درون گاف آنتن بگذاریم و با پالس لیزر تحریکش کنیم، فوتون‌های خروجی چقدر <b>تکی</b> (g<sup>(2)</sup>(0)) و چقدر <b>یکسان</b> (تمیزناپذیری I) هستند و در هر پالس چند فوتون به بیرون می‌رسد؟</p>
+  <p>این گزارش محاسبه را در <b>۱۲ گام</b> باز می‌کند. در هر گام می‌گوییم ورودی چیست، چه فرمولی به کار رفته، عدد چگونه به دست آمده و چگونه آن را آزموده‌ایم. هر عدد این گزارش یا خروجی یک کد مشخص است (فهرست در گام ۱۲) یا محاسبه‌ی دستی آن در متن آمده است.</p>
+  <table>
+    <tr><th>#</th><th>آزمون</th><th>انتظار</th><th>نتیجه</th><th></th></tr>
+    <tr><td>۱</td><td>درون‌یابی F<sub>p</sub> و T در ۱۵۵۰ nm (محاسبه‌ی دستی)</td><td>همان عدد کد</td><td class="num">285.98 و 198.67</td><td class="ok">✓</td></tr>
+    <tr><td>۲</td><td>بقای انرژی FDTD: توان دوردست / توان جعبه</td><td>۱</td><td class="num">1.000</td><td class="ok">✓</td></tr>
+    <tr><td>۳</td><td>همگرایی مش FDTD (گاف ۰.۵ nm، میله ۱ nm)</td><td>تغییر کوچک</td><td class="num">F<sub>p</sub>: −1.0٪ و −2.0٪</td><td class="ok">✓</td></tr>
+    <tr><td>۴</td><td>روش مستقل دوم برای آنتن (BEM)</td><td>هم‌خوانی</td><td class="num">F<sub>p</sub> 240 در برابر 286 (۱۶٪)</td><td class="ok">✓*</td></tr>
+    <tr><td>۵</td><td>جفت‌شدگی ضعیف (شرط معتبر بودن مدل)</td><td>g ≪ κ/4</td><td class="num">2.3 meV ≪ 54 meV</td><td class="ok">✓</td></tr>
+    <tr><td>۶</td><td>مساحت پالس π (عددی)</td><td>π</td><td class="num">0.99997 π</td><td class="ok">✓</td></tr>
+    <tr><td>۷</td><td>حل‌کننده‌ی مستقل در برابر QuTiP (۸ حالت)</td><td>یکسان</td><td class="num">g<sup>(2)</sup> یکسان در ۴ رقم؛ I اختلاف ≤ ۰.۰۰۲</td><td class="ok">✓</td></tr>
+    <tr><td>۸</td><td>همگرایی گام زمانی (dt نصف و دوبرابر)</td><td>ثابت</td><td class="num">I: 0.96749 / 0.96748 / 0.96747</td><td class="ok">✓</td></tr>
+    <tr><td>۹</td><td>حد پالس بسیار کوتاه در برابر فرمول تحلیلی</td><td>I → Γ/(Γ+2γ*)، g<sup>(2)</sup> → 0</td><td class="num">0.8263 → 0.8315 (تحلیلی 0.8333)؛ g<sup>(2)</sup> ∝ τ<sub>p</sub></td><td class="ok">✓</td></tr>
+    <tr><td>۱۰</td><td>حالت بدون آنتن در برابر فرمول تحلیلی</td><td class="num">0.1413</td><td class="num">0.1413 (مستقل)، 0.1434 (QuTiP)</td><td class="ok">✓</td></tr>
+    <tr><td>۱۱</td><td>هیستوگرام شبیه‌سازی‌شده‌ی HBT: نسبت مساحت قله‌ها</td><td>= g<sup>(2)</sup>(0)</td><td class="num">0.01216 در برابر 0.0122</td><td class="ok">✓</td></tr>
+    <tr><td>۱۲</td><td>حساسیت به F<sub>p</sub> (۲۴۰ تا ۴۶۵) و τ<sub>0</sub> (۱ و ۲ ns)</td><td>نتیجه‌ی کیفی پایدار</td><td class="num">I(1 µeV) = 0.959–0.970</td><td class="ok">✓</td></tr>
+  </table>
+  <p class="src">* اختلاف FDTD و BEM با ریز شدن مش BEM کم می‌شود (h = ۴ → ۳ nm)؛ در گام ۴ توضیح داده شده است و روی g<sup>(2)</sup> و I اثر محسوس ندارد (گام ۱۱).</p>
+  <div class="callout w"><b>آن‌چه محاسبه نیست بلکه فرض است:</b> طول عمر ذاتی گسیلنده (۲ ns)، بازده ذاتی، وافازی خالص γ* (۱، ۱۰، ۵۰ µeV) و طول پالس لیزر. این‌ها مقدارهای نوعی مقاله‌ها هستند (گام ۶). نتیجه‌ها برای مقدارهای دیگر هم در گام ۱۱ آمده است. <b>نکته‌ی مهم دیگر:</b> آنتن در محیط n = ۱.۵ شبیه‌سازی شده است که با نقطه‌ی کلوییدی PbS سازگار است ولی با نقطه‌ی InAs/InP (درون InP، n ≈ ۳.۲) نه (گام ۱۲).</div>
+</section>
+
+<section>
+  <h2><span class="n">۱</span><span>گام ۱: هندسه و محیطی که گسیلنده درون آن است</span></h2>
+  <figure><img src="{{IMG:fig_geom_final}}" alt="هندسه"><figcaption>شکل ۱. طرح نهایی در صفحه‌ی z = 0. گسیلنده (نقطه‌ی قرمز) در مرکز گاف ۴۰ nm بین R1 و R2، با دوقطبی گذار موازی x. کل ساختار در محیط همگن و بی‌کران n = ۱.۵ است.</figcaption></figure>
+  <table>
+    <tr><th>کمیت</th><th>مقدار</th><th>منشأ</th></tr>
+    <tr><td>شکل میله‌ها</td><td>کپسول: استوانه + دو نیم‌کره</td><td>شکل واقعی نانومیله‌های طلای سنتزشده</td></tr>
+    <tr><td>قطر هر سه میله</td><td class="num">D = 60 nm</td><td>طرح</td></tr>
+    <tr><td>طول R1 و R2 (کل، با کلاهک‌ها)</td><td class="num">L = 275 nm</td><td>جاروب FDTD (۱۲ ترکیب)، بیشترین جهت‌دهی در ۱۵۵۰ nm با بازده ≥ ۵۰٪</td></tr>
+    <tr><td>گاف بین سرهای R1 و R2</td><td class="num">g = 40 nm</td><td>طرح؛ جای گسیلنده</td></tr>
+    <tr><td>طول R3</td><td class="num">L<sub>3</sub> = 295 nm</td><td>همان جاروب</td></tr>
+    <tr><td>مرکز R3، زاویه</td><td class="num">(0, 160) nm، 0°</td><td>فاصله‌ی لبه به لبه تا دیمر: 160 − 30 − 30 = 100 nm</td></tr>
+    <tr><td>گسیلنده</td><td>دوقطبی نقطه‌ای در (0, 0, 0)، جهت x</td><td>۲۰ nm تا سطح طلا در هر طرف</td></tr>
+    <tr><td>محیط</td><td class="num">n = 1.5، همگن، بدون زیرلایه</td><td>شیشه یا پلیمر؛ گسیلنده هم در همین محیط</td></tr>
+    <tr><td>طلا</td><td>Johnson–Christy، دمای اتاق</td><td>کتابخانه‌ی مواد Lumerical؛ Palik و CRC برای آزمون حساسیت</td></tr>
+    <tr><td>طول‌موج کار</td><td class="num">λ = 1550 nm، ħω = 0.800 eV</td><td>باند مخابراتی C</td></tr>
+  </table>
+  <p><b>چرا گسیلنده در مرکز گاف و موازی x است؟</b> مد اصلی دیمر، مد دوقطبی پیوندی است: بارهای مخالف روی دو سر روبه‌روی R1 و R2 جمع می‌شوند و میدان در گاف قوی و موازی x است. دوقطبی x در مرکز گاف بیشترین جفت‌شدگی را با این مد دارد. دوقطبی‌های y و z تقریباً جفت نمی‌شوند (F<sub>p</sub> ≈ ۰.۷، گام ۴). فاصله‌ی ۲۰ nm تا طلا آن‌قدر هست که اتلاف غیرتابشی به الکترون‌های فلز (خاموشی) غالب نشود.</p>
+</section>
+
+<section>
+  <h2><span class="n">۲</span><span>گام ۲: شبیه‌سازی آنتن، دقیقاً چه چیزی اندازه گرفته شد</span></h2>
+  <p>در FDTD معادلات ماکسول در زمان حل می‌شوند. منبع، یک <b>دوقطبی الکتریکی نقطه‌ای</b> در محل گسیلنده است. سه توان اندازه گرفته می‌شود:</p>
+  <table>
+    <tr><th>توان</th><th>چگونه</th><th>دستور Lumerical</th></tr>
+    <tr><td>P<sub>dip</sub>: توان کل خروجی دوقطبی کنار آنتن</td><td>کار انجام‌شده‌ی میدان روی دوقطبی (شامل آن‌چه طلا جذب می‌کند)</td><td class="l">dipolepower(f)</td></tr>
+    <tr><td>P<sub>0</sub>: توان همان دوقطبی در محیط همگن n = ۱.۵ بدون آنتن</td><td>فرمول تحلیلی دوقطبی در محیط همگن</td><td class="l">sourcepower(f)</td></tr>
+    <tr><td>P<sub>rad</sub>: توان رسیده به بیرون آنتن</td><td>شار پوئینتینگ از شش وجه یک جعبه‌ی بسته ۱۰۰ nm دورتر از طلا</td><td class="l">Σ transmission(box faces)</td></tr>
+  </table>
+  <div class="eq">F<sub>p</sub> = P<sub>dip</sub> / P<sub>0</sub> ,&nbsp;&nbsp;&nbsp; T = P<sub>rad</sub> / P<sub>0</sub> ,&nbsp;&nbsp;&nbsp; η<sub>a</sub> = T / F<sub>p</sub> = P<sub>rad</sub> / P<sub>dip</sub> ,&nbsp;&nbsp;&nbsp; جذب = 1 − η<sub>a</sub><small>F<sub>p</sub>: ضریب پورسل (افزایش آهنگ فروافت کل). T: افزایش آهنگ تابشی (فوتون‌هایی که بیرون می‌روند). η<sub>a</sub>: بازده آنتن. چون جعبه فقط طلا را دربر دارد، P<sub>dip</sub> − P<sub>rad</sub> دقیقاً توان جذب‌شده در طلاست.</small></div>
+  <ul>
+    <li><b>تنظیمات:</b> طیف ۱۳۰۰ تا ۱۷۰۰ nm در ۴۱ نقطه (هم‌فاصله در بسامد)؛ ۷۰۰ nm فاصله تا لایه‌های جاذب PML؛ مش ۲ nm روی میله‌ها و ۱ nm در گاف، دقت مش ۳؛ زمان ۱۰۰۰ fs با قطع خودکار در ۱۰<sup>−۵</sup>. قبل از هر اجرا، کد بازه‌ی طول‌موج را بررسی می‌کند و در صورت اشتباه اجرا نمی‌شود.</li>
+    <li><b>جهت‌دهی و جمع‌آوری:</b> جعبه‌ی دوم ۲۰ nm بیرون‌تر، تبدیل میدان نزدیک به دور با هم‌ارزی سطحی (کد farfield.py، علامت آن با farfield3d خود Lumerical بررسی می‌شود). از توان دوردست: سهم دو مخروط ۶۰ درجه حول +y و −y و سهم عدسی NA ۱.۳ و ۰.۹ در +z.</li>
+    <li><b>آزمون بقای انرژی:</b> توان کل دوردست باید با P<sub>rad</sub> برابر باشد. نسبت آن (ستون ff_check) در ۱۵۵۰ nm برابر <b>۱.۰۰۰</b> است (و در همه‌ی ۴۱ طول‌موج بین ۰.۹۹۶ و ۱.۰۰۲).</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۳</span><span>گام ۳: داده‌ی خام و استخراج عدد در ۱۵۵۰ nm</span></h2>
+  <p>فایل خروجی FDTD طرح نهایی (<span class="en">isi/data/lab_20261111/lumerical/fdtd_sw_L275_R295.csv</span>) نقطه‌ای دقیقاً در ۱۵۵۰ nm ندارد. دو نقطه‌ی دو طرف آن:</p>
+  <table>
+    <tr><th>λ (nm)</th><th>F<sub>p</sub></th><th>T</th><th>η<sub>a</sub></th><th>سهم +y (۶۰°)</th><th>سهم −y (۶۰°)</th><th>NA ۱.۳ (+z)</th><th>ff_check</th></tr>
+    <tr><td class="num">1545.45</td><td class="num">292.998</td><td class="num">202.028</td><td class="num">0.6895</td><td class="num">0.6246</td><td class="num">0.1048</td><td class="num">0.2599</td><td class="num">1.0003</td></tr>
+    <tr><td class="num">1556.34</td><td class="num">276.187</td><td class="num">194.004</td><td class="num">0.7024</td><td class="num">0.6156</td><td class="num">0.0993</td><td class="num">0.2656</td><td class="num">1.0006</td></tr>
+  </table>
+  <p><b>درون‌یابی خطی</b> (محاسبه‌ی دستی، همان کاری که کد با numpy.interp می‌کند):</p>
+  <div class="calc">w  = (1550 − 1545.45) / (1556.34 − 1545.45) = 4.55 / 10.89 = 0.4178
+Fp = 292.998 + 0.4178 × (276.187 − 292.998) = 292.998 − 7.024 = 285.97
+T  = 202.028 + 0.4178 × (194.004 − 202.028) = 202.028 − 3.352 = 198.68
+ηa = T / Fp = 198.68 / 285.97 = 0.695   →  absorbed in gold: 30.5 %
++y : 0.6246 + 0.4178×(0.6156−0.6246) = 0.6208 ;  −y : 0.1048 + 0.4178×(0.0993−0.1048) = 0.1025
+directionality = 0.6208 / 0.1025 = 6.06 ;   NA 1.3 : 0.262</div>
+  <figure><img src="{{IMG:fig_s15_input}}" alt="ورودی آنتن"><figcaption>شکل ۲. (الف) نقطه‌های خام FDTD برای F<sub>p</sub> و T و مقدار درون‌یابی‌شده در ۱۵۵۰ nm (ستاره). (ب) F<sub>p</sub> و بازده در ۱۵۵۰ nm برای شبیه‌سازی‌های آزمون (گام ۴).</figcaption></figure>
+  <div class="callout"><b>نکته‌ای که در شکل ۲ (الف) دیده می‌شود:</b> قله‌ی F<sub>p</sub> و T در حدود <b>۱۴۷۵ تا ۱۴۸۵ nm</b> است، نه ۱۵۵۰. معیار انتخاب طرح در جاروب، بیشترین <b>جهت‌دهی</b> در ۱۵۵۰ nm بود (نه بیشترین پورسل)، و جهت‌دهی که از اختلاف فاز بازتاب میله‌ی سوم می‌آید، در سمت سرخ تشدید بیشینه می‌شود. پس در ۱۵۵۰ nm، F<sub>p</sub> حدود ۶۳٪ قله است (۲۸۶ در برابر ۴۵۴). این یک انتخاب طراحی است: اگر هدف بیشترین سرعت گسیل باشد، باید آنتن را کمی بلندتر کرد تا قله روی ۱۵۵۰ بیفتد و جهت‌دهی کمتر را پذیرفت.</div>
+</section>
+
+<section>
+  <h2><span class="n">۴</span><span>گام ۴: آیا عددهای آنتن قابل اعتمادند؟</span></h2>
+  <table>
+    <tr><th>شبیه‌سازی (همه در ۱۵۵۰ nm)</th><th>F<sub>p</sub></th><th>T</th><th>η<sub>a</sub></th><th>+y/−y</th><th>NA ۱.۳</th><th>ff_check</th><th>تغییر F<sub>p</sub></th></tr>
+    <tr><td><b>مرجع FDTD</b> (گاف ۱ nm، میله ۲ nm، JC)</td><td class="num"><b>286.0</b></td><td class="num">198.7</td><td class="num">69.5%</td><td class="num">6.06</td><td class="num">0.262</td><td class="num">1.000</td><td>—</td></tr>
+    <tr><td>مش گاف ۰.۵ nm</td><td class="num">283.0</td><td class="num">193.5</td><td class="num">68.4%</td><td class="num">5.93</td><td class="num">0.261</td><td class="num">1.000</td><td class="num">−1.0%</td></tr>
+    <tr><td>مش میله ۱ nm (ریزترین FDTD)</td><td class="num">280.2</td><td class="num">197.1</td><td class="num">70.4%</td><td class="num">6.14</td><td class="num">0.265</td><td class="num">1.000</td><td class="num">−2.0%</td></tr>
+    <tr><td>مش منطبق (conformal)</td><td class="num">304.7</td><td class="num">193.1</td><td class="num">63.4%</td><td class="num">5.29</td><td class="num">0.261</td><td class="num">1.001</td><td class="num">+6.5%</td></tr>
+    <tr><td>BEM (MNPBEM، h = ۳ nm)، روش مستقل</td><td class="num">240.5</td><td class="num">181.0</td><td class="num">75.3%</td><td class="num">—</td><td class="num">0.282</td><td>—</td><td class="num">−16%</td></tr>
+    <tr><td>طلا: CRC</td><td class="num">401.7</td><td class="num">325.0</td><td class="num">80.9%</td><td class="num">6.44</td><td class="num">0.239</td><td class="num">0.998</td><td class="num">+40%</td></tr>
+    <tr><td>طلا: Palik</td><td class="num">465.5</td><td class="num">253.2</td><td class="num">54.4%</td><td class="num">2.71</td><td class="num">0.234</td><td class="num">0.998</td><td class="num">+63%</td></tr>
+  </table>
+  <ul>
+    <li><b>مش FDTD:</b> با نصف کردن مش گاف یا مش میله، F<sub>p</sub> فقط ۱ تا ۲٪ تغییر می‌کند. پس عدد مرجع همگرا شده است.</li>
+    <li><b>BEM:</b> روش کاملاً متفاوت (معادلات انتگرالی روی سطح). اختلاف ۱۶٪ عمدتاً از مش سطحی درشت‌تر BEM است. با ریز شدن مش از h = ۴ به ۳ nm، F<sub>p</sub> در BEM از ۲۳۴.۵ به ۲۴۰.۵ رسید، یعنی به سمت FDTD حرکت کرد (گزارش جامع، بخش ۷).</li>
+    <li><b>داده‌ی طلا:</b> بزرگ‌ترین عدم قطعیت است (۴۰ تا ۶۳٪). سه مجموعه‌ی داده‌ی تجربی معروف، در ۱۵۵۰ nm بخش موهومی ثابت دی‌الکتریک متفاوتی دارند. ما Johnson–Christy را مرجع گرفتیم چون رایج‌ترین مرجع برای نانوذرات طلاست. در گام ۱۱ نشان می‌دهیم این عدم قطعیت روی g<sup>(2)</sup> و I اثر کمی دارد.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۵</span><span>گام ۵: از توان کلاسیک به آهنگ کوانتومی</span></h2>
+  <h3>۵-۱. چرا F<sub>p</sub> کلاسیک همان نسبت آهنگ کوانتومی است</h3>
+  <p>آهنگ گسیل خودبه‌خودی یک گسیلنده‌ی دوترازی از قاعده‌ی طلایی فرمی به دست می‌آید و با چگالی موضعی حالت‌های فوتونی (LDOS) در محل گسیلنده متناسب است. LDOS را می‌توان با تابع گرین دیادیک الکترومغناطیسی G بیان کرد. از طرف دیگر، توانی که یک دوقطبی کلاسیک با دامنه‌ی ثابت تابش می‌کند هم با همان قسمت موهومی تابع گرین متناسب است. با تقسیم دو رابطه بر مقدارشان در محیط همگن، همه‌ی ثابت‌ها (گشتاور دوقطبی، ħ، …) حذف می‌شوند:</p>
+  <div class="eq">Γ / Γ<sub>0</sub> = P<sub>dip</sub> / P<sub>0</sub> = 1 + (6π / k) · p̂ · Im[ G<sub>s</sub>(r<sub>0</sub>, r<sub>0</sub>; ω) ] · p̂ = F<sub>p</sub><small><span class="en">k = nω/c = 2π × 1.5 / 1550 nm</span>؛ G<sub>s</sub> سهم پراکنده (آنتن) تابع گرین در محل گسیلنده r<sub>0</sub>؛ p̂ جهت گشتاور گذار. منبع: Novotny و Hecht، فصل ۸. شرط درستی: جفت‌شدگی ضعیف (۵-۳).</small></div>
+  <p>به همین ترتیب، آهنگ گسیل فوتونی که به دوردست می‌رسد <span class="en">Γ<sub>rad</sub> = T Γ<sub>0</sub></span> است و آهنگ اتلاف در طلا <span class="en">Γ<sub>abs</sub> = (F<sub>p</sub> − T) Γ<sub>0</sub></span>.</p>
+  <h3>۵-۲. اعداد، محاسبه‌ی دستی (InAs/InP، τ<sub>0</sub> = ۲ ns، q<sub>0</sub> = ۱)</h3>
+  <div class="calc">Γ0      = 1 / τ0 = 1 / 2 ns                     = 5.000 × 10^8  s^-1
+Γ       = Fp Γ0 = 285.97 × 5.000 × 10^8           = 1.430 × 10^11 s^-1
+1/Γ     = 1 / 1.430 × 10^11                        = 6.99 ps
+ħΓ      = 6.5821 × 10^-16 eV·s × 1.430 × 10^11     = 9.41 × 10^-5 eV = 94.1 µeV
+Γrad    = T Γ0 = 198.68 × 5 × 10^8                 = 9.93 × 10^10 s^-1
+Γabs    = (Fp − T) Γ0 = 87.29 × 5 × 10^8           = 4.36 × 10^10 s^-1
+photons into the far field per excitation = Γrad / Γ = 0.695
+photons into NA 1.3 (FDTD 0.262 / BEM 0.282)       = 0.18 / 0.20</div>
+  <p>برای گسیلنده‌ای با بازده ذاتی q<sub>0</sub> &lt; 1، اتلاف غیرتابشی ذاتی (1 − q<sub>0</sub>)Γ<sub>0</sub> را آنتن تغییر نمی‌دهد:</p>
+  <div class="eq">Γ = Γ<sub>0</sub> ( q<sub>0</sub> F<sub>p</sub> + 1 − q<sub>0</sub> ) ,&nbsp;&nbsp;&nbsp;&nbsp; فوتون دوردست در هر برانگیختگی = q<sub>0</sub> T / ( q<sub>0</sub> F<sub>p</sub> + 1 − q<sub>0</sub> )</div>
+  <div class="calc">PbS (τ0 = 1 µs, q0 = 0.4, randomly oriented dipole):
+Fp,iso = (Fp,x + Fp,y + Fp,z)/3 = (285.97 + 0.76 + 0.71)/3 = 95.8
+T,iso  = (198.68 + 0.34 + 0.29)/3                        = 66.4
+Γ/Γ0   = 0.4 × 95.8 + 0.6   = 38.9
+1/Γ    = 1 µs / 38.9        = 25.7 ns
+far-field photons per excitation = 0.4 × 66.4 / 38.9 = 0.68
+(without antenna: q0 = 0.40)</div>
+  <h3>۵-۳. شرط جفت‌شدگی ضعیف (آزمون ۵)</h3>
+  <p>توصیف آنتن با یک آهنگ ثابت Γ (تقریب مارکوف) فقط وقتی درست است که گسیلنده و مد آنتن به رژیم جفت‌شدگی قوی (شکافت رابی) نرسند. پهنای مد آنتن از طیف T (BEM، ۱۳۸۰ تا ۱۸۲۰ nm): ħκ ≈ ۰.۲۲ eV (Q ≈ ۳). در جفت‌شدگی ضعیف Γ = 4g²/κ، پس:</p>
+  <div class="calc">ħg = ½ √(ħΓ · ħκ) = ½ √(94.1 × 10^-6 eV × 0.217 eV) = 2.26 meV
+κ/4 = 0.217 / 4 = 54 meV   →   g / (κ/4) = 0.04  ≪ 1   →  weak coupling, Markov rate valid</div>
+  <p>همچنین چون پهنای آنتن (۰.۲۲ eV) بسیار بزرگ‌تر از پهنای خط گسیلنده (ħΓ ≈ ۹۴ µeV) است، F<sub>p</sub> روی کل خط گسیلنده ثابت است و لازم نیست گسیلنده دقیقاً هم‌طول‌موج قله باشد.</p>
+</section>
+
+<section>
+  <h2><span class="n">۶</span><span>گام ۶: پارامترهای گسیلنده (فرض‌ها) و منشأ آن‌ها</span></h2>
+  <table>
+    <tr><th>پارامتر</th><th>مقدار</th><th>منشأ / توضیح</th><th>محاسبه یا فرض؟</th></tr>
+    <tr><td>انرژی گذار</td><td class="num">0.800 eV</td><td>شرط طرح (۱۵۵۰ nm)</td><td>شرط</td></tr>
+    <tr><td>اندازه‌ی نقطه‌ی PbS</td><td class="num">d = 5.5–5.7 nm</td><td>منحنی تجربی Moreels ۲۰۰۹: E(d) = 0.41 + 1/(0.0252d² + 0.283d) eV؛ اکسیتون جذبی ۱۵۵۰ nm در d = 5.93 nm، با جابه‌جایی استوکس ۲۰ تا ۴۰ meV</td><td>محاسبه</td></tr>
+    <tr><td>اندازه‌ی نقطه‌ی InAs/InP</td><td class="num">ارتفاع 2.6–4.5 nm، قطر 30–50 nm</td><td>چاه محدود در راستای رشد، پارامترهای Vurgaftman ۲۰۰۱؛ مرتبه‌ی بزرگی</td><td>محاسبه‌ی تقریبی</td></tr>
+    <tr><td>طول عمر ذاتی τ<sub>0</sub> (InAs/InP)</td><td class="num">2 ns (و ۱ ns در گام ۱۱)</td><td>بازه‌ی نوعی ۱ تا ۲ ns برای نقاط InAs/InP باند C</td><td><b>فرض</b></td></tr>
+    <tr><td>τ<sub>0</sub> و q<sub>0</sub> (PbS)</td><td class="num">1 µs، 0.4</td><td>مقدار نوعی نقاط کلوییدی PbS</td><td><b>فرض</b></td></tr>
+    <tr><td>q<sub>0</sub> (InAs/InP)</td><td class="num">1</td><td>نقاط اپیتکسیال با بازده نزدیک به یک</td><td><b>فرض</b></td></tr>
+    <tr><td>وافازی خالص γ* (InAs/InP، ۴ K)</td><td class="num">1، 10، 50 µeV</td><td>تحریک تشدیدی، پخش طیفی، تحریک بالای نوار</td><td><b>فرض (سه سناریو)</b></td></tr>
+    <tr><td>γ* (PbS، ۳۰۰ K)</td><td class="num">20 meV</td><td>پهن‌شدگی فونونی دمای اتاق</td><td><b>فرض</b></td></tr>
+    <tr><td>طول پالس τ<sub>p</sub> (FWHM شدت)</td><td class="num">200 fs، 2 ps (با آنتن)؛ 2، 20 ps (بدون آنتن)</td><td>لیزرهای فمتوثانیه و پیکوثانیه‌ی متداول</td><td>انتخاب</td></tr>
+    <tr><td>سهم خط صفر-فونون</td><td class="num">0.9</td><td>نوعی برای نقاط InAs؛ فقط در ستون I × ZPL²</td><td><b>فرض</b></td></tr>
+  </table>
+  <p class="src">برای PbS دوقطبی بی‌جهت گرفته شد (گذار سه‌بار تبهگن نقطه‌ی کروی و جهت کنترل‌نشده). برای InAs/InP یکی از دو اکسیتون درون‌صفحه با محور میله‌ها هم‌راستا فرض شد.</p>
+</section>
+
+<section>
+  <h2><span class="n">۷</span><span>گام ۷: مدل کوانتومی گسیلنده</span></h2>
+  <h3>۷-۱. هامیلتونی</h3>
+  <p>گسیلنده دو حالت دارد: حالت پایه <span class="en">|g⟩</span> و حالت برانگیخته <span class="en">|e⟩</span>. عملگر پایین‌برنده <span class="en">σ<sub>−</sub> = |g⟩⟨e|</span> و بالابرنده <span class="en">σ<sub>+</sub> = σ<sub>−</sub><sup>†</sup></span>. برهم‌کنش با میدان لیزر <span class="en">−d·E(t)</span> است. با تقریب موج چرخان و در چارچوبی که با بسامد لیزر می‌چرخد، و چون لیزر دقیقاً هم‌بسامد با گذار است (بدون ناکوکی):</p>
+  <div class="eq">H(t) = ½ ħ Ω(t) ( σ<sub>+</sub> + σ<sub>−</sub> ) ,&nbsp;&nbsp;&nbsp; Ω(t) = A · exp[ −(t − t<sub>0</sub>)² / (2σ<sub>f</sub>²) ]<small>Ω(t) بسامد رابی (متناسب با دامنه‌ی میدان لیزر). شدت لیزر ∝ Ω²، پس پهنای نیم‌بیشینه‌ی شدت τ<sub>p</sub> = 2√(2 ln 2) · σ<sub>f</sub>/√2.</small></div>
+  <h3>۷-۲. پالس π</h3>
+  <p>مساحت پالس θ = ∫Ω dt تعیین می‌کند گسیلنده چقدر برانگیخته شود (بدون اتلاف، جمعیت حالت برانگیخته sin²(θ/2) است). برای برانگیختگی کامل θ = π:</p>
+  <div class="eq">∫ Ω(t) dt = A √(2π) σ<sub>f</sub> = π &nbsp;&nbsp;⇒&nbsp;&nbsp; A = π / (√(2π) σ<sub>f</sub>)<small>آزمون عددی (آزمون ۶): مساحت محاسبه‌شده روی شبکه‌ی زمانی = ۰.۹۹۹۹۷π. بیشینه‌ی جمعیت حالت برانگیخته با پالس ۲۰۰ fs برابر ۰.۹۷۱ است (نه ۱)، چون گسیلنده در همان مدت پالس کمی هم فروافت می‌کند.</small></div>
+  <h3>۷-۳. معادله‌ی مادر لیندبلاد</h3>
+  <div class="eq">dρ/dt = −(i/ħ) [ H(t), ρ ] + Γ 𝒟[σ<sub>−</sub>]ρ + 2γ* 𝒟[σ<sub>+</sub>σ<sub>−</sub>]ρ ,&nbsp;&nbsp;&nbsp; 𝒟[c]ρ = cρc<sup>†</sup> − ½ (c<sup>†</sup>cρ + ρc<sup>†</sup>c)</div>
+  <div class="stepbox"><b class="h">معنای هر جمله:</b>
+    <ul>
+      <li><b>[H, ρ]:</b> تحول همدوس با لیزر (نوسان رابی).</li>
+      <li><b>Γ𝒟[σ<sub>−</sub>]:</b> گسیل خودبه‌خودی، گسیلنده را با آهنگ Γ از e به g می‌برد. <b>این تنها جایی است که آنتن وارد مدل می‌شود:</b> Γ = F<sub>p</sub>Γ<sub>0</sub>.</li>
+      <li><b>2γ*𝒟[σ<sub>+</sub>σ<sub>−</sub>]:</b> وافازی خالص؛ جمعیت‌ها را تغییر نمی‌دهد ولی فاز را تصادفی می‌کند (لرزش فونون‌ها و بارهای محیط).</li>
+    </ul>
+    با نوشتن معادله برای عناصر ماتریس چگالی (بدون لیزر): <span class="en">dρ<sub>ee</sub>/dt = −Γρ<sub>ee</sub></span> و <span class="en">dρ<sub>eg</sub>/dt = −(Γ/2 + γ*) ρ<sub>eg</sub></span>. پس طول عمر <span class="en">T<sub>1</sub> = 1/Γ</span>، زمان همدوسی <span class="en">T<sub>2</sub> = 1/(Γ/2 + γ*)</span> و پهنای خط (FWHM) برابر <span class="en">ħ(Γ + 2γ*)</span> است.</div>
+  <h3>۷-۴. بی‌بعدسازی</h3>
+  <p>با سنجیدن زمان بر حسب 1/Γ، کل مدل فقط به دو عدد بستگی دارد: <b class="en">τ<sub>p</sub>Γ</b> (طول پالس نسبت به طول عمر) و <b class="en">γ*/Γ</b> (وافازی نسبت به گسیل). مقدار آن‌ها برای حالت‌های گزارش:</p>
+  <div class="calc">with antenna  (Γ = 1.430e11 s^-1, ħΓ = 94.1 µeV):
+  τp = 200 fs → τpΓ = 200e-15 × 1.430e11 = 0.0286 ;  τp = 2 ps → 0.286
+  γ* = 1 µeV  → γ*/Γ = 1/94.1  = 0.0106 ; 10 µeV → 0.106 ; 50 µeV → 0.531
+without antenna (Γ0 = 5.0e8 s^-1, ħΓ0 = 0.329 µeV):
+  τp = 2 ps → τpΓ0 = 0.001 ; 20 ps → 0.010 ;  γ* = 1 µeV → γ*/Γ0 = 3.04</div>
+  <p>همین دو عدد کل داستان را می‌گویند: آنتن γ*/Γ را از ۳.۰۴ به ۰.۰۱۱ می‌برد (۲۸۶ برابر کوچک‌تر) ولی τ<sub>p</sub>Γ را هم ۲۸۶ برابر بزرگ‌تر می‌کند.</p>
+</section>
+
+<section>
+  <h2><span class="n">۸</span><span>گام ۸: تعریف کمیت‌های خروجی و معنای آزمایشگاهی آن‌ها</span></h2>
+  <h3>۸-۱. تعداد فوتون در هر پالس</h3>
+  <div class="eq">N = Γ ∫ ⟨σ<sub>+</sub>σ<sub>−</sub>⟩(t) dt = Γ ∫ ρ<sub>ee</sub>(t) dt<small>تعداد فوتون گسیل‌شده در هر پالس (پیش از اتلاف آنتن)؛ برای پالس π ایده‌آل N = ۱.</small></div>
+  <h3>۸-۲. تابع‌های همبستگی دوزمانی</h3>
+  <div class="eq">G<sup>(1)</sup>(t, τ) = ⟨σ<sub>+</sub>(t+τ) σ<sub>−</sub>(t)⟩ ,&nbsp;&nbsp;&nbsp; G<sup>(2)</sup>(t, τ) = ⟨σ<sub>+</sub>(t) σ<sub>+</sub>(t+τ) σ<sub>−</sub>(t+τ) σ<sub>−</sub>(t)⟩<small>میدان گسیل‌شده متناسب با σ<sub>−</sub> است، پس G<sup>(1)</sup> همدوسی میدان در دو زمان و G<sup>(2)</sup> احتمال آشکارسازی یک فوتون در t و فوتون دیگر در t+τ است. محاسبه با قضیه‌ی رگرسیون کوانتومی: عملگر σ<sub>−</sub>ρ(t) (یا σ<sub>−</sub>ρ(t)σ<sub>+</sub>) با همان معادله‌ی مادر از t تا t+τ تحول داده می‌شود.</small></div>
+  <h3>۸-۳. g<sup>(2)</sup>(0): آزمایش هنبری-براون-توییس (HBT)</h3>
+  <p>فوتون‌ها با یک تقسیم‌کننده‌ی پرتو به دو آشکارساز فرستاده می‌شوند و هیستوگرام تأخیر بین دو کلیک ثبت می‌شود. با تحریک پالسی، هیستوگرام از قله‌هایی در مضرب‌های دوره‌ی تکرار تشکیل می‌شود. قله‌های کناری از دو فوتون در دو پالس مستقل‌اند (مساحت ∝ N²). قله‌ی مرکزی فقط وقتی پر می‌شود که یک پالس دو فوتون بدهد. پس:</p>
+  <div class="eq">g<sup>(2)</sup>(0) = مساحت قله‌ی مرکزی / مساحت قله‌ی کناری = 2 ∫<sub>0</sub><sup>∞</sup>dt ∫<sub>0</sub><sup>∞</sup>dτ G<sup>(2)</sup>(t, τ) / N²<small>ضریب ۲ برای τ منفی است (ترتیب دو آشکارساز). منبع تک‌فوتون ایده‌آل: g<sup>(2)</sup>(0) = ۰.</small></div>
+  <h3>۸-۴. تمیزناپذیری: آزمایش هنگ-او-مندل (HOM)</h3>
+  <p>دو فوتون پیاپی (با یک خط تأخیر هم‌زمان‌شده) از دو ورودی یک تقسیم‌کننده‌ی پرتو وارد می‌شوند. اگر کاملاً یکسان باشند، همیشه با هم از یک خروجی بیرون می‌روند و هیچ هم‌زمانی ثبت نمی‌شود. نمایانی این تداخل همان تمیزناپذیری است (Fischer و همکاران، ۲۰۱۶):</p>
+  <div class="eq">I = 2 ∫<sub>0</sub><sup>∞</sup>dt ∫<sub>0</sub><sup>∞</sup>dτ | G<sup>(1)</sup>(t, τ) |² / N²</div>
+  <h3>۸-۵. حد تحلیلی پالس بسیار کوتاه: استخراج گام به گام</h3>
+  <div class="stepbox">اگر پالس آنی باشد (τ<sub>p</sub> → 0)، در t = 0 گسیلنده کاملاً در |e⟩ است و پس از آن لیزر خاموش است:
+  <div class="calc">ρee(t) = e^(−Γt)                         →  N = Γ ∫ e^(−Γt) dt = 1
+G1(t, τ) = ⟨σ+(t+τ) σ−(t)⟩ = ρee(t) · e^(−(Γ/2 + γ*) τ)       (coherence decays at Γ/2 + γ*)
+|G1|²    = e^(−2Γt) · e^(−(Γ + 2γ*) τ)
+I = 2 Γ² ∫ e^(−2Γt) dt ∫ e^(−(Γ+2γ*)τ) dτ = 2 Γ² · 1/(2Γ) · 1/(Γ+2γ*) = Γ / (Γ + 2γ*)
+G2 = 0 after a delta pulse (once the photon is emitted the emitter is in |g⟩ and the laser is off) → g2(0) = 0</div>
+  (در فرمول I، ضریب Γ² از بهنجارسازی آهنگ‌ها در N و G<sup>(1)</sup> می‌آید.) این همان رابطه‌ی شناخته‌شده‌ی I = T<sub>2</sub>/2T<sub>1</sub> است (Bylander و همکاران ۲۰۰۳؛ Kiraz و همکاران ۲۰۰۴).</div>
+  <div class="calc">with antenna,   γ* = 1 µeV : I = 1/(1 + 2×0.0106) = 0.979
+without antenna, γ* = 1 µeV : I = 1/(1 + 2×3.04)   = 0.141</div>
+  <p>با پالس واقعی (طول محدود) دو اثر اضافه می‌شود که فقط حل عددی آن‌ها را درست می‌دهد: گسیلنده ممکن است در حین پالس فوتون بدهد و دوباره برانگیخته شود (g<sup>(2)</sup> &gt; 0)، و این فوتون اضافه زمان گسیل را نامعین می‌کند (I کمی کمتر از حد تحلیلی).</p>
+</section>
+
+<section>
+  <h2><span class="n">۹</span><span>گام ۹: حل عددی و آزمون آن با یک حل‌کننده‌ی مستقل</span></h2>
+  <h3>۹-۱. حل‌کننده‌ی اصلی: QuTiP</h3>
+  <p>کتابخانه‌ی QuTiP 5.3: <span class="en">mesolve</span> برای ρ(t)، <span class="en">correlation_2op_2t</span> برای G<sup>(1)</sup> و <span class="en">correlation_3op_2t</span> برای G<sup>(2)</sup>. شبکه‌ی زمانی ۴۰۰ نقطه در t و ۴۰۰ نقطه در τ، متراکم در مدت پالس، تا ۱۲/Γ پس از پالس (e<sup>−12</sup> ≈ ۶×۱۰<sup>−۶</sup> جمعیت باقی‌مانده). انتگرال‌ها با قاعده‌ی ذوزنقه (کد: <span class="en">isi/analysis/pulsed_tls.py</span>).</p>
+  <h3>۹-۲. حل‌کننده‌ی دوم، مستقل از QuTiP</h3>
+  <p>برای این‌که درستی نتیجه به یک کتابخانه وابسته نباشد، یک حل‌کننده‌ی دوم از صفر نوشتیم (فقط numpy و scipy، کد <span class="en">isi/analysis/verify_s15.py</span>):</p>
+  <ul>
+    <li>معادله‌ی مادر به شکل برداری dρ⃗/dt = 𝓛(t)ρ⃗ با سوپرعملگر لیوویلی ۴×۴ ساخته می‌شود: <span class="en">𝓛 = −i(I⊗H − H<sup>T</sup>⊗I) + Σ<sub>c</sub>[c̄⊗c − ½I⊗c<sup>†</sup>c − ½(c<sup>†</sup>c)<sup>T</sup>⊗I]</span>.</li>
+    <li>انتشار با ماتریس نمایی در وسط هر گام (<span class="en">U<sub>k</sub> = exp[𝓛(t<sub>k</sub> + h/2) h]</span>، دقت مرتبه‌ی دوم). شبکه: σ<sub>f</sub>/25 در مدت پالس و ۰.۰۰۴/Γ پس از آن.</li>
+    <li>همبستگی‌ها با رگرسیون کوانتومی، برای همه‌ی نقطه‌های شروع t<sub>i</sub> به‌طور هم‌زمان، و انتگرال دوگانه با وزن‌های ذوزنقه روی همان شبکه.</li>
+  </ul>
+  <h3>۹-۳. مقایسه‌ی دو حل‌کننده (آزمون ۷)</h3>
+  <table>
+    <tr><th>حالت</th><th>τ<sub>p</sub>Γ</th><th>γ*/Γ</th><th>N (مستقل / QuTiP)</th><th>g<sup>(2)</sup>(0) (مستقل / QuTiP)</th><th>I (مستقل / QuTiP)</th><th>حد تحلیلی I</th></tr>
+    <tr><td>با آنتن، ۲۰۰ fs، γ* = ۱ µeV</td><td class="num">0.0286</td><td class="num">0.0106</td><td class="num">1.0059 / 1.0062</td><td class="num">0.0122 / 0.0122</td><td class="num">0.9675 / 0.9682</td><td class="num">0.9792</td></tr>
+    <tr><td>با آنتن، ۲۰۰ fs، γ* = ۱۰ µeV</td><td class="num">0.0286</td><td class="num">0.106</td><td class="num">1.0047 / 1.0050</td><td class="num">0.0122 / 0.0122</td><td class="num">0.8149 / 0.8156</td><td class="num">0.8247</td></tr>
+    <tr><td>با آنتن، ۲۰۰ fs، γ* = ۵۰ µeV</td><td class="num">0.0286</td><td class="num">0.531</td><td class="num">0.9994 / 0.9997</td><td class="num">0.0122 / 0.0122</td><td class="num">0.4791 / 0.4798</td><td class="num">0.4848</td></tr>
+    <tr><td>با آنتن، ۲ ps، γ* = ۱ µeV</td><td class="num">0.286</td><td class="num">0.0106</td><td class="num">1.0443 / 1.0445</td><td class="num">0.0975 / 0.0975</td><td class="num">0.8970 / 0.8970</td><td class="num">0.9792</td></tr>
+    <tr><td>بدون آنتن، ۲ ps، γ* = ۱ µeV</td><td class="num">0.001</td><td class="num">3.04</td><td class="num">0.9989 / 0.9992</td><td class="num">0.0004 / 0.0004</td><td class="num">0.1413 / 0.1434</td><td class="num">0.1413</td></tr>
+    <tr><td>بدون آنتن، ۲۰ ps، γ* = ۱ µeV</td><td class="num">0.010</td><td class="num">3.04</td><td class="num">0.9890 / 0.9893</td><td class="num">0.0043 / 0.0043</td><td class="num">0.1407 / 0.1423</td><td class="num">0.1413</td></tr>
+    <tr><td>آزمون (پالس بلند)</td><td class="num">0.5</td><td class="num">0.1</td><td class="num">1.0392 / 1.0393</td><td class="num">0.1483 / 0.1483</td><td class="num">0.7391 / 0.7391</td><td class="num">0.8333</td></tr>
+    <tr><td>آزمون (پالس خیلی بلند، وافازی زیاد)</td><td class="num">2</td><td class="num">1</td><td class="num">0.5460 / 0.5460</td><td class="num">0.4018 / 0.4018</td><td class="num">0.2555 / 0.2557</td><td class="num">0.3333</td></tr>
+  </table>
+  <ul>
+    <li>g<sup>(2)</sup>(0) و N در دو حل‌کننده تا چهار رقم یکسان‌اند؛ I در همه‌ی حالت‌ها کمتر از ۰.۰۰۲ اختلاف دارد.</li>
+    <li>در حالت بدون آنتن، حل‌کننده‌ی مستقل دقیقاً حد تحلیلی (۰.۱۴۱۳) را می‌دهد و QuTiP ۰.۱۴۳۴. این اختلاف کوچک خطای شبکه‌ی τ در QuTiP است وقتی وافازی سریع است. هیچ نتیجه‌گیری‌ای را تغییر نمی‌دهد.</li>
+  </ul>
+  <h3>۹-۴. همگرایی و حدها (آزمون‌های ۸ تا ۱۰)</h3>
+  <table>
+    <tr><th>آزمون</th><th>تنظیم</th><th>N</th><th>g<sup>(2)</sup>(0)</th><th>I</th></tr>
+    <tr><td rowspan="3">گام زمانی (طرح، ۲۰۰ fs، ۱ µeV)</td><td>dt = 0.008/Γ (۱۷۰۱ نقطه)</td><td class="num">1.005933</td><td class="num">0.0121615</td><td class="num">0.967486</td></tr>
+    <tr><td>dt = 0.004/Γ (۳۲۰۱ نقطه)</td><td class="num">1.005929</td><td class="num">0.0121617</td><td class="num">0.967475</td></tr>
+    <tr><td>dt = 0.002/Γ (۶۲۰۱ نقطه)</td><td class="num">1.005928</td><td class="num">0.0121618</td><td class="num">0.967473</td></tr>
+    <tr><td rowspan="2">نزدیک شدن به پالس آنی (γ*/Γ = ۰.۱؛ حد: I = ۰.۸۳۳۳، g<sup>(2)</sup> = ۰)</td><td>τ<sub>p</sub>Γ = 0.02</td><td class="num">1.0034</td><td class="num">0.00858</td><td class="num">0.8263</td></tr>
+    <tr><td>τ<sub>p</sub>Γ = 0.005</td><td class="num">1.0009</td><td class="num">0.00218</td><td class="num">0.8315</td></tr>
+  </table>
+  <p>با کوتاه شدن پالس، I به حد تحلیلی نزدیک می‌شود و g<sup>(2)</sup>(0) متناسب با τ<sub>p</sub> کم می‌شود (۴ برابر کوتاه‌تر → ۳.۹ برابر کمتر): <b>g<sup>(2)</sup>(0) ≈ 0.43 τ<sub>p</sub>Γ</b> در پالس‌های کوتاه.</p>
+  <figure><img src="{{IMG:fig_s15_mech}}" alt="سازوکار"><figcaption>شکل ۳. (الف) جمعیت حالت برانگیخته با آنتن: پالس ۲۰۰ fs (آبی) برانگیختگی تقریباً آنی و فروافت نمایی با 1/Γ = ۷.۰ ps؛ پالس ۲ ps (طلایی) در مدت تحریک فرصت گسیل و برانگیختگی دوباره می‌دهد. سایه: شکل شدت پالس. (ب) g<sup>(2)</sup>(0) بر حسب τ<sub>p</sub>Γ؛ ستاره‌ها نقطه‌های کار. (ج) تمیزناپذیری بر حسب γ*/Γ، حل کامل (نقطه‌ها) و حد تحلیلی (خط‌چین)؛ خط‌های سبز: γ* = ۱، ۱۰، ۵۰ µeV با آنتن.</figcaption></figure>
+  <figure><img src="{{IMG:fig_s15_corr}}" alt="همبستگی"><figcaption>شکل ۴. حالت طرح (۲۰۰ fs، γ* = ۱ µeV) از حل‌کننده‌ی مستقل. (الف) |G<sup>(1)</sup>(t, τ)|²؛ انتگرال آن تمیزناپذیری است و میرایی آن در جهت τ با آهنگ Γ + 2γ* است. (ب) هیستوگرام شبیه‌سازی‌شده‌ی آزمایش HBT: قله‌ی کناری (دو پالس پیاپی، با فاصله‌ی نمادین) و قله‌ی مرکزی (یک پالس). نسبت مساحت‌ها ۰.۰۱۲۱۶ است، همان g<sup>(2)</sup>(0) (آزمون ۱۱).</figcaption></figure>
+</section>
+
+<section>
+  <h2><span class="n">۱۰</span><span>گام ۱۰: نتایج نهایی</span></h2>
+  <table>
+    <tr><th>گسیلنده</th><th>آنتن</th><th>1/Γ</th><th>پالس</th><th>γ*</th><th>g<sup>(2)</sup>(0)</th><th>I</th><th>I × ZPL²</th><th>فوتون/پالس دوردست</th><th>NA ۱.۳</th></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>ندارد</td><td class="num">2 ns</td><td class="num">2 ps</td><td class="num">1 µeV</td><td class="num">0.0004</td><td class="num">0.14</td><td class="num">0.12</td><td class="num">1.00</td><td class="num">~0.25</td></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>ندارد</td><td class="num">2 ns</td><td class="num">2 ps</td><td class="num">10 µeV</td><td class="num">0.0004</td><td class="num">0.03</td><td class="num">0.02</td><td class="num">1.00</td><td class="num">~0.25</td></tr>
+    <tr><td><b>InAs/InP، ۴ K</b></td><td><b>دارد</b></td><td class="num">6.99 ps</td><td class="num">200 fs</td><td class="num">1 µeV</td><td class="num"><b>0.012</b></td><td class="num"><b>0.968</b></td><td class="num">0.78</td><td class="num">0.69</td><td class="num">0.18–0.20</td></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>دارد</td><td class="num">6.99 ps</td><td class="num">200 fs</td><td class="num">10 µeV</td><td class="num">0.012</td><td class="num">0.816</td><td class="num">0.66</td><td class="num">0.69</td><td class="num">0.18–0.20</td></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>دارد</td><td class="num">6.99 ps</td><td class="num">200 fs</td><td class="num">50 µeV</td><td class="num">0.012</td><td class="num">0.480</td><td class="num">0.39</td><td class="num">0.69</td><td class="num">0.18–0.20</td></tr>
+    <tr><td>InAs/InP، ۴ K</td><td>دارد</td><td class="num">6.99 ps</td><td class="num">2 ps</td><td class="num">1 µeV</td><td class="num">0.098</td><td class="num">0.897</td><td class="num">0.73</td><td class="num">0.69</td><td class="num">0.18–0.20</td></tr>
+    <tr><td>PbS، ۳۰۰ K</td><td>ندارد</td><td class="num">1 µs</td><td class="num">ps</td><td class="num">20 meV</td><td>≈ ۰*</td><td class="num">≈ 0</td><td>—</td><td class="num">0.40</td><td class="num">~0.10</td></tr>
+    <tr><td>PbS، ۳۰۰ K</td><td>دارد</td><td class="num">25.7 ns</td><td class="num">ps</td><td class="num">20 meV</td><td>≈ ۰*</td><td class="num">≈ 0</td><td>—</td><td class="num">0.68</td><td class="num">0.18–0.19</td></tr>
+  </table>
+  <p class="src">* مدل دوترازی. در نقطه‌ی کلوییدی حد واقعی g<sup>(2)</sup>(0) گسیل بای‌اکسیتون است (g<sup>(2)</sup>(0) ≈ QY<sub>XX</sub>/QY<sub>X</sub>). برای PbS، γ*/Γ ≈ ۸×۱۰<sup>۵</sup>، پس I = Γ/(Γ+2γ*) ≈ ۶×۱۰<sup>−۷</sup>. «فوتون/پالس دوردست» = N × η (N ≈ ۱). ستون NA ۱.۳: دو مقدار از FDTD (۰.۲۶۲) و BEM (۰.۲۸۲)؛ حالت بدون آنتن تخمینی.</p>
+  <h3>تفسیر فیزیکی</h3>
+  <ul>
+    <li><b>چرا آنتن تمیزناپذیری را بالا می‌برد:</b> بدون آنتن، ħΓ<sub>0</sub> = ۰.۳۳ µeV کوچک‌تر از γ* = ۱ µeV است؛ فاز پیش از گسیل به هم می‌ریزد (I = ۰.۱۴). با آنتن ħΓ = ۹۴ µeV، یعنی ۹۴ برابر γ*؛ فوتون پیش از آن‌که وافازی اثر کند گسیل می‌شود (I = ۰.۹۷).</li>
+    <li><b>هزینه‌ی آن در g<sup>(2)</sup>:</b> g<sup>(2)</sup>(0) ≈ 0.43 τ<sub>p</sub>Γ. با طول عمر ۷ ps، پالس ۲ ps «بلند» است (g<sup>(2)</sup> = ۰.۱). پس با آنتن، پالس باید زیر حدود ۱ ps باشد.</li>
+    <li><b>روشنایی:</b> هر پالس حداکثر یک فوتون می‌دهد؛ آنتن ۳۰.۵٪ را در طلا جذب می‌کند (۱.۰۰ → ۰.۶۹). سود آنتن در روشنایی دو چیز است: آهنگ تکرار تا ده‌ها GHz، و برای گسیلنده‌ی کم‌بازده (PbS) بازده ۰.۴۰ → ۰.۶۸.</li>
+    <li><b>دمای اتاق:</b> برای I = ۰.۹ با γ* = ۲۰ meV باید ħΓ ≈ ۲γ* × ۹ = ۰.۳۶ eV باشد؛ هیچ آنتن پلاسمونی چنین آهنگی نمی‌دهد. PbS در دمای اتاق منبع تک‌فوتون (g<sup>(2)</sup>) هست، ولی منبع فوتون یکسان نیست.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۱۱</span><span>گام ۱۱: حساسیت نتیجه‌ها به عدم قطعیت‌ها (آزمون ۱۲)</span></h2>
+  <p>دو ورودی بیشترین عدم قطعیت را دارند: F<sub>p</sub> (به‌ویژه داده‌ی طلا) و طول عمر ذاتی τ<sub>0</sub>. هر دو را تغییر دادیم و محاسبه را تکرار کردیم (پالس ۲۰۰ fs، QuTiP):</p>
+  <table>
+    <tr><th>منبع F<sub>p</sub></th><th>F<sub>p</sub></th><th>τ<sub>0</sub></th><th>1/Γ</th><th>g<sup>(2)</sup>(0)</th><th>I (۱ µeV)</th><th>I (۱۰ µeV)</th></tr>
+    <tr><td rowspan="2"><b>FDTD مرجع</b></td><td class="num" rowspan="2">286</td><td class="num">2 ns</td><td class="num">6.99 ps</td><td class="num">0.0122</td><td class="num">0.968</td><td class="num">0.816</td></tr>
+    <tr><td class="num">1 ns</td><td class="num">3.50 ps</td><td class="num">0.0237</td><td class="num">0.967</td><td class="num">0.884</td></tr>
+    <tr><td rowspan="2">BEM (h = ۳ nm)</td><td class="num" rowspan="2">240</td><td class="num">2 ns</td><td class="num">8.32 ps</td><td class="num">0.0103</td><td class="num">0.966</td><td class="num">0.791</td></tr>
+    <tr><td class="num">1 ns</td><td class="num">4.16 ps</td><td class="num">0.0201</td><td class="num">0.969</td><td class="num">0.871</td></tr>
+    <tr><td rowspan="2">مش منطبق</td><td class="num" rowspan="2">305</td><td class="num">2 ns</td><td class="num">6.56 ps</td><td class="num">0.0129</td><td class="num">0.969</td><td class="num">0.824</td></tr>
+    <tr><td class="num">1 ns</td><td class="num">3.28 ps</td><td class="num">0.0251</td><td class="num">0.967</td><td class="num">0.888</td></tr>
+    <tr><td rowspan="2">طلا: CRC</td><td class="num" rowspan="2">402</td><td class="num">2 ns</td><td class="num">4.98 ps</td><td class="num">0.0169</td><td class="num">0.970</td><td class="num">0.855</td></tr>
+    <tr><td class="num">1 ns</td><td class="num">2.49 ps</td><td class="num">0.0325</td><td class="num">0.962</td><td class="num">0.901</td></tr>
+    <tr><td rowspan="2">طلا: Palik</td><td class="num" rowspan="2">465</td><td class="num">2 ns</td><td class="num">4.30 ps</td><td class="num">0.0195</td><td class="num">0.969</td><td class="num">0.868</td></tr>
+    <tr><td class="num">1 ns</td><td class="num">2.15 ps</td><td class="num">0.0372</td><td class="num">0.959</td><td class="num">0.906</td></tr>
+  </table>
+  <ul>
+    <li><b>I با γ* = ۱ µeV</b> در همه‌ی حالت‌ها بین ۰.۹۵۹ و ۰.۹۷۰ است. دلیل: با F<sub>p</sub> بزرگ‌تر، γ*/Γ کوچک‌تر می‌شود (خوب) ولی τ<sub>p</sub>Γ بزرگ‌تر (بد) و این دو اثر تقریباً هم را خنثی می‌کنند.</li>
+    <li><b>I با γ* = ۱۰ µeV</b> بین ۰.۷۹ و ۰.۹۱ است و با F<sub>p</sub> بزرگ‌تر بهتر می‌شود.</li>
+    <li><b>g<sup>(2)</sup>(0)</b> متناسب با 1/(طول عمر) است: ۰.۰۱ تا ۰.۰۴. اگر طول عمر کوتاه‌تر باشد، پالس کوتاه‌تر از ۲۰۰ fs لازم است.</li>
+    <li><b>نتیجه:</b> هیچ‌کدام از عدم قطعیت‌های آنتن یا طول عمر ذاتی، نتیجه‌ی کیفی (I ≈ ۰.۹۶–۰.۹۷ و g<sup>(2)</sup> ≈ ۰.۰۱–۰.۰۴ با پالس ۲۰۰ fs) را تغییر نمی‌دهد. حساس‌ترین ورودی، وافازی γ* است که به کیفیت نمونه و نوع تحریک بستگی دارد.</li>
+  </ul>
+  <h3>وابستگی به هندسه‌ی میله‌ی سوم</h3>
+  <table>
+    <tr><th>فاصله‌ی لبه به لبه‌ی R3 تا دیمر</th><th>F<sub>p</sub></th><th>η<sub>a</sub></th><th>+y/−y</th><th>1/Γ</th><th>g<sup>(2)</sup>(0)</th><th>I (۱ µeV)</th><th>I (۱۰ µeV)</th><th>فوتون به مخروط +y</th></tr>
+    <tr><td class="num">90 nm</td><td class="num">255</td><td class="num">69%</td><td class="num">7.94</td><td class="num">7.9 ps</td><td class="num">0.011</td><td class="num">0.967</td><td class="num">0.80</td><td class="num">0.44</td></tr>
+    <tr><td class="num"><b>100 nm (طرح)</b></td><td class="num">286</td><td class="num">69%</td><td class="num">6.06</td><td class="num">7.0 ps</td><td class="num">0.012</td><td class="num">0.968</td><td class="num">0.82</td><td class="num">0.43</td></tr>
+    <tr><td class="num">110 nm</td><td class="num">317</td><td class="num">70%</td><td class="num">4.70</td><td class="num">6.3 ps</td><td class="num">0.013</td><td class="num">0.969</td><td class="num">0.83</td><td class="num">0.43</td></tr>
+  </table>
+  <figure><img src="{{IMG:fig_geom_quantum}}" alt="هندسه"><figcaption>شکل ۵. (الف) جهت‌دهی و F<sub>p</sub> بر حسب فاصله‌ی میله‌ی سوم؛ (ب) g<sup>(2)</sup>(0) و تمیزناپذیری؛ (ج، د) بر حسب زاویه‌ی میله‌ی سوم، در انتظار اجرای ۳ (فاصله‌ی ۲۰ تا ۸۰ nm و چرخش ۱۵ تا ۹۰ درجه در فاصله‌ی ۲۰ و ۳۰ nm) که برای رایانه‌ی آزمایشگاه آماده است.</figcaption></figure>
+  <p>هندسه فقط از سه راه وارد کیفیت کوانتومی می‌شود: F<sub>p</sub> (که g<sup>(2)</sup> و I را تعیین می‌کند)، η<sub>a</sub> (روشنایی)، و سهم توان در +y (جهت‌دهی). در این بازه F<sub>p</sub> فقط ±۱۱٪ تغییر می‌کند، پس g<sup>(2)</sup> و I تقریباً ثابت‌اند و هندسه‌ی R3 را باید برای جهت‌دهی بهینه کرد.</p>
+</section>
+
+<section>
+  <h2><span class="n">۱۲</span><span>گام ۱۲: محدودیت‌ها، پرسش‌ها از استاد و تکرارپذیری</span></h2>
+  <h3>محدودیت‌های مدل</h3>
+  <ul>
+    <li><b>محیط گسیلنده (مهم‌ترین):</b> آنتن در n = ۱.۵ شبیه‌سازی شده است. نقطه‌ی InAs/InP درون InP (n ≈ ۳.۲) است؛ در آن محیط طول‌موج تشدید آنتن تقریباً به نسبت ضریب شکست جابه‌جا می‌شود و این طرح مستقیماً معتبر نیست. عددهای InAs/InP یعنی: «اگر گسیلنده‌ای با این پارامترها در این آنتن باشد». نقطه‌ی PbS در پلیمر یا شیشه کاملاً با شبیه‌سازی سازگار است.</li>
+    <li><b>گسیلنده‌ی نقطه‌ای:</b> نقطه‌ی PbS (۵.۵ nm) در گاف ۴۰ nm تقریباً نقطه‌ای است؛ نقطه‌ی InAs با قطر ۳۰ تا ۵۰ nm هم‌اندازه‌ی گاف است.</li>
+    <li><b>سیستم دوترازی:</b> بای‌اکسیتون، حالت‌های تاریک، ساختار ریز و ساید‌باند فونونی مدل نشده‌اند (فقط ضریب ZPL² = ۰.۸۱).</li>
+    <li><b>طلا:</b> داده‌ی توده‌ای دمای اتاق؛ میرایی سطحی و اثرهای غیرموضعی لحاظ نشده (در فاصله‌ی ۲۰ nm کوچک‌اند). در ۴ K اتلاف طلا کمتر و η<sub>a</sub> کمی بهتر است.</li>
+    <li><b>زمینه:</b> پراکندگی لیزر از آنتن و فوتولومینسانس طلا مدل نشده‌اند؛ در آزمایش g<sup>(2)</sup>(0) را بالا می‌برند.</li>
+    <li><b>طول‌موج کار در سمت سرخ تشدید:</b> F<sub>p</sub> در ۱۵۵۰ nm حدود ۶۳٪ قله است (گام ۳).</li>
+  </ul>
+  <h3>پرسش‌هایی که پاسخ استاد مسیر را تعیین می‌کند</h3>
   <ol>
-    <li><b>طبقه‌ی کلاسیک (الکترومغناطیس):</b> با حل معادلات ماکسول برای آنتن طلا (FDTD و BEM) سه عدد در محل گسیلنده به دست آمد: ضریب پورسل F<sub>p</sub>، تقویت تابشی T و بازده η = T/F<sub>p</sub>؛ و الگوی تابش دوردست.</li>
-    <li><b>طبقه‌ی کوانتومی (گسیلنده):</b> گسیلنده یک سیستم دوترازی است. آنتن فقط آهنگ فروافت آن را از Γ<sub>0</sub> به Γ = F<sub>p</sub>Γ<sub>0</sub> می‌برد. با این Γ، معادله‌ی مادر لیندبلاد برای تحریک با پالس π حل شد و از تابع‌های همبستگی دوزمانی، g<sup>(2)</sup>(0) و I به دست آمد.</li>
+    <li>کدام گسیلنده: PbS در محیط ۱.۵ (سازگار با شبیه‌سازی‌های موجود؛ تمیزناپذیری ندارد) یا InAs/InP (تمیزناپذیری بالا؛ نیاز به طراحی دوباره‌ی آنتن برای InP)؟</li>
+    <li>آیا برای τ<sub>0</sub>، γ* یا طول پالس مقدار مشخصی (از یک مقاله یا نمونه) در نظر دارید؟ با تغییر یک خط کد، همه‌ی نتایج دوباره ساخته می‌شود.</li>
+    <li>آیا آنتن باید روی قله‌ی پورسل در ۱۵۵۰ nm تنظیم شود (سرعت بیشتر) یا بیشترین جهت‌دهی (طرح فعلی)؟</li>
   </ol>
-  <div class="callout g"><b>نتیجه‌ی اصلی:</b> آنتن، گسیل را ۲۸۶ برابر سریع‌تر می‌کند (۲ ns → ۷ ps). چون گسیل خیلی سریع‌تر از وافازی (ناهمدوسی) محیط رخ می‌دهد، تمیزناپذیری از ۰.۱۴ به ۰.۹۷ می‌رسد. بهای آن: پالس تحریک باید کوتاه‌تر از حدود ۱ ps باشد تا g<sup>(2)</sup>(0) کوچک بماند، و ۳۱٪ انرژی در طلا جذب می‌شود.</div>
-  <div class="callout w"><b>دو نکته‌ی مهم که باید از اول روشن باشد:</b> (۱) پارامترهای گسیلنده (طول عمر ذاتی، وافازی، طول پالس) مقدارهای نوعی مقاله‌ها هستند، نه اندازه‌گیری روی نمونه‌ی ما (جدول بخش ۶). (۲) آنتن در محیط همگن با ضریب شکست ۱.۵ شبیه‌سازی شده است؛ این با نقطه‌ی کلوییدی PbS سازگار است ولی نقطه‌ی InAs/InP درون InP (n ≈ ۳.۲) رشد می‌کند (بخش ۱۰).</div>
-</section>
-
-<section>
-  <h2><span class="n">۲</span><span>زنجیره‌ی محاسبه: از هندسه تا g<sup>(2)</sup> و تمیزناپذیری</span></h2>
-  <div class="tl">
-    <div class="step"><b>گام ۱. هندسه و مواد</b><div class="d">سه نانومیله‌ی طلا (کپسولی)، محیط n = ۱.۵، گسیلنده‌ی نقطه‌ای در مرکز گاف (بخش ۳).</div></div>
-    <div class="step"><b>گام ۲. شبیه‌سازی آنتن (FDTD و BEM)</b><div class="d">یک دوقطبی الکتریکی نوسانی در محل گسیلنده؛ اندازه‌گیری توان کل خروجی دوقطبی، توان رسیده به بیرون جعبه‌ی دربرگیرنده‌ی آنتن، و میدان دوردست، در ۱۳۰۰ تا ۱۷۰۰ nm (بخش ۴).</div></div>
-    <div class="step key"><b>گام ۳. از توان‌ها به آهنگ‌ها</b><div class="d">F<sub>p</sub> = P<sub>dip</sub>/P<sub>0</sub> همان نسبت آهنگ فروافت کل است؛ T و η سهم تابشی (بخش ۵).</div></div>
-    <div class="step"><b>گام ۴. مدل کوانتومی گسیلنده</b><div class="d">سیستم دوترازی + پالس π گاوسی + فروافت Γ + وافازی γ*؛ معادله‌ی مادر لیندبلاد در QuTiP (بخش ۷).</div></div>
-    <div class="step key"><b>گام ۵. کمیت‌های کیفیت</b><div class="d">تعداد فوتون در هر پالس N، خلوص g<sup>(2)</sup>(0) و تمیزناپذیری I از تابع‌های همبستگی G<sup>(1)</sup> و G<sup>(2)</sup> (قضیه‌ی رگرسیون کوانتومی)؛ سپس ضرب در بازده و جمع‌آوری (بخش ۸).</div></div>
-  </div>
-</section>
-
-<section>
-  <h2><span class="n">۳</span><span>هندسه و محیطی که گسیلنده درون آن است</span></h2>
-  <figure><img src="{{IMG:fig_geom_final}}" alt="هندسه"><figcaption>شکل ۱. طرح نهایی (نمای بالا، صفحه‌ی z = 0). گسیلنده (نقطه‌ی قرمز) دقیقاً در مرکز گاف ۴۰ نانومتری بین R1 و R2 است و دوقطبی گذار آن موازی محور میله‌ها (x) است. همه‌ی ساختار درون یک محیط همگن و بی‌کران با n = ۱.۵ قرار دارد (بدون زیرلایه).</figcaption></figure>
-  <table>
-    <tr><th>کمیت</th><th>مقدار</th><th>توضیح</th></tr>
-    <tr><td>شکل میله‌ها</td><td>کپسول</td><td>استوانه + دو نیم‌کره در دو سر (مانند نانومیله‌های سنتزشده)</td></tr>
-    <tr><td>قطر میله‌ها D</td><td class="num">60 nm</td><td>برای هر سه میله</td></tr>
-    <tr><td>طول R1 و R2 (دیمر)</td><td class="num">275 nm</td><td>از جاروب طراحی با FDTD، تشدید در حدود ۱۵۵۰ nm</td></tr>
-    <tr><td>گاف بین R1 و R2</td><td class="num">40 nm</td><td>فاصله‌ی سر به سر؛ گسیلنده در وسط، یعنی ۲۰ nm تا هر طرف طلا</td></tr>
-    <tr><td>طول R3 (میله‌ی سوم)</td><td class="num">295 nm</td><td>۲۰ nm بلندتر از دیمر؛ نقش «بازتابنده» و ایجاد جهت‌دهی به +y</td></tr>
-    <tr><td>محل R3</td><td class="num">(0, 160) nm، زاویه ۰°</td><td>مرکز تا مرکز ۱۶۰ nm؛ فاصله‌ی لبه به لبه تا دیمر ۱۰۰ nm</td></tr>
-    <tr><td>محیط اطراف</td><td class="num">n = 1.5</td><td>همگن (شیشه یا پلیمر)، گسیلنده هم درون همین محیط</td></tr>
-    <tr><td>طلا</td><td>Johnson–Christy (۱۹۷۲)</td><td>داده‌ی توده‌ای، دمای اتاق؛ Palik و CRC به عنوان آزمون حساسیت</td></tr>
-    <tr><td>گسیلنده</td><td>دوقطبی نقطه‌ای در (0, 0, 0)</td><td>جهت x (و برای مقایسه y و z در BEM)</td></tr>
-    <tr><td>طول‌موج کار</td><td class="num">1550 nm (0.800 eV)</td><td>باند مخابراتی C</td></tr>
-  </table>
-  <p><b>چرا وسط گاف؟</b> در گاف بین دو سر میله‌ها، میدان مد دوقطبی پیوندی (bonding) متمرکز و تقریباً یکنواخت و موازی x است؛ پس دوقطبی x در وسط گاف بیشترین جفت‌شدگی را دارد. فاصله‌ی ۲۰ nm تا طلا هم آن‌قدر زیاد است که خاموشی (اتلاف غیرتابشی به طلا) غالب نشود (بازده ۶۹٪).</p>
-</section>
-
-<section>
-  <h2><span class="n">۴</span><span>شبیه‌سازی آنتن: روش‌ها و تنظیمات</span></h2>
-  <h3>FDTD (Ansys Lumerical 2024 R1)</h3>
-  <ul>
-    <li><b>منبع:</b> دوقطبی الکتریکی نقطه‌ای در مرکز گاف، جهت x، با طیف ۱۳۰۰ تا ۱۷۰۰ nm (۴۱ نقطه).</li>
-    <li><b>ناحیه‌ی محاسبه:</b> ۷۰۰ nm فضای خالی دور ساختار و لایه‌های جاذب PML؛ مش ۲ nm روی همه‌ی میله‌ها و ۱ nm در گاف (دقت مش ۳)؛ زمان شبیه‌سازی ۱۰۰۰ fs با قطع خودکار در ۱۰<sup>−۵</sup>.</li>
-    <li><b>توان‌ها:</b> توان کل دوقطبی P<sub>dip</sub> (دستور dipolepower)، توان همان دوقطبی در محیط همگن P<sub>0</sub> (sourcepower)، و توان خروجی از شش وجه یک جعبه‌ی بسته که ۱۰۰ nm دورتر از آنتن است (P<sub>rad</sub>).</li>
-    <li><b>میدان دوردست:</b> تبدیل میدان نزدیک به دور روی جعبه‌ی دوم (هم‌ارزی سطحی)؛ سهم توان در دو مخروط ۶۰ درجه حول +y و −y، و سهم جمع‌شده با عدسی NA ۱.۳ و ۰.۹ در جهت +z. صحت: توان دوردست / توان جعبه ≈ ۱.</li>
-  </ul>
-  <h3>BEM (MNPBEM، حل کامل معادلات ماکسول با المان مرزی)</h3>
-  <ul>
-    <li>سطح طلا با مثلث‌هایی به اندازه‌ی h = ۴ و ۳ nm؛ همان هندسه و محیط؛ دوقطبی در سه جهت x، y، z.</li>
-    <li>روش مستقل برای تأیید FDTD. با ریز شدن مش، BEM به سمت FDTD همگرا می‌شود (شکل ۲).</li>
-  </ul>
-  <figure><img src="{{IMG:fig_sel_design}}" alt="طرح نهایی"><figcaption>شکل ۲. (الف) ضریب پورسل F<sub>p</sub> (خط پر) و تقویت تابشی T (خط‌چین) طرح نهایی؛ FDTD (قرمز) و BEM با h = ۴ و ۳ nm (آبی). (ب) جهت‌دهی +y/−y در میدان دوردست. (ج) حساسیت به داده‌ی طلا. خط نقطه‌چین: ۱۵۵۰ nm.</figcaption></figure>
-</section>
-
-<section>
-  <h2><span class="n">۵</span><span>از توان کلاسیک تا آهنگ گسیل: فرمول‌ها و اعداد</span></h2>
-  <p><b>چرا توان کلاسیک دوقطبی همان آهنگ کوانتومی است؟</b> در رژیم جفت‌شدگی ضعیف، آهنگ گسیل خودبه‌خودی با چگالی موضعی حالت‌ها (LDOS) متناسب است و LDOS با قسمت موهومی تابع گرین در محل گسیلنده بیان می‌شود. همین کمیت، توانی را هم می‌دهد که یک دوقطبی کلاسیک با دامنه‌ی ثابت تابش می‌کند. پس نسبت دو توان کلاسیک دقیقاً نسبت دو آهنگ کوانتومی است:</p>
-  <div class="eq">Γ / Γ<sub>0</sub> = P<sub>dip</sub> / P<sub>0</sub> = 1 + (6π / k) · <b>p̂</b> · Im[ <b>G</b><sub>s</sub>(<b>r</b><sub>0</sub>, <b>r</b><sub>0</sub>; ω) ] · <b>p̂</b> ≡ F<sub>p</sub><small>k = nω/c عدد موج در محیط؛ G<sub>s</sub> تابع گرین پراکنده (سهم آنتن)؛ p̂ جهت دوقطبی گذار. مرجع: Novotny و Hecht، فصل ۸.</small></div>
-  <div class="eq">T = P<sub>rad</sub> / P<sub>0</sub> ,&nbsp;&nbsp;&nbsp; η<sub>a</sub> = T / F<sub>p</sub> ,&nbsp;&nbsp;&nbsp; سهم جذب در طلا = (F<sub>p</sub> − T) / F<sub>p</sub><small>T: تقویت آهنگ تابشی (فوتون‌هایی که به بیرون می‌رسند)؛ η<sub>a</sub>: بازده آنتن.</small></div>
-  <table>
-    <tr><th>جهت دوقطبی (مرکز گاف، ۱۵۵۰ nm)</th><th>F<sub>p</sub></th><th>T</th><th>η<sub>a</sub></th><th>منبع</th></tr>
-    <tr><td><b>x (موازی میله‌ها)</b></td><td class="num"><b>286</b></td><td class="num"><b>199</b></td><td class="num"><b>69%</b></td><td>FDTD، مش ۱ nm در گاف</td></tr>
-    <tr><td>x</td><td class="num">240</td><td class="num">181</td><td class="num">75%</td><td>BEM، h = ۳ nm</td></tr>
-    <tr><td>y</td><td class="num">0.76</td><td class="num">0.34</td><td>—</td><td>BEM</td></tr>
-    <tr><td>z</td><td class="num">0.71</td><td class="num">0.29</td><td>—</td><td>BEM</td></tr>
-    <tr><td>دوقطبی بی‌جهت (میانگین سه جهت)</td><td class="num">96</td><td class="num">66</td><td class="num">69%</td><td>(x+y+z)/3</td></tr>
-  </table>
-  <ul>
-    <li><b>جمع‌آوری:</b> با عدسی NA ۱.۳ در جهت +z، ۲۸٪ و با NA ۰.۹، ۱۳٪ از توان تابشی جمع می‌شود (BEM). نسبت +y به −y در دوردست ۶.۱ است (FDTD).</li>
-    <li><b>پهنای آنتن:</b> T از ۱۳۸۰ تا ۱۸۲۰ nm بالای نصف بیشینه است (Q ≈ ۳، ħκ ≈ ۰.۲۲ eV). پس گسیلنده لازم نیست دقیقاً روی تشدید باشد.</li>
-    <li><b>جفت‌شدگی ضعیف:</b> با ħΓ = ۹۴ µeV و ħκ ≈ ۰.۲۲ eV، ثابت جفت‌شدگی ħg = ½√(ħΓ·ħκ) ≈ ۲.۳ meV است، بسیار کمتر از κ/4 ≈ ۵۴ meV. پس جفت‌شدگی قوی (شکافت رابی) رخ نمی‌دهد، آنتن مانند یک «حمام» پهن‌باند عمل می‌کند و توصیف با یک آهنگ Γ (تقریب مارکوف) معتبر است.</li>
-  </ul>
-  <h3>از F<sub>p</sub> و T به آهنگ‌های گسیلنده</h3>
-  <p>برای گسیلنده‌ای با طول عمر ذاتی τ<sub>0</sub> = 1/Γ<sub>0</sub> (در همان محیط n = ۱.۵) و بازده کوانتومی ذاتی q<sub>0</sub>:</p>
-  <div class="eq">Γ = Γ<sub>0</sub> ( q<sub>0</sub> F<sub>p</sub> + 1 − q<sub>0</sub> ) ,&nbsp;&nbsp;&nbsp; فوتون به دوردست در هر برانگیختگی = q<sub>0</sub> T / ( q<sub>0</sub> F<sub>p</sub> + 1 − q<sub>0</sub> )<small>جمله‌ی 1 − q<sub>0</sub> اتلاف غیرتابشی ذاتی گسیلنده است که آنتن آن را تغییر نمی‌دهد.</small></div>
-  <table>
-    <tr><th>گسیلنده</th><th>τ<sub>0</sub></th><th>q<sub>0</sub></th><th>F<sub>p</sub> استفاده‌شده</th><th>1/Γ با آنتن</th><th>ħΓ با آنتن</th><th>فوتون/برانگیختگی (بدون → با آنتن)</th></tr>
-    <tr><td>InAs/InP، ۴ K</td><td class="num">2 ns</td><td class="num">1</td><td class="num">286 (دوقطبی x)</td><td class="num">7.0 ps</td><td class="num">94 µeV</td><td class="num">1.00 → 0.69</td></tr>
-    <tr><td>PbS کلوییدی، ۳۰۰ K</td><td class="num">1 µs</td><td class="num">0.4</td><td class="num">96 (بی‌جهت)</td><td class="num">26 ns</td><td class="num">0.026 µeV</td><td class="num">0.40 → 0.68</td></tr>
-  </table>
-  <p class="src">برای PbS دوقطبی بی‌جهت گرفته شد چون گذار اکسیتونی نقطه‌ی کلوییدی کروی سه‌بار تبهگن است و جهت نقطه در گاف کنترل نمی‌شود. برای InAs/InP یکی از دو اکسیتون درون‌صفحه با محور میله‌ها هم‌راستا فرض شد.</p>
-</section>
-
-<section>
-  <h2><span class="n">۶</span><span>پارامترهای فیزیکی گسیلنده و منشأ آن‌ها</span></h2>
-  <table>
-    <tr><th>پارامتر</th><th>مقدار</th><th>منشأ و توضیح</th></tr>
-    <tr><td>انرژی گذار</td><td class="num">0.800 eV (1550 nm)</td><td>شرط طرح؛ اندازه‌ی نقطه طوری انتخاب می‌شود که این انرژی را بدهد (بخش ۱۳ گزارش جامع)</td></tr>
-    <tr><td>اندازه‌ی نقطه‌ی PbS</td><td class="num">d ≈ 5.5–5.7 nm</td><td>منحنی تجربی Moreels ۲۰۰۹: E(d) = 0.41 + 1/(0.0252d² + 0.283d) eV، با جابه‌جایی استوکس ۲۰ تا ۴۰ meV</td></tr>
-    <tr><td>اندازه‌ی نقطه‌ی InAs/InP</td><td class="num">ارتفاع ≈ 2.6–4.5 nm، قطر 30–50 nm</td><td>مدل چاه محدود با پارامترهای Vurgaftman ۲۰۰۱؛ فقط مرتبه‌ی بزرگی</td></tr>
-    <tr><td>طول عمر ذاتی τ<sub>0</sub>، InAs/InP</td><td class="num">2 ns</td><td>مقدار نوعی (۱ تا ۲ ns در گزارش‌های تجربی نقاط InAs/InP باند C)</td></tr>
-    <tr><td>طول عمر ذاتی τ<sub>0</sub>، PbS</td><td class="num">1 µs</td><td>مقدار نوعی نقاط PbS (طول عمر میکروثانیه‌ای)</td></tr>
-    <tr><td>بازده کوانتومی ذاتی q<sub>0</sub></td><td class="num">InAs: 1 ؛ PbS: 0.4</td><td>فرض نوعی</td></tr>
-    <tr><td>وافازی خالص γ*، InAs/InP ۴ K</td><td class="num">1، 10، 50 µeV</td><td>به ترتیب: تحریک تشدیدی (بهترین حالت)، پخش طیفی، تحریک بالای نوار</td></tr>
-    <tr><td>وافازی خالص γ*، PbS ۳۰۰ K</td><td class="num">20 meV</td><td>پهن‌شدگی فونونی دمای اتاق (پهنای خط ده‌ها meV)</td></tr>
-    <tr><td>طول پالس تحریک τ<sub>p</sub> (FWHM شدت)</td><td class="num">200 fs و 2 ps (با آنتن)؛ 2 و 20 ps (بدون آنتن)</td><td>پالس π گاوسی، تشدیدی با گذار</td></tr>
-    <tr><td>سهم خط صفر-فونون (ZPL)</td><td class="num">0.9</td><td>نوعی برای نقاط InAs؛ فقط در ستون I × ZPL² اثر دارد</td></tr>
-  </table>
-  <div class="callout w">این‌ها <b>فرض‌های نوعی</b> هستند و از نمونه‌ی واقعی اندازه‌گیری نشده‌اند. هر جا استاد مقدار مشخص‌تری (مثلاً از یک مقاله یا نمونه‌ی آزمایشگاهی) داشته باشد، با تغییر یک خط در کد (<span class="en">isi/analysis/single_photon.py</span>) همه‌ی نتایج دوباره ساخته می‌شود.</div>
-</section>
-
-<section>
-  <h2><span class="n">۷</span><span>مدل کوانتومی گسیلنده</span></h2>
-  <h3>هامیلتونی و پالس</h3>
-  <p>گسیلنده یک سیستم دوترازی است: حالت پایه <span class="en">|g⟩</span> و حالت برانگیخته <span class="en">|e⟩</span>، با عملگرهای <span class="en">σ<sub>−</sub> = |g⟩⟨e|</span> و <span class="en">σ<sub>+</sub> = σ<sub>−</sub><sup>†</sup></span>. لیزر دقیقاً هم‌بسامد با گذار است، پس در چارچوب چرخان:</p>
-  <div class="eq">H(t) = ½ ħ Ω(t) ( σ<sub>+</sub> + σ<sub>−</sub> ) ,&nbsp;&nbsp;&nbsp; Ω(t) = A exp[ −(t − t<sub>0</sub>)² / 2σ<sub>f</sub>² ] ,&nbsp;&nbsp;&nbsp; ∫ Ω(t) dt = π<small>«پالس π»: مساحت پالس π است، یعنی گسیلنده را کامل از <span class="en">|g⟩</span> به <span class="en">|e⟩</span> می‌برد. <span class="en">τ<sub>p</sub></span> پهنای نیم‌بیشینه‌ی شدت <span class="en">(Ω²)</span> است: <span class="en">σ<sub>f</sub> = √2 · τ<sub>p</sub> / (2√(2 ln 2))</span>.</small></div>
-  <h3>معادله‌ی مادر لیندبلاد</h3>
-  <div class="eq">dρ/dt = −(i/ħ) [H(t), ρ] + Γ 𝒟[σ<sub>−</sub>]ρ + 2γ* 𝒟[σ<sub>+</sub>σ<sub>−</sub>]ρ ,&nbsp;&nbsp;&nbsp; 𝒟[c]ρ = cρc<sup>†</sup> − ½{c<sup>†</sup>c, ρ}<small>جمله‌ی اول: تحریک با لیزر. جمله‌ی دوم: گسیل فوتون با آهنگ Γ (که آنتن آن را تعیین می‌کند). جمله‌ی سوم: وافازی خالص؛ همدوسی‌ها با آهنگ <span class="en">Γ/2 + γ*</span> میرا می‌شوند و پهنای خط ZPL برابر <span class="en">ħ(Γ + 2γ*)</span> است.</small></div>
-  <ul>
-    <li>شرط اولیه: گسیلنده در حالت پایه. همه‌ی زمان‌ها بر حسب 1/Γ بی‌بعد شده‌اند، پس مدل فقط دو عدد بی‌بعد دارد: <b class="en">τ<sub>p</sub>Γ</b> و <b class="en">γ*/Γ</b>.</li>
-    <li>حل عددی: <span class="en">qutip.mesolve</span> برای ρ(t)، و برای همبستگی‌های دوزمانی <span class="en">correlation_2op_2t</span> و <span class="en">correlation_3op_2t</span> (قضیه‌ی رگرسیون کوانتومی). شبکه‌ی زمانی ۴۰۰ نقطه با تراکم بیشتر در مدت پالس، تا ۱۲/Γ پس از پالس.</li>
-  </ul>
-  <h3>کمیت‌های خروجی</h3>
-  <div class="eq">N = ∫ ⟨σ<sub>+</sub>σ<sub>−</sub>⟩(t) dt ×Γ<br>G<sup>(1)</sup>(t, τ) = ⟨σ<sub>+</sub>(t+τ) σ<sub>−</sub>(t)⟩ ,&nbsp;&nbsp; G<sup>(2)</sup>(t, τ) = ⟨σ<sub>+</sub>(t) σ<sub>+</sub>(t+τ) σ<sub>−</sub>(t+τ) σ<sub>−</sub>(t)⟩<br>g<sup>(2)</sup>(0) = 2 ∫∫ G<sup>(2)</sup>(t, τ) dτ dt / N² ,&nbsp;&nbsp;&nbsp; I = 2 ∫∫ |G<sup>(1)</sup>(t, τ)|² dτ dt / N²<small>N: تعداد فوتون در هر پالس (پیش از اتلاف آنتن). g<sup>(2)</sup>(0): مساحت قله‌ی تأخیر صفر به قله‌ی کناری در آزمایش هنبری-براون-توییس. I: نمایانی تداخل دو فوتون پیاپی در آزمایش هنگ-او-مندل (روش Fischer و همکاران، ۲۰۱۶).</small></div>
-  <h3>دو حد تحلیلی که برای فهم و آزمون مدل به کار می‌روند</h3>
-  <div class="eq">I ≈ Γ / ( Γ + 2γ* ) = T<sub>2</sub> / 2T<sub>1</sub>&nbsp;&nbsp;&nbsp;(τ<sub>p</sub> → 0) ,&nbsp;&nbsp;&nbsp;&nbsp; g<sup>(2)</sup>(0) ≈ 0.4 τ<sub>p</sub>Γ&nbsp;&nbsp;&nbsp;(τ<sub>p</sub>Γ ≪ 1)<small>اولی رابطه‌ی شناخته‌شده‌ی Bylander و همکاران (۲۰۰۳) و Kiraz و همکاران (۲۰۰۴) است. دومی از خود حل QuTiP: اگر گسیلنده در حین پالس یک فوتون بدهد، دوباره برانگیخته می‌شود و فوتون دوم می‌دهد؛ احتمال این رویداد با کسری از عمر که پالس طول می‌کشد متناسب است.</small></div>
-  <figure><img src="{{IMG:fig_s15_mech}}" alt="سازوکار"><figcaption>شکل ۳. (الف) جمعیت حالت برانگیخته با آنتن (1/Γ = ۷.۰ ps): پالس ۲۰۰ fs (آبی) گسیلنده را تقریباً آنی برمی‌انگیزد و فروافت نمایی خالص می‌دهد؛ پالس ۲ ps (طلایی) در حین تحریک فرصت گسیل و برانگیختگی دوباره می‌دهد. سایه‌ها شکل پالس‌اند. (ب) g<sup>(2)</sup>(0) بر حسب τ<sub>p</sub>Γ (QuTiP، γ* = ۰)؛ ستاره‌ها: نقطه‌های کار (آبی: با آنتن ۲۰۰ fs، τ<sub>p</sub>Γ = ۰.۰۲۹؛ طلایی: با آنتن ۲ ps، τ<sub>p</sub>Γ = ۰.۲۹؛ خاکستری: بدون آنتن ۲ ps، τ<sub>p</sub>Γ = ۰.۰۰۱). (ج) تمیزناپذیری بر حسب γ*/Γ: حل کامل (نقطه‌ها) در برابر حد تحلیلی (خط‌چین)؛ خط‌های سبز مقدار γ*/Γ با آنتن برای γ* = ۱، ۱۰ و ۵۰ µeV.</figcaption></figure>
-  <p><b>آزمون درستی کد:</b> در حد τ<sub>p</sub>Γ = ۰.۰۲ و γ* = ۰، حل QuTiP مقدارهای N = ۱.۰۰۵، g<sup>(2)</sup>(0) = ۰.۰۰۸۶ و I = ۰.۹۹۲ می‌دهد (حد ایده‌آل: ۱، ۰، ۱). با γ*/Γ = ۰.۰۱، ۰.۱ و ۱، I = ۰.۹۷۳، ۰.۸۲۷ و ۰.۳۳۱ است در برابر حد تحلیلی ۰.۹۸۰، ۰.۸۳۳ و ۰.۳۳۳. اختلاف کوچک باقی‌مانده اثر طول محدود پالس است.</p>
-</section>
-
-<section>
-  <h2><span class="n">۸</span><span>نتایج</span></h2>
-  <table>
-    <tr><th>گسیلنده</th><th>آنتن</th><th>1/Γ</th><th>پالس</th><th>γ*</th><th>τ<sub>p</sub>Γ</th><th>γ*/Γ</th><th>g<sup>(2)</sup>(0)</th><th>I</th><th>I × ZPL²</th><th>فوتون/پالس (دوردست / NA ۱.۳)</th></tr>
-    <tr><td>InAs/InP، ۴ K</td><td>ندارد</td><td class="num">2 ns</td><td class="num">2 ps</td><td class="num">1 µeV</td><td class="num">0.001</td><td class="num">3.0</td><td class="num">&lt;0.001</td><td class="num">0.14</td><td class="num">0.12</td><td class="num">1.00 / ~0.25</td></tr>
-    <tr><td>InAs/InP، ۴ K</td><td>ندارد</td><td class="num">2 ns</td><td class="num">2 ps</td><td class="num">10 µeV</td><td class="num">0.001</td><td class="num">30</td><td class="num">&lt;0.001</td><td class="num">0.03</td><td class="num">0.02</td><td class="num">1.00 / ~0.25</td></tr>
-    <tr><td><b>InAs/InP، ۴ K</b></td><td><b>دارد</b></td><td class="num">7.0 ps</td><td class="num">200 fs</td><td class="num">1 µeV</td><td class="num">0.029</td><td class="num">0.011</td><td class="num"><b>0.012</b></td><td class="num"><b>0.97</b></td><td class="num">0.78</td><td class="num">0.69 / 0.20</td></tr>
-    <tr><td>InAs/InP، ۴ K</td><td>دارد</td><td class="num">7.0 ps</td><td class="num">200 fs</td><td class="num">10 µeV</td><td class="num">0.029</td><td class="num">0.11</td><td class="num">0.012</td><td class="num">0.82</td><td class="num">0.66</td><td class="num">0.69 / 0.20</td></tr>
-    <tr><td>InAs/InP، ۴ K</td><td>دارد</td><td class="num">7.0 ps</td><td class="num">200 fs</td><td class="num">50 µeV</td><td class="num">0.029</td><td class="num">0.53</td><td class="num">0.012</td><td class="num">0.48</td><td class="num">0.39</td><td class="num">0.69 / 0.20</td></tr>
-    <tr><td>InAs/InP، ۴ K</td><td>دارد</td><td class="num">7.0 ps</td><td class="num">2 ps</td><td class="num">1 µeV</td><td class="num">0.29</td><td class="num">0.011</td><td class="num">0.098</td><td class="num">0.90</td><td class="num">0.73</td><td class="num">0.69 / 0.20</td></tr>
-    <tr><td>PbS، ۳۰۰ K</td><td>ندارد</td><td class="num">1 µs</td><td class="num">ps</td><td class="num">20 meV</td><td>—</td><td class="num">~3×10<sup>7</sup></td><td>≈ ۰*</td><td class="num">≈ 0</td><td>—</td><td class="num">0.40 / ~0.10</td></tr>
-    <tr><td>PbS، ۳۰۰ K</td><td>دارد</td><td class="num">26 ns</td><td class="num">ps</td><td class="num">20 meV</td><td>—</td><td class="num">~8×10<sup>5</sup></td><td>≈ ۰*</td><td class="num">≈ 0</td><td>—</td><td class="num">0.68 / 0.19</td></tr>
-  </table>
-  <p class="src">* مدل دوترازی. در نقطه‌ی کلوییدی حد واقعی g<sup>(2)</sup>(0) گسیل بای‌اکسیتون است: g<sup>(2)</sup>(0) ≈ QY<sub>XX</sub>/QY<sub>X</sub>. ستون NA ۱.۳ برای حالت بدون آنتن تخمین تقریبی است. «فوتون/پالس» = N × بازده (q<sub>0</sub>T/(q<sub>0</sub>F<sub>p</sub>+1−q<sub>0</sub>)).</p>
-  <figure><img src="{{IMG:fig_sps_quantum}}" alt="کیفیت کوانتومی"><figcaption>شکل ۴. (الف) تمیزناپذیری بر حسب وافازی خالص برای InAs/InP (طول عمر ذاتی ۲ ns)، با و بدون آنتن؛ (ب) g<sup>(2)</sup>(0) بر حسب طول پالس.</figcaption></figure>
-  <figure><img src="{{IMG:fig_rep_quantum2}}" alt="پورسل و تمیزناپذیری"><figcaption>شکل ۵. (الف) تمیزناپذیری در حد پالس کوتاه، I = Γ/(Γ+2γ*)، برای چند ضریب پورسل؛ (ب) فوتون دوردست در هر برانگیختگی بر حسب بازده ذاتی گسیلنده: آنتن برای گسیلنده‌ی کم‌بازده سودمند است.</figcaption></figure>
-</section>
-
-<section>
-  <h2><span class="n">۹</span><span>سازوکار فیزیکی: آنتن چه می‌کند و چه نمی‌کند</span></h2>
-  <ul>
-    <li><b>تمیزناپذیری (سود اصلی):</b> دو فوتون فقط وقتی یکسان‌اند که فاز گسیلنده در طول گسیل به هم نریزد. معیار، نسبت آهنگ وافازی به آهنگ گسیل است. بدون آنتن ħΓ<sub>0</sub> = ۰.۳۳ µeV از γ* = ۱ µeV کوچک‌تر است، پس فاز پیش از گسیل به هم می‌ریزد (I = ۰.۱۴). آنتن ħΓ را به ۹۴ µeV می‌رساند و همان وافازی دیگر فرصت اثر ندارد (I = ۰.۹۷). این همان «پورسل برای تمیزناپذیری» است.</li>
-    <li><b>خلوص g<sup>(2)</sup>(0) (هزینه):</b> فقط به τ<sub>p</sub>Γ بستگی دارد. وقتی طول عمر ۷ ps است، پالس ۲ ps دیگر «کوتاه» نیست و احتمال دو فوتون در یک پالس به ۰.۱ می‌رسد. پس با آنتن، پالس باید زیر ۱ ps باشد (۲۰۰ fs → ۰.۰۱۲).</li>
-    <li><b>روشنایی:</b> آنتن تعداد فوتون در هر پالس را زیاد نمی‌کند (یک برانگیختگی، حداکثر یک فوتون)؛ برای InAs با q<sub>0</sub> = ۱، ۳۱٪ در طلا جذب می‌شود (۱.۰۰ → ۰.۶۹). ولی آهنگ تکرار ممکن تا ده‌ها گیگاهرتز بالا می‌رود (۷ ps به جای ۲ ns)، و برای گسیلنده‌ی کم‌بازده (PbS) بازده را از ۰.۴۰ به ۰.۶۸ می‌برد.</li>
-    <li><b>جهت‌دهی:</b> میله‌ی سوم بخش بیشتر تابش را به +y می‌فرستد (۶.۱ برابر −y)، که برای جفت شدن به موجبر یا عدسی در صفحه سودمند است.</li>
-    <li><b>دمای اتاق:</b> برای I = ۰.۹ با γ* = ۲۰ meV باید ħΓ حدود ۰.۴ eV باشد، یعنی ۸ مرتبه بزرگ‌تر از آن‌چه آنتن می‌دهد. هیچ آنتن پلاسمونی در دمای اتاق فوتون تمیزناپذیر نمی‌دهد؛ PbS فقط منبع تک‌فوتون (g<sup>(2)</sup>) است، نه منبع فوتون یکسان.</li>
-  </ul>
-</section>
-
-<section>
-  <h2><span class="n">۱۰</span><span>وابستگی به هندسه (پرسش جلسه) و محدودیت‌های مدل</span></h2>
-  <h3>اثر فاصله‌ی میله‌ی سوم</h3>
-  <p>هندسه فقط از سه راه وارد کمیت‌های کوانتومی می‌شود: F<sub>p</sub> (که Γ و در نتیجه g<sup>(2)</sup> و I را تعیین می‌کند)، η<sub>a</sub> (روشنایی) و سهم توان در جهت +y. با داده‌های موجود (فاصله‌ی لبه به لبه‌ی ۹۰، ۱۰۰ و ۱۱۰ nm، میله‌ی سوم موازی):</p>
-  <table>
-    <tr><th>فاصله‌ی R3 تا دیمر</th><th>F<sub>p</sub></th><th>η<sub>a</sub></th><th>+y/−y</th><th>1/Γ</th><th>g<sup>(2)</sup>(0) (۲۰۰ fs)</th><th>I (۱ µeV)</th><th>I (۱۰ µeV)</th><th>فوتون به مخروط +y در هر پالس</th></tr>
-    <tr><td class="num">90 nm</td><td class="num">255</td><td class="num">69%</td><td class="num">7.9</td><td class="num">7.9 ps</td><td class="num">0.011</td><td class="num">0.967</td><td class="num">0.80</td><td class="num">0.44</td></tr>
-    <tr><td class="num"><b>100 nm (طرح)</b></td><td class="num">286</td><td class="num">69%</td><td class="num">6.1</td><td class="num">7.0 ps</td><td class="num">0.012</td><td class="num">0.968</td><td class="num">0.82</td><td class="num">0.43</td></tr>
-    <tr><td class="num">110 nm</td><td class="num">317</td><td class="num">70%</td><td class="num">4.7</td><td class="num">6.3 ps</td><td class="num">0.013</td><td class="num">0.969</td><td class="num">0.83</td><td class="num">0.43</td></tr>
-  </table>
-  <figure><img src="{{IMG:fig_geom_quantum}}" alt="هندسه و کیفیت"><figcaption>شکل ۶. (الف) جهت‌دهی و F<sub>p</sub> بر حسب فاصله‌ی میله‌ی سوم؛ (ب) g<sup>(2)</sup>(0) و تمیزناپذیری؛ (ج، د) بر حسب زاویه‌ی میله‌ی سوم: در انتظار اجرای ۳ (فاصله‌ی ۲۰ تا ۸۰ nm و چرخش ۱۵ تا ۹۰ درجه در فاصله‌ی ۲۰ و ۳۰ nm) که روی رایانه‌ی آزمایشگاه آماده‌ی اجراست.</figcaption></figure>
-  <p>نتیجه: در این بازه g<sup>(2)</sup> و I تقریباً ثابت‌اند (چون F<sub>p</sub> فقط ±۱۱٪ تغییر می‌کند) ولی جهت‌دهی شدیداً به فاصله حساس است. پس فاصله و زاویه‌ی میله‌ی سوم را باید برای جهت‌دهی بهینه کرد و g<sup>(2)</sup> و I را با طول پالس و کیفیت گسیلنده.</p>
-  <h3>محدودیت‌ها و فرض‌ها</h3>
-  <ul>
-    <li><b>محیط گسیلنده:</b> آنتن در n = ۱.۵ شبیه‌سازی شده است. نقطه‌ی InAs/InP درون InP (n ≈ ۳.۲) است؛ در آن محیط تشدید آنتن به طول‌موج‌های بسیار بلندتر می‌رود و این طرح مستقیماً برای آن معتبر نیست (طول میله‌ها باید تقریباً به نسبت ضریب شکست کوتاه شود و دوباره شبیه‌سازی شود). عددهای InAs/InP بالا نشان می‌دهند «اگر» گسیلنده‌ای با آن پارامترها در این آنتن باشد چه رخ می‌دهد. نقطه‌ی کلوییدی PbS در پلیمر یا شیشه با این شبیه‌سازی کاملاً سازگار است.</li>
-    <li><b>گسیلنده‌ی نقطه‌ای:</b> دوقطبی نقطه‌ای فرض شد. نقطه‌ی PbS (۵.۵ nm) در گاف ۴۰ nm تقریباً نقطه‌ای است؛ نقطه‌ی InAs با قطر ۳۰ تا ۵۰ nm هم‌اندازه‌ی گاف است و میدان روی آن یکنواخت نیست.</li>
-    <li><b>سیستم دوترازی:</b> بای‌اکسیتون، اکسیتون تاریک، ساختار ریز و ساید‌باند فونونی مدل نشده‌اند (فقط ضریب ZPL² = ۰.۸۱).</li>
-    <li><b>طلا:</b> داده‌ی توده‌ای جانسون-کریستی در دمای اتاق؛ میرایی سطحی و اثرهای غیرموضعی لحاظ نشده (در فاصله‌ی ۲۰ nm کوچک‌اند). در ۴ K اتلاف طلا کمتر است، پس η<sub>a</sub> کمی بهتر خواهد بود.</li>
-    <li><b>زمینه:</b> پراکندگی لیزر تحریک از آنتن و گسیل زمینه‌ی طلا (فوتولومینسانس) مدل نشده‌اند؛ این‌ها در آزمایش g<sup>(2)</sup>(0) را بالا می‌برند.</li>
-  </ul>
-</section>
-
-<section>
-  <h2><span class="n">۱۱</span><span>تکرارپذیری: کدها و داده‌ها</span></h2>
+  <h3>کدها و داده‌ها</h3>
   <table>
     <tr><th>مرحله</th><th>فایل</th></tr>
-    <tr><td>شبیه‌سازی FDTD (هندسه، دوقطبی، توان‌ها، میدان دوردست)</td><td class="l">labkit/lab/lumerical_fdtd.py, labkit/lab/farfield.py</td></tr>
-    <tr><td>داده‌ی FDTD طرح نهایی</td><td class="l">isi/data/lab_20261111/lumerical/fdtd_sw_L275_R295.csv</td></tr>
-    <tr><td>داده‌ی BEM طرح نهایی (h = 3, 4 nm)</td><td class="l">isi/results/bem_extra/tri2_L275_R295_A0_Y160_H{3,4}_c*.csv</td></tr>
-    <tr><td>مدل کوانتومی پالسی (QuTiP)</td><td class="l">isi/analysis/pulsed_tls.py → isi/results/pulsed_tls.csv</td></tr>
-    <tr><td>گسیلنده، آهنگ‌ها و جدول نتایج</td><td class="l">isi/analysis/single_photon.py → isi/results/single_photon.md</td></tr>
-    <tr><td>وابستگی به هندسه</td><td class="l">isi/analysis/geom_quantum.py → isi/results/geom_quantum.md</td></tr>
-    <tr><td>شکل ۳ این گزارش</td><td class="l">isi/analysis/s15_figs.py</td></tr>
+    <tr><td>شبیه‌سازی FDTD و میدان دوردست</td><td class="l">labkit/lab/lumerical_fdtd.py, labkit/lab/farfield.py</td></tr>
+    <tr><td>داده‌ی FDTD طرح نهایی و آزمون‌ها</td><td class="l">isi/data/lab_20261111/lumerical/fdtd_sw_L275_R295.csv, fdtd_sel_*.csv</td></tr>
+    <tr><td>داده‌ی BEM (h = 3, 4 nm)</td><td class="l">isi/results/bem_extra/tri2_L275_R295_A0_Y160_H{3,4}_c*.csv</td></tr>
+    <tr><td>مدل پالسی (QuTiP)</td><td class="l">isi/analysis/pulsed_tls.py</td></tr>
+    <tr><td>اندازه‌ی گسیلنده، آهنگ‌ها، جدول نتایج</td><td class="l">isi/analysis/single_photon.py → isi/results/single_photon.md</td></tr>
+    <tr><td>حل‌کننده‌ی مستقل، آزمون‌ها، حساسیت، شکل‌های ۲ و ۴</td><td class="l">isi/analysis/verify_s15.py → isi/results/verify_s15.json</td></tr>
+    <tr><td>شکل ۳</td><td class="l">isi/analysis/s15_figs.py</td></tr>
+    <tr><td>وابستگی به هندسه، شکل ۵</td><td class="l">isi/analysis/geom_quantum.py → isi/results/geom_quantum.md</td></tr>
   </table>
-</section>
-
-<section>
-  <h2><span class="n">۱۲</span><span>منابع</span></h2>
+  <h3>منابع</h3>
   <ol class="en" style="direction:ltr;text-align:left;font-size:.9rem;padding-left:1.4rem">
-    <li>L. Novotny, B. Hecht, <i>Principles of Nano-Optics</i>, 2nd ed., Cambridge University Press (2012), ch. 8 (spontaneous decay and the Green function).</li>
+    <li>L. Novotny, B. Hecht, <i>Principles of Nano-Optics</i>, 2nd ed., Cambridge University Press (2012), ch. 8.</li>
     <li>K. A. Fischer, K. Müller, K. G. Lagoudakis, J. Vučković, "Dynamical modeling of pulsed two-photon interference," New J. Phys. 18, 113053 (2016).</li>
     <li>J. Bylander, I. Robert-Philip, I. Abram, "Interference and correlation of two independent photons," Eur. Phys. J. D 22, 295 (2003).</li>
     <li>A. Kiraz, M. Atatüre, A. Imamoğlu, "Quantum-dot single-photon sources: prospects for applications in linear optics quantum-information processing," Phys. Rev. A 69, 032305 (2004).</li>
+    <li>H.-P. Breuer, F. Petruccione, <i>The Theory of Open Quantum Systems</i>, Oxford University Press (2002) (Lindblad equation, quantum regression theorem).</li>
     <li>J. R. Johansson, P. D. Nation, F. Nori, "QuTiP 2: A Python framework for the dynamics of open quantum systems," Comput. Phys. Commun. 184, 1234 (2013).</li>
     <li>P. B. Johnson, R. W. Christy, "Optical constants of the noble metals," Phys. Rev. B 6, 4370 (1972).</li>
     <li>U. Hohenester, A. Trügler, "MNPBEM – A Matlab toolbox for the simulation of plasmonic nanoparticles," Comput. Phys. Commun. 183, 370 (2012).</li>
@@ -319,7 +457,7 @@ td.l{text-align:left;direction:ltr;font-family:Georgia,serif}
     <li>I. Vurgaftman, J. R. Meyer, L. R. Ram-Mohan, "Band parameters for III–V compound semiconductors and their alloys," J. Appl. Phys. 89, 5815 (2001).</li>
   </ol>
 </section>
-<footer>گزارش تفصیلی بخش ۱۵؛ همه‌ی عددها با کدهای ذکرشده در بخش ۱۱ بازتولیدپذیرند.</footer>
+<footer>گزارش تفصیلی بخش ۱۵؛ همه‌ی عددها با کدهای فهرست‌شده در گام ۱۲ بازتولیدپذیرند.</footer>
 </div>
 </body>
 </html>
