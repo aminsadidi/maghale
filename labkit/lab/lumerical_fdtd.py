@@ -15,11 +15,11 @@ Outputs per wavelength (1300-1700 nm, 41 points):
   checked against Lumerical's own farfield3d of the top face. Columns ff_py60, ff_my60 = far-field power fraction in 60 deg
   cones about +y / -y (same definition as the BEM f_py60 / f_my60), ff_zNA13, ff_zNA09 = fraction collected along +z by NA 1.3 / 0.9,
   ff_check = far-field power / box power (should be 1). In-plane patterns at 1450, 1550, 1650 nm -> <out>_pattern.csv.
-  params: L, L3, Y3, D, g, n, dx (gap mesh), rmesh (rod mesh, 2 nm), mat (Lumerical material name), conformal (metal conformal mesh),
+  params: L, L3, Y3, A3 (angle of R3 to x, deg, rotated about its centre), D, g, n, dx (gap mesh), rmesh (rod mesh, 2 nm), mat (Lumerical material name), conformal (metal conformal mesh),
   waveguide, farfield, ff_strict (abort if the far field fails; smoke test), coarse.
 usage: python lumerical_fdtd.py --lumapi <dir of lumapi.py> --name NAME --params JSON --out file.csv --work DIR
 """
-import argparse, glob, json, os, re, sys, threading, time
+import argparse, glob, json, math, os, re, sys, threading, time
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--lumapi', required=True); ap.add_argument('--name', required=True); ap.add_argument('--params', default='{}')
@@ -31,27 +31,36 @@ P = {'L': 285, 'L3': 0, 'Y3': 160, 'dx': 1.0, 'waveguide': False, 'n': 1.5, 'D':
 P.update(json.loads(a.params))
 os.makedirs(a.work, exist_ok=True)
 nm = 1e-9
+ROT_SIGN = 1          # flipped automatically if Lumerical turns the cylinder the other way (checked on the mesh)
 
 
-def capsule(name, xc, yc, L, D):
-    """rod along x: cylinder (addcircle, axis z rotated about y) + two spheres"""
+def capsule(name, xc, yc, L, D, ang=0.0):
+    """rod in the plane z = 0 at angle ang (deg) to x: cylinder (addcircle, axis z) + two spheres.
+    ang = 0: one rotation about y (as in all earlier runs). ang != 0: rotations z(ang), y(90), z(ang); this sequence is a
+    palindrome, so the axis ends along (cos ang, sin ang, 0) whether the rotations are applied about fixed or body axes."""
+    ra = ROT_SIGN * ang
+    rot = ('set("first axis","y"); set("rotation 1",90);' if not ang else
+           f'set("first axis","z"); set("rotation 1",{ra}); set("second axis","y"); set("rotation 2",90); '
+           f'set("third axis","z"); set("rotation 3",{ra});')
     s = [f'addcircle; set("name","{name}_c"); set("x",{xc*nm}); set("y",{yc*nm}); set("z",0); set("radius",{D/2*nm});',
-         f'set("z span",{(L-D)*nm}); set("first axis","y"); set("rotation 1",90); set("material",mat);']
+         f'set("z span",{(L-D)*nm}); {rot} set("material",mat);']
+    ca, sa = math.cos(math.radians(ang)), math.sin(math.radians(ang))
     for k, sx in enumerate((-1, 1)):
-        s.append(f'addsphere; set("name","{name}_s{k}"); set("x",{(xc+sx*(L-D)/2)*nm}); set("y",{yc*nm}); set("z",0); '
+        s.append(f'addsphere; set("name","{name}_s{k}"); set("x",{(xc+sx*ca*(L-D)/2)*nm}); set("y",{(yc+sx*sa*(L-D)/2)*nm}); set("z",0); '
                  f'set("radius",{D/2*nm}); set("material",mat);')
     return '\n'.join(s)
 
 
 def lsf():
     L, L3, Y3, D, g, n, dx = P['L'], P['L3'], P['Y3'], P['D'], P['g'], P['n'], P['dx']
-    xc = g / 2 + L / 2; xmax = xc + L / 2
-    ytop = (Y3 + D / 2) if L3 else D / 2
+    A3 = float(P.get('A3', 0) or 0); ca, sa = math.cos(math.radians(A3)), abs(math.sin(math.radians(A3)))
+    xc = g / 2 + L / 2; xmax = max(xc + L / 2, ((L3 - D) / 2 * ca + D / 2) if L3 else 0)
+    ytop = (Y3 + (L3 - D) / 2 * sa + D / 2) if L3 else D / 2
     pad = 700; m = 100                                            # nm: free space around the structure, monitor margin
     rmesh = 6 if P['coarse'] else P['rmesh']; acc = 1 if P['coarse'] else 3; tsim = 300 if P['coarse'] else 1000
     S = ['switchtolayout; deleteall;', f'mat = "{P["mat"]}";',
          capsule('R1', -xc, 0, L, D), capsule('R2', xc, 0, L, D)]
-    if L3: S.append(capsule('R3', 0, Y3, L3, D))
+    if L3: S.append(capsule('R3', 0, Y3, L3, D, A3))
     ylo, yhi = -D / 2 - pad, ytop + pad
     zlo = -D / 2 - pad
     if P['waveguide']:
@@ -89,6 +98,9 @@ def lsf():
             if ax == 'Y': s += f'set("y",{pos*nm}); set("x min",{-fx*nm}); set("x max",{fx*nm}); set("z min",{fz0*nm}); set("z max",{fz*nm});'
             if ax == 'Z': s += f'set("z",{pos*nm}); set("x min",{-fx*nm}); set("x max",{fx*nm}); set("y min",{fy0*nm}); set("y max",{fy1*nm});'
             S.append(s)
+    if L3 and A3:                                                 # index map of the plane z = 0 around R3: orientation check
+        S.append(f'addindex; set("name","r3idx"); set("monitor type","2D Z-normal"); set("z",0); set("x",0); '
+                 f'set("x span",{(L3+40)*nm}); set("y",{Y3*nm}); set("y span",{(L3+40)*nm});')
     if P['waveguide']:
         for nme, y in (('wgm', -2500), ('wgp', 2500)):
             S.append(f'addpower; set("name","{nme}"); set("monitor type","2D Y-normal"); set("y",{y*nm}); set("x",0); set("x span",{1200*nm}); '
@@ -127,6 +139,43 @@ except TypeError:                                    # very old lumapi without t
     fdtd = lumapi.FDTD()
 fdtd.eval(script)
 
+
+def check_rotation(when, allow_flip=False):
+    """R3 must be gold along its intended axis (angle A3) and, for 13-77 deg, not along the mirrored or unrotated axis"""
+    A3 = float(P.get('A3', 0) or 0)
+    if not (P['L3'] and A3): return True
+    r = fdtd.getresult('r3idx', 'index')
+    x, y = np.asarray(r['x']).ravel() / nm, np.asarray(r['y']).ravel() / nm
+    n = np.abs(np.asarray(r['index_x'])); n = n.reshape(len(x), len(y), -1)[:, :, 0] if n.size >= len(x) * len(y) else n
+    gold = lambda px, py: n[int(np.argmin(abs(x - px))), int(np.argmin(abs(y - py)))] > 3.0
+    h = 0.6 * (P['L3'] - P['D']) / 2; c, sn = math.cos(math.radians(A3)), math.sin(math.radians(A3)); Y3 = P['Y3']
+    on = [gold(k * h * c, Y3 + k * h * sn) for k in (-1, 1)]
+    off = [gold(k * h * c, Y3 - k * h * sn) for k in (-1, 1)] + ([gold(k * h, Y3) for k in (-1, 1)] if A3 > 25 else [])
+    ok = all(on) and (not any(off) or not 13 < A3 < 77)
+    if not ok and allow_flip and not any(on) and all(off[:2]): return 'flip'
+    print(f'  rotation check ({when}): R3 at {A3:g} deg -> {"OK" if ok else "WRONG"} (on-axis gold {on}, mirrored/unrotated gold {off})', flush=True)
+    if not ok:
+        print('LABKIT_ERROR the third rod is not at the intended angle: the results would be wrong. Send this log.', flush=True)
+        sys.exit(4)
+    return True
+
+
+ROT_CHECKED = False
+if P['L3'] and float(P.get('A3', 0) or 0):
+    try:
+        fdtd.eval('mesh;'); r = check_rotation('after meshing, before the run', allow_flip=True)
+        if r == 'flip':
+            print('  Lumerical rotates the other way: rebuilding with the opposite rotation sign', flush=True)
+            ROT_SIGN = -1; script = lsf(); open(os.path.join(a.work, a.name + '.lsf'), 'w').write(script + '\n')
+            fdtd.eval(script); fdtd.eval('mesh;'); r = check_rotation('after the rebuild')
+        ROT_CHECKED = True
+    except SystemExit: raise
+    except Exception as e:
+        print(f'  rotation check before the run not possible ({str(e)[:70]}); done after the run', flush=True)
+    try: fdtd.eval('switchtolayout;')
+    except Exception: pass
+
+
 # Spectral range, set explicitly on the dipole and on every monitor. In Lumerical 2024 a new dipole overrides the global
 # source settings with its own 400-700 nm default, so setglobalsource alone gave 400-700 nm spectra (first lab run).
 WL0, WL1, NPTS = 1.3e-6, 1.7e-6, 41
@@ -160,7 +209,8 @@ for obj, a0, a1 in (('dip', 'wavelength start', 'wavelength stop'), ('bx2', 'min
     try: lo, hi = float(fdtd.getnamed(obj, a0)), float(fdtd.getnamed(obj, a1))
     except Exception as e: print(f'  {obj}: range not readable ({str(e)[:60]}), checked after the run', flush=True); continue
     check_range(lo, hi, obj)
-proj =os.path.join(a.work, a.name + '.fsp')
+
+proj = os.path.join(a.work, a.name + '.fsp')
 fdtd.save(proj)
 print(f'project saved: {proj}', flush=True)
 
@@ -185,6 +235,7 @@ t0 = time.time()
 fdtd.run()
 done.set()
 print(f'FDTD finished in {(time.time()-t0)/60:.1f} min', flush=True)
+if not ROT_CHECKED: check_rotation('after the run')
 fdtd.eval(ANALYSIS + ('\n' + ANALYSIS_WG if P['waveguide'] else ''))
 g = lambda k: np.real(np.asarray(fdtd.getv(k))).ravel()
 cols = {'lambda_nm': g('lam') * 1e9, 'Fp': g('Fp'), 'T': g('T')}

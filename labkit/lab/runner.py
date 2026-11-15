@@ -22,7 +22,7 @@ MNPBEM = os.environ.get('LABKIT_MNPBEM') or os.path.join(KIT, 'vendor', 'MNPBEM'
 CAL = os.path.join(OUT, 'calibration.json')
 STATUS_EVERY = int(os.environ.get('LABKIT_STATUS_EVERY', 30))   # s; the monitor thread only reads small log files
 
-TIER_ORDER = [2, 4, 3, 1]        # FDTD sweep -> FDTD of the selected design -> BEM of the selected design -> (BEM mesh study, done)
+TIER_ORDER = [5, 2, 4, 3, 1]     # campaign 3 (R3 spacing / rotation) -> FDTD sweep -> FDTD of the selected design -> BEM of the selected design -> (BEM mesh study, done)
 DEFAULT_CAL = {'mnpbem': {'a': 2.2, 'p': 2.6, 'samples': []},          # s per step per unit (Xeon E5-1650 guess)
                'lumerical': {'a': 2.0e-4, 'samples': []}}              # s per unit (rough guess, refined after 1 run)
 
@@ -386,7 +386,7 @@ def pack():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('cmd', choices=['plan', 'run', 'status', 'pack'])
-    ap.add_argument('--tiers', default='1,2,3,4'); ap.add_argument('--max-days', type=float); ap.add_argument('--only', choices=['mnpbem', 'lumerical'])
+    ap.add_argument('--tiers', default='1,2,3,4,5'); ap.add_argument('--max-days', type=float); ap.add_argument('--only', choices=['mnpbem', 'lumerical'])
     ap.add_argument('--redetect', action='store_true', help='repeat the software detection (licence tests)')
     a = ap.parse_args()
     console_setup()

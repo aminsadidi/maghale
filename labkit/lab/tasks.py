@@ -98,7 +98,53 @@ def catalogue():
         for c in range(1, 7):
             T.append({'id': f'tri2:AUTO_H{h:g}_c{c}', 'backend': 'mnpbem', 'auto': 'trimer', 'h': h, 'chunk': c, 'tier': 3,
                       'output': f'tri2_AUTO_H{h:g}_c{c}.csv', 'nsteps': 7, 'desc': f'BEM selected trimer, h = {h:g} nm, chunk {c}/6'})
+    T += campaign3()
     return [resolve(t, PLACEHOLDER, placeholder=True) if t.get('auto') else t for t in T]
+
+
+# ================= campaign 3 (supervisor, 2026-11-15): R3 brought close to the dimer (edge spacing 20-80 nm), then rotated ===========
+C3_L, C3_L3 = 275, 295                                   # selected design of campaign 2
+
+
+def _segdist(p1, p2, q1, q2):
+    """minimum distance between segments p1p2 and q1q2 (2D), by dense sampling (exact enough for nm geometry)"""
+    best = 1e9
+    for i in range(201):
+        t = i / 200; x = p1[0] + t * (p2[0] - p1[0]); y = p1[1] + t * (p2[1] - p1[1])
+        dx, dy = q2[0] - q1[0], q2[1] - q1[1]; u = max(0.0, min(1.0, ((x - q1[0]) * dx + (y - q1[1]) * dy) / (dx * dx + dy * dy)))
+        best = min(best, math.hypot(x - q1[0] - u * dx, y - q1[1] - u * dy))
+    return best
+
+
+def r3_spacing(Y3, A3, L=C3_L, L3=C3_L3, D=60, g=40):
+    """smallest gold-to-gold distance (nm) between R3 (centre (0, Y3), angle A3) and the dimer"""
+    h = (L3 - D) / 2; c, s = math.cos(math.radians(A3)), math.sin(math.radians(A3))
+    r3 = ((-h * c, Y3 - h * s), (h * c, Y3 + h * s))
+    a, b = g / 2 + D / 2, g / 2 + L - D / 2
+    return min(_segdist(*r3, (-b, 0), (-a, 0)), _segdist(*r3, (a, 0), (b, 0))) - D
+
+
+def y3_for(spacing, A3):
+    lo, hi = 30.0, 400.0
+    for _ in range(60):
+        mid = (lo + hi) / 2
+        if r3_spacing(mid, A3) < spacing: lo = mid
+        else: hi = mid
+    return round(hi, 1)
+
+
+def campaign3():
+    sm = lumerical('smoke_c3', {'L': C3_L, 'L3': C3_L3, 'Y3': y3_for(30, 45), 'A3': 45, 'dx': 4.0, 'coarse': True, 'ff_strict': True},
+                   3e5, 4.0, 5, 'SMOKE TEST: rotated third rod (coarse, a few minutes)')
+    sm['smoke'] = True; T = [sm]
+    for s in (20, 30, 40, 50, 60, 70, 80):               # (a) distance sweep, R3 parallel (A3 = 0); 90-110 nm exist (Y3 = 150-170)
+        T.append(lumerical(f'c3_s{s}_a0', {'L': C3_L, 'L3': C3_L3, 'Y3': y3_for(s, 0), 'A3': 0, 'dx': 1.0}, 8e6, 1.0, 5,
+                           f'campaign 3: R3 parallel, spacing {s} nm to the dimer'))
+    for s in (30, 20):                                   # (b) rotation at a fixed smallest spacing
+        for A in (15, 30, 45, 60, 90):
+            T.append(lumerical(f'c3_s{s}_a{A}', {'L': C3_L, 'L3': C3_L3, 'Y3': y3_for(s, A), 'A3': A, 'dx': 1.0}, 9e6, 1.0, 5,
+                               f'campaign 3: R3 rotated {A} deg, smallest spacing {s} nm'))
+    return T
 
 
 def resolve(t, sel, placeholder=False):
