@@ -77,24 +77,42 @@ def figures(R, lamb):
     ax[1].axvline(1550, c='0.5', ls=':'); ax[1].set_xlabel('طول موج (nm)'); ax[1].set_ylabel('Re G (بهنجار)'); ax[1].legend(fontsize=9.5)
     ax[1].set_title('(ب) آزمون کرامرز-کرونیگ: Re G پیش‌بینی‌شده', fontsize=12)
     fig.tight_layout(); fig.savefig(os.path.join(ROOT, 'figures', 'fig_q_modes.png')); plt.close(fig)
-    # ---- geometry
-    fig, ax = plt.subplots(2, 3, figsize=(16, 8.6)); ax = ax.ravel()
-    panels = [('gap', 'گاف دیمر (nm)', '(الف) گاف'), ('angle', 'زاویه‌ی میله‌ی سوم (درجه)', '(ب) زاویه‌ی R3'),
-              ('y3', 'مرکز R3، Y3 (nm)', '(ج) فاصله‌ی R3 (L = ۲۸۵)'), ('l3', 'طول R3 (nm)', '(د) طول R3'),
-              ('L', 'طول بازوی دیمر L (nm)', '(ه) طول دیمر'), ('n', 'ضریب شکست محیط', '(و) محیط')]
-    for a, (g, xl, tl) in zip(ax, panels):
-        xs = [x for s, x in GROUPS[g]]; rr = [R[s] for s, x in GROUPS[g]]
-        a.plot(xs, [r['I_1'] for r in rr], 'o-', c='#2a7a4b', lw=2, ms=6, label='I، γ* = ۱ µeV')
-        a.plot(xs, [r['I_10'] for r in rr], 's--', c='#2a7a4b', lw=1.5, ms=5, label='I، γ* = ۱۰ µeV')
-        a.plot(xs, [10 * r['g2_1'] for r in rr], 'D-', c='#b8892a', lw=2, ms=5, label='۱۰ × g2(0)')
-        a.plot(xs, [r['x_I'] for r in rr], 'x', c='k', ms=8, label='مدل صریح (I)')
-        a.set_ylim(0, 1.05); a.set_xlabel(xl); a.set_title(tl, fontsize=12)
-        b = a.twinx(); b.plot(xs, [r['hG'] * 1e6 for r in rr], ':', c='#9a3412', lw=1.6); b.plot(xs, [-r['delta'] * 1e6 for r in rr], ':', c='#1f4e9c', lw=1.6)
-        b.set_yscale('log'); b.grid(False); b.tick_params(labelsize=9)
-        if g == 'gap': a.legend(fontsize=8.6, loc='lower left')
-    ax[2].text(0.02, 0.04, 'نقطه‌چین قرمز: ħΓ و آبی: −ħδ (µeV، محور راست)', transform=ax[2].transAxes, fontsize=8.5, color='0.35')
-    fig.tight_layout(); fig.savefig(os.path.join(ROOT, 'figures', 'fig_q_geom.png')); plt.close(fig)
-
+    # ---- geometry: quantum figures of merit (left) and g2 (right)
+    panels = [('gap', 'گاف دیمر (nm)', '(الف) گاف بین دو میله'), ('angle', 'زاویه‌ی میله‌ی سوم (درجه)', '(ب) زاویه‌ی R3 (L = ۲۷۰)'),
+              ('y3', 'مرکز R3 (nm)', '(ج) فاصله‌ی R3 (L = ۲۸۵)'), ('l3', 'طول R3 (nm)', '(د) طول R3 (L = ۲۷۰)'),
+              ('L', 'طول بازوی دیمر (nm)', '(ه) طول دیمر (بدون R3)'), ('n', 'ضریب شکست محیط', '(و) محیط (دیمر L = ۲۷۰)')]
+    for name, key in (('fig_q_geom.png', 'q'), ('fig_q_rates.png', 'r')):
+        fig, ax = plt.subplots(2, 3, figsize=(16, 8.6)); ax = ax.ravel()
+        for a, (g, xl, tl) in zip(ax, panels):
+            xs = [x for s_, x in GROUPS[g]]; rr = [R[s_] for s_, x in GROUPS[g]]
+            if key == 'q':
+                a.plot(xs, [r['I_1'] for r in rr], 'o-', c='#2a7a4b', lw=2, ms=6, label=r'I  ($\gamma^*$ = 1 µeV)')
+                a.plot(xs, [r['I_10'] for r in rr], 's--', c='#2a7a4b', lw=1.5, ms=5, label=r'I  ($\gamma^*$ = 10 µeV)')
+                a.plot(xs, [r['x_I'] for r in rr], 'x', c='k', ms=9, mew=1.6, label='I  (explicit emitter + modes)')
+                a.set_ylim(0.6, 1.0); a.set_ylabel('تمیزناپذیری', color='#2a7a4b')
+                b2 = a.twinx(); b2.plot(xs, [r['g2_1'] for r in rr], 'D-', c='#b8892a', lw=2, ms=5); b2.plot(xs, [r['x_g2'] for r in rr], '+', c='k', ms=9)
+                b2.set_ylabel('g2(0)', color='#b8892a'); b2.grid(False); b2.set_ylim(0, max(0.02, 1.15 * max(r['g2_1'] for r in rr)))
+                if g == 'gap': a.legend(fontsize=8.6, loc='lower right')
+            else:
+                a.semilogy(xs, [r['hG'] * 1e6 for r in rr], 'o-', c='#9a3412', lw=2, ms=6, label=r'$\hbar\Gamma$ (µeV)')
+                a.semilogy(xs, [-r['delta'] * 1e6 for r in rr], 's-', c='#1f4e9c', lw=2, ms=6, label=r'$-\hbar\delta$ (µeV), from modes')
+                a.semilogy(xs, [-r['delta_green'] * 1e6 for r in rr], 'x', c='k', ms=9, label=r'$-\hbar\delta$ (µeV), direct Re G')
+                a.semilogy(xs, [max(m['g'] for m in r['modes']) * 1e6 for r in rr], '^--', c='#7a8191', lw=1.4, ms=6, label=r'$\hbar g_{max}$ (µeV)')
+                if g == 'gap': a.legend(fontsize=8.6)
+            a.set_xlabel(xl); a.set_title(tl, fontsize=12)
+        fig.tight_layout(); fig.savefig(os.path.join(ROOT, 'figures', name)); plt.close(fig)
+    # ---- Lamb shift vs pulse length
+    fig, ax = plt.subplots(1, 2, figsize=(12.5, 4.3))
+    for k, (s_, tl) in enumerate((('L275_R295_A0_Y160_H3', '(الف) طرح نهایی (گاف ۴۰ nm)'), ('L235_G10', '(ب) دیمر با گاف ۱۰ nm'))):
+        for lab, c in (('dressed', '#1f4e9c'), ('bare', '#9a3412')):
+            rr = [x for x in lamb if x['stem'] == s_ and x['laser'] == lab]
+            tp = [x['tp'] * 1e12 for x in rr]
+            ax[k].semilogx(tp, [x['pe'] for x in rr], 'o-', c=c, lw=2, ms=6, label=('بیشینه‌ی جمعیت، ' + ('لیزر روی خط جابه‌جاشده' if lab == 'dressed' else 'لیزر روی خط بدون آنتن')))
+            ax[k].semilogx(tp, [x['g2'] for x in rr], 's--', c=c, lw=1.5, ms=5, label='g2(0)، ' + ('جابه‌جاشده' if lab == 'dressed' else 'بدون آنتن'))
+        ax[k].set_xlabel('طول پالس (ps)'); ax[k].set_ylim(0, 1.02); ax[k].set_title(tl, fontsize=12); ax[k].legend(fontsize=8.6)
+    fig.tight_layout(); fig.savefig(os.path.join(ROOT, 'figures', 'fig_q_lamb.png')); plt.close(fig)
 
 if __name__ == '__main__':
-    main()
+    if '--figs' in sys.argv:
+        J = json.load(open(os.path.join(ROOT, 'results', 'qgeom.json'))); figures(J['R'], J['lamb'])
+    else: main()

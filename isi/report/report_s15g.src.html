@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدل تابع گرین گسیلنده</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --paper:#ffffff; --ink:#1d2330; --ink2:#4a5263; --muted:#7a8191; --line:#e3e1da;
+  --accent:#1f4e9c; --accent-soft:#e8eef8; --gold:#b8892a; --gold-soft:#faf3e3; --good:#2a7a4b; --good-soft:#e7f4ec;
+  --warn:#9a5b00; --warn-soft:#fbf1e1;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Vazirmatn",Tahoma,sans-serif;line-height:1.95}
+.page{max-width:900px;margin:0 auto;padding:28px 16px 60px}
+header.cover{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:34px 34px 28px;position:relative;overflow:hidden}
+header.cover::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.kicker{color:var(--gold);font-weight:600;font-size:.92rem;letter-spacing:.02em}
+h1{font-size:1.75rem;line-height:1.6;margin:.4rem 0 .6rem;font-weight:800}
+.en{direction:ltr;unicode-bidi:isolate;font-family:Georgia,"Times New Roman",serif}
+.entitle{display:block;direction:ltr;text-align:left;color:var(--ink2);font-family:Georgia,serif;font-size:1rem;line-height:1.6;margin:.3rem 0 1rem}
+.meta{color:var(--ink2);font-size:.95rem}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{font-size:.82rem;padding:3px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.badge.g{background:var(--good-soft);color:var(--good)} .badge.o{background:var(--gold-soft);color:var(--gold)}
+section{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px 30px;margin-top:20px}
+h2{font-size:1.3rem;margin:0 0 .8rem;font-weight:800;display:flex;align-items:center;gap:10px}
+h2 .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--accent);color:#fff;font-size:.95rem}
+h3{font-size:1.05rem;margin:1.2rem 0 .4rem;color:var(--accent)}
+p{margin:.5rem 0}
+.lead{font-size:1.05rem;color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 4px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fbfbf9}
+.tile .v{font-size:1.55rem;font-weight:800;color:var(--accent);direction:ltr;text-align:right}
+.tile .l{font-size:.86rem;color:var(--ink2);line-height:1.7}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92rem}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:right;vertical-align:top}
+th{background:#f3f2ed;font-weight:600}
+td.before{color:var(--ink2)} td.after{color:var(--ink)}
+tr:hover td{background:#fafaf7}
+.tl{position:relative;margin:10px 0 0;padding-right:26px}
+.tl::before{content:"";position:absolute;right:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.step{position:relative;margin:0 0 16px}
+.step::before{content:"";position:absolute;right:-24px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:3px solid var(--accent)}
+.step.key::before{border-color:var(--gold)}
+.step b{display:block}
+.step .d{color:var(--ink2);font-size:.95rem}
+figure{margin:16px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff;padding:6px}
+figcaption{font-size:.86rem;color:var(--ink2);margin-top:6px;line-height:1.8}
+.callout{border-right:4px solid var(--gold);background:var(--gold-soft);padding:12px 16px;border-radius:8px;margin:14px 0}
+.callout.g{border-color:var(--good);background:var(--good-soft)}
+.callout.w{border-color:var(--warn);background:var(--warn-soft)}
+ul{margin:.4rem 0;padding-right:1.3rem} li{margin:.25rem 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:720px){.two,.tiles{grid-template-columns:1fr 1fr} header.cover,section{padding:20px 18px} h1{font-size:1.4rem}}
+.num{direction:ltr;unicode-bidi:isolate}
+footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:24px}
+.papers{display:grid;gap:10px;margin-top:16px}
+.pcard{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:#fbfbf9}
+.pcard .entitle{margin:.2rem 0 0;font-size:.95rem}
+.ptag{font-weight:700;color:var(--accent);font-size:.9rem}.ptag.g{color:var(--good)}
+.tile .v sup{font-size:.6em}
+@page{size:A4 portrait;margin:16mm 14mm 16mm 14mm}
+@media print{
+  html{font-size:10.5pt}
+  body{background:#fff;line-height:1.8;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{max-width:none;margin:0;padding:0}
+  header.cover,section{border:none;border-radius:0;padding:0;margin:0 0 6mm 0;background:#fff}
+  header.cover{padding-top:4mm}
+  section{break-before:auto;margin-bottom:5mm;padding-top:2mm;border-top:1px solid #e3e1da}
+  h2,h3{break-after:avoid;page-break-after:avoid}
+  h3+ul,h3+p{break-before:avoid}
+  h1{font-size:17pt} h2{font-size:13.5pt;break-after:avoid} h3{font-size:11.5pt;break-after:avoid}
+  .tiles{grid-template-columns:repeat(3,1fr);gap:3mm}
+  .tile{padding:3mm 4mm}.tile .v{font-size:14pt}.tile .l{font-size:8.8pt}
+  figure{margin:4mm 0;break-inside:avoid}
+  figure img{max-height:78mm;width:auto;max-width:100%;border:none;padding:0}
+  figcaption{font-size:8.8pt}
+  table{font-size:8.8pt;break-inside:auto} tr{break-inside:avoid} th,td{padding:4px 6px}
+  .two{grid-template-columns:1fr 1fr}
+  .callout,.tile,.pcard{break-inside:avoid}
+  .tl{padding-right:30px;margin-right:2px} .step,li{break-inside:avoid}
+  table{break-inside:avoid}
+  footer{margin-top:6mm}
+  tr:hover td{background:none}
+}
+</style>
+<style>
+.eq{direction:ltr;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:1.04rem;background:#f7f8fb;border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:10px 0;line-height:2}
+.eq small{display:block;font-family:"Vazirmatn",sans-serif;direction:rtl;color:var(--ink2);font-size:.82rem;line-height:1.8;margin-top:4px}
+.calc{direction:ltr;text-align:left;font-family:"Courier New",monospace;font-size:.88rem;background:#fbfaf6;border:1px dashed #d8d3c4;border-radius:8px;padding:10px 14px;margin:10px 0;line-height:1.75;white-space:pre-wrap}
+td.l,.l{text-align:left;direction:ltr;font-family:Georgia,serif}
+.src{color:var(--muted);font-size:.84rem}
+.ok{color:var(--good);font-weight:700}.no{color:#9a3412;font-weight:700}
+.stepbox{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0;background:#fcfcfa}
+.stepbox b.h{color:var(--accent)}
+@media print{.eq,.calc{font-size:9.3pt;padding:5px 8px;break-inside:avoid}.stepbox{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="cover">
+  <div class="kicker">بخش ۱۵، بازنگری گام ۷ در پاسخ به استاد: مدل کوانتومی گسیلنده بر پایه‌ی تابع گرین آنتن</div>
+  <h1>ورود آهنگ پورسل و ثابت جفت‌شدگی گسیلنده-میدان (هر دو از تابع گرین) به مکانیک کوانتومی گسیلنده، و اثر هندسه بر g<sup>(2)</sup>(0) و تمیزناپذیری</h1>
+  <span class="entitle">Green-function quantum model of the emitter: antenna modes (ω<sub>j</sub>, κ<sub>j</sub>, g<sub>j</sub>) from Im G, Lamb shift from Re G, laser drive including the field scattered by the nanorods, explicit emitter + modes master equation, and the effect of the geometry on g<sup>(2)</sup>(0) and the indistinguishability</span>
+  <div class="meta">امین حسین صدیدی، سید محمدپارسا مولائی طبری؛ استاد راهنما: دکتر مالک باقری هارونی؛ دانشگاه اصفهان؛ آبان ۱۴۰۵</div>
+  <div class="badges"><span class="badge">تابع گرین: BEM (MNPBEM)، ۴۴ هندسه، ۱۱۰۰ تا ۱۹۰۰ nm</span><span class="badge o">مدل صریح: گسیلنده + دو مد آنتن</span><span class="badge g">آزمون کرامرز-کرونیگ: خطای Re G کمتر از ۱٪</span></div>
+  <div class="tiles">
+    <div class="tile"><div class="v">1.35 / 1.99 meV</div><div class="l">ثابت جفت‌شدگی ħg گسیلنده با دو مد آنتن (طرح نهایی)</div></div>
+    <div class="tile"><div class="v">79.1 µeV</div><div class="l">آهنگ گسیل ħΓ بازسازی‌شده از مدها (= F<sub>p</sub> × ħΓ<sub>0</sub>)</div></div>
+    <div class="tile"><div class="v">−82.9 µeV</div><div class="l">جابه‌جایی لمب از مدها (مستقیم از Re G: −۸۲.۷)</div></div>
+    <div class="tile"><div class="v">13.1</div><div class="l">تقویت میدان موضعی لیزر K در محل گسیلنده (هم‌پاسخی)</div></div>
+    <div class="tile"><div class="v">0.0103 / 0.966</div><div class="l">g<sup>(2)</sup>(0) و I با مدل صریح (پالس ۲۰۰ fs، γ* = ۱ µeV)</div></div>
+    <div class="tile"><div class="v">≤ 0.18</div><div class="l">g/(κ/4) در همه‌ی هندسه‌ها: جفت‌شدگی ضعیف</div></div>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">۱</span><span>پرسش استاد و پاسخ کوتاه</span></h2>
+  <p class="lead">استاد پرسیدند: میدانی که با گسیلنده برهم‌کنش می‌کند، بخشی میدان رانش لیزر و بخشی میدان پراکنده‌شده از نانومیله‌ها (کاواک باز) است؛ و حضور نانوساختار هم آهنگ گسیل خودبه‌خودی را (اثر پورسل) و هم ثابت جفت‌شدگی گسیلنده با میدان را تغییر می‌دهد که هر دو به تابع گرین وابسته‌اند. آیا این‌ها در مدل کوانتومی بخش ۱۵ وارد شده‌اند؟</p>
+  <table>
+    <tr><th>اثر</th><th>مدل قبلی (گام ۷ گزارش ۱۵)</th><th>مدل جدید (این گزارش)</th></tr>
+    <tr><td>آهنگ گسیل خودبه‌خودی اصلاح‌شده (Im G)</td><td>فقط یک عدد: Γ = F<sub>p</sub>Γ<sub>0</sub></td><td>از جفت‌شدگی صریح گسیلنده با مدهای آنتن (g<sub>j</sub>, κ<sub>j</sub>, ω<sub>j</sub>) که از Im G استخراج شده‌اند</td></tr>
+    <tr><td>ثابت جفت‌شدگی گسیلنده با میدان آنتن</td><td>نبود</td><td>g<sub>j</sub> برای هر مد، از تابع گرین؛ در هامیلتونی</td></tr>
+    <tr><td>جابه‌جایی بسامد گذار (Re G، جابه‌جایی لمب)</td><td>نبود</td><td>از مدها + زمینه‌ی غیرتشدیدی؛ با Re G مستقیم آزموده شد</td></tr>
+    <tr><td>میدان لیزر در محل گسیلنده = فرودی + پراکنده از آنتن</td><td>فقط فرض «پالس π»</td><td>دامنه‌ی همدوس مدها α<sub>j</sub>(t) که لیزر می‌راند؛ ضریب تقویت K</td></tr>
+    <tr><td>وابستگی به هندسه</td><td>فقط از راه F<sub>p</sub></td><td>از راه تابع گرین کامل هر هندسه (۴۴ هندسه)</td></tr>
+  </table>
+  <div class="callout g"><b>نتیجه‌ی اصلی:</b> در طرح نهایی، مدل کامل همان g<sup>(2)</sup>(0) = ۰.۰۱۰۳ و I = ۰.۹۶۶ را می‌دهد که مدل ساده‌ی مؤثر با همان تابع گرین می‌داد (تا ۴ رقم). دلیل فیزیکی: جفت‌شدگی ضعیف است (g ≪ κ)، پس مدها گسیلنده را «آنی» دنبال می‌کنند. ولی دو اثر تازه در بعضی شرایط مهم می‌شوند: (۱) جابه‌جایی لمب برای پالس‌های بلندتر از چند ps یا گاف‌های کوچک (۱۰ nm: ۵.۳ meV)، و (۲) در گاف ۱۰ nm، مدل صریح از مدل مؤثر جدا می‌شود (آغاز رفتار غیرمارکوفی).</div>
+</section>
+
+<section>
+  <h2><span class="n">۲</span><span>نظریه، گام به گام: از تابع گرین تا هامیلتونی گسیلنده</span></h2>
+  <h3>۲-۱. گسیلنده در محیط پراتلاف (الکترودینامیک کوانتومی ماکروسکوپی)</h3>
+  <p>در محیط پاشنده و پراتلاف (طلا + محیط)، میدان الکترومغناطیسی کوانتیده با تابع گرین کلاسیک <span class="en">G(r, r′; ω)</span> همان ساختار بیان می‌شود (Dung، Knöll و Welsch). گسیلنده‌ی دوترازی با گشتاور گذار <span class="en">d</span> در r<sub>0</sub> با هامیلتونی <span class="en">H<sub>int</sub> = −d·Ê(r<sub>0</sub>)</span> به این میدان جفت می‌شود. همه‌ی اثر محیط روی گسیلنده در یک کمیت جمع می‌شود: <b>چگالی طیفی</b></p>
+  <div class="eq">J(ω) = (ω² / πħε<sub>0</sub>c²) · d·Im G(r<sub>0</sub>, r<sub>0</sub>; ω)·d<small>J(ω): قدرت جفت‌شدگی گسیلنده با مدهای میدان در بسامد ω. بدون آنتن، J(ω) ∝ ω³ (فضای همگن).</small></div>
+  <p>در تقریب مارکوف (وقتی J(ω) در پهنای خط گسیلنده تقریباً ثابت است) دو کمیت به دست می‌آید:</p>
+  <div class="eq">Γ(ω<sub>e</sub>) = 2π J(ω<sub>e</sub>) = (2ω<sub>e</sub>² / ħε<sub>0</sub>c²) d·Im G·d ,&nbsp;&nbsp;&nbsp; δ(ω<sub>e</sub>) = −(ω<sub>e</sub>² / ħε<sub>0</sub>c²) d·Re G<sub>s</sub>·d<small>Γ: آهنگ گسیل (اثر پورسل). δ: جابه‌جایی بسامد گذار (لمب). با بهنجار کردن به محیط همگن: Γ/Γ<sub>0</sub> = 1 + Im g و δ/Γ<sub>0</sub> = −½ Re g، که g = (6π/k) d̂·G<sub>s</sub>·d̂ همان ستون‌های ImG و ReG خروجی BEM است.</small></div>
+  <h3>۲-۲. از چگالی طیفی به مدهای آنتن و ثابت جفت‌شدگی</h3>
+  <p>برای نانوآنتن، J(ω) از چند قله‌ی لورنتزی تشکیل می‌شود؛ هر قله یک مد شبه‌بهنجار (quasi-normal mode) آنتن است. با برازش</p>
+  <div class="eq">Γ<sub>sc</sub>(ω) = Σ<sub>j</sub> g<sub>j</sub>² κ<sub>j</sub> / [ (ω − ω<sub>j</sub>)² + κ<sub>j</sub>²/4 ]<small>ω<sub>j</sub>: بسامد مد j؛ κ<sub>j</sub>: آهنگ اتلاف مد (تابش + جذب در طلا)؛ <b>g<sub>j</sub>: ثابت جفت‌شدگی گسیلنده با مد j</b>. در قله: Γ<sub>sc</sub> = 4g<sub>j</sub>²/κ<sub>j</sub>. با Γ<sub>0</sub> = 1/τ<sub>0</sub>: g<sub>j</sub>² = A<sub>j</sub>κ<sub>j</sub>ħΓ<sub>0</sub>/4 که A<sub>j</sub> ارتفاع قله‌ی Im g است.</small></div>
+  <p>همین مدها جابه‌جایی لمب را هم پیش‌بینی می‌کنند (رابطه‌ی کرامرز-کرونیگ):</p>
+  <div class="eq">δ(ω) = Σ<sub>j</sub> g<sub>j</sub>² (ω − ω<sub>j</sub>) / [ (ω − ω<sub>j</sub>)² + κ<sub>j</sub>²/4 ] + δ<sub>bg</sub><small>δ<sub>bg</sub>: سهم غیرتشدیدی (مدهای مرتبه‌ی بالاتر و برهم‌کنش شبه‌ایستا با تصویر دوقطبی در فلز)، تقریباً ثابت در بازه‌ی طیفی. این آزمون مستقلی است: مدها فقط از Im G برازش می‌شوند و Re G را پیش‌بینی می‌کنند.</small></div>
+  <h3>۲-۳. هامیلتونی گسیلنده + مدهای آنتن + لیزر</h3>
+  <p>در چارچوب چرخان با بسامد لیزر ω<sub>L</sub> (ħ = ۱):</p>
+  <div class="eq">H(t) = −Δ<sub>e</sub> σ<sub>+</sub>σ<sub>−</sub> − Σ<sub>j</sub> Δ<sub>j</sub> a<sub>j</sub><sup>†</sup>a<sub>j</sub> + Σ<sub>j</sub> g<sub>j</sub> (a<sub>j</sub><sup>†</sup>σ<sub>−</sub> + σ<sub>+</sub>a<sub>j</sub>) + ½[ Ω<sub>e</sub>(t) σ<sub>+</sub> + Σ<sub>j</sub> Ω<sub>j</sub>(t) a<sub>j</sub><sup>†</sup> + h.c. ]<small>Δ<sub>e</sub> = ω<sub>L</sub> − (ω<sub>e</sub> + δ<sub>bg</sub>)؛ Δ<sub>j</sub> = ω<sub>L</sub> − ω<sub>j</sub>. Ω<sub>e</sub>: رانش مستقیم گسیلنده با لیزر فرودی. Ω<sub>j</sub>: رانش مد j آنتن با لیزر (دوقطبی آنتن بسیار بزرگ‌تر از دوقطبی گسیلنده است، پس Ω<sub>j</sub> ≫ Ω<sub>e</sub>).</small></div>
+  <div class="eq">dρ/dt = −i[H, ρ] + Σ<sub>j</sub> κ<sub>j</sub> 𝒟[a<sub>j</sub>]ρ + Γ<sub>d</sub> 𝒟[σ<sub>−</sub>]ρ + 2γ* 𝒟[σ<sub>+</sub>σ<sub>−</sub>]ρ<small>Γ<sub>d</sub>: گسیل مستقیم گسیلنده به محیط (Γ<sub>0</sub>) به‌علاوه‌ی سهم کوچکی از Im G که دو مد بازسازی نمی‌کنند.</small></div>
+  <h3>۲-۴. جدا کردن میدان لیزر پراکنده از آنتن (چارچوب جابه‌جاشده)</h3>
+  <p>با جابه‌جایی <span class="en">a<sub>j</sub> = α<sub>j</sub>(t) + b<sub>j</sub></span> که α<sub>j</sub> دامنه‌ی همدوس کلاسیک مد j زیر رانش لیزر است (<span class="en">dα<sub>j</sub>/dt = (iΔ<sub>j</sub> − κ<sub>j</sub>/2)α<sub>j</sub> − iΩ<sub>j</sub>/2</span>)، هامیلتونی به این شکل درمی‌آید:</p>
+  <div class="eq">H′(t) = −Δ<sub>e</sub> σ<sub>+</sub>σ<sub>−</sub> − Σ Δ<sub>j</sub> b<sub>j</sub><sup>†</sup>b<sub>j</sub> + Σ g<sub>j</sub>(b<sub>j</sub><sup>†</sup>σ<sub>−</sub> + σ<sub>+</sub>b<sub>j</sub>) + ½[ Ω<sub>loc</sub>(t) σ<sub>+</sub> + h.c. ] ,&nbsp;&nbsp; Ω<sub>loc</sub> = Ω<sub>e</sub> + 2Σ<sub>j</sub> g<sub>j</sub>α<sub>j</sub><small>این دقیقاً همان تفکیکی است که استاد گفتند: <b>Ω<sub>loc</sub> = سهم لیزر فرودی (Ω<sub>e</sub>) + سهم میدان لیزر پراکنده‌شده از نانومیله‌ها (2Σg<sub>j</sub>α<sub>j</sub>)</b>. b<sub>j</sub> نوسان‌های کوانتومی مدها حول حالت همدوس‌اند و از خلأ شروع می‌کنند؛ گسیل گسیلنده به آن‌ها می‌رود.</small></div>
+  <p>چون κ<sub>j</sub> (۶۰ تا ۳۰۰ meV) بسیار بزرگ‌تر از پهنای طیفی پالس (≈ ۹ meV برای ۲۰۰ fs) است، α<sub>j</sub> لیزر را آنی دنبال می‌کند و <span class="en">Ω<sub>loc</sub>(t) = K(ω<sub>L</sub>)Ω<sub>e</sub>(t)</span> که K ضریب تقویت میدان موضعی است. اندازه‌ی K را با قضیه‌ی هم‌پاسخی (reciprocity) از داده‌ی تابش همان دوقطبی به دست آوردیم:</p>
+  <div class="eq">|K|² = T(ω) · D(+z) / D<sub>0</sub>(+z) ≈ T · f<sub>NA0.9</sub><sup>آنتن</sup> / f<sub>NA0.9</sub><sup>دوقطبی</sup> = 181.0 × 0.1289 / 0.1360 → |K| = 13.1<small>برای تابش عمودی (از +z) با قطبش x. یعنی شدت لیزر لازم برای پالس π، |K|² ≈ ۱۷۰ برابر کمتر از حالت بدون آنتن است. فاز K و تأیید مستقل آن با شبیه‌سازی موج تخت در اجرای بعدی آزمایشگاه پیشنهاد شده است.</small></div>
+  <h3>۲-۵. حذف بی‌دررو مدها: مدل مؤثر (برای آزمون)</h3>
+  <p>اگر κ<sub>j</sub> ≫ g<sub>j</sub>، Γ و پهنای پالس، می‌توان b<sub>j</sub> را حذف کرد (<span class="en">b<sub>j</sub> ≈ −ig<sub>j</sub>σ<sub>−</sub>/(κ<sub>j</sub>/2 − iΔ<sub>ej</sub>)</span>). نتیجه یک گسیلنده‌ی دوترازی با</p>
+  <div class="eq">Γ<sub>eff</sub> = Γ<sub>d</sub> + Σ g<sub>j</sub>²κ<sub>j</sub>/(Δ<sub>ej</sub>² + κ<sub>j</sub>²/4) ,&nbsp;&nbsp; δ<sub>eff</sub> = δ<sub>bg</sub> + Σ g<sub>j</sub>²Δ<sub>ej</sub>/(Δ<sub>ej</sub>² + κ<sub>j</sub>²/4) ,&nbsp;&nbsp; Δ<sub>ej</sub> = ω<sub>e</sub> − ω<sub>j</sub></div>
+  <p>است. ما مدل صریح (گسیلنده + مدها) را حل می‌کنیم و با این مدل مؤثر مقایسه می‌کنیم تا ببینیم کجا تقریب مارکوف کافی است و کجا نیست.</p>
+</section>
+
+<section>
+  <h2><span class="n">۳</span><span>استخراج مدها و ثابت‌های جفت‌شدگی برای طرح نهایی</span></h2>
+  <figure><img src="{{IMG:fig_q_modes}}" alt="مدها"><figcaption>شکل ۱. (الف) Im G (چگالی طیفی بهنجار) طرح نهایی از BEM (h = ۳ nm، ۴۱ طول‌موج) و برازش با دو مد لورنتزی. (ب) Re G از BEM و پیش‌بینی همان دو مد (به‌علاوه‌ی زمینه‌ی غیرتشدیدی ثابت). خط نقطه‌چین: ۱۵۵۰ nm.</figcaption></figure>
+  <table>
+    <tr><th>مد</th><th>طول‌موج</th><th>ħω<sub>j</sub></th><th>ħκ<sub>j</sub> (Q)</th><th>ħg<sub>j</sub> (τ<sub>0</sub> = ۲ ns)</th><th>ħ(ω<sub>e</sub> − ω<sub>j</sub>)</th><th>g<sub>j</sub>/(κ<sub>j</sub>/4)</th></tr>
+    <tr><td>۱ (تیز)</td><td class="num">1440 nm</td><td class="num">0.861 eV</td><td class="num">60.9 meV (14)</td><td class="num">1.346 meV</td><td class="num">−61.4 meV</td><td class="num">0.088</td></tr>
+    <tr><td>۲ (پهن)</td><td class="num">1511 nm</td><td class="num">0.820 eV</td><td class="num">282.8 meV (2.9)</td><td class="num">1.988 meV</td><td class="num">−20.5 meV</td><td class="num">0.028</td></tr>
+  </table>
+  <h3>آزمون‌های سازگاری</h3>
+  <table>
+    <tr><th>کمیت در ۱۵۵۰ nm</th><th>از مدها</th><th>مستقیم از BEM</th><th>اختلاف</th></tr>
+    <tr><td>ħΓ (آهنگ گسیل کل)</td><td class="num">79.12 µeV</td><td class="num">F<sub>p</sub> × ħΓ<sub>0</sub> = 240.41 × 0.329 = 79.12 µeV</td><td class="ok">۰٪ ✓</td></tr>
+    <tr><td>ħδ (جابه‌جایی لمب)</td><td class="num">−82.9 µeV</td><td class="num">−½ ħΓ<sub>0</sub> Re g = −82.7 µeV</td><td class="ok">۰.۲٪ ✓</td></tr>
+    <tr><td>Re G در کل بازه‌ی ۱۱۰۰ تا ۱۹۰۰ nm</td><td colspan="2">پیش‌بینی از مدهایی که فقط به Im G برازش شده‌اند</td><td class="ok">خطای rms ۰.۵٪ بازه ✓</td></tr>
+    <tr><td>Im G در کل بازه</td><td colspan="2">برازش دو مد</td><td class="num">خطای rms نسبی ۲.۸٪</td></tr>
+  </table>
+  <ul>
+    <li><b>ترکیب جابه‌جایی لمب:</b> −۲۷.۷ µeV از دو مد تشدیدی و −۵۵.۲ µeV از زمینه‌ی غیرتشدیدی (برهم‌کنش شبه‌ایستای گسیلنده با تصویرش در سرهای طلا و مدهای مرتبه‌ی بالا). علامت منفی: انتقال به سرخ، چون گسیلنده (۱۵۵۰ nm) در سمت سرخ هر دو مد است.</li>
+    <li><b>جفت‌شدگی ضعیف:</b> g/(κ/4) ≤ ۰.۰۹، پس شکافت رابی (جفت‌شدگی قوی) رخ نمی‌دهد.</li>
+    <li>توجه: این مقادیر از BEM است (F<sub>p</sub> = ۲۴۰، طول عمر ۸.۳ ps) چون Re G فقط در BEM محاسبه شده است. FDTD F<sub>p</sub> = ۲۸۶ (۷.۰ ps) می‌دهد؛ اثر آن روی g<sup>(2)</sup> و I در گزارش ۱۵، گام ۱۱، نشان داده شد (کوچک).</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۴</span><span>حل کوانتومی: مدل صریح در برابر مدل مؤثر</span></h2>
+  <p>مدل صریح با فضای هیلبرت گسیلنده (۲ حالت) × دو مد (هر کدام ۲ حالت فوک) حل شد: سوپرعملگر لیوویلی ۶۴×۶۴، انتشار با ماتریس نمایی (دقیق برای سیستم سخت با κ/Γ ≈ ۳۶۰۰)، و همبستگی‌های دوزمانی با رگرسیون کوانتومی (همان حل‌کننده‌ی مستقل گزارش ۱۵). پالس موضعی π گاوسی ۲۰۰ fs، لیزر روی خط جابه‌جاشده‌ی گسیلنده.</p>
+  <table>
+    <tr><th>هندسه</th><th>ħΓ (µeV)</th><th>ħδ (µeV)</th><th>g<sup>(2)</sup>(0) مؤثر / صریح</th><th>I (γ* = ۱ µeV) مؤثر / صریح</th><th>g/(κ/4)</th></tr>
+    <tr><td><b>طرح نهایی (گاف ۴۰)</b></td><td class="num">79.1</td><td class="num">−82.9</td><td class="num">0.0103 / 0.0103</td><td class="num">0.9655 / 0.9655</td><td class="num">0.088</td></tr>
+    <tr><td>دیمر گاف ۲۰ nm (L = ۲۵۵)</td><td class="num">372</td><td class="num">−636</td><td class="num">0.0444 / 0.0444</td><td class="num">0.9531 / 0.9531</td><td class="num">0.089</td></tr>
+    <tr><td>دیمر گاف ۱۰ nm (L = ۲۳۵)</td><td class="num">1294</td><td class="num">−5339</td><td class="num">0.1240 / 0.1203</td><td class="num">0.8970 / 0.8991</td><td class="num">0.179</td></tr>
+  </table>
+  <ul>
+    <li><b>آزمون قطع فضای فوک:</b> با ۳ حالت فوک برای هر مد، نتیجه‌ی طرح نهایی بدون تغییر (g<sup>(2)</sup> = ۰.۰۱۰۲۶، I = ۰.۹۶۵۴۶).</li>
+    <li><b>آزمون گام زمانی و حل‌کننده:</b> همان حل‌کننده‌ای که در گزارش ۱۵ با QuTiP و حد تحلیلی آزموده شد.</li>
+    <li><b>تفسیر:</b> در طرح نهایی و گاف ۲۰ nm، مدل صریح و مؤثر تا ۴ رقم یکسان‌اند: مدهای آنتن آن‌قدر سریع‌اند (۱/κ ≈ ۲ تا ۱۰ fs) که گسیلنده فقط یک آهنگ و یک جابه‌جایی «می‌بیند». در گاف ۱۰ nm اختلاف ۳٪ در g<sup>(2)</sup> ظاهر می‌شود، یعنی آن‌جا تقریب مارکوف شروع به شکستن می‌کند و مدل صریح لازم است.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۵</span><span>اثر جابه‌جایی لمب: کجا مهم است؟</span></h2>
+  <p>آزمایشگر معمولاً لیزر را روی خط گسیل مشاهده‌شده تنظیم می‌کند (خط جابه‌جاشده). اگر لیزر روی بسامد گسیلنده‌ی بدون آنتن تنظیم شود، ناکوکی برابر δ است:</p>
+  <figure><img src="{{IMG:fig_q_lamb}}" alt="لمب"><figcaption>شکل ۲. بیشینه‌ی جمعیت حالت برانگیخته (خط پر) و g<sup>(2)</sup>(0) (خط‌چین) بر حسب طول پالس، با لیزر روی خط جابه‌جاشده (آبی) و روی خط بدون آنتن (قرمز). (الف) طرح نهایی، δ = −۸۳ µeV. (ب) دیمر گاف ۱۰ nm، δ = −۵.۳ meV. در (ب) با لیزر روی خط بدون آنتن و پالس‌های ≥ ۰.۵ ps، گسیلنده تقریباً برانگیخته نمی‌شود (جمعیت ۰.۰۸) و g<sup>(2)</sup> بزرگ‌تر از ۱ می‌شود چون فوتون‌های اندک باقی‌مانده بیشتر از تحریک‌های چندگانه‌ی ضعیف‌اند.</figcaption></figure>
+  <table>
+    <tr><th>هندسه</th><th>پالس</th><th>لیزر روی</th><th>بیشینه‌ی جمعیت</th><th>g<sup>(2)</sup>(0)</th><th>I</th></tr>
+    <tr><td rowspan="6">طرح نهایی</td><td rowspan="2">200 fs</td><td>خط جابه‌جاشده</td><td class="num">0.975</td><td class="num">0.0103</td><td class="num">0.965</td></tr>
+    <tr><td>خط بدون آنتن</td><td class="num">0.975</td><td class="num">0.0103</td><td class="num">0.965</td></tr>
+    <tr><td rowspan="2">10 ps</td><td>خط جابه‌جاشده</td><td class="num">0.464</td><td class="num">0.251</td><td class="num">0.832</td></tr>
+    <tr><td>خط بدون آنتن</td><td class="num">0.355</td><td class="num">0.365</td><td class="num">0.824</td></tr>
+    <tr><td rowspan="2">20 ps</td><td>خط جابه‌جاشده</td><td class="num">0.267</td><td class="num">0.358</td><td class="num">0.837</td></tr>
+    <tr><td>خط بدون آنتن</td><td class="num">0.138</td><td class="num">0.723</td><td class="num">0.831</td></tr>
+    <tr><td rowspan="4">گاف ۱۰ nm</td><td rowspan="2">200 fs</td><td>خط جابه‌جاشده</td><td class="num">0.741</td><td class="num">0.124</td><td class="num">0.897</td></tr>
+    <tr><td>خط بدون آنتن</td><td class="num">0.423</td><td class="num">0.336</td><td class="num">0.876</td></tr>
+    <tr><td rowspan="2">50 fs</td><td>خط جابه‌جاشده</td><td class="num">0.915</td><td class="num">0.039</td><td class="num">0.961</td></tr>
+    <tr><td>خط بدون آنتن</td><td class="num">0.870</td><td class="num">0.042</td><td class="num">0.961</td></tr>
+  </table>
+  <p><b>نتیجه:</b> وقتی پهنای طیفی پالس (≈ ħ × ۲.۸/τ<sub>p</sub>) بسیار بزرگ‌تر از |δ| است، جابه‌جایی لمب اثری ندارد (طرح نهایی با ۲۰۰ fs). در پالس‌های بلند یا گاف‌های کوچک، جابه‌جایی لمب تعیین می‌کند که لیزر کجا تنظیم شود. همچنین در تداخل فوتون‌های <b>دو منبع جدا</b> (دو گسیلنده در دو آنتن)، تفاوت δ دو منبع آن‌ها را تمیزپذیر می‌کند؛ این یک اثر هندسی مستقیم بر I دو منبع است.</p>
+</section>
+
+<section>
+  <h2><span class="n">۶</span><span>اثر پارامترهای هندسی بر g<sup>(2)</sup>(0) و تمیزناپذیری</span></h2>
+  <p>برای هر یک از ۴۴ هندسه‌ای که تابع گرین کاملشان (۱۱۰۰ تا ۱۹۰۰ nm) با BEM محاسبه شده، همه‌ی زنجیره تکرار شد: برازش مدها (خطای Im G ≤ ۴٪، Re G ≤ ۱٪ در همه)، g<sub>j</sub>، κ<sub>j</sub>، ω<sub>j</sub>، δ، K، و حل کوانتومی (مدل مؤثر برای همه، و مدل صریح برای همه با γ* = ۱ µeV به‌عنوان آزمون).</p>
+  <figure><img src="{{IMG:fig_q_rates}}" alt="آهنگ‌ها"><figcaption>شکل ۳. پارامترهای کوانتومی بر حسب هندسه: ħΓ (قرمز)، −ħδ از مدها (آبی) و مستقیم از Re G (×)، و بزرگ‌ترین ثابت جفت‌شدگی ħg (خاکستری). (الف) گاف دیمر؛ (ب) زاویه‌ی میله‌ی سوم؛ (ج) مکان میله‌ی سوم؛ (د) طول میله‌ی سوم؛ (ه) طول بازوهای دیمر؛ (و) ضریب شکست محیط.</figcaption></figure>
+  <figure><img src="{{IMG:fig_q_geom}}" alt="هندسه"><figcaption>شکل ۴. تمیزناپذیری (سبز، محور چپ) برای γ* = ۱ و ۱۰ µeV و g<sup>(2)</sup>(0) (طلایی، محور راست) با پالس ۲۰۰ fs، بر حسب همان پارامترهای هندسی. علامت‌های × و + نتیجه‌ی مدل صریح گسیلنده + مدها هستند.</figcaption></figure>
+  <table>
+    <tr><th>پارامتر هندسی</th><th>بازه</th><th>ħΓ (µeV)</th><th>ħδ (µeV)</th><th>g<sup>(2)</sup>(0)</th><th>I (۱ µeV)</th><th>I (۱۰ µeV)</th></tr>
+    <tr><td>گاف دیمر</td><td class="num">40 → 20 → 10 nm</td><td class="num">91 → 372 → 1294</td><td class="num">−71 → −636 → −5339</td><td class="num">0.012 → 0.044 → 0.12</td><td class="num">0.967 → 0.953 → 0.90</td><td class="num">0.81 → 0.91 → 0.88</td></tr>
+    <tr><td>زاویه‌ی R3 (L = ۲۷۰)</td><td class="num">0° → 35°</td><td class="num">70 → 74</td><td class="num">−86 → −84</td><td class="num">0.0092 → 0.0096</td><td class="num">0.964</td><td class="num">0.772 → 0.779</td></tr>
+    <tr><td>مکان R3 (L = ۲۸۵)</td><td class="num">Y3 = 150 → 170 nm</td><td class="num">87 → 107</td><td class="num">−88 → −87</td><td class="num">0.011 → 0.014</td><td class="num">0.967 → 0.968</td><td class="num">0.80 → 0.83</td></tr>
+    <tr><td>طول R3 (L = ۲۷۰)</td><td class="num">260 → 340 nm</td><td class="num">75 → 104</td><td class="num">−74 → −93</td><td class="num">0.0097 → 0.013</td><td class="num">0.965 → 0.968</td><td class="num">0.78 → 0.83</td></tr>
+    <tr><td>طول دیمر</td><td class="num">240 → 280 nm</td><td class="num">56 → 97</td><td class="num">−82 → −63</td><td class="num">0.0073 → 0.0125</td><td class="num">0.959 → 0.968</td><td class="num">0.73 → 0.82</td></tr>
+    <tr><td>ضریب شکست محیط</td><td class="num">1.33 → 1.7</td><td class="num">62 → 91 → 54</td><td class="num">−116 → −27</td><td class="num">0.008 → 0.012 → 0.007</td><td class="num">0.96</td><td class="num">0.75 → 0.81 → 0.73</td></tr>
+  </table>
+  <h3>تفسیر</h3>
+  <ul>
+    <li><b>قوی‌ترین پارامتر هندسی، گاف است.</b> با کوچک شدن گاف از ۴۰ به ۱۰ nm، ثابت جفت‌شدگی ħg از ۲ به ۸.۵ meV و ħΓ ۱۴ برابر و جابه‌جایی لمب ۷۵ برابر می‌شود. برای γ* = ۱۰ µeV این تمیزناپذیری را بالا می‌برد (۰.۸۱ → ۰.۹۱) ولی با پالس ثابت ۲۰۰ fs، g<sup>(2)</sup>(0) را تا ۰.۱۲ بالا می‌برد؛ با پالس ۵۰ fs، g<sup>(2)</sup> = ۰.۰۴ و I = ۰.۹۶ دوباره به دست می‌آید. یعنی گاف کوچک‌تر به پالس کوتاه‌تر و تنظیم دقیق لیزر روی خط جابه‌جاشده نیاز دارد.</li>
+    <li><b>میله‌ی سوم (زاویه، مکان، طول):</b> Γ را فقط ±۲۰٪ و δ را ±۱۰٪ تغییر می‌دهد، پس g<sup>(2)</sup> و I تقریباً ثابت می‌مانند (I(۱ µeV) = ۰.۹۶۴ تا ۰.۹۶۸). نقش اصلی R3 جهت‌دهی است (نسبت +y/−y از ۱.۶ تا ۶.۷).</li>
+    <li><b>چرا I با γ* = ۱ µeV تقریباً ثابت است:</b> با Γ بزرگ‌تر، γ*/Γ کوچک می‌شود (بهتر) ولی τ<sub>p</sub>Γ بزرگ می‌شود (بدتر)، و این دو تقریباً خنثی می‌شوند. با γ* = ۱۰ µeV اثر اول غالب است و I با Γ بالا می‌رود.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۷</span><span>محدودیت‌ها و گام‌های بعدی</span></h2>
+  <ul>
+    <li><b>تأیید K:</b> اندازه‌ی تقویت میدان موضعی لیزر (۱۳.۱) از هم‌پاسخی و سهم جمع‌آوری NA ۰.۹ تخمین زده شد. شبیه‌سازی مستقیم با موج تخت (FDTD یا BEM) دامنه و فاز K را می‌دهد؛ پیشنهاد می‌کنیم به اجرای ۳ آزمایشگاه اضافه شود.</li>
+    <li><b>زمینه‌ی لیزر در آشکارساز:</b> میدان لیزر پراکنده از آنتن (α<sub>j</sub>) در هامیلتونی گسیلنده وارد شده، ولی در آمار فوتون آشکارسازی‌شده هنوز فرض شده که این زمینه حذف می‌شود (مثلاً با قطبش متعامد یا دریچه‌ی زمانی: زمینه فقط در مدت پالس ۲۰۰ fs است، گسیل ۸ ps طول می‌کشد). محاسبه‌ی g<sup>(2)</sup> با زمینه‌ی همدوس قدم بعدی است.</li>
+    <li><b>مکان گسیلنده:</b> همه‌ی محاسبه‌ها برای مرکز گاف است. خروجی BEM برای دو مکان دیگر (۵ nm در x و ۱۰ nm در y) هم موجود است؛ با آن می‌توان اثر خطای جای‌گذاری و تمیزناپذیری دو منبع را حساب کرد.</li>
+    <li><b>محیط گسیلنده:</b> همان نکته‌ی گزارش ۱۵: n = ۱.۵ با نقطه‌ی PbS سازگار است؛ برای InAs/InP باید آنتن در InP دوباره طراحی شود. کد این گزارش برای هر تابع گرین جدید خودکار کار می‌کند.</li>
+  </ul>
+  <h3>کدها و داده‌ها</h3>
+  <table>
+    <tr><th>مرحله</th><th>فایل</th></tr>
+    <tr><td>تابع گرین (Im G, Re G) ۴۴ هندسه</td><td class="l">isi/results/bem_extra/tri2_*_c*.csv (MNPBEM, isi/bem/extra/job_tri2.m)</td></tr>
+    <tr><td>برازش مدها و ثابت‌های جفت‌شدگی</td><td class="l">isi/analysis/gmodes.py</td></tr>
+    <tr><td>مدل کوانتومی صریح و مؤثر</td><td class="l">isi/analysis/qmodel.py</td></tr>
+    <tr><td>اثر هندسه و جابه‌جایی لمب، شکل‌ها</td><td class="l">isi/analysis/qgeom.py → isi/results/qgeom.json</td></tr>
+  </table>
+  <h3>منابع</h3>
+  <ol class="en" style="direction:ltr;text-align:left;font-size:.9rem;padding-left:1.4rem">
+    <li>H. T. Dung, L. Knöll, D.-G. Welsch, "Spontaneous decay in the presence of dispersing and absorbing bodies: general theory and application to a spherical cavity," Phys. Rev. A 62, 053804 (2000).</li>
+    <li>L. Novotny, B. Hecht, <i>Principles of Nano-Optics</i>, 2nd ed., Cambridge University Press (2012), ch. 8.</li>
+    <li>D. Dzsotjan, A. S. Sørensen, M. Fleischhauer, "Quantum emitters coupled to surface plasmons of a nanowire: a Green's function approach," Phys. Rev. B 82, 075427 (2010).</li>
+    <li>A. Delga, J. Feist, J. Bravo-Abad, F. J. Garcia-Vidal, "Quantum emitters near a metal nanoparticle: strong coupling and quenching," Phys. Rev. Lett. 112, 253601 (2014).</li>
+    <li>P. T. Kristensen, S. Hughes, "Modes and mode volumes of leaky optical cavities and plasmonic nanoresonators," ACS Photonics 1, 2 (2014).</li>
+    <li>K. A. Fischer, K. Müller, K. G. Lagoudakis, J. Vučković, "Dynamical modeling of pulsed two-photon interference," New J. Phys. 18, 113053 (2016).</li>
+    <li>U. Hohenester, A. Trügler, "MNPBEM – A Matlab toolbox for the simulation of plasmonic nanoparticles," Comput. Phys. Commun. 183, 370 (2012).</li>
+  </ol>
+</section>
+<footer>مدل تابع گرین گسیلنده (بازنگری گام ۷ گزارش ۱۵)؛ همه‌ی عددها با کدهای ذکرشده بازتولیدپذیرند.</footer>
+</div>
+</body>
+</html>
