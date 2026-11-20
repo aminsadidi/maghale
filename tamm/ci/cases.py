@@ -88,6 +88,12 @@ def cases():
         for tag, k in (('base', {}), ('v21', dict(void=0.21)), ('cov65', dict(void=0.35)), ('sh94', dict(d_scale=0.94, t_scale=0.94)),
                        ('shrink90', dict(d_scale=0.9, t_scale=0.9))):
             add(f'FV_{tag}_s{seed}_x', **dict(fv, seed=seed, **k))
+    # ---- round 7: silver changes alone (rounds 5, 6) switch the minimum to ~780 nm instead of moving the Tamm dip continuously; in 1D
+    # only a layer at the Ag / TiO2 interface (delamination gap, hydrated or AgCl interlayer) gives the measured continuous red shift with
+    # the old dip filling up. Full device with such an interlayer under the as-deposited island film.
+    for seed in (1, 2):
+        for tag, n, g in (('g133_40', 1.333, 0.040), ('g133_80', 1.333, 0.080), ('g207_20', 2.07, 0.020), ('g207_40', 2.07, 0.040)):
+            add(f'FG_{tag}_s{seed}_x', **dict(fv, seed=seed, stack=[[n, g]] + DBR))
     return C
 
 
