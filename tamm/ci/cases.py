@@ -1,0 +1,39 @@
+"""All 3D Meep cases of the Tamm-device study (one entry = one film3d.py run). Names are unique and become the result file names.
+Groups: V validation (flat film vs analytic), I island film baseline (4 realisations, both incidences, both polarisations),
+C convergence (resolution, cell size), M silver modifications (extra Drude damping, thinning), W water on top,
+S particles (VLP n = 1.48 and PS n = 1.59, 100 nm) on the film, D full device (film + DBR + glass) for the cascade check."""
+DBR = [[1.93, 0.0752 * 0.97], [1.435, 0.1006 * 0.97]] * 5          # film-side first: TiO2 / SiO2 (fit of Fig. 1, TD thickness scale)
+
+
+def cases():
+    C = []
+    add = lambda name, **k: C.append((name, k))
+    for res in (300,):
+        for inc in ('top', 'bottom'):
+            add(f'V_flat_r{res}_{inc}', film='flat', P=0.02, res=res, inc=inc)
+    for seed in (1, 2, 3, 4):
+        for inc in ('top', 'bottom'):
+            for pol in ('x', 'y'):
+                add(f'I_s{seed}_{inc}_{pol}', film='islands', seed=seed, P=0.3, res=200, inc=inc, pol=pol)
+    for inc in ('top', 'bottom'):
+        add(f'C_s1_r300_{inc}_x', film='islands', seed=1, P=0.3, res=300, inc=inc, pol='x')
+        for pol in ('x', 'y'):
+            add(f'C_s1_P45_{inc}_{pol}', film='islands', seed=1, P=0.45, res=200, inc=inc, pol=pol)
+    for seed in (1, 2):
+        for inc in ('top', 'bottom'):
+            for tag, k in (('dg05', dict(dg_extra=0.05 / 1.23984)), ('dg10', dict(dg_extra=0.10 / 1.23984)), ('dg20', dict(dg_extra=0.20 / 1.23984)),
+                           ('thin85', dict(t_scale=0.85)), ('thin70', dict(t_scale=0.70))):
+                add(f'M_{tag}_s{seed}_{inc}_x', film='islands', seed=seed, P=0.3, res=200, inc=inc, pol='x', **k)
+    for inc in ('top', 'bottom'):
+        add(f'W_s1_{inc}_x', film='islands', seed=1, P=0.3, res=200, inc=inc, pol='x', n_top=1.333)
+    for tag, sph in (('ref', None), ('vlp', dict(d=0.1, n=1.48)), ('ps', dict(d=0.1, n=1.59))):
+        for inc in ('top', 'bottom'):
+            for pol in ('x', 'y'):
+                add(f'S_{tag}_P40_{inc}_{pol}', film='islands', seed=1, P=0.4, res=200, inc=inc, pol=pol, zref=0.18, sphere=sph)
+    for inc in ('top', 'bottom'):
+        add(f'D_s1_{inc}_x', film='islands', seed=1, P=0.3, res=200, inc=inc, pol='x', stack=DBR, nsub=1.52, nb=1.93)
+    return C
+
+
+if __name__ == '__main__':
+    c = cases(); print(len(c), 'cases'); [print(n) for n, k in c]

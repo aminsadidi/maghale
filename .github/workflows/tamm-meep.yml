@@ -1,0 +1,90 @@
+# 3D Meep runs of the Tamm-device study (tamm/), on free GitHub-hosted runners. Each matrix job runs up to 4 cases in parallel
+# (one per core). Results (one .npz per case) are committed to tamm/results/meep/ on the same branch; finished cases are skipped.
+# Trigger: push a change to tamm/ci/trigger.txt, or run manually (Actions tab -> tamm-meep -> Run workflow, optional case prefixes).
+name: tamm-meep
+
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: 'Comma-separated case-name prefixes (empty = all pending)'
+        default: ''
+  push:
+    paths:
+      - 'tamm/ci/trigger.txt'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tamm-meep-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.m.outputs.matrix }}
+      count: ${{ steps.m.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: m
+        run: |
+          M=$(python3 tamm/ci/make_matrix.py "${{ github.event.inputs.only || '' }}")
+          echo "matrix=$M" >> "$GITHUB_OUTPUT"
+          echo "count=$(echo "$M" | python3 -c 'import json,sys; print(len(json.load(sys.stdin)["include"]))')" >> "$GITHUB_OUTPUT"
+          echo "$M"
+
+  sim:
+    needs: plan
+    if: needs.plan.outputs.count != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: isi/ci/environment-ci.yml
+          cache-environment: true
+      - name: run ${{ matrix.job }}
+        shell: bash -el {0}
+        env:
+          MPLBACKEND: Agg
+        run: |
+          nproc
+          python tamm/ci/run_job.py "${{ matrix.cases }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tamm_${{ matrix.job }}
+          path: task_out/
+          retention-days: 30
+
+  commit:
+    needs: sim
+    if: always() && needs.sim.result != 'skipped'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: commit results
+        run: |
+          mkdir -p tamm/results/meep
+          find artifacts -name '*.npz' -exec cp {} tamm/results/meep/ \;
+          find artifacts -name '*.log' -exec cp {} tamm/results/meep/ \;
+          git config user.name "tamm-meep bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add tamm/results/meep
+          if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
+          git commit -m "CI: tamm Meep results ($(ls tamm/results/meep/*.npz | wc -l) cases)"
+          for i in 1 2 3 4; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}"; then exit 0; fi
+            sleep $((i*5))
+          done
+          echo "push failed"; exit 1
