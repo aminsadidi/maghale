@@ -80,6 +80,14 @@ def cases():
         for tag, k in mods5 + ((('base', {}),) if seed == 3 else ()):
             add(f'LG_{tag}_s{seed}_bottom_x', **dict(big, seed=seed, nb=1.52, inc='bottom', **k))
             add(f'LT_{tag}_s{seed}_bottom_x', **dict(big, seed=seed, nb=1.93, inc='bottom', **k))
+    # ---- round 6: FULL device with large cells (film + DBR + glass, P = 0.8 um, light from the glass side). Round 5 (zeroth-order
+    # cascade) shows the Tamm dip filling and a broad minimum near 800 nm taking over; this checks it without the cascade approximation
+    # (diffracted light in the DBR and the near-field coupling included).
+    fv = dict(film='islands', P=0.8, res=200, inc='bottom', pol='x', stack=DBR, nsub=1.52, nb=1.93)
+    for seed in (1, 2):
+        for tag, k in (('base', {}), ('v21', dict(void=0.21)), ('cov65', dict(void=0.35)), ('sh94', dict(d_scale=0.94, t_scale=0.94)),
+                       ('shrink90', dict(d_scale=0.9, t_scale=0.9))):
+            add(f'FV_{tag}_s{seed}_x', **dict(fv, seed=seed, **k))
     return C
 
 
