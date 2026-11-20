@@ -105,7 +105,7 @@ def main():
         print(f"DBR scale {best:.4f}; as deposited: dip {l0:.1f} nm, R {100*R0:.1f} %")
         for tag, v in out['device'].items():
             print(f"{LABEL[tag]:28s} dip {v['dip']:6.1f} nm  R {100*v['Rdip']:5.1f} %  dlam {v['dlam']:+6.1f} nm  dR {v['dR_pct']:+5.1f} %  alpha {v['alpha_deg']:+6.1f} deg")
-        meas = dict(PBS=dict(dlam=91.0, dR=1.2), VLP10=dict(dlam=88.5, dR=15.1))
+        meas = dict(PBS=dict(dlam=92.8, dR=2.2), VLP10=dict(dlam=88.5, dR=15.1))   # means of Fig. 2a,b / Fig. 3 (PBS: 5 tests, VLP10: 2)
         out['measured'] = meas
         fig, ax = plt.subplots(1, 2, figsize=(13.5, 4.6))
         for tag, (R, T, per) in D.items():
