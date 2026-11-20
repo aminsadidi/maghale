@@ -1,0 +1,16 @@
+base dip 632 R 25.1
+Ag thinner 25 nm                         dip 633  dlam    +1  dR  -4.7
+Ag thinner 20 nm                         dip 635  dlam    +3  dR  -9.8
+Ag thinner 15 nm                         dip 638  dlam    +6  dR -14.6
+Ag thinner 10 nm                         dip 642  dlam   +10  dR -18.3
+void 0.3                                 dip 653  dlam   +21  dR  +0.5
+void 0.4                                 dip 859  dlam  +227  dR  -1.4
+void 0.5                                 dip 859  dlam  +227  dR -14.6
+AgCl 5 nm UNDER Ag (Ag -2)               dip 638  dlam    +6  dR  -0.4
+AgCl 10 nm UNDER Ag (Ag -5)              dip 645  dlam   +13  dR  -0.7
+AgCl 20 nm UNDER Ag (Ag -10)             dip 656  dlam   +24  dR  -1.0
+AgCl 5 nm ON TOP (Ag -2)                 dip 635  dlam    +3  dR  -4.2
+AgCl 10 nm ON TOP (Ag -5)                dip 638  dlam    +6  dR  -8.2
+AgCl 20 nm ON TOP (Ag -10)               dip 647  dlam   +15  dR -14.9
+damping 0.5 eV                           dip 634  dlam    +2  dR  +0.6
+damping 1.0 eV                           dip 641  dlam    +9  dR  +1.1
