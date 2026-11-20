@@ -1,0 +1,409 @@
+-----------
+Initializing structure...
+time for choose_chunkdivision = 0.000101089 s
+Working in 3D dimensions.
+Computational cell is 0.01 x 0.01 x 1.57 with resolution 200
+     block, center = (0,0,0)
+          size (1e+20,1e+20,1e+20)
+          axes (1,0,0), (0,1,0), (0,0,1)
+          dielectric constant epsilon diagonal = (3.7249,3.7249,3.7249)
+time for set_epsilon = 0.0126779 s
+-----------
+field decay(t = 2.0025): 2.2689100901455166e-05 / 2.2689100901455166e-05 = 1.0
+field decay(t = 4.005): 0.06733479535302443 / 0.06733479535302443 = 1.0
+field decay(t = 6.0075): 0.02791571040047467 / 0.06733479535302443 = 0.41458075656304494
+field decay(t = 8.01): 1.4682732190339925e-11 / 0.06733479535302443 = 2.180556443865457e-10
+field decay(t = 10.012500000000001): 1.4768296754963288e-13 / 0.06733479535302443 = 2.193263776556492e-12
+run 0 finished at t = 10.012500000000001 (4005 timesteps)
+-----------
+Initializing structure...
+time for choose_chunkdivision = 8.79765e-05 s
+Working in 3D dimensions.
+Computational cell is 0.01 x 0.01 x 1.57 with resolution 200
+     block, center = (0,0,0)
+          size (1e+20,1e+20,1e+20)
+          axes (1,0,0), (0,1,0), (0,0,1)
+          dielectric constant epsilon diagonal = (1,1,1)
+time for set_epsilon = 0.012666 s
+-----------
+field decay(t = 2.0025): 0.0015242511228398855 / 0.0015242511228398855 = 1.0
+field decay(t = 4.005): 0.25015682494020763 / 0.25015682494020763 = 1.0
+field decay(t = 6.0075): 0.0090761897312058 / 0.25015682494020763 = 0.03628199923538039
+field decay(t = 8.01): 6.4355820250339175e-12 / 0.25015682494020763 = 2.57261900672594e-11
+field decay(t = 10.012500000000001): 1.4202817886530644e-12 / 0.25015682494020763 = 5.677565619057323e-12
+run 0 finished at t = 10.012500000000001 (4005 timesteps)
+-----------
+Initializing structure...
+time for choose_chunkdivision = 0.000756025 s
+Working in 3D dimensions.
+Computational cell is 0.3 x 0.3 x 1.57 with resolution 200
+     block, center = (0,0,-0.41)
+          size (1e+20,1e+20,0.75)
+          axes (1,0,0), (0,1,0), (0,0,1)
+          dielectric constant epsilon diagonal = (3.7249,3.7249,3.7249)
+     cylinder, center = (-0.0604527,0.0942677,-0.0255822)
+          radius 0.0267015, height 0.0188357, axis (0, 0, 1)
+          dielectric constant epsilon diagonal = (2.68111,2.68111,2.68111)
+     ellipsoid, center = (-0.0604527,0.0942677,-0.0161643)
+          size (0.053403,0.053403,0.00941785)
+          axes (1,0,0), (0,1,0), (0,0,1)
+          dielectric constant epsilon diagonal = (2.68111,2.68111,2.68111)
+     cylinder, center = (0.0300302,0.0685682,-0.0248371)
+          radius 0.01, height 0.0203258, axis (0, 0, 1)
+          dielectric constant epsilon diagonal = (2.68111,2.68111,2.68111)
+     ellipsoid, center = (0.0300302,0.0685682,-0.0146742)
+          size (0.02,0.02,0.0101629)
+          axes (1,0,0), (0,1,0), (0,0,1)
+          dielectric constant epsilon diagonal = (2.68111,2.68111,2.68111)
+     cylinder, center = (-0.133456,-0.0675092,-0.0236595)
+          radius 0.0220712, height 0.022681, axis (0, 0, 1)
+          dielectric constant epsilon diagonal = (2.68111,2.68111,2.68111)
+     ellipsoid, center = (-0.133456,-0.0675092,-0.012319)
+          size (0.0441424,0.0441424,0.0113405)
+          axes (1,0,0), (0,1,0), (0,0,1)
+          dielectric constant epsilon diagonal = (2.68111,2.68111,2.68111)
+     cylinder, center = (0.166544,-0.0675092,-0.0236595)
+          radius 0.0220712, height 0.022681, axis (0, 0, 1)
+          dielectric constant epsilon diagonal = (2.68111,2.68111,2.68111)
+     ellipsoid, center = (0.166544,-0.0675092,-0.012319)
+          size (0.0441424,0.0441424,0.0113405)
+          axes (1,0,0), (0,1,0), (0,0,1)
+          dielectric constant epsilon diagonal = (2.68111,2.68111,2.68111)
+     cylinder, center = (0.0186797,-0.104981,-0.023236)
+          radius 0.0200156, height 0.023528, axis (0, 0, 1)
+          dielectric constant epsilon diagonal = (2.68111,2.68111,2.68111)
+     ...(+ 185 objects not shown)...
+time for set_epsilon = 19.215 s
+lorentzian susceptibility: frequency=2.70138, gamma=1.01828
+lorentzian susceptibility: frequency=3.69138, gamma=0.0439712
+drude susceptibility: frequency=6.9653, gamma=0.0368078
+-----------
+on time step 38 (time=0.095), 0.105683 s/step
+on time step 100 (time=0.25), 0.0647765 s/step
+on time step 175 (time=0.4375), 0.0540182 s/step
+on time step 225 (time=0.5625), 0.0811511 s/step
+on time step 277 (time=0.6925), 0.077393 s/step
+on time step 331 (time=0.8275), 0.0745174 s/step
+on time step 382 (time=0.955), 0.0786945 s/step
+on time step 426 (time=1.065), 0.0921465 s/step
+on time step 471 (time=1.1775), 0.089737 s/step
+on time step 517 (time=1.2925), 0.08868 s/step
+on time step 564 (time=1.41), 0.0853639 s/step
+on time step 609 (time=1.5225), 0.089911 s/step
+on time step 651 (time=1.6275), 0.0962564 s/step
+on time step 696 (time=1.74), 0.088905 s/step
+on time step 739 (time=1.8475), 0.0932908 s/step
+on time step 783 (time=1.9575), 0.0923701 s/step
+field decay(t = 2.0025): 8.208884652682831e-05 / 8.208884652682831e-05 = 1.0
+on time step 825 (time=2.0625), 0.0954024 s/step
+on time step 869 (time=2.1725), 0.0917209 s/step
+on time step 914 (time=2.285), 0.0891835 s/step
+on time step 959 (time=2.3975), 0.0900151 s/step
+on time step 1005 (time=2.5125), 0.0878826 s/step
+on time step 1051 (time=2.6275), 0.087944 s/step
+on time step 1096 (time=2.74), 0.0888986 s/step
+on time step 1139 (time=2.8475), 0.0936042 s/step
+on time step 1185 (time=2.9625), 0.0873391 s/step
+on time step 1229 (time=3.0725), 0.0914781 s/step
+on time step 1275 (time=3.1875), 0.0880279 s/step
+on time step 1320 (time=3.3), 0.090212 s/step
+on time step 1365 (time=3.4125), 0.0904655 s/step
+on time step 1409 (time=3.5225), 0.0918646 s/step
+on time step 1455 (time=3.6375), 0.0882692 s/step
+on time step 1499 (time=3.7475), 0.0927545 s/step
+on time step 1540 (time=3.85), 0.0990023 s/step
+on time step 1582 (time=3.955), 0.0967054 s/step
+field decay(t = 4.005): 0.03094324639380537 / 0.03094324639380537 = 1.0
+on time step 1625 (time=4.0625), 0.0941072 s/step
+on time step 1670 (time=4.175), 0.0908404 s/step
+on time step 1713 (time=4.2825), 0.09518 s/step
+on time step 1756 (time=4.39), 0.093428 s/step
+on time step 1800 (time=4.5), 0.0912292 s/step
+on time step 1844 (time=4.61), 0.0912987 s/step
+on time step 1889 (time=4.7225), 0.0907726 s/step
+on time step 1935 (time=4.8375), 0.0879505 s/step
+on time step 1982 (time=4.955), 0.0869677 s/step
+on time step 2027 (time=5.0675), 0.0893311 s/step
+on time step 2073 (time=5.1825), 0.0870218 s/step
+on time step 2120 (time=5.3), 0.0863537 s/step
+on time step 2164 (time=5.41), 0.0911529 s/step
+on time step 2208 (time=5.52), 0.0928379 s/step
+on time step 2250 (time=5.625), 0.0954614 s/step
+on time step 2295 (time=5.7375), 0.0903807 s/step
+on time step 2341 (time=5.8525), 0.088447 s/step
+on time step 2384 (time=5.96), 0.09394 s/step
+field decay(t = 6.0075): 0.006379509243090853 / 0.03094324639380537 = 0.2061680652993148
+on time step 2430 (time=6.075), 0.0875488 s/step
+on time step 2475 (time=6.1875), 0.0907401 s/step
+on time step 2520 (time=6.3), 0.0904201 s/step
+on time step 2563 (time=6.4075), 0.0947671 s/step
+on time step 2608 (time=6.52), 0.0901018 s/step
+on time step 2653 (time=6.6325), 0.0888993 s/step
+on time step 2697 (time=6.7425), 0.0914195 s/step
+on time step 2741 (time=6.8525), 0.0924618 s/step
+on time step 2786 (time=6.965), 0.0904241 s/step
+on time step 2829 (time=7.0725), 0.0949849 s/step
+on time step 2873 (time=7.1825), 0.0920021 s/step
+on time step 2918 (time=7.295), 0.0906176 s/step
+on time step 2962 (time=7.405), 0.0923279 s/step
+on time step 3004 (time=7.51), 0.095382 s/step
+on time step 3048 (time=7.62), 0.0924318 s/step
+on time step 3093 (time=7.7325), 0.0903277 s/step
+on time step 3136 (time=7.84), 0.0932008 s/step
+on time step 3179 (time=7.9475), 0.0931568 s/step
+field decay(t = 8.01): 3.7075499547750916e-05 / 0.03094324639380537 = 0.0011981774334826477
+on time step 3222 (time=8.055), 0.0942252 s/step
+on time step 3264 (time=8.16), 0.0966377 s/step
+on time step 3306 (time=8.265), 0.0980819 s/step
+on time step 3350 (time=8.375), 0.0914431 s/step
+on time step 3393 (time=8.4825), 0.0936003 s/step
+on time step 3438 (time=8.595), 0.0908178 s/step
+on time step 3483 (time=8.7075), 0.0903311 s/step
+on time step 3524 (time=8.81), 0.0992201 s/step
+on time step 3567 (time=8.9175), 0.0938412 s/step
+on time step 3610 (time=9.025), 0.0938218 s/step
+on time step 3654 (time=9.135), 0.0915324 s/step
+on time step 3695 (time=9.2375), 0.0986992 s/step
+on time step 3735 (time=9.3375), 0.10234 s/step
+on time step 3774 (time=9.435), 0.103535 s/step
+on time step 3816 (time=9.54), 0.0968518 s/step
+on time step 3856 (time=9.64), 0.102067 s/step
+on time step 3897 (time=9.7425), 0.0978626 s/step
+on time step 3937 (time=9.8425), 0.102408 s/step
+on time step 3978 (time=9.945), 0.0990949 s/step
+field decay(t = 10.012500000000001): 1.9513726726105198e-05 / 0.03094324639380537 = 0.0006306295880451546
+on time step 4017 (time=10.0425), 0.10381 s/step
+on time step 4057 (time=10.1425), 0.100703 s/step
+on time step 4099 (time=10.2475), 0.0958753 s/step
+on time step 4139 (time=10.3475), 0.10168 s/step
+on time step 4177 (time=10.4425), 0.108606 s/step
+on time step 4215 (time=10.5375), 0.105699 s/step
+on time step 4256 (time=10.64), 0.0991131 s/step
+on time step 4293 (time=10.7325), 0.108268 s/step
+on time step 4330 (time=10.825), 0.108699 s/step
+on time step 4372 (time=10.93), 0.0976208 s/step
+on time step 4415 (time=11.0375), 0.0931417 s/step
+on time step 4452 (time=11.13), 0.10842 s/step
+on time step 4494 (time=11.235), 0.0962753 s/step
+on time step 4537 (time=11.3425), 0.0943917 s/step
+on time step 4582 (time=11.455), 0.090604 s/step
+on time step 4623 (time=11.5575), 0.0994098 s/step
+on time step 4664 (time=11.66), 0.0986709 s/step
+on time step 4704 (time=11.76), 0.10148 s/step
+on time step 4747 (time=11.8675), 0.094978 s/step
+on time step 4788 (time=11.97), 0.0991389 s/step
+field decay(t = 12.015): 1.096195992316357e-05 / 0.03094324639380537 = 0.0003542601763129185
+on time step 4832 (time=12.08), 0.0929469 s/step
+on time step 4874 (time=12.185), 0.0971529 s/step
+on time step 4913 (time=12.2825), 0.102923 s/step
+on time step 4955 (time=12.3875), 0.0968152 s/step
+on time step 4996 (time=12.49), 0.0982612 s/step
+on time step 5035 (time=12.5875), 0.103976 s/step
+on time step 5076 (time=12.69), 0.0976583 s/step
+on time step 5119 (time=12.7975), 0.0949738 s/step
+on time step 5160 (time=12.9), 0.0984021 s/step
+on time step 5205 (time=13.0125), 0.0893338 s/step
+on time step 5247 (time=13.1175), 0.0966333 s/step
+on time step 5288 (time=13.22), 0.0992802 s/step
+on time step 5333 (time=13.3325), 0.0906599 s/step
+on time step 5375 (time=13.4375), 0.0956799 s/step
+on time step 5418 (time=13.545), 0.0935327 s/step
+on time step 5464 (time=13.66), 0.0869726 s/step
+on time step 5507 (time=13.7675), 0.0939602 s/step
+on time step 5549 (time=13.8725), 0.095345 s/step
+on time step 5592 (time=13.98), 0.0938096 s/step
+field decay(t = 14.0175): 8.084745994004633e-06 / 0.03094324639380537 = 0.00026127659299585143
+on time step 5637 (time=14.0925), 0.0900299 s/step
+on time step 5681 (time=14.2025), 0.0929018 s/step
+on time step 5723 (time=14.3075), 0.0960855 s/step
+on time step 5767 (time=14.4175), 0.0922346 s/step
+on time step 5812 (time=14.53), 0.0903939 s/step
+on time step 5854 (time=14.635), 0.0955176 s/step
+on time step 5901 (time=14.7525), 0.0865184 s/step
+on time step 5946 (time=14.865), 0.0895635 s/step
+on time step 5993 (time=14.9825), 0.0862134 s/step
+on time step 6040 (time=15.1), 0.0852673 s/step
+on time step 6083 (time=15.2075), 0.0933629 s/step
+on time step 6126 (time=15.315), 0.0959437 s/step
+on time step 6168 (time=15.42), 0.0953266 s/step
+on time step 6210 (time=15.525), 0.0952959 s/step
+on time step 6255 (time=15.6375), 0.0903206 s/step
+on time step 6301 (time=15.7525), 0.0871331 s/step
+on time step 6348 (time=15.87), 0.0868897 s/step
+on time step 6395 (time=15.9875), 0.0861255 s/step
+field decay(t = 16.02): 4.006984018936921e-06 / 0.03094324639380537 = 0.00012949462276650754
+on time step 6439 (time=16.0975), 0.0909433 s/step
+on time step 6481 (time=16.2025), 0.0955115 s/step
+on time step 6526 (time=16.315), 0.0895076 s/step
+on time step 6573 (time=16.4325), 0.0862707 s/step
+on time step 6617 (time=16.5425), 0.0918759 s/step
+on time step 6664 (time=16.66), 0.0852173 s/step
+on time step 6711 (time=16.7775), 0.0862752 s/step
+on time step 6757 (time=16.8925), 0.0884645 s/step
+on time step 6804 (time=17.01), 0.0853481 s/step
+on time step 6849 (time=17.1225), 0.0907733 s/step
+on time step 6892 (time=17.23), 0.0945952 s/step
+on time step 6937 (time=17.3425), 0.0897309 s/step
+on time step 6985 (time=17.4625), 0.0848 s/step
+on time step 7032 (time=17.58), 0.0857314 s/step
+on time step 7081 (time=17.7025), 0.0828495 s/step
+on time step 7128 (time=17.82), 0.0855761 s/step
+on time step 7175 (time=17.9375), 0.0863694 s/step
+field decay(t = 18.0225): 2.805408504909485e-06 / 0.03094324639380537 = 9.066303093107608e-05
+on time step 7222 (time=18.055), 0.0861915 s/step
+on time step 7269 (time=18.1725), 0.0857431 s/step
+on time step 7316 (time=18.29), 0.0865984 s/step
+on time step 7364 (time=18.41), 0.083883 s/step
+on time step 7410 (time=18.525), 0.0876605 s/step
+on time step 7453 (time=18.6325), 0.0939861 s/step
+on time step 7497 (time=18.7425), 0.0926256 s/step
+on time step 7544 (time=18.86), 0.0851157 s/step
+on time step 7592 (time=18.98), 0.083897 s/step
+on time step 7641 (time=19.1025), 0.0819547 s/step
+on time step 7687 (time=19.2175), 0.0886294 s/step
+on time step 7730 (time=19.325), 0.0942028 s/step
+on time step 7773 (time=19.4325), 0.0930738 s/step
+on time step 7814 (time=19.535), 0.0999771 s/step
+on time step 7856 (time=19.64), 0.0956052 s/step
+on time step 7900 (time=19.75), 0.091769 s/step
+on time step 7943 (time=19.8575), 0.0937353 s/step
+on time step 7987 (time=19.9675), 0.0928831 s/step
+field decay(t = 20.025000000000002): 1.6346359948662391e-06 / 0.03094324639380537 = 5.2826906849485654e-05
+on time step 8030 (time=20.075), 0.0957984 s/step
+on time step 8074 (time=20.185), 0.0925333 s/step
+on time step 8116 (time=20.29), 0.0958089 s/step
+on time step 8158 (time=20.395), 0.0961302 s/step
+on time step 8199 (time=20.4975), 0.0993759 s/step
+on time step 8240 (time=20.6), 0.0985228 s/step
+on time step 8278 (time=20.695), 0.107125 s/step
+on time step 8316 (time=20.79), 0.105509 s/step
+on time step 8357 (time=20.8925), 0.098061 s/step
+on time step 8401 (time=21.0025), 0.0913067 s/step
+on time step 8447 (time=21.1175), 0.0879053 s/step
+on time step 8494 (time=21.235), 0.0865599 s/step
+on time step 8541 (time=21.3525), 0.0857266 s/step
+on time step 8585 (time=21.4625), 0.0920112 s/step
+on time step 8632 (time=21.58), 0.0868594 s/step
+on time step 8677 (time=21.6925), 0.0890829 s/step
+on time step 8722 (time=21.805), 0.0896504 s/step
+on time step 8766 (time=21.915), 0.0920038 s/step
+on time step 8809 (time=22.0225), 0.094541 s/step
+field decay(t = 22.0275): 5.998455350684913e-07 / 0.03094324639380537 = 1.9385345914725234e-05
+on time step 8853 (time=22.1325), 0.0929516 s/step
+on time step 8898 (time=22.245), 0.0904517 s/step
+on time step 8943 (time=22.3575), 0.0900227 s/step
+on time step 8988 (time=22.47), 0.0891819 s/step
+on time step 9033 (time=22.5825), 0.0901486 s/step
+on time step 9078 (time=22.695), 0.0903062 s/step
+on time step 9121 (time=22.8025), 0.0937462 s/step
+on time step 9164 (time=22.91), 0.0937423 s/step
+on time step 9211 (time=23.0275), 0.0868897 s/step
+on time step 9255 (time=23.1375), 0.0916689 s/step
+on time step 9298 (time=23.245), 0.0943965 s/step
+on time step 9340 (time=23.35), 0.0969246 s/step
+on time step 9382 (time=23.455), 0.0959211 s/step
+on time step 9426 (time=23.565), 0.0934011 s/step
+on time step 9468 (time=23.67), 0.09551 s/step
+on time step 9509 (time=23.7725), 0.0987992 s/step
+on time step 9551 (time=23.8775), 0.0969297 s/step
+on time step 9594 (time=23.985), 0.0933904 s/step
+field decay(t = 24.03): 6.374532042196989e-07 / 0.03094324639380537 = 2.0600721595498546e-05
+on time step 9636 (time=24.09), 0.0954283 s/step
+on time step 9678 (time=24.195), 0.0964017 s/step
+on time step 9722 (time=24.305), 0.0912015 s/step
+on time step 9763 (time=24.4075), 0.0992156 s/step
+on time step 9804 (time=24.51), 0.0983756 s/step
+on time step 9847 (time=24.6175), 0.0932597 s/step
+on time step 9889 (time=24.7225), 0.0966665 s/step
+on time step 9931 (time=24.8275), 0.0969545 s/step
+on time step 9972 (time=24.93), 0.0978805 s/step
+on time step 10015 (time=25.0375), 0.0936873 s/step
+on time step 10061 (time=25.1525), 0.0873874 s/step
+on time step 10107 (time=25.2675), 0.0875788 s/step
+on time step 10147 (time=25.3675), 0.10048 s/step
+on time step 10189 (time=25.4725), 0.0958007 s/step
+on time step 10232 (time=25.58), 0.0933997 s/step
+on time step 10272 (time=25.68), 0.102271 s/step
+on time step 10318 (time=25.795), 0.0885498 s/step
+on time step 10364 (time=25.91), 0.087369 s/step
+on time step 10410 (time=26.025), 0.0888563 s/step
+field decay(t = 26.0325): 5.856321312614055e-07 / 0.03094324639380537 = 1.892600807970314e-05
+on time step 10455 (time=26.1375), 0.0907249 s/step
+on time step 10500 (time=26.25), 0.0905988 s/step
+on time step 10545 (time=26.3625), 0.0906786 s/step
+on time step 10589 (time=26.4725), 0.0914436 s/step
+on time step 10633 (time=26.5825), 0.091093 s/step
+on time step 10677 (time=26.6925), 0.0917464 s/step
+on time step 10718 (time=26.795), 0.0976394 s/step
+on time step 10758 (time=26.895), 0.100049 s/step
+on time step 10801 (time=27.0025), 0.0932272 s/step
+on time step 10845 (time=27.1125), 0.0923727 s/step
+on time step 10888 (time=27.22), 0.094207 s/step
+on time step 10929 (time=27.3225), 0.0984812 s/step
+on time step 10971 (time=27.4275), 0.0960693 s/step
+on time step 11014 (time=27.535), 0.0942331 s/step
+on time step 11055 (time=27.6375), 0.0984667 s/step
+on time step 11096 (time=27.74), 0.0983615 s/step
+on time step 11136 (time=27.84), 0.100079 s/step
+on time step 11179 (time=27.9475), 0.0938999 s/step
+field decay(t = 28.035): 9.516216129354187e-08 / 0.03094324639380537 = 3.0753774210514864e-06
+on time step 11223 (time=28.0575), 0.0922231 s/step
+on time step 11267 (time=28.1675), 0.0909636 s/step
+on time step 11312 (time=28.28), 0.0907629 s/step
+on time step 11355 (time=28.3875), 0.094445 s/step
+on time step 11397 (time=28.4925), 0.0957907 s/step
+on time step 11442 (time=28.605), 0.0892813 s/step
+on time step 11487 (time=28.7175), 0.0890265 s/step
+on time step 11534 (time=28.835), 0.0870885 s/step
+on time step 11580 (time=28.95), 0.088405 s/step
+on time step 11624 (time=29.06), 0.0924862 s/step
+on time step 11669 (time=29.1725), 0.0906153 s/step
+on time step 11712 (time=29.28), 0.0932616 s/step
+on time step 11758 (time=29.395), 0.0875868 s/step
+on time step 11804 (time=29.51), 0.0886501 s/step
+on time step 11850 (time=29.625), 0.0885579 s/step
+on time step 11897 (time=29.7425), 0.0862954 s/step
+on time step 11945 (time=29.8625), 0.0841214 s/step
+on time step 11993 (time=29.9825), 0.0843843 s/step
+field decay(t = 30.0375): 5.166397947965963e-08 / 0.03094324639380537 = 1.6696366897689963e-06
+on time step 12039 (time=30.0975), 0.0880433 s/step
+on time step 12085 (time=30.2125), 0.0875357 s/step
+on time step 12130 (time=30.325), 0.0904366 s/step
+on time step 12175 (time=30.4375), 0.0889175 s/step
+on time step 12222 (time=30.555), 0.086002 s/step
+on time step 12269 (time=30.6725), 0.0863352 s/step
+on time step 12316 (time=30.79), 0.0867926 s/step
+on time step 12361 (time=30.9025), 0.0893156 s/step
+on time step 12407 (time=31.0175), 0.0877826 s/step
+on time step 12452 (time=31.13), 0.0889594 s/step
+on time step 12499 (time=31.2475), 0.0876363 s/step
+on time step 12547 (time=31.3675), 0.0850316 s/step
+on time step 12593 (time=31.4825), 0.0878416 s/step
+on time step 12639 (time=31.5975), 0.087719 s/step
+on time step 12685 (time=31.7125), 0.0880361 s/step
+on time step 12733 (time=31.8325), 0.0839723 s/step
+on time step 12777 (time=31.9425), 0.0913944 s/step
+field decay(t = 32.04): 4.58278143675684e-08 / 0.03094324639380537 = 1.4810280015332463e-06
+on time step 12821 (time=32.0525), 0.0911052 s/step
+on time step 12869 (time=32.1725), 0.0849162 s/step
+on time step 12917 (time=32.2925), 0.0845735 s/step
+on time step 12965 (time=32.4125), 0.0845613 s/step
+on time step 13012 (time=32.53), 0.0865212 s/step
+on time step 13058 (time=32.645), 0.0870874 s/step
+on time step 13103 (time=32.7575), 0.089945 s/step
+on time step 13149 (time=32.8725), 0.0885274 s/step
+on time step 13197 (time=32.9925), 0.0846803 s/step
+on time step 13243 (time=33.1075), 0.0869985 s/step
+on time step 13287 (time=33.2175), 0.0913283 s/step
+on time step 13330 (time=33.325), 0.0945737 s/step
+on time step 13375 (time=33.4375), 0.0896302 s/step
+on time step 13419 (time=33.5475), 0.09172 s/step
+on time step 13463 (time=33.6575), 0.0910047 s/step
+on time step 13506 (time=33.765), 0.0930763 s/step
+on time step 13549 (time=33.8725), 0.0930634 s/step
+on time step 13594 (time=33.985), 0.0895884 s/step
+field decay(t = 34.042500000000004): 8.850492586150023e-09 / 0.03094324639380537 = 2.8602340147224603e-07
+run 0 finished at t = 34.042500000000004 (13617 timesteps)
+done: 21.2 min (+ norm 0.0 min), 1.13e+06 voxels, 13617 steps; R(600nm) 0.389 T 0.220
+
+Elapsed run time = 1273.3589 s

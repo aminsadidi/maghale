@@ -1,0 +1,61 @@
+-----------
+Initializing structure...
+time for choose_chunkdivision = 9.98974e-05 s
+Working in 3D dimensions.
+Computational cell is 0.00666667 x 0.00666667 x 1.57 with resolution 300
+     block, center = (0,0,0)
+          size (1e+20,1e+20,1e+20)
+          axes (1,0,0), (0,1,0), (0,0,1)
+          dielectric constant epsilon diagonal = (1,1,1)
+time for set_epsilon = 0.0143709 s
+-----------
+field decay(t = 2.001666666666667): 0.0014790804704639074 / 0.0014790804704639074 = 1.0
+field decay(t = 4.003333333333334): 0.2499881469998635 / 0.2499881469998635 = 1.0
+field decay(t = 6.005000000000001): 0.009845631996652771 / 0.2499881469998635 = 0.03938439527958158
+field decay(t = 8.006666666666668): 3.3989169845913483e-12 / 0.2499881469998635 = 1.3596312566744232e-11
+field decay(t = 10.008333333333335): 2.184225772170455e-14 / 0.2499881469998635 = 8.737317342376428e-14
+run 0 finished at t = 10.008333333333335 (6005 timesteps)
+-----------
+Initializing structure...
+time for choose_chunkdivision = 9.89437e-05 s
+Working in 3D dimensions.
+Computational cell is 0.00666667 x 0.00666667 x 1.57 with resolution 300
+     block, center = (0,0,0)
+          size (1e+20,1e+20,1e+20)
+          axes (1,0,0), (0,1,0), (0,0,1)
+          dielectric constant epsilon diagonal = (3.7249,3.7249,3.7249)
+time for set_epsilon = 0.0154128 s
+-----------
+field decay(t = 2.001666666666667): 2.2711533586732385e-05 / 2.2711533586732385e-05 = 1.0
+field decay(t = 4.003333333333334): 0.06711324868627055 / 0.06711324868627055 = 1.0
+field decay(t = 6.005000000000001): 0.027781810182107788 / 0.06711324868627055 = 0.41395418529026073
+field decay(t = 8.006666666666668): 1.3376320691103468e-11 / 0.06711324868627055 = 1.9930968851817598e-10
+field decay(t = 10.008333333333335): 1.3100097508551901e-14 / 0.06711324868627055 = 1.9519391126169407e-13
+run 0 finished at t = 10.008333333333335 (6005 timesteps)
+-----------
+Initializing structure...
+time for choose_chunkdivision = 9.60827e-05 s
+Working in 3D dimensions.
+Computational cell is 0.02 x 0.02 x 1.57 with resolution 300
+     block, center = (0,0,-0.41)
+          size (1e+20,1e+20,0.75)
+          axes (1,0,0), (0,1,0), (0,0,1)
+          dielectric constant epsilon diagonal = (3.7249,3.7249,3.7249)
+     block, center = (0,0,-0.0185)
+          size (1e+20,1e+20,0.033)
+          axes (1,0,0), (0,1,0), (0,0,1)
+          dielectric constant epsilon diagonal = (2.68111,2.68111,2.68111)
+time for set_epsilon = 0.115766 s
+lorentzian susceptibility: frequency=2.70138, gamma=1.01828
+lorentzian susceptibility: frequency=3.69138, gamma=0.0439712
+drude susceptibility: frequency=6.9653, gamma=0.0368078
+-----------
+field decay(t = 2.001666666666667): 3.616056273617872e-05 / 3.616056273617872e-05 = 1.0
+field decay(t = 4.003333333333334): 0.021443771581290245 / 0.021443771581290245 = 1.0
+field decay(t = 6.005000000000001): 0.002074844509512318 / 0.021443771581290245 = 0.09675744314132809
+field decay(t = 8.006666666666668): 3.628476262203882e-11 / 0.021443771581290245 = 1.69208865541626e-09
+field decay(t = 10.008333333333335): 1.393589692758622e-14 / 0.021443771581290245 = 6.498808698254057e-13
+run 0 finished at t = 10.008333333333335 (6005 timesteps)
+done: 0.1 min (+ norm 0.0 min), 1.70e+04 voxels, 6005 steps; R(600nm) 0.851 T 0.126
+
+Elapsed run time = 5.7160 s
