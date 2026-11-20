@@ -35,6 +35,21 @@ def make(P=0.3, seed=1, d_mean=0.050, d_sd=0.018, void=0.144, t_nom=0.033, rms=0
                 rms=float(H.std()), grid=grid, seed=seed)
 
 
+def geometry_shell(f, z0, material, t):
+    """shell of thickness t (um) around every grain (drawn before the grains, which then override the inside)"""
+    import meep as mp
+    P = f['P']; objs = []
+    for (cx, cy, d), h in zip(f['grains'], f['heights']):
+        for sx in (-P, 0, P):
+            for sy in (-P, 0, P):
+                x, y = cx + sx - P / 2, cy + sy - P / 2
+                if abs(x) > P / 2 + d + t or abs(y) > P / 2 + d + t: continue
+                hc = 0.8 * h
+                objs.append(mp.Cylinder(radius=d / 2 + t, height=hc, center=mp.Vector3(x, y, z0 + hc / 2), material=material))
+                objs.append(mp.Ellipsoid(size=mp.Vector3(d + 2 * t, d + 2 * t, 2 * (0.2 * h + t)), center=mp.Vector3(x, y, z0 + hc), material=material))
+    return objs
+
+
 def geometry(f, z0, material):
     """Meep objects for island film f with the film bottom at z = z0 (periodic images included). Each grain: cylinder of
     height 0.8 h plus an ellipsoid cap reaching h."""

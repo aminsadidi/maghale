@@ -59,8 +59,11 @@ def run(case):
             t = c.get('t_flat', 0.033)
             g.append(mp.Block(size=mp.Vector3(mp.inf, mp.inf, t), center=mp.Vector3(0, 0, Z(t / 2)), material=Ag))
         elif c['film'] == 'islands':
-            f = islands.make(P, c['seed'])
+            f = islands.make(P, c['seed'], void=c.get('void', 0.144))
             if c['t_scale'] != 1.0: f['heights'] = f['heights'] * c['t_scale']
+            if c.get('d_scale', 1.0) != 1.0: f['grains'] = f['grains'] * [1, 1, c['d_scale']]       # lateral shrinking of every grain
+            if c.get('shell'):
+                g += islands.geometry_shell(f, Z(0), mp.Medium(index=c['shell']['n']), c['shell']['t'])
             g += islands.geometry(f, Z(0), Ag)
             if c.get('sphere'):
                 s = c['sphere']; R = s['d'] / 2

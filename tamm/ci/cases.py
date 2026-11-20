@@ -32,6 +32,17 @@ def cases():
                 add(f'S_{tag}_P40_{inc}_{pol}', film='islands', seed=1, P=0.4, res=200, inc=inc, pol=pol, zref=0.18, sphere=sph)
     for inc in ('top', 'bottom'):
         add(f'D_s1_{inc}_x', film='islands', seed=1, P=0.3, res=200, inc=inc, pol='x', stack=DBR, nsub=1.52, nb=1.93)
+    # ---- round 2: what the PBS / VLP exposure does to the silver. Ag on glass (compare with Fig. S3c,d) and in the device.
+    for seed in (1, 2):
+        for inc in ('top', 'bottom'):
+            base = dict(film='islands', seed=seed, P=0.3, res=200, inc=inc, pol='x')
+            mods = (('base', {}), ('agcl3', dict(shell=dict(t=0.003, n=2.07))), ('agcl6', dict(shell=dict(t=0.006, n=2.07))),
+                    ('prot5', dict(shell=dict(t=0.005, n=1.45))), ('cov75', dict(void=0.25)), ('cov65', dict(void=0.35)),
+                    ('shrink90', dict(d_scale=0.9, t_scale=0.9)), ('dg10', dict(dg_extra=0.10 / 1.23984)))
+            for tag, k in mods:
+                if tag in ('agcl3', 'agcl6', 'prot5', 'cov75', 'cov65', 'shrink90'):
+                    add(f'M2_{tag}_s{seed}_{inc}_x', **dict(base, **k))                       # in the device (film on TiO2)
+                add(f'G_{tag}_s{seed}_{inc}_x', **dict(base, nb=1.52, **k))                    # on glass, as in Fig. S3c,d
     return C
 
 
