@@ -71,6 +71,15 @@ def cases():
         for tag, k in mods4:
             add(f'LG_{tag}_s{seed}_bottom_x', **dict(big, seed=seed, nb=1.52, inc='bottom', **k))
             add(f'LT_{tag}_s{seed}_bottom_x', **dict(big, seed=seed, nb=1.93, inc='bottom', **k))
+    # ---- round 5: fine sweep of the silver loss (round 4: only dissolution reproduces the sign of the Ag-on-glass change and gives a
+    # large red shift, but coverage 75 % overshoots, +185 nm vs +90 nm measured). Same seed -> the remaining grains are a subset of the
+    # as-deposited ones (random sequential deposition stops earlier), i.e. a paired comparison. Three realisations.
+    mods5 = (('v17', dict(void=0.17)), ('v19', dict(void=0.19)), ('v21', dict(void=0.21)), ('v23', dict(void=0.23)),
+             ('sh97', dict(d_scale=0.97, t_scale=0.97)), ('sh94', dict(d_scale=0.94, t_scale=0.94)))
+    for seed in (1, 2, 3):
+        for tag, k in mods5 + ((('base', {}),) if seed == 3 else ()):
+            add(f'LG_{tag}_s{seed}_bottom_x', **dict(big, seed=seed, nb=1.52, inc='bottom', **k))
+            add(f'LT_{tag}_s{seed}_bottom_x', **dict(big, seed=seed, nb=1.93, inc='bottom', **k))
     return C
 
 

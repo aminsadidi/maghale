@@ -53,7 +53,7 @@ def device_from_film(F, lam, B, scale):
     return rb + (1 - rb) ** 2 * Rc / (1 - rb * Rc), (1 - rb) * Tc / (1 - rb * Rc)
 
 
-def dip(lam, R, lo=540, hi=760):
+def dip(lam, R, lo=540, hi=845):
     m = (lam > lo) & (lam < hi); i = np.argmin(np.where(m, R, 9))
     if 0 < i < len(lam) - 1:                                  # parabolic refinement
         a, b, c = R[i - 1], R[i], R[i + 1]; s = float(np.clip(0.5 * (a - c) / (a - 2 * b + c), -1, 1)) if (a - 2 * b + c) > 0 else 0.0
