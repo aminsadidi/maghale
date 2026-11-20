@@ -17,7 +17,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: tamm-meep-${{ github.ref }}
+  group: tamm-meep-${{ github.ref }}-${{ github.run_id }}
   cancel-in-progress: false
 
 jobs:

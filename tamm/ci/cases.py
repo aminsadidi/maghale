@@ -59,6 +59,18 @@ def cases():
     add('DV_base_s1_y', **dict(dev, seed=1, pol='y'))
     for tag, sph in (('ref', None), ('vlp', dict(d=0.1, n=1.48)), ('ps', dict(d=0.1, n=1.59))):
         add(f'DV_{tag}_P40_s1_x', **dict(dev, seed=1, P=0.4, zref=0.18, sphere=sph))
+    # ---- round 4: large cells (P = 0.8 um, ~280 grains) to remove the lattice artefacts of the small periodic cells (P = 0.3 um behaves
+    # like a grating: Rayleigh anomalies at n P = 0.3-0.58 um) and the realisation scatter. Film on glass (Fig. S3c,d) and on TiO2 (Tamm side).
+    big = dict(film='islands', P=0.8, res=200, pol='x')
+    mods4 = (('base', {}), ('agcl3', dict(shell=dict(t=0.003, n=2.07))), ('agcl6', dict(shell=dict(t=0.006, n=2.07))),
+             ('prot5', dict(shell=dict(t=0.005, n=1.45))), ('cov75', dict(void=0.25)), ('cov65', dict(void=0.35)),
+             ('shrink90', dict(d_scale=0.9, t_scale=0.9)), ('thin85', dict(t_scale=0.85)), ('dg10', dict(dg_extra=0.10 / 1.23984)),
+             ('dg20', dict(dg_extra=0.20 / 1.23984)))
+    for seed in (1, 2):
+        add(f'LG_base_s{seed}_top_x', **dict(big, seed=seed, nb=1.52, inc='top'))
+        for tag, k in mods4:
+            add(f'LG_{tag}_s{seed}_bottom_x', **dict(big, seed=seed, nb=1.52, inc='bottom', **k))
+            add(f'LT_{tag}_s{seed}_bottom_x', **dict(big, seed=seed, nb=1.93, inc='bottom', **k))
     return C
 
 
