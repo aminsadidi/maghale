@@ -94,6 +94,11 @@ def cases():
     for seed in (1, 2):
         for tag, n, g in (('g133_40', 1.333, 0.040), ('g133_80', 1.333, 0.080), ('g207_20', 2.07, 0.020), ('g207_40', 2.07, 0.040)):
             add(f'FG_{tag}_s{seed}_x', **dict(fv, seed=seed, stack=[[n, g]] + DBR))
+    # ---- round 8: grid convergence of the main result (full device, P = 0.4 um): 5 nm vs 3.3 nm grid, without / with the AgCl interlayer
+    for res in (200, 300):
+        for seed in (1, 2):
+            add(f'CV_base_r{res}_s{seed}_x', **dict(fv, P=0.4, res=res, seed=seed))
+            add(f'CV_g207_40_r{res}_s{seed}_x', **dict(fv, P=0.4, res=res, seed=seed, stack=[[2.07, 0.040]] + DBR))
     return C
 
 
