@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tamm Sensor Red Shift</title>
+<style>
+:root{--bg:#f6f5f1;--paper:#fff;--ink:#1d2330;--ink2:#4a5263;--line:#e3e1da;--accent:#1f4e9c;--accent-soft:#e8eef8;--gold:#b8892a;--gold-soft:#faf3e3;
+--good:#2a7a4b;--good-soft:#e7f4ec;--warn:#9a5b00;--warn-soft:#fbf1e1}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Source Serif 4",Georgia,"Times New Roman",serif;line-height:1.6;font-size:15.5px}
+.page{max-width:900px;margin:0 auto;padding:28px 16px 60px}
+header.cover{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:30px 32px 24px;border-top:6px solid var(--accent)}
+.kicker{color:var(--gold);font:600 .85rem/1.4 "DejaVu Sans",Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase}
+h1{font-size:1.65rem;line-height:1.3;margin:.4rem 0 .6rem}
+.meta{color:var(--ink2);font-size:.95rem}
+section{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:22px 28px;margin-top:18px}
+h2{font-size:1.22rem;margin:0 0 .7rem;color:var(--accent);font-family:"DejaVu Sans",Arial,sans-serif}
+h3{font-size:1.02rem;margin:1.1rem 0 .35rem;font-family:"DejaVu Sans",Arial,sans-serif}
+p{margin:.45rem 0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.9rem;font-family:"DejaVu Sans",Arial,sans-serif}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{background:#f3f2ed;font-weight:600}
+td.n{text-align:right;white-space:nowrap}
+tr.hl td{background:var(--good-soft)} tr.ms td{background:var(--gold-soft);font-weight:600}
+figure{margin:14px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px;background:#fff;padding:4px}
+figcaption{font-size:.86rem;color:var(--ink2);margin-top:5px;text-align:left}
+.callout{border-left:4px solid var(--gold);background:var(--gold-soft);padding:10px 14px;border-radius:6px;margin:12px 0}
+.callout.g{border-color:var(--good);background:var(--good-soft)} .callout.w{border-color:var(--warn);background:var(--warn-soft)}
+ul,ol{margin:.35rem 0;padding-left:1.3rem} li{margin:.2rem 0}
+.small{font-size:.86rem;color:var(--ink2)}
+@media print{body{background:#fff} section,header.cover{break-inside:auto;border:none;padding:10px 0} figure,table{break-inside:avoid} .page{padding:0 10px}}
+@media (max-width:640px){section,header.cover{padding:18px 16px}}
+</style>
+</head>
+<body><div class="page">
+
+<header class="cover">
+  <div class="kicker">Numerical study based on the published data set</div>
+  <h1>Origin of the ~90 nm red shift of the Ag / nanoparticle-DBR Tamm sensor: full 3D electrodynamic modelling</h1>
+  <div class="meta">
+    A. Hossain Sadidi, S. M. P. Molaei Tabari — Department of Physics, University of Isfahan (supervisor: Dr. M. Bagheri Harouni)<br>
+    Data: Rossini et al., doi:10.1002/nap2.70138; data set doi:10.5281/zenodo.18064645 &nbsp;·&nbsp; November 2026
+  </div>
+</header>
+
+<section>
+<h2>Summary</h2>
+<p>We asked which physical change of the device can produce the response reported for PBS and for VLP exposure: a red shift of the Tamm reflectance minimum by about 90 nm (PBS: +92.8 nm, mean of 5 tests; VLP 10 ng/mL: +88.5 nm), with a small change of the minimum reflectance for PBS (+2.2 %) and a larger one for VLP (+15.1 %). We built a three-dimensional FDTD model of the full device (random Ag island film with the AFM statistics on the fitted nanoparticle DBR on glass, light incident from the glass side) and tested about 20 candidate modifications in about 250 simulations.</p>
+<ol>
+<li><b>The particles themselves are optically negligible.</b> One 100 nm VLP- or PS-like sphere per 0.4 × 0.4 µm² (≈ 5 % area coverage, far above the expected surface density) changes the device reflectance by &lt; 0.5 % and moves the minimum by &lt; 0.1 nm.</li>
+<li><b>Changes of the silver alone do not produce a continuous shift.</b> Thin shells (AgCl, protein), extra damping, dissolution and restructuring of the grains either leave the minimum in place (|Δλ| ≤ 5 nm) or, for strong changes, make a second broad minimum near 780 nm the deepest one (a "jump" of +155 to +160 nm), without the recovery of high reflectance at the old dip wavelength that the measurement shows.</li>
+<li><b>The Ag-on-glass control (Fig. S3c,d) is reproduced by loss / restructuring of silver</b> (−5 to −10 %, measured −5.5 % and −12.1 %), not by shells, which raise the reflectance (+5 to +9 %).</li>
+<li><b>A dielectric layer forming at the Ag / TiO<sub>2</sub> interface reproduces the measured pattern:</b> a continuous red shift (+36 to +67 nm for 20–80 nm), the short-wavelength stop-band edge moving with it, and the old dip filling up. Extrapolated, ~55–60 nm of AgCl (n ≈ 2.07) or ~110 nm of a hydrated layer (n ≈ 1.33) would give the full ~90 nm. 40 nm of AgCl corresponds to ≈ 16 nm of the 33 nm silver (molar-volume ratio ≈ 2.5), consistent with the silver loss seen on glass.</li>
+</ol>
+<div class="callout"><b>Working hypothesis.</b> Chloride from PBS penetrates the voids of the island film (and possibly the porous top TiO<sub>2</sub> layer) and converts or lifts the silver at the buried interface. The particles act, if at all, through the chemistry of the buffer, not optically. This is a hypothesis to be tested by experiment (Section 7); it is not yet proven.</div>
+</section>
+
+<section>
+<h2>1. The measured response to be explained</h2>
+<figure><img src="{{IMG:fig_r1_problem}}" alt="measured spectra before and after PBS and VLP">
+<figcaption>Fig. 1. Measured reflectance of the Tamm device before (dashed) and after (solid) exposure (data of Fig. 2 of the paper). The minimum moves by +87 nm (PBS) and +83 nm (VLP) in these two spectra; the high-reflectance band extends to ~650 nm, i.e. the old dip wavelength becomes bright again (+39 %).</figcaption></figure>
+<p>Two control measurements of the supporting information restrict the possible causes:</p>
+<ul>
+<li><b>Bare DBR (Fig. S3a,b):</b> the red edge of the stop band moves by ≤ 1 nm after PBS or VLP. Infiltration of the porous DBR alone cannot explain the shift.</li>
+<li><b>Ag on glass (Fig. S3c,d):</b> the reflectance of the silver film drops by 5.5 % (PBS) and 12.1 % (VLP) on average over 450–700 nm. The silver itself is modified.</li>
+</ul>
+</section>
+
+<section>
+<h2>2. Model</h2>
+<figure><img src="{{IMG:fig_r2_model}}" alt="island film and simulated structure">
+<figcaption>Fig. 2. (a) One realisation of the random Ag island film in the 0.8 µm periodic cell used for the main results. (b) Simulated structure; the interlayer (green) exists only in the round-7 runs.</figcaption></figure>
+<h3>2.1 DBR</h3>
+<p>Transfer-matrix fit of the measured DBR spectrum (Fig. 1 of the paper; R and T, unpolarised, 8° incidence, incoherent 1 mm glass): 5 × (SiO<sub>2</sub> / TiO<sub>2</sub>) nanoparticle layers, SiO<sub>2</sub> first on the glass, Bruggeman porosities 4.8 % (SiO<sub>2</sub>) and 18.2 % (TiO<sub>2</sub>), thicknesses 100.6 / 75.2 nm (SEM prior 110 / 90 ± 8 nm), thickness spread 5.3 %; rms deviation 2.8 %. In the 3D device the DBR is represented by its effective indices (1.435 / 1.93) and the fitted thicknesses (×0.97, from the device fit).</p>
+<h3>2.2 Why a 3D model</h3>
+<p>A planar model with an effective-medium silver layer cannot reproduce the measured device spectrum (best rms 10.6 %, with damping and depolarisation at their bounds). The film is a percolated island film (AFM: grains 50 ± 18 nm, 14.4 % voids, 33 nm nominal thickness), and its near field and scattering into the DBR matter. We checked this directly: cascading the zeroth-order S-matrix of the film with the DBR deviates from the full 3D device by up to 0.33 in R. All device results below are therefore <b>full 3D runs of the complete stack</b>.</p>
+<h3>2.3 Silver and island film</h3>
+<ul>
+<li>Permittivity: Ag film data of Ciesielski et al. (2017, 20 nm film), fitted with Drude + 2 Lorentz terms for the FDTD (max. relative error 0.18 %, 350–1000 nm).</li>
+<li>Geometry: random sequential deposition of columnar grains (cylinder + oblate cap), diameters N(50, 18) nm, heights N(1, 0.12) × h, filling until 14.4 % void; heights scaled to a mean thickness of 33 nm. Deterministic for a given seed; 358 grains in the 0.8 µm cell.</li>
+<li>The model surface roughness (≈ 14 nm rms) is larger than the AFM value (8.7 nm); tip convolution reduces the AFM value in narrow voids, so we kept the measured coverage and thickness as the constraints.</li>
+</ul>
+<h3>2.4 FDTD set-up (Meep)</h3>
+<ul>
+<li>Periodic P × P cell, normal incidence from the glass side, x polarisation (y checked: dip within 3 nm), Gaussian pulse 380–950 nm, 58 frequencies, PML along z.</li>
+<li>Grid 5 nm; R and T from Poynting fluxes normalised to identical homogeneous runs; the thick glass is added incoherently (back face).</li>
+<li>Cell size: P = 0.3 µm cells act as gratings (lattice resonances, strong realisation scatter), so all main results use <b>P = 0.8 µm</b> and the mean of 2–3 random realisations. The measured spot averages many realisations, so the realisation-mean spectrum is compared with the experiment.</li>
+<li>About 250 runs on GitHub Actions (up to 20 in parallel, up to 6 h each); code and all raw results are in the project repository.</li>
+</ul>
+</section>
+
+<section>
+<h2>3. Validation</h2>
+<table>
+<tr><th>Check</th><th>Result</th></tr>
+<tr><td>Flat 33 nm Ag film in Meep vs exact transfer matrix (both incidence sides)</td><td class="n">|ΔR|, |ΔT| ≤ 0.007</td></tr>
+<tr><td>Drude–Lorentz fit vs tabulated Ag permittivity</td><td class="n">≤ 0.18 % relative</td></tr>
+<tr><td>DBR transfer-matrix fit vs measured R, T</td><td class="n">rms 2.8 %</td></tr>
+<tr><td>Full 3D device, as deposited, vs measured Tamm dip (Fig. 1)</td><td class="n">619.5 nm vs 635 nm (−2.4 %)</td></tr>
+<tr><td>Realisation scatter of the dip (4 realisations, P = 0.3 µm)</td><td class="n">± 3 nm, R ± 2.5 %</td></tr>
+<tr><td>Island film, 5 nm vs 3.3 nm grid (P = 0.3 µm, film alone)</td><td class="n">mean |ΔR| 0.05, max 0.3 at lattice features</td></tr>
+<tr><td>Grid convergence of the full device without / with interlayer (P = 0.4 µm, 5 vs 3.3 nm)</td><td class="n" id="cv">running (round 8)</td></tr>
+</table>
+<p class="small">The island film is sensitive to the grid because neighbouring grains are separated by gaps of a few nanometres. All conclusions below are drawn from differences between runs on the same grid and the same realisations; the round-8 check tests whether these differences are grid independent.</p>
+</section>
+
+<section>
+<h2>4. Silver-only modifications</h2>
+<figure><img src="{{IMG:fig_r3_glass}}" alt="Ag on glass change for each modification">
+<figcaption>Fig. 3. Ag film on glass (control of Fig. S3c,d): mean change of reflectance over 450–700 nm for each modification, mean ± sd of 3 realisations (P = 0.8 µm). Dotted lines: measured.</figcaption></figure>
+<table>
+<tr><th>Modification (full 3D device)</th><th>Dip shift</th><th>Δ R<sub>dip</sub></th><th>Rise of R at old dip</th></tr>
+<tr><td>AgCl shell 3 / 6 nm around every grain</td><td class="n">−2 nm</td><td class="n">−4 / −5 %</td><td class="n">−3 / −4 %</td></tr>
+<tr><td>Protein-like shell 5 nm (n = 1.45)</td><td class="n">−5 nm</td><td class="n">−2 %</td><td class="n">0 %</td></tr>
+<tr><td>Extra Drude damping +0.1 / +0.2 eV</td><td class="n">0 nm</td><td class="n">+2 / +3 %</td><td class="n">+2 / +3 %</td></tr>
+<tr><td>Restructuring, voids 21 % (same silver volume)</td><td class="n">−1 nm</td><td class="n">+4 %</td><td class="n">+4 %</td></tr>
+<tr><td>Restructuring, voids 35 %</td><td class="n">+155 nm (jump)</td><td class="n">+6 %</td><td class="n">+16 %</td></tr>
+<tr><td>Dissolution, grains −6 % (17 % of Ag lost)</td><td class="n">0 nm</td><td class="n">+6 %</td><td class="n">+6 %</td></tr>
+<tr><td>Dissolution, grains −10 % (27 % of Ag lost)</td><td class="n">+162 nm (jump)</td><td class="n">+7 %</td><td class="n">+9 %</td></tr>
+<tr class="ms"><td>Measured PBS / VLP 10 ng/mL</td><td class="n">+87 / +83 nm</td><td class="n">+3 / +15 %</td><td class="n">+39 %</td></tr>
+</table>
+<p class="small">Shells and damping: P = 0.3 µm (2 realisations); all others P = 0.8 µm. The "jumps" are a switch to a pre-existing broad minimum near 780 nm (visible in the as-deposited spectrum, Fig. 4a), not a displacement of the Tamm dip.</p>
+</section>
+
+<section>
+<h2>5. Interlayer at the Ag / TiO<sub>2</sub> interface</h2>
+<p>Because no change of the silver alone gave a continuous shift, we scanned single changes in a planar model. A dielectric overlayer on the silver, water as ambient, or a lower plasma frequency all gave |Δλ| ≤ 10 nm. Only a layer <i>between</i> the DBR and the silver, which adds optical path inside the Tamm cavity, moved the dip continuously. We then simulated this in full 3D (round 7, P = 0.8 µm, 2 realisations).</p>
+<figure><img src="{{IMG:fig_r4_device}}" alt="device spectra simulated and measured">
+<figcaption>Fig. 4. (a) Full 3D device, realisation means: as deposited (black), silver-only changes (blue, dashed), interlayers (green). (b) Measurement. With an interlayer the whole short-wavelength stop-band edge moves with the dip, as in the experiment.</figcaption></figure>
+<table>
+<tr><th>Interlayer under the as-deposited film</th><th>Dip</th><th>Dip shift</th><th>Δ R<sub>dip</sub></th><th>Rise of R at old dip</th></tr>
+<tr class="hl"><td>AgCl (n = 2.07), 20 nm</td><td class="n">655 nm</td><td class="n">+36 nm</td><td class="n">−6 %</td><td class="n">+55 %</td></tr>
+<tr class="hl"><td>AgCl, 40 nm</td><td class="n">682 nm</td><td class="n">+62 nm</td><td class="n">+2 %</td><td class="n">+74 %</td></tr>
+<tr class="hl"><td>hydrated (n = 1.33), 40 nm</td><td class="n">666 nm</td><td class="n">+47 nm</td><td class="n">+3 %</td><td class="n">+68 %</td></tr>
+<tr class="hl"><td>hydrated, 80 nm</td><td class="n">686 nm</td><td class="n">+67 nm</td><td class="n">+25 %</td><td class="n">+80 %</td></tr>
+<tr class="ms"><td>Measured PBS / VLP 10 ng/mL</td><td class="n">748 / 718 nm</td><td class="n">+87 / +83 nm</td><td class="n">+3 / +15 %</td><td class="n">+39 %</td></tr>
+</table>
+<figure><img src="{{IMG:fig_r5_map}}" alt="response map">
+<figcaption>Fig. 5. Response map: dip shift vs rise of R at the old dip wavelength for every simulated modification, with the two measurements (stars). Only the interlayer family moves toward the measured response.</figcaption></figure>
+</section>
+
+<section>
+<h2>6. Interpretation and limitations</h2>
+<ul>
+<li><b>Qualitative agreement, not yet quantitative.</b> The interlayer reproduces the type of change (continuous shift, moving stop-band edge, small depth change for a thin AgCl layer and a larger one for a thicker, lower-index layer). However, for a given shift it fills the old dip more than measured (+55 to +80 % against +39 %). A laterally inhomogeneous interlayer, combined silver loss, or a graded interface would broaden and weaken the response; these combinations have not been simulated.</li>
+<li><b>Thickness needed.</b> The full ~90 nm needs, by extrapolation, ~55–60 nm of AgCl or ~110 nm of a hydrated layer. This is large compared with a 33 nm film. Partial conversion and lift-off together may be required.</li>
+<li><b>Grid sensitivity</b> of the island film (Section 3) affects absolute spectra. The round-8 check tests the robustness of the interlayer result.</li>
+<li>Normal incidence and one polarisation were simulated (unpolarised, 8° in the experiment). Oblique-incidence corrections at 8° are small for these layers.</li>
+</ul>
+</section>
+
+<section>
+<h2>7. Suggested experiments and questions</h2>
+<ol>
+<li><b>Cross-section (FIB-SEM / TEM) and EDX or XPS depth profile</b> of an exposed device: is there Cl or a gap at the Ag / TiO<sub>2</sub> interface?</li>
+<li><b>Chloride-free buffer control</b> (e.g. phosphate buffer without NaCl / KCl): if the shift disappears, chloride is the cause.</li>
+<li><b>Reflectance from the film side and transmission</b> of the same exposed device: these give an independent constraint on where the change sits.</li>
+<li><b>Time series</b> of the dip during exposure: does it move continuously (interlayer growth) or switch?</li>
+</ol>
+<p>Questions on the measurement that affect the modelling:</p>
+<ul>
+<li>Were the "after" spectra recorded dry, after rinsing with water, or wet?</li>
+<li>Exposure time and temperature; were the bare-DBR and Ag-on-glass controls exposed identically and at the same time?</li>
+<li>Is there an adhesion layer between the TiO<sub>2</sub> and the silver?</li>
+</ul>
+</section>
+
+<section>
+<h2>Appendix: reproducibility</h2>
+<p class="small">All code, input data and raw simulation outputs (complex S-parameters, R, T, run logs) are in the project repository: <code>tamm/analysis</code> (transfer-matrix model, fits, analyses), <code>tamm/meep</code> (island generator, 3D FDTD), <code>tamm/ci</code> (case list, GitHub Actions matrix), <code>tamm/results/meep</code> (≈ 250 result files). Main scripts: <code>fit_baseline.py</code>, <code>ldfit.py</code>, <code>fullvol6.py</code>, <code>sweep5.py</code>, <code>report_figs.py</code>.</p>
+</section>
+
+</div></body>
+</html>
