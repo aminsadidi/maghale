@@ -1,4 +1,4 @@
-"""Round 6: FULL 3D Tamm device with large cells (island film + DBR + glass in one Meep run, P = 0.8 um, light from the glass side, R and T
+"""Rounds 6 and 7: FULL 3D Tamm device with large cells (island film + DBR + glass in one Meep run, P = 0.8 um, light from the glass side, R and T
 from fluxes; no cascade approximation). Realisation-mean spectra (the measured spot averages many realisations); dip position and
 depth vs the as-deposited film; compared with the measured PBS / VLP 10 ng/mL spectra (Fig. 2) and with the cascade result (round 5).
 usage: python tamm/analysis/fullvol6.py"""
@@ -10,7 +10,9 @@ import device3d_full as D, mechanisms3d as M  # noqa: E402
 plt.rcParams.update({'font.size': 11, 'axes.linewidth': 0.9, 'xtick.direction': 'in', 'ytick.direction': 'in', 'legend.frameon': False,
                      'savefig.bbox': 'tight', 'savefig.dpi': 200, 'axes.grid': True, 'grid.color': '#ecebe6'})
 LEV = [('base', 'as deposited'), ('v21', 'restructured: voids 21 %'), ('cov65', 'restructured: voids 35 %'),
-       ('sh94', 'dissolved: grains -6 % (17 % Ag lost)'), ('shrink90', 'dissolved: grains -10 % (27 % Ag lost)')]
+       ('sh94', 'dissolved: grains -6 % (17 % Ag lost)'), ('shrink90', 'dissolved: grains -10 % (27 % Ag lost)'),
+       ('FG_g133_40', 'interlayer n 1.33, 40 nm (round 7)'), ('FG_g133_80', 'interlayer n 1.33, 80 nm (round 7)'),
+       ('FG_g207_20', 'interlayer AgCl, 20 nm (round 7)'), ('FG_g207_40', 'interlayer AgCl, 40 nm (round 7)')]
 lam = D.lam
 
 
@@ -18,7 +20,7 @@ def main():
     out = dict(levels={})
     spec = {}
     for tag, lab in LEV:
-        rs = [D.load(f'FV_{tag}_s{s}_x') for s in (1, 2)]; rs = [r for r in rs if r]
+        rs = [D.load(f'{tag}_s{s}_x' if tag.startswith('FG_') else f'FV_{tag}_s{s}_x') for s in (1, 2)]; rs = [r for r in rs if r]
         if not rs: continue
         R = np.mean([r[0] for r in rs], 0); T = np.mean([r[1] for r in rs], 0); spec[tag] = (R, T)
         l, Rd = M.dip(lam, R, 590, 845)
