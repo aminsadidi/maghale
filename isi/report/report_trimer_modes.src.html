@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>آنتن سه‌نانومیله‌ای</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --paper:#ffffff; --ink:#1d2330; --ink2:#4a5263; --muted:#7a8191; --line:#e3e1da;
+  --accent:#1f4e9c; --accent-soft:#e8eef8; --gold:#b8892a; --gold-soft:#faf3e3; --good:#2a7a4b; --good-soft:#e7f4ec;
+  --warn:#9a5b00; --warn-soft:#fbf1e1;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Vazirmatn",Tahoma,sans-serif;line-height:1.95}
+.page{max-width:900px;margin:0 auto;padding:28px 16px 60px}
+header.cover{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:34px 34px 28px;position:relative;overflow:hidden}
+header.cover::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.kicker{color:var(--gold);font-weight:600;font-size:.92rem;letter-spacing:.02em}
+h1{font-size:1.75rem;line-height:1.6;margin:.4rem 0 .6rem;font-weight:800}
+.en{direction:ltr;unicode-bidi:isolate;font-family:Georgia,"Times New Roman",serif}
+.entitle{display:block;direction:ltr;text-align:left;color:var(--ink2);font-family:Georgia,serif;font-size:1rem;line-height:1.6;margin:.3rem 0 1rem}
+.meta{color:var(--ink2);font-size:.95rem}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{font-size:.82rem;padding:3px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.badge.g{background:var(--good-soft);color:var(--good)} .badge.o{background:var(--gold-soft);color:var(--gold)}
+section{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px 30px;margin-top:20px}
+h2{font-size:1.3rem;margin:0 0 .8rem;font-weight:800;display:flex;align-items:center;gap:10px}
+h2 .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--accent);color:#fff;font-size:.95rem}
+h3{font-size:1.05rem;margin:1.2rem 0 .4rem;color:var(--accent)}
+p{margin:.5rem 0}
+.lead{font-size:1.05rem;color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 4px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fbfbf9}
+.tile .v{font-size:1.55rem;font-weight:800;color:var(--accent);direction:ltr;text-align:right}
+.tile .l{font-size:.86rem;color:var(--ink2);line-height:1.7}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92rem}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:right;vertical-align:top}
+th{background:#f3f2ed;font-weight:600}
+td.before{color:var(--ink2)} td.after{color:var(--ink)}
+tr:hover td{background:#fafaf7}
+.tl{position:relative;margin:10px 0 0;padding-right:26px}
+.tl::before{content:"";position:absolute;right:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.step{position:relative;margin:0 0 16px}
+.step::before{content:"";position:absolute;right:-24px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:3px solid var(--accent)}
+.step.key::before{border-color:var(--gold)}
+.step b{display:block}
+.step .d{color:var(--ink2);font-size:.95rem}
+figure{margin:16px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff;padding:6px}
+figcaption{font-size:.86rem;color:var(--ink2);margin-top:6px;line-height:1.8}
+.callout{border-right:4px solid var(--gold);background:var(--gold-soft);padding:12px 16px;border-radius:8px;margin:14px 0}
+.callout.g{border-color:var(--good);background:var(--good-soft)}
+.callout.w{border-color:var(--warn);background:var(--warn-soft)}
+ul{margin:.4rem 0;padding-right:1.3rem} li{margin:.25rem 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:720px){.two,.tiles{grid-template-columns:1fr 1fr} header.cover,section{padding:20px 18px} h1{font-size:1.4rem}}
+.num{direction:ltr;unicode-bidi:isolate}
+footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:24px}
+.papers{display:grid;gap:10px;margin-top:16px}
+.pcard{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:#fbfbf9}
+.pcard .entitle{margin:.2rem 0 0;font-size:.95rem}
+.ptag{font-weight:700;color:var(--accent);font-size:.9rem}.ptag.g{color:var(--good)}
+.tile .v sup{font-size:.6em}
+@page{size:A4 portrait;margin:16mm 14mm 16mm 14mm}
+@media print{
+  html{font-size:10.5pt}
+  body{background:#fff;line-height:1.8;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{max-width:none;margin:0;padding:0}
+  header.cover,section{border:none;border-radius:0;padding:0;margin:0 0 6mm 0;background:#fff}
+  header.cover{padding-top:4mm}
+  section{break-before:auto;margin-bottom:5mm;padding-top:2mm;border-top:1px solid #e3e1da}
+  h2,h3{break-after:avoid;page-break-after:avoid}
+  h3+ul,h3+p{break-before:avoid}
+  h1{font-size:17pt} h2{font-size:13.5pt;break-after:avoid} h3{font-size:11.5pt;break-after:avoid}
+  .tiles{grid-template-columns:repeat(3,1fr);gap:3mm}
+  .tile{padding:3mm 4mm}.tile .v{font-size:14pt}.tile .l{font-size:8.8pt}
+  figure{margin:4mm 0;break-inside:avoid}
+  figure img{max-height:78mm;width:auto;max-width:100%;border:none;padding:0}
+  figcaption{font-size:8.8pt}
+  table{font-size:8.8pt;break-inside:auto} tr{break-inside:avoid} th,td{padding:4px 6px}
+  .two{grid-template-columns:1fr 1fr}
+  .callout,.tile,.pcard{break-inside:avoid}
+  .tl{padding-right:30px;margin-right:2px} .step,li{break-inside:avoid}
+  table{break-inside:avoid}
+  footer{margin-top:6mm}
+  tr:hover td{background:none}
+}
+</style>
+<style>
+.eq{direction:ltr;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:1.04rem;background:#f7f8fb;border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:10px 0;line-height:2}
+.eq small{display:block;font-family:"Vazirmatn",sans-serif;direction:rtl;color:var(--ink2);font-size:.82rem;line-height:1.8;margin-top:4px}
+.calc{direction:ltr;text-align:left;font-family:"Courier New",monospace;font-size:.88rem;background:#fbfaf6;border:1px dashed #d8d3c4;border-radius:8px;padding:10px 14px;margin:10px 0;line-height:1.75;white-space:pre-wrap}
+td.l,.l{text-align:left;direction:ltr;font-family:Georgia,serif}
+.src{color:var(--muted);font-size:.84rem}
+.ok{color:var(--good);font-weight:700}.no{color:#9a3412;font-weight:700}
+.stepbox{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0;background:#fcfcfa}
+.stepbox b.h{color:var(--accent)}
+@media print{.eq,.calc{font-size:9.3pt;padding:5px 8px;break-inside:avoid}.stepbox{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="cover">
+  <div class="kicker">گزارش تفصیلی برای استاد راهنما: شبیه‌سازی اصلی آنتن سه‌نانومیله‌ای و توصیف آن با دو مد</div>
+  <h1>آنتن سه‌نانومیله‌ای طلا در ۱۵۵۰ nm: شرایط شبیه‌سازی، خروجی‌های خام، برازش تابع گرین با یک، دو و سه مد، و شرح کامل همه‌ی شکل‌ها و منحنی‌ها</h1>
+  <span class="entitle">Gold three-nanorod antenna at 1550 nm: simulation conditions, raw BEM outputs, one-, two- and three-mode fits of the Green function, and a curve-by-curve description of every figure</span>
+  <div class="meta">امین حسین صدیدی، سید محمدپارسا مولائی طبری؛ استاد راهنما: دکتر مالک باقری هارونی؛ دانشگاه اصفهان؛ آذر ۱۴۰۵</div>
+  <div class="badges"><span class="badge">BEM (MNPBEM17)، کاملاً تأخیری، مش ۳ nm</span><span class="badge o">۴۱ طول‌موج، ۱۱۰۰ تا ۱۹۰۰ nm</span><span class="badge g">دو مد: خطای Im G ۲.۸٪، خطای Re G ۰.۵٪</span></div>
+  <div class="tiles">
+    <div class="tile"><div class="v">240</div><div class="l">ضریب پورسل F<sub>p</sub> در ۱۵۵۰ nm (گسیلنده در مرکز گاف، دوقطبی x)</div></div>
+    <div class="tile"><div class="v">75 %</div><div class="l">بازده آنتن η = T / F<sub>p</sub> در ۱۵۵۰ nm (بقیه در طلا جذب می‌شود)</div></div>
+    <div class="tile"><div class="v">5.0</div><div class="l">نسبت جهت‌دهی توان به +y به −y در ۱۵۵۰ nm (بیشینه ۵.۷ در ۱۵۲۰ nm)</div></div>
+    <div class="tile"><div class="v">1440 / 1511 nm</div><div class="l">دو مد آنتن: تیز (Q = ۱۴) و پهن (Q = ۲.۹)</div></div>
+    <div class="tile"><div class="v">1.35 / 1.99 meV</div><div class="l">ثابت جفت‌شدگی ħg گسیلنده با مد تیز و مد پهن (τ<sub>0</sub> = ۲ ns)</div></div>
+    <div class="tile"><div class="v">0.0103 / 0.966</div><div class="l">g<sup>(2)</sup>(0) و تمیزناپذیری I (پالس ۲۰۰ fs، γ* = ۱ µeV)</div></div>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">۰</span>این گزارش به چه پرسش‌هایی پاسخ می‌دهد</h2>
+  <p class="lead">این سند برای این نوشته شده که هر شکل و هر عدد گزارش قبلی (مدل تابع گرین، بخش ۱۵) بدون نیاز به توضیح شفاهی قابل خواندن باشد. به‌طور مشخص:</p>
+  <ol>
+    <li><b>شبیه‌سازی اصلی سه‌نانومیله‌ای</b> دقیقاً با چه هندسه، چه مواد، چه روش عددی و چه تنظیماتی انجام شده است (بخش ۱).</li>
+    <li>خروجی‌های <b>خام</b> شبیه‌سازی چه هستند و هر منحنی چه کمیتی را برای چه شرطی نشان می‌دهد (بخش ۲).</li>
+    <li><b>برازش با دو مد</b> چگونه انجام شده، چرا دو مد و نه یک یا سه مد، و هر مد از نظر فیزیکی چیست (بخش‌های ۳ تا ۵).</li>
+    <li>این مدها و ثابت‌های جفت‌شدگی به مکان گسیلنده و اندازه‌ی مش چقدر حساس‌اند (بخش ۶).</li>
+    <li>این مدها چگونه وارد مدل کوانتومی می‌شوند، و هر منحنی شکل‌های کوانتومی (g<sup>(2)</sup>(0)، تمیزناپذیری، جابه‌جایی لمب، اثر هندسه) چه چیزی را نشان می‌دهد (بخش‌های ۷ تا ۹).</li>
+  </ol>
+  <div class="callout g"><b>نتیجه در یک جمله:</b> پاسخ گسیلنده به آنتن سه‌میله‌ای، با دو مد لورنتزی (یک مد تیز در ۱۴۴۰ nm که با افزودن میله‌ی سوم پدید می‌آید و یک مد پهن در حدود ۱۵۱۰ nm) به‌طور کامل توصیف می‌شود: Im G با خطای ۲.۸٪ برازش می‌شود، Re G (که در برازش استفاده نشده) با خطای ۰.۵٪ پیش‌بینی می‌شود، و افزودن مد سوم هیچ عددی از نتایج کوانتومی را تغییر نمی‌دهد؛ در حالی که با یک مد، آهنگ گسیل ۱۸٪ اشتباه درمی‌آید.</div>
+</section>
+
+<section>
+  <h2><span class="n">۱</span>شرایط شبیه‌سازی اصلی (طرح نهایی سه‌میله‌ای)</h2>
+  <figure><img src="{{IMG:fig_d1_geometry}}" alt="هندسه"><figcaption><b>شکل ۱. هندسه‌ی طرح نهایی از نمای بالا، با ابعاد واقعی.</b> R1 و R2 دو بازوی دیمر (هر کدام ۲۷۵ nm) با گاف ۴۰ nm بین سرهایشان روی محور x هستند. R3 میله‌ی سوم (۲۹۵ nm) است که موازی دیمر (زاویه‌ی ۰) و با مرکز در y = ۱۶۰ nm قرار دارد؛ فاصله‌ی سطح‌به‌سطح آن تا دیمر ۱۰۰ nm است. قطر همه‌ی میله‌ها D = ۶۰ nm و سرهایشان نیم‌کره‌ای است. نقطه‌ی قرمز: مکان اصلی گسیلنده (مرکز گاف) و پیکان قرمز جهت دوقطبی (x، در امتداد محور دیمر). نقطه‌ی آبی: گسیلنده ۵ nm جابه‌جا به‌سوی R2. نقطه‌ی سبز: گسیلنده ۱۰ nm جابه‌جا به‌سوی R3. محور z عمود بر صفحه است و نور از سمت +z جمع‌آوری می‌شود.</figcaption></figure>
+  <table>
+    <tr><th>مورد</th><th>مقدار در شبیه‌سازی اصلی</th><th>توضیح</th></tr>
+    <tr><td>نام هندسه در کد</td><td class="l">L275_R295_A0_Y160_H3</td><td>L = طول بازوی دیمر، R = طول R3، A = زاویه‌ی R3، Y = مرکز R3، H = اندازه‌ی مش (همه بر حسب nm و درجه)</td></tr>
+    <tr><td>جنس میله‌ها</td><td>طلا، داده‌ی جانسون و کریستی (gold.dat در MNPBEM)</td><td>اثر انتخاب داده‌ی دیگر طلا در گزارش‌های قبلی بررسی شده است</td></tr>
+    <tr><td>محیط اطراف</td><td>دی‌الکتریک همگن n = ۱.۵ (شیشه/پلیمر)</td><td>همه‌ی آهنگ‌ها نسبت به همین محیط بهنجار شده‌اند (Γ<sub>0</sub> در n = ۱.۵)</td></tr>
+    <tr><td>روش عددی</td><td>روش المان مرزی (BEM)، MNPBEM17، حل کاملاً تأخیری (retarded)</td><td>معادلات کامل ماکسول؛ فقط سطح ذرات مش‌بندی می‌شود</td></tr>
+    <tr><td>مش</td><td>h = ۳ nm روی R1 و R2، ۴.۲ nm روی R3 (۱.۴h)؛ ۲۱۱۰۴ المان سطحی</td><td>آزمون با h = ۴ nm در بخش ۶</td></tr>
+    <tr><td>طول‌موج‌ها</td><td>۱۱۰۰ تا ۱۹۰۰ nm با گام ۲۰ nm (۴۱ نقطه)، در ۶ بسته‌ی جدا روی گیت‌هاب اجرا شده</td><td>بازه‌ی پهن لازم است تا شکل کامل قله‌ها و دنباله‌ها برای برازش مدها دیده شود</td></tr>
+    <tr><td>منبع</td><td>دوقطبی نقطه‌ای در سه جهت x، y، z، در سه مکان: مرکز گاف، ۵ nm در x، ۱۰ nm در y</td><td>این گزارش دوقطبی x را بررسی می‌کند (جفت‌شدگی قوی با مد طولی گاف)</td></tr>
+    <tr><td>کمیت‌های خروجی</td><td>F<sub>p</sub>، T، Im G، Re G، سهم توان در مخروط‌های NA ۰.۹ و ۱.۳ (+z)، توان در مخروط‌های ۶۰ درجه حول +y و −y</td><td>تعریف هر کدام در بخش ۲</td></tr>
+    <tr><td>آزمون مستقل</td><td>FDTD لومریکال روی همین طرح (کارزار ۲)</td><td>F<sub>p</sub> = ۲۸۶ در برابر ۲۴۰ در BEM (اختلاف ۱۹٪، در بودجه‌ی خطای گزارش‌های قبلی)</td></tr>
+    <tr><td>کمیت‌های گسیلنده (برای مدل کوانتومی)</td><td>λ<sub>e</sub> = ۱۵۵۰ nm، طول عمر ذاتی در محیط τ<sub>0</sub> = ۲ ns (ħΓ<sub>0</sub> = ۰.۳۲۹ µeV)</td><td>نقطه‌ی کوانتومی مخابراتی؛ g<sub>j</sub> با √Γ<sub>0</sub> مقیاس می‌شود</td></tr>
+  </table>
+  <p class="src">کد هندسه و اجرا: isi/bem/extra/job_tri2.m؛ داده‌ها: isi/results/bem_extra/tri2_L275_R295_A0_Y160_H3_c1..c6.csv.</p>
+</section>
+
+<section>
+  <h2><span class="n">۲</span>خروجی خام شبیه‌سازی: هر منحنی چیست</h2>
+  <figure><img src="{{IMG:fig_d2_spectra}}" alt="طیف‌ها"><figcaption><b>شکل ۲. خروجی‌های خام BEM برای طرح نهایی، گسیلنده‌ی دوقطبی x در مرکز گاف.</b> در همه‌ی پنل‌ها خط نقطه‌چین عمودی طول‌موج کار (۱۵۵۰ nm) است و نقطه‌ها طول‌موج‌های محاسبه‌شده (هر ۲۰ nm).</figcaption></figure>
+  <h3>پنل (الف): آهنگ کل و آهنگ تابشی</h3>
+  <ul>
+    <li><b>منحنی قرمز پر (F<sub>p</sub>، مش ۳ nm):</b> ضریب پورسل، یعنی آهنگ کل واپاشی گسیلنده کنار آنتن تقسیم بر آهنگ آن در محیط همگن n = ۱.۵. شامل فوتون‌های تابیده و انرژی جذب‌شده در طلا است. قله‌ی ۴۰۷ در ۱۴۴۰ nm، و در ۱۵۵۰ nm مقدار ۲۴۰.</li>
+    <li><b>منحنی آبی پر (T، مش ۳ nm):</b> توان تابیده به دوردست تقسیم بر توان تابیده‌ی همان دوقطبی بدون آنتن (ضریب تقویت تابشی). قله ۲۵۱ در ۱۴۴۰ nm و در ۱۵۵۰ nm مقدار ۱۸۱.</li>
+    <li><b>خط‌چین‌های قرمز و آبی:</b> همان دو کمیت با مش درشت‌تر (۴ nm). اختلاف در ۱۵۵۰ nm حدود ۲٪ است (۲۳۵ در برابر ۲۴۰)؛ یعنی نتیجه به مش حساس نیست.</li>
+    <li><b>شکل منحنی:</b> قله‌ی تیز در ۱۴۴۰ nm و «شانه»ی پهنی که تا ۱۹۰۰ nm کشیده شده؛ همین شکل غیرمتقارن است که یک لورنتزی تنها نمی‌تواند توصیفش کند (بخش ۳).</li>
+  </ul>
+  <h3>پنل (ب): بازده و سهم جمع‌آوری‌شده</h3>
+  <ul>
+    <li><b>منحنی سبز (η = T/F<sub>p</sub>):</b> سهم انرژی گسیلنده که واقعاً به فوتون تبدیل می‌شود. در ۱۵۵۰ nm برابر ۷۵٪ است. <b>کمینه‌ی ۶۲٪ در حدود ۱۴۲۰ nm</b> درست روی مد تیز است: مد تیز سهم بیشتری از انرژی‌اش را در طلا تلف می‌کند (نشانه‌ی ماهیت «کم‌تابش» آن، بخش ۴).</li>
+    <li><b>منحنی طلایی پر:</b> درصد توان تابیده که در مخروطی با روزنه‌ی عددی NA = ۱.۳ حول +z می‌افتد (عدسی روغنی). در ۱۵۵۰ nm برابر ۲۸٪.</li>
+    <li><b>منحنی طلایی خط‌چین:</b> همان برای NA = ۰.۹ (عدسی هوا). در ۱۵۵۰ nm برابر ۱۳٪. این عدد در بخش ۷ برای محاسبه‌ی تقویت میدان لیزر (K) به کار می‌رود.</li>
+    <li>سهم‌های جمع‌آوری کم‌اند چون R3 نور را درون صفحه به سمت +y می‌فرستد (پنل د)، نه به سمت +z.</li>
+  </ul>
+  <h3>پنل (ج): ورودی مدل کوانتومی</h3>
+  <ul>
+    <li><b>منحنی سیاه (Im G):</b> بخش موهومی تابع گرین پراکنده در محل گسیلنده، بهنجار شده به طوری که F<sub>p</sub> = ۱ + Im G. این همان «چگالی طیفی» است که در بخش ۳ با مدها برازش می‌شود.</li>
+    <li><b>منحنی خاکستری (Re G):</b> بخش حقیقی تابع گرین؛ جابه‌جایی لمب بسامد گسیلنده را می‌دهد (δ = −½ Γ<sub>0</sub> Re G). در برازش استفاده نمی‌شود و فقط برای آزمون به کار می‌رود (بخش ۵). جهش آن در ۱۴۴۰ nm امضای مد تیز است و شیب صعودی‌اش تا ۱۹۰۰ nm از مد پهن و زمینه‌ی غیرتشدیدی می‌آید.</li>
+    <li><b>منحنی سیاه نقطه‌چین:</b> Im G دیمر تنها (L = ۲۷۰ nm، بدون R3) برای مقایسه: یک قله‌ی پهن و متقارن. مقایسه با منحنی سیاه پر نشان می‌دهد که <b>قله‌ی تیز را میله‌ی سوم ایجاد می‌کند</b>.</li>
+  </ul>
+  <h3>پنل (د): جهت‌دهی</h3>
+  <ul>
+    <li><b>منحنی آبی:</b> نسبت توان تابیده در مخروط ۶۰ درجه حول +y (سمت R3) به توان در مخروط ۶۰ درجه حول −y. بالای ۱ یعنی R3 نور را به سمت خودش هدایت می‌کند (مانند آنتن یاگی-اودا با R3 به‌عنوان «هدایتگر»). بیشینه ۵.۷ در ۱۵۲۰ nm و در ۱۵۵۰ nm مقدار ۵.۰. زیر ۱۴۰۰ nm جهت برعکس می‌شود (نسبت کمتر از ۱).</li>
+    <li><b>خط سیاه نقطه‌چین:</b> دیمر تنها؛ به دلیل تقارن نسبت دقیقاً ۱ است.</li>
+    <li>قله‌ی جهت‌دهی (۱۵۲۰ nm) <b>بین</b> دو مد افتاده است: جهت‌دهی از تداخل دو مد با فاز متفاوت ایجاد می‌شود.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۳</span>برازش Im G با یک، دو و سه مد</h2>
+  <h3>مدلی که برازش می‌شود</h3>
+  <div class="eq">Im G(ω) = (ω<sub>e</sub>/ω)<sup>3</sup> · Σ<sub>j</sub> A<sub>j</sub> (κ<sub>j</sub>/2)<sup>2</sup> / [ (ω − ω<sub>j</sub>)<sup>2</sup> + (κ<sub>j</sub>/2)<sup>2</sup> ]
+  <small>هر مد j سه پارامتر دارد: ارتفاع قله A<sub>j</sub>، بسامد ω<sub>j</sub> و پهنای کامل در نیم‌بیشینه κ<sub>j</sub> (آهنگ اتلاف مد = تابش + جذب). ضریب (ω<sub>e</sub>/ω)<sup>3</sup> به این دلیل است که Im G نسبت به Γ<sub>0</sub>(ω) ∝ ω<sup>3</sup> بهنجار شده است. برازش کمترین مربعات روی ۴۱ نقطه، با خطای نسبی وزن‌دار (باقی‌مانده / Im G).</small></div>
+  <div class="eq">ħg<sub>j</sub> = √( A<sub>j</sub> · ħκ<sub>j</sub> · ħΓ<sub>0</sub> / 4 )
+  <small>ثابت جفت‌شدگی گسیلنده با مد j؛ از این‌که در قله‌ی مد j آهنگ گسیل برابر 4g<sub>j</sub><sup>2</sup>/κ<sub>j</sub> = A<sub>j</sub>Γ<sub>0</sub> است به دست می‌آید.</small></div>
+  <figure><img src="{{IMG:fig_d3_nmodes}}" alt="برازش"><figcaption><b>شکل ۳. برازش Im G طرح نهایی (مرکز گاف، دوقطبی x) با (a) یک، (b) دو و (c) سه مد.</b> ردیف بالا: نقطه‌های سیاه = BEM؛ منحنی قرمز = مجموع مدها (مدل کامل)؛ خط‌چین‌های رنگی = سهم تک‌تک مدها (عنوان هر خط‌چین طول‌موج مرکزی و ضریب کیفیت Q = ω<sub>j</sub>/κ<sub>j</sub> آن مد است). ردیف پایین: باقی‌مانده‌ی نسبی (مدل منهای BEM، تقسیم بر BEM) برای هر طول‌موج. خط نقطه‌چین: ۱۵۵۰ nm.</figcaption></figure>
+  <table>
+    <tr><th>تعداد مد</th><th>خطای rms نسبی</th><th>بیشینه‌ی خطا</th><th>مدها: λ<sub>j</sub>، ħκ<sub>j</sub> (Q)، A<sub>j</sub>، ħg<sub>j</sub></th><th>Im G در ۱۵۵۰ (BEM: ۲۳۹.۴)</th></tr>
+    <tr><td>۱</td><td class="num no">14.1 %</td><td class="num">36 %</td><td class="l">1473 nm, 187 meV (4.5), 339, 2.28 meV</td><td class="num no">282 (+18 %)</td></tr>
+    <tr><td>۲</td><td class="num ok">2.8 %</td><td class="num">8 %</td><td class="l">1440 nm, 61 meV (14.1), 361, 1.35 meV<br>1511 nm, 283 meV (2.9), 170, 1.99 meV</td><td class="num ok">237.7 (−0.7 %)</td></tr>
+    <tr><td>۳</td><td class="num ok">0.5 %</td><td class="num">1 %</td><td class="l">1439 nm, 73 meV (11.7), 403, 1.56 meV<br>1590 nm, 229 meV (3.4), 114, 1.47 meV<br>1318 nm, 478 meV (2.0), 29, 1.08 meV</td><td class="num ok">237.5 (−0.8 %)</td></tr>
+  </table>
+  <h3>چگونه این شکل را بخوانیم</h3>
+  <ul>
+    <li><b>یک مد (a):</b> یک لورنتزی نمی‌تواند هم قله‌ی تیز ۱۴۴۰ و هم دنباله‌ی بلند تا ۱۹۰۰ را بسازد. منحنی قرمز قله را ۲۶٪ پایین‌تر و حدود ۶۰ nm به سرخ‌تر می‌گذارد؛ باقی‌مانده الگوی منظم «موج‌دار» دارد (تا −۳۶٪) که نشانه‌ی کمبود مد در مدل است، نه نوفه.</li>
+    <li><b>دو مد (b):</b> خط‌چین آبی مد تیز (<span class="num">۱۴۴۰ nm, Q = ۱۴</span>) قله را می‌سازد و خط‌چین سبز مد پهن (<span class="num">۱۵۱۱ nm, Q = ۲.۹</span>) شانه و دنباله‌ی سرخ را. باقی‌مانده در کل بازه زیر ۸٪ و در اطراف ۱۵۵۰ nm زیر ۱٪ است.</li>
+    <li><b>سه مد (c):</b> خطا به ۰.۵٪ می‌رسد، اما مد سوم (<span class="num">۱۳۱۸ nm, Q = ۲</span>، ارتفاع فقط ۲۹) عملاً یک زمینه‌ی تقریباً تخت است و مد پهن را به دو قسمت تقسیم می‌کند (۱۵۹۰ nm به‌جای ۱۵۱۱). یعنی پارامترهای مد پهن در این حالت یکتا نیستند؛ <b>ولی مد تیز تقریباً ثابت می‌ماند</b> (<span class="num">۱۴۳۹ nm, Q = ۱۲</span>).</li>
+  </ul>
+  <h3>چرا دو مد را انتخاب کردیم</h3>
+  <table>
+    <tr><th>کمیت مدل کوانتومی (۱۵۵۰ nm)</th><th>۱ مد</th><th>۲ مد</th><th>۳ مد</th><th>مستقیم از BEM</th></tr>
+    <tr><td>آهنگ گسیل ħΓ (µeV)</td><td class="num no">93.2</td><td class="num">79.1</td><td class="num">79.1</td><td class="num">79.1 (= F<sub>p</sub> ħΓ<sub>0</sub>)</td></tr>
+    <tr><td>جابه‌جایی لمب ħδ (µeV)</td><td class="num no">−76.3</td><td class="num">−82.9</td><td class="num">−82.8</td><td class="num">−82.7 (از Re G)</td></tr>
+    <tr><td>خطای پیش‌بینی Re G در کل بازه</td><td class="num no">5.0 %</td><td class="num">0.5 %</td><td class="num">0.2 %</td><td>—</td></tr>
+    <tr><td>g<sup>(2)</sup>(0) (پالس ۲۰۰ fs، γ* = ۱ µeV)</td><td class="num no">0.0120</td><td class="num">0.0103</td><td class="num">0.0103</td><td>—</td></tr>
+    <tr><td>تمیزناپذیری I</td><td class="num">0.9674</td><td class="num">0.9655</td><td class="num">0.9655</td><td>—</td></tr>
+  </table>
+  <div class="callout"><b>دلیل انتخاب:</b> (۱) دو مد کمترین تعداد است که همه‌ی کمیت‌های فیزیکی (Γ، δ، Re G، g<sup>(2)</sup>، I) را درست می‌دهد؛ افزودن مد سوم هیچ‌کدام را تغییر نمی‌دهد. (۲) هر دو مد معنای فیزیکی روشن دارند (بخش ۴)، ولی مد سوم یک زمینه‌ی بی‌ساختار است. (۳) مدل کوانتومی صریح با هر مد اضافه بزرگ‌تر می‌شود (فضای هیلبرت ۲ × ۲<sup>N</sup>)، پس کمترین تعداد مد کافی بهترین انتخاب است.</div>
+</section>
+
+<section>
+  <h2><span class="n">۴</span>دو مد از کجا می‌آیند: دیمر تنها در برابر سه‌میله‌ای</h2>
+  <figure><img src="{{IMG:fig_d4_origin}}" alt="منشأ مدها"><figcaption><b>شکل ۴. Im G و برازش یک و دو مدی برای (a) دیمر تنها با L = ۲۷۰ nm، (b) دیمر تنها با L = ۲۸۰ nm (هر دو بدون R3) و (c) طرح نهایی (دیمر L = ۲۷۵ + R3).</b> نقطه‌ها: BEM. منحنی خاکستری خط-نقطه: برازش با یک مد. منحنی قرمز: برازش با دو مد. خط‌چین آبی و سبز: دو مد برازش دومدی؛ در عنوان هر خط‌چین، طول‌موج، Q و ارتفاع A آمده است. محور عمودی هر سه پنل یکسان است.</figcaption></figure>
+  <ul>
+    <li><b>دیمر تنها (a، b):</b> یک مد غالب و پهن (Q ≈ ۴.۲، A ≈ ۲۴۹) که همان مد دوقطبی طولی «پیوندی» دو میله با بار متمرکز در گاف است. طول‌موج آن با طول بازو جابه‌جا می‌شود (۱۴۹۸ nm برای L = ۲۷۰ و ۱۵۳۴ nm برای L = ۲۸۰). مد دوم ضعیف و پهن (A ≈ ۷۰) فقط دنباله‌ی آبی را اصلاح می‌کند؛ حتی یک مد هم خطای فقط ۵ تا ۶٪ می‌دهد.</li>
+    <li><b>سه‌میله‌ای (c):</b> وقتی R3 (با تشدید نزدیک به دیمر) اضافه می‌شود، مد دیمر با مد دوقطبی R3 <b>هیبرید</b> می‌شود و دو مد جدید می‌سازد: یک مد <b>تیز</b> (Q = ۱۴، بلند و باریک) و یک مد <b>پهن</b> (Q = ۲.۹). حالا یک مد خطای ۱۴٪ می‌دهد و مد دوم ضروری است.</li>
+    <li><b>تفسیر فیزیکی (پیشنهادی):</b> مد تیز ترکیبی است که در آن دوقطبی‌های دیمر و R3 تابش یکدیگر را تا حدی خنثی می‌کنند (مد کم‌تابش یا subradiant)؛ پس اتلاف تابشی آن کم و Q آن بالاست. همین با کمینه‌ی بازده در ۱۴۲۰ nm در شکل ۲(ب) سازگار است: سهم جذب در طلا برای مد کم‌تابش بیشتر است. مد پهن ترکیب هم‌فاز و پرتابش (superradiant) است. جهت‌دهی بیشینه (شکل ۲د) بین این دو مد رخ می‌دهد، جایی که هر دو با دامنه‌ی قابل‌مقایسه و فاز متفاوت برانگیخته می‌شوند. برای تأیید مستقیم این تفسیر، نقشه‌ی بار سطحی در ۱۴۴۰ و ۱۵۲۰ nm را می‌توان در اجرای بعدی محاسبه کرد.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۵</span>آزمون مستقل: Re G که برازش نشده، پیش‌بینی می‌شود</h2>
+  <figure><img src="{{IMG:fig_q_modes}}" alt="آزمون Re G"><figcaption><b>شکل ۵. (a) Im G و برازش دومدی، (b) Re G و پیش‌بینی آن از همان دو مد.</b> نقطه‌های سیاه: BEM. منحنی قرمز در (a): مجموع دو مد؛ خط‌چین آبی: مد ۱ (تیز، ۱۴۴۰ nm)؛ خط‌چین سبز: مد ۲ (پهن، ۱۵۱۱ nm). منحنی قرمز در (b): Re G محاسبه‌شده از پارامترهای همان دو مد (ω<sub>j</sub>، κ<sub>j</sub>، A<sub>j</sub>) به‌علاوه‌ی یک زمینه‌ی غیرتشدیدی با دو ضریب (یک جمله‌ی ∝ (ω<sub>e</sub>/ω)<sup>3</sup> و یک ثابت). خط نقطه‌چین: ۱۵۵۰ nm.</figcaption></figure>
+  <div class="eq">Re G(ω) = −2 (ω<sub>e</sub>/ω)<sup>3</sup> Σ<sub>j</sub> A<sub>j</sub> (κ<sub>j</sub>/4)(ω − ω<sub>j</sub>) / [ (ω − ω<sub>j</sub>)<sup>2</sup> + (κ<sub>j</sub>/2)<sup>2</sup> ] + زمینه
+  <small>این رابطه‌ی کرامرز-کرونیگ برای هر لورنتزی است: بخش حقیقی و موهومی پاسخ یک مد از هم مستقل نیستند. زمینه سهم مدهای مرتبه‌ی بالا و برهم‌کنش شبه‌ایستای گسیلنده با تصویرش در سرهای طلا است که در بازه‌ی ۱۱۰۰ تا ۱۹۰۰ nm بدون قله است.</small></div>
+  <ul>
+    <li>شکل S مانند Re G در ۱۴۰۰ تا ۱۵۰۰ nm (کمینه در ۱۳۸۰ و جهش تا ۴۶۰) دقیقاً همان چیزی است که مد تیز پیش‌بینی می‌کند؛ پیش‌بینی بدون هیچ پارامتر تشدیدی جدید، با خطای rms ۰.۵٪ بازه روی نقطه‌ها می‌افتد.</li>
+    <li>در ۱۵۵۰ nm: جابه‌جایی لمب از مدها −۸۲.۹ µeV و مستقیم از Re G برابر −۸۲.۷ µeV (اختلاف ۰.۲٪). سهم دو مد تشدیدی −۲۷.۷ µeV و سهم زمینه −۵۵.۲ µeV است. علامت منفی یعنی انتقال به سرخ، چون ۱۵۵۰ nm در سمت سرخ هر دو مد است.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۶</span>پایداری مدها: مکان گسیلنده و اندازه‌ی مش</h2>
+  <figure><img src="{{IMG:fig_d5_position}}" alt="مکان گسیلنده"><figcaption><b>شکل ۶. (a) Im G برای سه مکان گسیلنده (دوقطبی x) و برازش دومدی هر کدام؛ (b) ثابت جفت‌شدگی ħg با هر مد در هر مکان.</b> در (a): قرمز = مرکز گاف؛ آبی = ۵ nm جابه‌جا به‌سوی سر R2؛ سبز = ۱۰ nm جابه‌جا به‌سوی R3. نقطه‌ها BEM و خط‌ها برازش دومدی‌اند. در (b): ستون‌های آبی = مد تیز (۱۴۴۰ nm)، ستون‌های سبز = مد پهن (حدود ۱۵۱۰ nm)؛ با τ<sub>0</sub> = ۲ ns.</figcaption></figure>
+  <ul>
+    <li><b>شکل منحنی در هر سه مکان یکسان است</b> و فقط ارتفاع آن عوض می‌شود: طول‌موج مد تیز (۱۴۳۹ تا ۱۴۴۰ nm) و Q آن (۱۴.۱ تا ۱۴.۲) و Q مد پهن (۲.۹) ثابت‌اند. یعنی مدها ویژگی آنتن‌اند، نه ویژگی مکان گسیلنده؛ این شرط لازم برای معنادار بودن توصیف مدی است.</li>
+    <li>آنچه با مکان تغییر می‌کند، <b>ثابت جفت‌شدگی</b> است: نزدیک‌تر شدن به سر طلا (۵ nm در x) میدان مد را قوی‌تر حس می‌کند (ħg تا ۲.۱۱ meV، Im G در ۱۵۵۰ از ۲۳۹ به ۲۵۹)، و دور شدن از محور (۱۰ nm در y) آن را ضعیف‌تر (۱.۸۵ meV، Im G = ۲۰۷). تغییرات حدود ±۱۰٪ است.</li>
+  </ul>
+  <table>
+    <tr><th>آزمون مش</th><th>مد تیز: λ، ħκ، ħg</th><th>مد پهن: λ، ħκ، ħg</th><th>F<sub>p</sub>(1550)</th><th>g<sup>(2)</sup>(0) / I</th></tr>
+    <tr><td>h = ۳ nm (اصلی)</td><td class="l">1440 nm, 61 meV, 1.35 meV</td><td class="l">1511 nm, 283 meV, 1.99 meV</td><td class="num">240</td><td class="num">0.0103 / 0.965</td></tr>
+    <tr><td>h = ۴ nm</td><td class="l">1432 nm, 61 meV, 1.33 meV</td><td class="l">1501 nm, 275 meV, 2.00 meV</td><td class="num">235</td><td class="num">0.0100 / 0.965</td></tr>
+  </table>
+  <p>با ریز کردن مش، مدها حدود ۸ تا ۱۰ nm به سرخ می‌روند (همان جابه‌جایی پسماند که در مطالعه‌ی همگرایی مش گزارش شده بود)، ولی پهنا و ثابت جفت‌شدگی در حد ۱.۵٪ ثابت‌اند و نتایج کوانتومی تغییر نمی‌کنند.</p>
+</section>
+
+<section>
+  <h2><span class="n">۷</span>از مدها به مدل کوانتومی</h2>
+  <p>با دو مد، گسیلنده‌ی دوترازی (σ) به دو نوسانگر میرا (a<sub>1</sub>، a<sub>2</sub>) جفت می‌شود و لیزر هم گسیلنده و هم مدها را می‌راند:</p>
+  <div class="eq">H = −Δ<sub>e</sub> σ<sup>+</sup>σ<sup>−</sup> − Σ<sub>j</sub> Δ<sub>j</sub> a<sub>j</sub><sup>†</sup>a<sub>j</sub> + Σ<sub>j</sub> g<sub>j</sub>(a<sub>j</sub><sup>†</sup>σ<sup>−</sup> + σ<sup>+</sup>a<sub>j</sub>) + ½[Ω<sub>e</sub>(t)σ<sup>+</sup> + Σ<sub>j</sub> Ω<sub>j</sub>(t)a<sub>j</sub><sup>†</sup> + h.c.]
+  <small>dρ/dt = −i[H, ρ] + Σ<sub>j</sub> κ<sub>j</sub> D[a<sub>j</sub>]ρ + Γ<sub>d</sub> D[σ<sup>−</sup>]ρ + 2γ* D[σ<sup>+</sup>σ<sup>−</sup>]ρ؛ Γ<sub>d</sub> = گسیل مستقیم به محیط (ħΓ<sub>d</sub> = ۰.۸۹ µeV)، γ* = ناهمدوسی خالص.</small></div>
+  <table>
+    <tr><th>پارامتر</th><th>مقدار (طرح نهایی)</th><th>از کجا</th></tr>
+    <tr><td>ħω<sub>1</sub>، ħκ<sub>1</sub>، ħg<sub>1</sub></td><td class="num">0.861 eV، 60.9 meV، 1.35 meV</td><td>برازش دومدی Im G</td></tr>
+    <tr><td>ħω<sub>2</sub>، ħκ<sub>2</sub>، ħg<sub>2</sub></td><td class="num">0.820 eV، 282.8 meV، 1.99 meV</td><td>برازش دومدی Im G</td></tr>
+    <tr><td>ħ(ω<sub>e</sub> − ω<sub>j</sub>)</td><td class="num">−61.4 و −20.5 meV</td><td>گسیلنده در ۱۵۵۰ nm (۰.۸۰۰ eV)</td></tr>
+    <tr><td>g<sub>j</sub>/(κ<sub>j</sub>/4)</td><td class="num">0.088 و 0.028</td><td>جفت‌شدگی ضعیف (شکافت رابی رخ نمی‌دهد)</td></tr>
+    <tr><td>ħδ<sub>bg</sub> (زمینه‌ی لمب)</td><td class="num">−55.2 µeV</td><td>زمینه‌ی برازش Re G</td></tr>
+    <tr><td>تقویت میدان لیزر K</td><td class="num">13.1</td><td>هم‌پاسخی: |K|<sup>2</sup> = T · f<sub>NA0.9</sub>(آنتن) / f<sub>NA0.9</sub>(دوقطبی) = ۱۸۱ × ۰.۱۲۹ / ۰.۱۳۶</td></tr>
+    <tr><td>پالس</td><td>گاوسی، پهنای کامل شدت ۲۰۰ fs، مساحت π برای میدان موضعی</td><td>شرط پایه‌ی همه‌ی شکل‌ها، مگر خلافش گفته شود</td></tr>
+    <tr><td>γ*</td><td>۱ µeV (پایه) و ۱۰ µeV</td><td>ناهمدوسی نوعی نقطه‌ی کوانتومی در دمای پایین</td></tr>
+    <tr><td>حل‌کننده</td><td>سوپرعملگر لیوویلی، انتشار با ماتریس نمایی؛ ۲ حالت فوک برای هر مد</td><td>با ۳ حالت فوک: g<sup>(2)</sup> = ۰.۰۱۰۲۶ (بدون تغییر)</td></tr>
+  </table>
+  <p>«مدل مؤثر» همین مسئله است بعد از حذف بی‌دررو مدها (چون κ ≫ g): یک گسیلنده‌ی دوترازی با آهنگ Γ<sub>eff</sub> و جابه‌جایی δ<sub>eff</sub>. در همه‌ی شکل‌های بعدی، خط‌ها مدل مؤثر و علامت‌های × و + مدل صریح (گسیلنده + دو مد) هستند.</p>
+</section>
+
+<section>
+  <h2><span class="n">۸</span>شکل جابه‌جایی لمب: هر منحنی</h2>
+  <figure><img src="{{IMG:fig_q_lamb}}" alt="لمب"><figcaption><b>شکل ۷. بیشینه‌ی جمعیت حالت برانگیخته و g<sup>(2)</sup>(0) بر حسب طول پالس لیزر، برای (a) طرح نهایی (گاف ۴۰ nm، ħδ = −۸۳ µeV) و (b) دیمر با گاف ۱۰ nm (ħδ = −۵.۳ meV).</b> محور افقی لگاریتمی است. γ* = ۱ µeV، مدل مؤثر، مساحت پالس π.</figcaption></figure>
+  <ul>
+    <li><b>آبی پر (دایره):</b> بیشینه‌ی جمعیت تراز بالا، وقتی لیزر روی خط <b>جابه‌جاشده</b> گسیلنده (ω<sub>e</sub> + δ، یعنی خطی که آزمایشگر در طیف می‌بیند) تنظیم شده.</li>
+    <li><b>آبی خط‌چین (مربع):</b> g<sup>(2)</sup>(0) برای همان حالت.</li>
+    <li><b>قرمز پر و قرمز خط‌چین:</b> همان دو کمیت وقتی لیزر روی بسامد گسیلنده‌ی <b>بدون آنتن</b> (ω<sub>e</sub>) تنظیم شده؛ ناکوکی برابر δ.</li>
+    <li><b>خواندن (a):</b> برای پالس ۲۰۰ fs دو رنگ روی هم‌اند (جمعیت ۰.۹۷۵، g<sup>(2)</sup> = ۰.۰۱): پهنای طیفی پالس (حدود ۹ meV) صد برابر δ است، پس لمب اهمیتی ندارد. با بلندتر شدن پالس، جمعیت به‌طور کلی افت می‌کند (چون پالس با طول عمر ۸.۳ ps قابل‌مقایسه می‌شود و گسیلنده حین پالس واپاشی و دوباره برانگیخته می‌شود؛ g<sup>(2)</sup> بالا می‌رود). از حدود ۵ ps به بعد منحنی‌های قرمز از آبی جدا می‌شوند: در ۲۰ ps جمعیت ۰.۱۴ در برابر ۰.۲۷ و g<sup>(2)</sup> برابر ۰.۷۲ در برابر ۰.۳۶.</li>
+    <li><b>خواندن (b):</b> در گاف ۱۰ nm، δ شصت برابر بزرگ‌تر است و جدایی از ۱۰۰ fs شروع می‌شود. با لیزر روی خط بدون آنتن و پالس ≥ ۰.۵ ps گسیلنده تقریباً برانگیخته نمی‌شود (جمعیت ۰.۰۸ و کمتر)؛ g<sup>(2)</sup> قرمز از محور بیرون می‌رود (بزرگ‌تر از ۱) چون تعداد کل فوتون‌ها آن‌قدر کم است که سهم نسبی تحریک‌های چندگانه بزرگ می‌شود.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۹</span>شکل‌های اثر هندسه: هر پنل و هر منحنی</h2>
+  <p>برای هر یک از ۴۴ هندسه‌ای که Im G و Re G کاملشان با BEM محاسبه شده، همان زنجیره تکرار شد: برازش دومدی (خطای Im G ≤ ۴٪ و Re G ≤ ۱٪ در همه)، استخراج g<sub>j</sub>، κ<sub>j</sub>، ω<sub>j</sub>، δ و K، و حل کوانتومی. در هر پنل فقط <b>یک</b> پارامتر عوض شده و بقیه ثابت‌اند:</p>
+  <table>
+    <tr><th>پنل</th><th>پارامتر متغیر</th><th>آنچه ثابت است</th></tr>
+    <tr><td>(a)</td><td>گاف دیمر: ۱۰، ۲۰، ۴۰ nm</td><td>دیمر بدون R3؛ طول بازو طوری انتخاب شده که تشدید نزدیک ۱۵۰۰ nm بماند (L = ۲۳۵، ۲۵۵، ۲۷۰)</td></tr>
+    <tr><td>(b)</td><td>زاویه‌ی R3: ۰، ۲۰، ۲۷، ۳۵ درجه</td><td>L = ۲۷۰، L3 = ۳۰۰، مرکز R3 در (۰، ۱۶۰)</td></tr>
+    <tr><td>(c)</td><td>مرکز R3: Y3 = ۱۵۰، ۱۶۰، ۱۷۰ nm</td><td>L = ۲۸۵، L3 = ۳۱۵، زاویه ۰</td></tr>
+    <tr><td>(d)</td><td>طول R3: ۲۶۰ تا ۳۴۰ nm</td><td>L = ۲۷۰، زاویه ۳۵، Y3 = ۱۶۰</td></tr>
+    <tr><td>(e)</td><td>طول بازوی دیمر: ۲۴۰ تا ۲۸۰ nm</td><td>دیمر بدون R3، گاف ۴۰</td></tr>
+    <tr><td>(f)</td><td>ضریب شکست محیط: ۱.۳۳ تا ۱.۷</td><td>دیمر L = ۲۷۰ بدون R3، گاف ۴۰</td></tr>
+  </table>
+  <figure><img src="{{IMG:fig_q_rates}}" alt="آهنگ‌ها"><figcaption><b>شکل ۸. پارامترهای کوانتومی گسیلنده بر حسب هر پارامتر هندسی (محور عمودی لگاریتمی، µeV).</b></figcaption></figure>
+  <ul>
+    <li><b>قرمز (دایره)، ħΓ:</b> آهنگ گسیل کل در ۱۵۵۰ nm (= F<sub>p</sub> ħΓ<sub>0</sub>). طول عمر = ۰.۶۵۸ ps / (ħΓ بر حسب meV).</li>
+    <li><b>آبی (مربع)، −ħδ از مدها:</b> اندازه‌ی جابه‌جایی لمب که از دو مد + زمینه محاسبه شده.</li>
+    <li><b>× سیاه، −ħδ مستقیم:</b> همان کمیت مستقیم از Re G خروجی BEM. هم‌پوشانی × روی مربع‌های آبی در همه‌ی ۴۴ هندسه، آزمون کرامرز-کرونیگ بخش ۵ را برای همه تکرار می‌کند.</li>
+    <li><b>خاکستری خط‌چین (مثلث)، ħg<sub>max</sub>:</b> بزرگ‌ترین ثابت جفت‌شدگی گسیلنده با یکی از دو مد.</li>
+    <li><b>خواندن:</b> فقط گاف (a) اثر بزرگ دارد: از ۴۰ به ۱۰ nm، ħΓ چهارده برابر (۹۱ تا ۱۲۹۴ µeV)، |δ| هفتادوپنج برابر (۷۱ تا ۵۳۳۹ µeV) و ħg چهار برابر (۲ تا ۸.۵ meV). پارامترهای R3 (b تا d) آهنگ را فقط ±۲۰٪ و δ را ±۱۰٪ تغییر می‌دهند؛ نقش R3 جهت‌دهی است، نه تقویت.</li>
+  </ul>
+  <figure><img src="{{IMG:fig_q_geom}}" alt="g2 و I"><figcaption><b>شکل ۹. تمیزناپذیری I (محور چپ، سبز) و g<sup>(2)</sup>(0) (محور راست، طلایی) بر حسب همان پارامترهای هندسی.</b> پالس ۲۰۰ fs، لیزر روی خط جابه‌جاشده. توجه: مقیاس محور راست در هر پنل متفاوت است.</figcaption></figure>
+  <ul>
+    <li><b>سبز پر (دایره):</b> I با γ* = ۱ µeV (مدل مؤثر).</li>
+    <li><b>سبز خط‌چین (مربع):</b> I با γ* = ۱۰ µeV (ناهمدوسی ده برابر).</li>
+    <li><b>× سیاه:</b> I از مدل صریح گسیلنده + دو مد (γ* = ۱ µeV).</li>
+    <li><b>طلایی (لوزی):</b> g<sup>(2)</sup>(0) مدل مؤثر؛ <b>+ سیاه:</b> g<sup>(2)</sup>(0) مدل صریح.</li>
+    <li><b>خواندن:</b> × و + در همه‌ی پنل‌ها روی منحنی‌ها می‌افتند، به‌جز گاف ۱۰ nm (پنل a) که g<sup>(2)</sup> صریح ۰.۱۲۰ در برابر مؤثر ۰.۱۲۴ است (اختلاف ۳٪): آن‌جا جفت‌شدگی (g/(κ/4) = ۰.۱۸) برای تقریب مارکوف مرزی می‌شود. با γ* = ۱ µeV، I در همه‌ی هندسه‌های گاف ۴۰ nm بین ۰.۹۶ و ۰.۹۷ است (در گاف ۱۰ nm به ۰.۹۰ می‌رسد)، زیرا بهبود γ*/Γ با بدتر شدن τ<sub>p</sub>Γ جبران می‌شود. با γ* = ۱۰ µeV اثر اول غالب است و I با Γ بالا می‌رود (حدود ۰.۷۳ تا ۰.۸۳ در پنل‌های b تا f). g<sup>(2)</sup>(0) تقریباً متناسب با τ<sub>p</sub>Γ است، پس هر جا Γ بزرگ‌تر است، با پالس ثابت ۲۰۰ fs بالاتر می‌رود.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۱۰</span>محدودیت‌ها و قدم‌های بعدی</h2>
+  <ul>
+    <li><b>اختلاف BEM و FDTD:</b> F<sub>p</sub> طرح نهایی در FDTD لومریکال ۲۸۶ و در BEM ۲۴۰ است. Re G فقط در BEM محاسبه شده، پس مدها از BEM گرفته شده‌اند. اثر F<sub>p</sub> بزرگ‌تر روی g<sup>(2)</sup> و I در گزارش ۱۵ کوچک نشان داده شده است.</li>
+    <li><b>تفسیر مدها:</b> ماهیت کم‌تابش/پرتابش دو مد از شکل طیف‌ها، بازده و جهت‌دهی استنباط شده است. نقشه‌ی بار سطحی یا میدان در ۱۴۴۰ و ۱۵۲۰ nm آن را مستقیم تأیید می‌کند.</li>
+    <li><b>K:</b> تقویت میدان لیزر (۱۳.۱) از هم‌پاسخی تخمین زده شده؛ شبیه‌سازی مستقیم با موج تخت فاز و دامنه‌ی دقیق را می‌دهد.</li>
+    <li><b>زمینه‌ی لیزر در آشکارساز:</b> لیزر پراکنده از آنتن در هامیلتونی وارد شده، ولی در آمار فوتون آشکارشده فرض شده با قطبش یا دریچه‌ی زمانی حذف می‌شود.</li>
+    <li><b>محیط:</b> n = ۱.۵ با نقطه‌ی کوانتومی PbS سازگار است؛ برای InAs/InP آنتن باید در InP دوباره طراحی شود. کدها برای هر تابع گرین جدید خودکار کار می‌کنند.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۱۱</span>نمادها، کدها و داده‌ها</h2>
+  <table>
+    <tr><th>نماد</th><th>معنی</th></tr>
+    <tr><td>F<sub>p</sub></td><td>ضریب پورسل: آهنگ کل واپاشی / آهنگ در محیط همگن (= ۱ + Im G)</td></tr>
+    <tr><td>T</td><td>توان تابیده به دوردست / توان تابیده‌ی دوقطبی بدون آنتن</td></tr>
+    <tr><td>η</td><td>بازده آنتن T/F<sub>p</sub></td></tr>
+    <tr><td>Im G، Re G</td><td>بخش موهومی و حقیقی تابع گرین پراکنده در محل گسیلنده، بهنجار به محیط همگن</td></tr>
+    <tr><td>ω<sub>j</sub>، κ<sub>j</sub>، Q<sub>j</sub></td><td>بسامد، آهنگ اتلاف (پهنای کامل) و ضریب کیفیت مد j (Q = ω/κ)</td></tr>
+    <tr><td>A<sub>j</sub></td><td>ارتفاع قله‌ی مد j در Im G</td></tr>
+    <tr><td>g<sub>j</sub></td><td>ثابت جفت‌شدگی گسیلنده با مد j</td></tr>
+    <tr><td>Γ، δ</td><td>آهنگ گسیل و جابه‌جایی لمب گسیلنده در ۱۵۵۰ nm</td></tr>
+    <tr><td>γ*</td><td>آهنگ ناهمدوسی خالص گسیلنده</td></tr>
+    <tr><td>g<sup>(2)</sup>(0)، I</td><td>همبستگی مرتبه‌ی دوم در تأخیر صفر (احتمال دو فوتون در یک پالس) و تمیزناپذیری فوتون‌های پیاپی</td></tr>
+  </table>
+  <table>
+    <tr><th>مرحله</th><th>فایل</th></tr>
+    <tr><td>اجرای BEM</td><td class="l">isi/bem/extra/job_tri2.m → isi/results/bem_extra/tri2_*.csv</td></tr>
+    <tr><td>شکل‌های ۱ تا ۴ و ۶ این گزارش</td><td class="l">isi/analysis/modes_detail.py → isi/results/modes_detail.json</td></tr>
+    <tr><td>برازش مدها و ثابت‌های جفت‌شدگی</td><td class="l">isi/analysis/gmodes.py</td></tr>
+    <tr><td>مدل کوانتومی صریح و مؤثر</td><td class="l">isi/analysis/qmodel.py</td></tr>
+    <tr><td>شکل‌های ۵، ۷، ۸، ۹ (اثر هندسه و لمب)</td><td class="l">isi/analysis/qgeom.py → isi/results/qgeom.json</td></tr>
+  </table>
+</section>
+<footer>آنتن سه‌نانومیله‌ای و توصیف دومدی آن؛ همه‌ی عددها با کدهای ذکرشده بازتولیدپذیرند.</footer>
+</div>
+</body>
+</html>

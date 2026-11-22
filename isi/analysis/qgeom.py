@@ -9,7 +9,7 @@ import numpy as np, matplotlib
 matplotlib.use('Agg'); import matplotlib.pyplot as plt
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.join(HERE, '..'); sys.path.insert(0, HERE)
 import qmodel as Q, gmodes  # noqa: E402
-plt.rcParams.update({'font.family': 'Vazirmatn', 'font.size': 12, 'axes.linewidth': 0.9, 'xtick.direction': 'in', 'ytick.direction': 'in',
+plt.rcParams.update({'font.size': 12, 'axes.linewidth': 0.9, 'xtick.direction': 'in', 'ytick.direction': 'in',
                      'legend.frameon': False, 'savefig.bbox': 'tight', 'savefig.dpi': 200, 'axes.grid': True, 'grid.color': '#ecebe6'})
 HC = 1239.841984; TP = 200e-15
 GROUPS = {
@@ -65,22 +65,22 @@ def figures(R, lamb):
     f = gmodes.fit(d, 2, Ee); E = d['E']; Ef = np.linspace(E.min(), E.max(), 400)
     fig, ax = plt.subplots(1, 2, figsize=(13.5, 4.4))
     ax[0].plot(HC / E, d['ImG'], 'o', c='#1d2330', ms=4, label='BEM: Im G')
-    ax[0].plot(HC / Ef, gmodes.model_im(f['p'], Ef, Ee), c='#9a3412', lw=2, label='برازش با دو مد')
+    ax[0].plot(HC / Ef, gmodes.model_im(f['p'], Ef, Ee), c='#9a3412', lw=2, label='fit: 2 modes')
     for j in range(2):
-        ax[0].plot(HC / Ef, gmodes.model_im(f['p'][3 * j:3 * j + 3], Ef, Ee), c=['#1f4e9c', '#2a7a4b'][j], lw=1.2, ls='--', label=f'مد {j+1}')
-    ax[0].axvline(1550, c='0.5', ls=':'); ax[0].set_xlabel('طول موج (nm)'); ax[0].set_ylabel('Im G (بهنجار)'); ax[0].legend(fontsize=9.5)
-    ax[0].set_title('(الف) چگالی طیفی از تابع گرین و دو مد آنتن', fontsize=12)
+        ax[0].plot(HC / Ef, gmodes.model_im(f['p'][3 * j:3 * j + 3], Ef, Ee), c=['#1f4e9c', '#2a7a4b'][j], lw=1.2, ls='--', label=f'mode {j+1}')
+    ax[0].axvline(1550, c='0.5', ls=':'); ax[0].set_xlabel('wavelength (nm)'); ax[0].set_ylabel('Im G (normalised)'); ax[0].legend(fontsize=9.5)
+    ax[0].set_title('(a) spectral density (Im G) and the two antenna modes', fontsize=12)
     X = np.c_[(Ee / E) ** 3, np.ones_like(E)]; c, *_ = np.linalg.lstsq(X, d['ReG'] - gmodes.model_re(f['p'], E, Ee), rcond=None)
     Xf = np.c_[(Ee / Ef) ** 3, np.ones_like(Ef)]
     ax[1].plot(HC / E, d['ReG'], 'o', c='#1d2330', ms=4, label='BEM: Re G')
-    ax[1].plot(HC / Ef, gmodes.model_re(f['p'], Ef, Ee) + Xf @ c, c='#9a3412', lw=2, label='پیش‌بینی از مدها + زمینه')
-    ax[1].axvline(1550, c='0.5', ls=':'); ax[1].set_xlabel('طول موج (nm)'); ax[1].set_ylabel('Re G (بهنجار)'); ax[1].legend(fontsize=9.5)
-    ax[1].set_title('(ب) آزمون کرامرز-کرونیگ: Re G پیش‌بینی‌شده', fontsize=12)
+    ax[1].plot(HC / Ef, gmodes.model_re(f['p'], Ef, Ee) + Xf @ c, c='#9a3412', lw=2, label='predicted by the modes + background')
+    ax[1].axvline(1550, c='0.5', ls=':'); ax[1].set_xlabel('wavelength (nm)'); ax[1].set_ylabel('Re G (normalised)'); ax[1].legend(fontsize=9.5)
+    ax[1].set_title('(b) Kramers-Kronig test: predicted Re G', fontsize=12)
     fig.tight_layout(); fig.savefig(os.path.join(ROOT, 'figures', 'fig_q_modes.png')); plt.close(fig)
     # ---- geometry: quantum figures of merit (left) and g2 (right)
-    panels = [('gap', 'گاف دیمر (nm)', '(الف) گاف بین دو میله'), ('angle', 'زاویه‌ی میله‌ی سوم (درجه)', '(ب) زاویه‌ی R3 (L = ۲۷۰)'),
-              ('y3', 'مرکز R3 (nm)', '(ج) فاصله‌ی R3 (L = ۲۸۵)'), ('l3', 'طول R3 (nm)', '(د) طول R3 (L = ۲۷۰)'),
-              ('L', 'طول بازوی دیمر (nm)', '(ه) طول دیمر (بدون R3)'), ('n', 'ضریب شکست محیط', '(و) محیط (دیمر L = ۲۷۰)')]
+    panels = [('gap', 'dimer gap (nm)', '(a) gap between R1 and R2'), ('angle', 'angle of R3 (deg)', '(b) angle of R3 (L = 270)'),
+              ('y3', 'centre of R3, Y3 (nm)', '(c) distance of R3 (L = 285)'), ('l3', 'length of R3 (nm)', '(d) length of R3 (L = 270)'),
+              ('L', 'dimer arm length (nm)', '(e) dimer length (no R3)'), ('n', 'host refractive index', '(f) host medium (dimer L = 270)')]
     for name, key in (('fig_q_geom.png', 'q'), ('fig_q_rates.png', 'r')):
         fig, ax = plt.subplots(2, 3, figsize=(16, 8.6)); ax = ax.ravel()
         for a, (g, xl, tl) in zip(ax, panels):
@@ -89,27 +89,28 @@ def figures(R, lamb):
                 a.plot(xs, [r['I_1'] for r in rr], 'o-', c='#2a7a4b', lw=2, ms=6, label=r'I  ($\gamma^*$ = 1 µeV)')
                 a.plot(xs, [r['I_10'] for r in rr], 's--', c='#2a7a4b', lw=1.5, ms=5, label=r'I  ($\gamma^*$ = 10 µeV)')
                 a.plot(xs, [r['x_I'] for r in rr], 'x', c='k', ms=9, mew=1.6, label='I  (explicit emitter + modes)')
-                a.set_ylim(0.6, 1.0); a.set_ylabel('تمیزناپذیری', color='#2a7a4b')
+                a.set_ylim(0.6, 1.0); a.set_ylabel('indistinguishability I', color='#2a7a4b')
                 b2 = a.twinx(); b2.plot(xs, [r['g2_1'] for r in rr], 'D-', c='#b8892a', lw=2, ms=5); b2.plot(xs, [r['x_g2'] for r in rr], '+', c='k', ms=9)
-                b2.set_ylabel('g2(0)', color='#b8892a'); b2.grid(False); b2.set_ylim(0, max(0.02, 1.15 * max(r['g2_1'] for r in rr)))
+                b2.set_ylabel('g2(0)  (gamma* = 1 ueV)', color='#b8892a'); b2.grid(False); b2.set_ylim(0, max(0.02, 1.15 * max(r['g2_1'] for r in rr)))
                 if g == 'gap': a.legend(fontsize=8.6, loc='lower right')
             else:
                 a.semilogy(xs, [r['hG'] * 1e6 for r in rr], 'o-', c='#9a3412', lw=2, ms=6, label=r'$\hbar\Gamma$ (µeV)')
                 a.semilogy(xs, [-r['delta'] * 1e6 for r in rr], 's-', c='#1f4e9c', lw=2, ms=6, label=r'$-\hbar\delta$ (µeV), from modes')
                 a.semilogy(xs, [-r['delta_green'] * 1e6 for r in rr], 'x', c='k', ms=9, label=r'$-\hbar\delta$ (µeV), direct Re G')
                 a.semilogy(xs, [max(m['g'] for m in r['modes']) * 1e6 for r in rr], '^--', c='#7a8191', lw=1.4, ms=6, label=r'$\hbar g_{max}$ (µeV)')
+                a.set_ylabel('energy (µeV), log scale')
                 if g == 'gap': a.legend(fontsize=8.6)
             a.set_xlabel(xl); a.set_title(tl, fontsize=12)
         fig.tight_layout(); fig.savefig(os.path.join(ROOT, 'figures', name)); plt.close(fig)
     # ---- Lamb shift vs pulse length
     fig, ax = plt.subplots(1, 2, figsize=(12.5, 4.3))
-    for k, (s_, tl) in enumerate((('L275_R295_A0_Y160_H3', '(الف) طرح نهایی (گاف ۴۰ nm)'), ('L235_G10', '(ب) دیمر با گاف ۱۰ nm'))):
+    for k, (s_, tl) in enumerate((('L275_R295_A0_Y160_H3', '(a) final design (gap 40 nm)'), ('L235_G10', '(b) dimer with gap 10 nm'))):
         for lab, c in (('dressed', '#1f4e9c'), ('bare', '#9a3412')):
             rr = [x for x in lamb if x['stem'] == s_ and x['laser'] == lab]
             tp = [x['tp'] * 1e12 for x in rr]
-            ax[k].semilogx(tp, [x['pe'] for x in rr], 'o-', c=c, lw=2, ms=6, label=('بیشینه‌ی جمعیت، ' + ('لیزر روی خط جابه‌جاشده' if lab == 'dressed' else 'لیزر روی خط بدون آنتن')))
-            ax[k].semilogx(tp, [x['g2'] for x in rr], 's--', c=c, lw=1.5, ms=5, label='g2(0)، ' + ('جابه‌جاشده' if lab == 'dressed' else 'بدون آنتن'))
-        ax[k].set_xlabel('طول پالس (ps)'); ax[k].set_ylim(0, 1.02); ax[k].set_title(tl, fontsize=12); ax[k].legend(fontsize=8.6)
+            ax[k].semilogx(tp, [x['pe'] for x in rr], 'o-', c=c, lw=2, ms=6, label=('max. excited population, laser on the ' + ('shifted line' if lab == 'dressed' else 'bare line')))
+            ax[k].semilogx(tp, [x['g2'] for x in rr], 's--', c=c, lw=1.5, ms=5, label='g2(0), laser on the ' + ('shifted line' if lab == 'dressed' else 'bare line'))
+        ax[k].set_xlabel('pulse length (ps)'); ax[k].set_ylim(0, 1.02); ax[k].set_title(tl, fontsize=12); ax[k].grid(True); ax[k].legend(fontsize=8.6)
     fig.tight_layout(); fig.savefig(os.path.join(ROOT, 'figures', 'fig_q_lamb.png')); plt.close(fig)
 
 if __name__ == '__main__':
