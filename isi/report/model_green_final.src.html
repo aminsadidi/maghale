@@ -190,7 +190,7 @@ td.m,th.m{white-space:normal;text-align:left}
 <section>
   <h2><span class="n">۴</span>رانش لیزر: میدان فرودی + میدان پراکنده از نانومیله‌ها</h2>
   <div class="eq"><span class="lab">(۴)</span>E<sub>L</sub>(r₀, ω) = E<sub>inc</sub>(r₀, ω) + E<sub>scat</sub>(r₀, ω) = K(ω) E<sub>inc</sub>(r₀, ω)<br>
-  K(ω) = [ ê · G(r₀, r<sub>L</sub>; ω) · ê<sub>L</sub> ] / [ ê · G₀(r₀, r<sub>L</sub>; ω) · ê<sub>L</sub> ] ,   r<sub>L</sub> → ∞ در جهت +z
+  K(ω) = [ ê · G(r₀, r<sub>L</sub>; ω) · ê<sub>L</sub> ] / [ ê · G₀(r₀, r<sub>L</sub>; ω) · ê<sub>L</sub> ] ,   r<sub>L</sub> → ∞ along +z
   <small>با هم‌پاسخی <span class="m">G(r₀, r<sub>L</sub>) = G<sup>T</sup>(r<sub>L</sub>, r₀)</span>، پس <span class="m">|K|²</span> = توان تابیده‌ی گسیلنده در جهت لیزر تقسیم بر همان در محیط همگن. برآورد فعلی در ۱۵۵۰ nm: <span class="m">|K| = 13.1</span>.</small></div>
   <div class="eq"><span class="lab">(۵)</span>Ω<sub>loc</sub>(t) = ∫ dω/2π  e<sup>−i(ω−ω<sub>L</sub>)t</sup> K(ω) Ω<sub>inc</sub>(ω) ,   Ω<sub>inc</sub>(t) = d · E<sub>inc</sub>(t) / ħ
   <small>اگر <span class="m">K</span> در پهنای طیفی پالس ثابت باشد، <span class="m">Ω<sub>loc</sub>(t) = K(ω<sub>L</sub>) Ω<sub>inc</sub>(t)</span>. در غیر این صورت، آنتن مثل یک فیلتر روی پالس عمل می‌کند (برای پالس ۲۰۰ fs: پهنای طیفی حدود ۹ meV در برابر پهنای ساختار <span class="m">J</span> حدود ۶۰ meV). مساحت π برای <span class="m">Ω<sub>loc</sub></span> تعریف می‌شود.</small></div>
@@ -233,8 +233,8 @@ td.m,th.m{white-space:normal;text-align:left}
   <small>ورودی: <span class="m">Γ</span> و <span class="m">δ</span> از معادله‌ی (۳)، <span class="m">Ω<sub>loc</sub></span> از (۵)، <span class="m">â<sub>out</sub></span> از (۷). همبستگی‌های دوزمانی با قضیه‌ی رگرسیون کوانتومی. معتبر وقتی <span class="m">τ<sub>mem</sub>Γ ≪ 1</span> و <span class="m">R<sub>sc</sub> ≪ 1</span>. برای هر ۴۴ هندسه.</small></div>
   <h3><span class="lvl b">سطح ۲</span>غیرمارکوفی (هسته‌ی حافظه)</h3>
   <div class="eq"><span class="lab">(۱۰)</span>dρ/dt = −(i/ħ)[ H<sub>e</sub>(t)|<sub>δ → δ(t) + δ<sub>out</sub></sub> , ρ ] + Γ(t) D[σ<sup>−</sup>]ρ + 2γ* D[σ<sup>+</sup>σ<sup>−</sup>]ρ<br>
-  Γ(t)/2 + iδ(t) = ∫₀<sup>t</sup> dτ K<sub>mem</sub>(τ)   (J فقط درون بازه‌ی محاسبه‌شده؛ δ<sub>out</sub> از معادله‌ی ۱۳)
-  <small>معادله‌ی بدون پیچش زمانی مرتبه‌ی دوم (TCL2). برای <span class="m">t ≫ τ<sub>mem</sub></span> به سطح ۱ می‌رسد. دقیق تا مرتبه‌ی دوم در <span class="m">√J</span>؛ وابستگی اتلاف به رانش حین پالس را نادیده می‌گیرد. برای طرح نهایی و گاف‌های ۱۰ و ۲۰ nm.</small></div>
+  Γ(t)/2 + iδ(t) = ∫₀<sup>t</sup> dτ K<sub>mem</sub>(τ)
+  <small><span class="m">J</span> فقط درون بازه‌ی محاسبه‌شده و <span class="m">δ<sub>out</sub></span> از معادله‌ی (۱۳). معادله‌ی بدون پیچش زمانی مرتبه‌ی دوم (TCL2). برای <span class="m">t ≫ τ<sub>mem</sub></span> به سطح ۱ می‌رسد. دقیق تا مرتبه‌ی دوم در <span class="m">√J</span>؛ وابستگی اتلاف به رانش حین پالس را نادیده می‌گیرد. برای طرح نهایی و گاف‌های ۱۰ و ۲۰ nm.</small></div>
   <h3><span class="lvl c">سطح ۳</span>میدان نزدیک گسسته و فضای هیلبرت بریده‌شده (دقیق نسبت به G)</h3>
   <p>پیوستار <span class="m">b̂(ω)</span> در بازه‌ی محاسبه‌شده به <span class="m">M</span> بازه‌ی بسامدی تقسیم می‌شود:</p>
   <div class="eq"><span class="lab">(۱۱)</span>b̂<sub>k</sub> = (1/√Δω) ∫<sub>bin k</sub> dω b̂(ω) ,   g<sub>k</sub> = √( J(ω<sub>k</sub>) Δω )<br>
@@ -261,7 +261,7 @@ td.m,th.m{white-space:normal;text-align:left}
 
 <section>
   <h2><span class="n">۹</span>ردیابی اثر هندسه تا نتیجه‌ی آخر</h2>
-  <div class="eq">هندسه  →  { Im G<sub>s</sub>, Re G<sub>s</sub>, T, η<sub>NA</sub>, K }(ω)  →  { Γ, δ, η, η<sub>NA</sub>, |K|, τ<sub>mem</sub>, R<sub>sc</sub> }  →  { τ, N, g<sup>(2)</sup>(0), I }</div>
+  <div class="eq">geometry  →  { Im G<sub>s</sub>, Re G<sub>s</sub>, T, η<sub>NA</sub>, K }(ω)  →  { Γ, δ, η, η<sub>NA</sub>, |K|, τ<sub>mem</sub>, R<sub>sc</sub> }  →  { τ, N, g<sup>(2)</sup>(0), I }</div>
   <table>
     <tr><th>پارامتر هندسی</th><th>اثر بر تابع گرین</th><th>پارامتر مدل</th></tr>
     <tr><td>گاف دیمر</td><td>ارتفاع و پهنای قله‌ی <span class="m">Im G</span>، <span class="m">Re G</span></td><td><span class="m">J(ω)</span>، <span class="m">Γ</span>، <span class="m">δ</span>، <span class="m">R<sub>sc</sub></span>، <span class="m">K</span></td></tr>
