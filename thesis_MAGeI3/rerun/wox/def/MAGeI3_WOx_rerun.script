@@ -1,0 +1,175 @@
+// MAGeI3 thesis - WOx re-simulation with WO3 parameters from Coatings 13 (2023) 1436
+// layers: 1 Spiro | 2 WOx | 3 MAGeI3 | 4 TiO2 | 5 ITO ; outputs MG_W2_*
+set errorhandling.overwritefile
+clear all
+// ===== 1) WOx thickness 10..50 nm (step 4)
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.6
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+calculate singleshot
+save results.iv MG_W2_thick10.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.02
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+calculate singleshot
+save results.iv MG_W2_thick20.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.03
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+calculate singleshot
+save results.iv MG_W2_thick30.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.04
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+calculate singleshot
+save results.iv MG_W2_thick40.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+calculate singleshot
+save results.iv MG_W2_thick50.iv
+// ===== 2) WOx donor density (10 nm)
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.nd 1E15
+calculate singleshot
+save results.iv MG_W2_ND1E15.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.nd 1E17
+calculate singleshot
+save results.iv MG_W2_ND1E17.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.nd 1E19
+calculate singleshot
+save results.iv MG_W2_ND1E19.iv
+// ===== 3) WOx electron affinity sweep (10 nm): VBO = chi - 2.45 eV
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.chi 4.55
+calculate singleshot
+save results.iv MG_W2_chi455.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.chi 4.0
+calculate singleshot
+save results.iv MG_W2_chi400.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.chi 3.5
+calculate singleshot
+save results.iv MG_W2_chi350.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.chi 3.0
+calculate singleshot
+save results.iv MG_W2_chi300.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.chi 2.75
+calculate singleshot
+save results.iv MG_W2_chi275.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.chi 2.55
+calculate singleshot
+save results.iv MG_W2_chi255.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.chi 2.45
+calculate singleshot
+save results.iv MG_W2_chi245.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.chi 2.35
+calculate singleshot
+save results.iv MG_W2_chi235.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.chi 2.25
+calculate singleshot
+save results.iv MG_W2_chi225.iv
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+set layer2.chi 2.05
+calculate singleshot
+save results.iv MG_W2_chi205.iv
+// ===== 4) IPCE, 10 nm
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 1.6
+action iv.increment 0.02
+action iv.stopaftervoc 1
+action qe.doqe
+action qe.startlambda 300
+action qe.stoplambda 900
+action qe.increment 10
+load definitionfile 03b_WOx_Coatings2023.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.8
+set layer4.thickness 0.05
+calculate singleshot
+save results.iv MG_W2_QE10.iv
+save results.qe MG_W2_QE10.qe
