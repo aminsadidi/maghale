@@ -57,7 +57,19 @@ This file is the project's memory. It holds everything the users and the supervi
 - (2026-11-20) Prefer **GitHub Actions** for heavy runs where possible: matrix jobs, a `trigger.txt` push to start them, results committed by the workflow. Use `gh api` REST only.
 - Git: work on the session's branch, no pull requests, commit footer as instructed, never put model identifiers in commits.
 
-## 6. Physics and modelling decisions
+## 6. How to think about modelling (supervisor's approach, chat of 2026-11-22)
+
+- **Model first, compute later.** Finalize the model together with the user and supervisor (Hamiltonian, assumptions, inputs, solution levels) before any computation. Then compute only when told.
+- **Before solving, say explicitly:** which model will be solved, where every input comes from (file and column), and how it enters the equations. The supervisor checks this.
+- **Every approximation needs a reason.** A fit, an ansatz or a simplification (e.g. Lorentzian modes) must be justified. Prefer keeping quantities tied directly to their physical origin (the Green function) over phenomenological fits. Be ready to explain *why* a fit was used and what it costs.
+- **Start from the fundamental theory.** For emitters near metal nanostructures, think in macroscopic QED (Welsch). The near field of a finite metal nanostructure becomes discrete, so the environment need not be treated as a continuum. Truncate the Hilbert space to solve.
+- **Show where each physical effect enters.** For example: Purcell rate and coupling constant (both from G), Lamb shift (Re G), laser field plus scattered field. Check that nothing is counted twice and nothing is missing.
+- **Do not assume a regime.** Plasmonic coupling is often strong and may need non-Markovian dynamics. Decide weak or strong, and Markov or not, from numbers computed for each geometry, never by habit. When claiming a regime, give the numbers.
+- **The goal is traceability:** the effect of every geometric parameter must be followed through the intermediate physical quantities to the final observables (g2(0), I, brightness).
+- When there are alternative methods, present the advantages and disadvantages of each honestly, give a recommendation, and let the supervisor decide.
+- **Use one model for all structures** (single rod, dimer, trimer) so the results are directly comparable.
+
+## 7. Physics and modelling decisions
 
 ### Antenna (gold nanorods at 1550 nm, host n = 1.5)
 - Final trimer design: `L275_R295_A0_Y160_H3` (dimer arms 275 nm, gap 40 nm, D = 60 nm, R3 295 nm parallel at y = 160 nm). BEM (MNPBEM, retarded), Johnson–Christy gold. Data: `isi/results/bem_extra/tri2_*`. FDTD (Lumerical) is the cross-check.
@@ -85,4 +97,5 @@ This file is the project's memory. It holds everything the users and the supervi
 - Lumerical is not needed for the Tamm work. The Lumerical priority is nanorod campaign 3 on the supervisor's PC (`lab_update_c3.zip` → `C3.bat`).
 
 ## Change log
-- 2026-11-22 Skill created from the full conversation history (sections 1-6).
+- 2026-11-22 Skill created from the full conversation history.
+- 2026-11-22 Added section 6: the supervisor's way of thinking about modelling (from the chat of 2026-11-22); physics decisions moved to section 7.
