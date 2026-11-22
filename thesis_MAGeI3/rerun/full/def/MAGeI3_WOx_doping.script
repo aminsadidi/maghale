@@ -1,0 +1,128 @@
+// MAGeI3 thesis - WOx donor-density follow-up (outputs MG_W3_*)
+set errorhandling.overwritefile
+clear all
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.nd 1E13
+calculate singleshot
+save results.iv MG_W3_ND1E13_10.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.03
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.nd 1E13
+calculate singleshot
+save results.iv MG_W3_ND1E13_30.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.nd 1E13
+calculate singleshot
+save results.iv MG_W3_ND1E13_50.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.nd 1E15
+calculate singleshot
+save results.iv MG_W3_ND1E15_10.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.03
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.nd 1E15
+calculate singleshot
+save results.iv MG_W3_ND1E15_30.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.nd 1E15
+calculate singleshot
+save results.iv MG_W3_ND1E15_50.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.nd 1E17
+calculate singleshot
+save results.iv MG_W3_ND1E17_10.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.03
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.nd 1E17
+calculate singleshot
+save results.iv MG_W3_ND1E17_30.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.nd 1E17
+calculate singleshot
+save results.iv MG_W3_ND1E17_50.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action qe.doqe
+action qe.startlambda 300
+action qe.stoplambda 900
+action qe.increment 10
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.nd 1E13
+calculate singleshot
+save results.qe MG_W3_QE_ND1E13.qe
+clear actions
+action light
+action workingpoint.temperature 300
+action qe.doqe
+action qe.startlambda 300
+action qe.stoplambda 900
+action qe.increment 10
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.nd 1E15
+calculate singleshot
+save results.qe MG_W3_QE_ND1E15.qe
+clear actions
+action light
+action workingpoint.temperature 300
+action qe.doqe
+action qe.startlambda 300
+action qe.stoplambda 900
+action qe.increment 10
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.nd 1E17
+calculate singleshot
+save results.qe MG_W3_QE_ND1E17.qe
