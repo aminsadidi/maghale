@@ -114,6 +114,10 @@ def defect_block(d):
             f"Et : {d['Et']:7.3f}\t[eV]"]
 
 
+IF_SIGMA_CM2 = 1e-15      # interface capture cross-section (cm2); rerun uses 1e-19 (ref [70])
+IF_DIST = "single"        # "single" or "gauss"
+
+
 def interface_block(name, rec=None):
     lines = ["interface properties", "",
              f"interfacename : {name}",
@@ -122,7 +126,7 @@ def interface_block(name, rec=None):
              "Relative hole mass :  1.00e+00"]
     if rec is not None:
         Nit, Et, ref = rec
-        s = 1e-15 * 1e-4
+        s = IF_SIGMA_CM2 * 1e-4
         lines += ["", "interface recombination", "",
                   "type : neutral",
                   f"sigma_nleft : {s:.3e} [m^2]",
@@ -132,7 +136,7 @@ def interface_block(name, rec=None):
                   "Tunneling to trap: 0 (0: no tunneling, 1: with tunneling)",
                   "Relative electron mass :  1.00e+00",
                   "Relative hole mass :  1.00e+00",
-                  "energy distribution : single",
+                  f"energy distribution : {IF_DIST}",
                   f"Reference for defect energy :  {ref} ; 3 = above highest EV; 4 = below lowest EC; "
                   "5 = above Ei left; 6 = above Ei right; 7 = above EV left (= SCAPS%<2.7 reference); "
                   "8 = above EV right; 9 = above middle of interface gap",
