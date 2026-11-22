@@ -67,6 +67,7 @@ This file is the project's memory. It holds everything the users and the supervi
 - **Do not assume a regime.** Plasmonic coupling is often strong and may need non-Markovian dynamics. Decide weak or strong, and Markov or not, from numbers computed for each geometry, never by habit. When claiming a regime, give the numbers.
 - **The goal is traceability:** the effect of every geometric parameter must be followed through the intermediate physical quantities to the final observables (g2(0), I, brightness).
 - When there are alternative methods, present the advantages and disadvantages of each honestly, give a recommendation, and let the supervisor decide.
+- (2026-11-22) **Before proposing new runs, list what already exists and reuse it.** Say clearly what is new and why it is needed. Choose the cheapest set of runs, e.g. several emitter positions in one BEM run, or a coarser mesh where it is proven sufficient.
 - **Use one model for all structures** (single rod, dimer, trimer) so the results are directly comparable.
 
 ## 7. Physics and modelling decisions
