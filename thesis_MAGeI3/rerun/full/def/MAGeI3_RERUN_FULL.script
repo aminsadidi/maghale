@@ -1,0 +1,922 @@
+// MAGeI3 thesis - complete re-simulation (part A + part B) with sourced parameters; outputs MG_F_*
+set errorhandling.overwritefile
+clear all
+// ===== A1: absorber 250, 350 nm (TiO2 100, Spiro 100)
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.25
+set layer3.thickness 0.1
+calculate singleshot
+save results.iv MG_F_A1_abs250.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.35
+set layer3.thickness 0.1
+calculate singleshot
+save results.iv MG_F_A1_abs350.iv
+// ===== A2: TiO2 thickness at absorber 300 nm (Spiro 100)
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.001
+calculate singleshot
+save results.iv MG_F_A2_etl001.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.005
+calculate singleshot
+save results.iv MG_F_A2_etl005.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_F_A2_etl010.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.02
+calculate singleshot
+save results.iv MG_F_A2_etl020.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.03
+calculate singleshot
+save results.iv MG_F_A2_etl030.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.05
+calculate singleshot
+save results.iv MG_F_A2_etl050.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.1
+calculate singleshot
+save results.iv MG_F_A2_etl100.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.2
+calculate singleshot
+save results.iv MG_F_A2_etl200.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.4
+calculate singleshot
+save results.iv MG_F_A2_etl400.iv
+// ===== A3: Spiro thickness at absorber 300 nm, TiO2 10 nm
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.001
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_F_A3_htl001.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.01
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_F_A3_htl010.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.025
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_F_A3_htl025.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_F_A3_htl050.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_F_A3_htl100.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.2
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_F_A3_htl200.iv
+// ===== B4: buffer thickness 10..50 nm
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_WOx_10.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.02
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_WOx_20.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.03
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_WOx_30.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.04
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_WOx_40.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_WOx_50.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_NiOx_10.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.02
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_NiOx_20.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.03
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_NiOx_30.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.04
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_NiOx_40.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_NiOx_50.iv
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_V2O5_10.iv
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.02
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_V2O5_20.iv
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.03
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_V2O5_30.iv
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.04
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_V2O5_40.iv
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B4_V2O5_50.iv
+// ===== B56: J-V fine (0.01 V) for no buffer and each buffer at 10 and 50 nm
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.01
+action iv.stopaftervoc 1
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B56_none.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B56_WOx_10.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B56_WOx_50.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B56_NiOx_10.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B56_NiOx_50.iv
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B56_V2O5_10.iv
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.05
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_B56_V2O5_50.iv
+// ===== B7: IPCE
+clear actions
+action light
+action workingpoint.temperature 300
+action qe.doqe
+action qe.startlambda 300
+action qe.stoplambda 900
+action qe.increment 10
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.qe MG_F_B7_QE_none.qe
+clear actions
+action light
+action workingpoint.temperature 300
+action qe.doqe
+action qe.startlambda 300
+action qe.stoplambda 900
+action qe.increment 10
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.qe MG_F_B7_QE_WOx.qe
+clear actions
+action light
+action workingpoint.temperature 300
+action qe.doqe
+action qe.startlambda 300
+action qe.stoplambda 900
+action qe.increment 10
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.qe MG_F_B7_QE_NiOx.qe
+// ===== temperature 280-360 K
+clear actions
+action light
+action workingpoint.temperature 280
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_none_280.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_none_300.iv
+clear actions
+action light
+action workingpoint.temperature 320
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_none_320.iv
+clear actions
+action light
+action workingpoint.temperature 340
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_none_340.iv
+clear actions
+action light
+action workingpoint.temperature 360
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_none_360.iv
+clear actions
+action light
+action workingpoint.temperature 280
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_WOx_280.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_WOx_300.iv
+clear actions
+action light
+action workingpoint.temperature 320
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_WOx_320.iv
+clear actions
+action light
+action workingpoint.temperature 340
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_WOx_340.iv
+clear actions
+action light
+action workingpoint.temperature 360
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_WOx_360.iv
+clear actions
+action light
+action workingpoint.temperature 280
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_NiOx_280.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_NiOx_300.iv
+clear actions
+action light
+action workingpoint.temperature 320
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_NiOx_320.iv
+clear actions
+action light
+action workingpoint.temperature 340
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_NiOx_340.iv
+clear actions
+action light
+action workingpoint.temperature 360
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.iv MG_F_BT_NiOx_360.iv
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+// ===== absorber bulk defect density
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+set layer2.defect1.ntotal 1E14
+calculate singleshot
+save results.iv MG_F_BNt_none_1E14.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+set layer2.defect1.ntotal 1E15
+calculate singleshot
+save results.iv MG_F_BNt_none_1E15.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+set layer2.defect1.ntotal 1E16
+calculate singleshot
+save results.iv MG_F_BNt_none_1E16.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+set layer2.defect1.ntotal 1E17
+calculate singleshot
+save results.iv MG_F_BNt_none_1E17.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer3.defect1.ntotal 1E14
+calculate singleshot
+save results.iv MG_F_BNt_NiOx_1E14.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer3.defect1.ntotal 1E15
+calculate singleshot
+save results.iv MG_F_BNt_NiOx_1E15.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer3.defect1.ntotal 1E16
+calculate singleshot
+save results.iv MG_F_BNt_NiOx_1E16.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer3.defect1.ntotal 1E17
+calculate singleshot
+save results.iv MG_F_BNt_NiOx_1E17.iv
+// ===== WOx electron affinity sweep (VBO = chi - 2.73 eV; MAGeI3 EV = -5.88 eV)
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 4.55
+calculate singleshot
+save results.iv MG_F_BWchi455.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 4.0
+calculate singleshot
+save results.iv MG_F_BWchi400.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 3.5
+calculate singleshot
+save results.iv MG_F_BWchi350.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 3.0
+calculate singleshot
+save results.iv MG_F_BWchi300.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 2.73
+calculate singleshot
+save results.iv MG_F_BWchi273.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 2.53
+calculate singleshot
+save results.iv MG_F_BWchi253.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 2.33
+calculate singleshot
+save results.iv MG_F_BWchi233.iv
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 2.13
+calculate singleshot
+save results.iv MG_F_BWchi213.iv
+// ===== V2O5 electron affinity sweep (VBO = chi - 1.89 eV)
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 1.2
+calculate singleshot
+save results.iv MG_F_BVchi120.iv
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 1.4
+calculate singleshot
+save results.iv MG_F_BVchi140.iv
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 1.6
+calculate singleshot
+save results.iv MG_F_BVchi160.iv
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 1.8
+calculate singleshot
+save results.iv MG_F_BVchi180.iv
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 1.89
+calculate singleshot
+save results.iv MG_F_BVchi189.iv
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 2.0
+calculate singleshot
+save results.iv MG_F_BVchi200.iv
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 2.1
+calculate singleshot
+save results.iv MG_F_BVchi210.iv
+load definitionfile 13_RERUN_V2O5.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.chi 2.3
+calculate singleshot
+save results.iv MG_F_BVchi230.iv
+// ===== Spiro acceptor density
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+set layer1.na 1E16
+calculate singleshot
+save results.iv MG_F_BHTLna_none_1E16.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+set layer1.na 1E17
+calculate singleshot
+save results.iv MG_F_BHTLna_none_1E17.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+set layer1.na 1E18
+calculate singleshot
+save results.iv MG_F_BHTLna_none_1E18.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+set layer1.na 1E19
+calculate singleshot
+save results.iv MG_F_BHTLna_none_1E19.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer1.na 1E16
+calculate singleshot
+save results.iv MG_F_BHTLna_NiOx_1E16.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer1.na 1E17
+calculate singleshot
+save results.iv MG_F_BHTLna_NiOx_1E17.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer1.na 1E18
+calculate singleshot
+save results.iv MG_F_BHTLna_NiOx_1E18.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer1.na 1E19
+calculate singleshot
+save results.iv MG_F_BHTLna_NiOx_1E19.iv
+// ===== NiOx buffer acceptor density and permittivity
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.na 1E14
+calculate singleshot
+save results.iv MG_F_BNiNA_1E14.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.na 1E16
+calculate singleshot
+save results.iv MG_F_BNiNA_1E16.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.na 1E17
+calculate singleshot
+save results.iv MG_F_BNiNA_1E17.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.na 1E18
+calculate singleshot
+save results.iv MG_F_BNiNA_1E18.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.na 1E19
+calculate singleshot
+save results.iv MG_F_BNiNA_1E19.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.epsilon 3
+calculate singleshot
+save results.iv MG_F_BNiEPS_3.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.epsilon 6
+calculate singleshot
+save results.iv MG_F_BNiEPS_6.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.epsilon 10.7
+calculate singleshot
+save results.iv MG_F_BNiEPS_10.7.iv
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+set layer2.epsilon 24
+calculate singleshot
+save results.iv MG_F_BNiEPS_24.iv
+// ===== C-V, dark, 1 kHz
+clear actions
+action dark
+action workingpoint.temperature 300
+action workingpoint.frequency 1000
+action cv.docv
+action cv.startv 0
+action cv.stopv 0.9
+action cv.increment 0.05
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.cv MG_F_BCV_none.cv
+clear actions
+action dark
+action workingpoint.temperature 300
+action workingpoint.frequency 1000
+action cv.docv
+action cv.startv 0
+action cv.stopv 0.9
+action cv.increment 0.05
+load definitionfile 11_RERUN_WOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.cv MG_F_BCV_WOx.cv
+clear actions
+action dark
+action workingpoint.temperature 300
+action workingpoint.frequency 1000
+action cv.docv
+action cv.startv 0
+action cv.stopv 0.9
+action cv.increment 0.05
+load definitionfile 12_RERUN_NiOx.def
+set layer1.thickness 0.05
+set layer2.thickness 0.01
+set layer3.thickness 0.3
+set layer4.thickness 0.01
+calculate singleshot
+save results.cv MG_F_BCV_NiOx.cv
+action workingpoint.frequency 1000000
+// ===== finished
