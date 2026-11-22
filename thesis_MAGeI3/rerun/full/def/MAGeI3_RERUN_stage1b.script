@@ -1,0 +1,224 @@
+// MAGeI3 thesis - re-simulation stage 1b
+set errorhandling.overwritefile
+clear all
+clear actions
+action light
+action workingpoint.temperature 300
+action iv.doiv
+action iv.startv 0
+action iv.stopv 2.0
+action iv.increment 0.02
+action iv.stopaftervoc 1
+// step 1 refinement: absorber 250, 350 nm
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.25
+set layer3.thickness 0.1
+calculate singleshot
+save results.iv MG_R1B_S1_abs250.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.35
+set layer3.thickness 0.1
+calculate singleshot
+save results.iv MG_R1B_S1_abs350.iv
+// step 2 at absorber 300 nm (Spiro 100)
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.001
+calculate singleshot
+save results.iv MG_R1B_S2_abs300_etl001.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.005
+calculate singleshot
+save results.iv MG_R1B_S2_abs300_etl005.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_R1B_S2_abs300_etl010.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.02
+calculate singleshot
+save results.iv MG_R1B_S2_abs300_etl020.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.03
+calculate singleshot
+save results.iv MG_R1B_S2_abs300_etl030.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.05
+calculate singleshot
+save results.iv MG_R1B_S2_abs300_etl050.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.1
+calculate singleshot
+save results.iv MG_R1B_S2_abs300_etl100.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.2
+calculate singleshot
+save results.iv MG_R1B_S2_abs300_etl200.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.4
+calculate singleshot
+save results.iv MG_R1B_S2_abs300_etl400.iv
+// step 3 at absorber 300 nm for TiO2 1/5/10/20 nm
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.001
+set layer2.thickness 0.3
+set layer3.thickness 0.001
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl001_htl001.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.01
+set layer2.thickness 0.3
+set layer3.thickness 0.001
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl001_htl010.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.025
+set layer2.thickness 0.3
+set layer3.thickness 0.001
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl001_htl025.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.001
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl001_htl050.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.001
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl001_htl100.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.2
+set layer2.thickness 0.3
+set layer3.thickness 0.001
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl001_htl200.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.001
+set layer2.thickness 0.3
+set layer3.thickness 0.005
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl005_htl001.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.01
+set layer2.thickness 0.3
+set layer3.thickness 0.005
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl005_htl010.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.025
+set layer2.thickness 0.3
+set layer3.thickness 0.005
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl005_htl025.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.005
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl005_htl050.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.005
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl005_htl100.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.2
+set layer2.thickness 0.3
+set layer3.thickness 0.005
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl005_htl200.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.001
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl010_htl001.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.01
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl010_htl010.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.025
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl010_htl025.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl010_htl050.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl010_htl100.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.2
+set layer2.thickness 0.3
+set layer3.thickness 0.01
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl010_htl200.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.001
+set layer2.thickness 0.3
+set layer3.thickness 0.02
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl020_htl001.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.01
+set layer2.thickness 0.3
+set layer3.thickness 0.02
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl020_htl010.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.025
+set layer2.thickness 0.3
+set layer3.thickness 0.02
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl020_htl025.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.05
+set layer2.thickness 0.3
+set layer3.thickness 0.02
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl020_htl050.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.1
+set layer2.thickness 0.3
+set layer3.thickness 0.02
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl020_htl100.iv
+load definitionfile 10_RERUN_noBuffer.def
+set layer1.thickness 0.2
+set layer2.thickness 0.3
+set layer3.thickness 0.02
+calculate singleshot
+save results.iv MG_R1B_S3_abs300_etl020_htl200.iv
