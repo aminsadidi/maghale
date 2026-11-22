@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدل نهایی تابع گرین</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --paper:#ffffff; --ink:#1d2330; --ink2:#4a5263; --muted:#7a8191; --line:#e3e1da;
+  --accent:#1f4e9c; --accent-soft:#e8eef8; --gold:#b8892a; --gold-soft:#faf3e3; --good:#2a7a4b; --good-soft:#e7f4ec;
+  --warn:#9a5b00; --warn-soft:#fbf1e1;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Vazirmatn",Tahoma,sans-serif;line-height:1.95}
+.page{max-width:900px;margin:0 auto;padding:28px 16px 60px}
+header.cover{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:34px 34px 28px;position:relative;overflow:hidden}
+header.cover::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.kicker{color:var(--gold);font-weight:600;font-size:.92rem;letter-spacing:.02em}
+h1{font-size:1.75rem;line-height:1.6;margin:.4rem 0 .6rem;font-weight:800}
+.en{direction:ltr;unicode-bidi:isolate;font-family:Georgia,"Times New Roman",serif}
+.entitle{display:block;direction:ltr;text-align:left;color:var(--ink2);font-family:Georgia,serif;font-size:1rem;line-height:1.6;margin:.3rem 0 1rem}
+.meta{color:var(--ink2);font-size:.95rem}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{font-size:.82rem;padding:3px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.badge.g{background:var(--good-soft);color:var(--good)} .badge.o{background:var(--gold-soft);color:var(--gold)}
+section{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px 30px;margin-top:20px}
+h2{font-size:1.3rem;margin:0 0 .8rem;font-weight:800;display:flex;align-items:center;gap:10px}
+h2 .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--accent);color:#fff;font-size:.95rem}
+h3{font-size:1.05rem;margin:1.2rem 0 .4rem;color:var(--accent)}
+p{margin:.5rem 0}
+.lead{font-size:1.05rem;color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 4px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fbfbf9}
+.tile .v{font-size:1.55rem;font-weight:800;color:var(--accent);direction:ltr;text-align:right}
+.tile .l{font-size:.86rem;color:var(--ink2);line-height:1.7}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92rem}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:right;vertical-align:top}
+th{background:#f3f2ed;font-weight:600}
+td.before{color:var(--ink2)} td.after{color:var(--ink)}
+tr:hover td{background:#fafaf7}
+.tl{position:relative;margin:10px 0 0;padding-right:26px}
+.tl::before{content:"";position:absolute;right:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.step{position:relative;margin:0 0 16px}
+.step::before{content:"";position:absolute;right:-24px;top:10px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:3px solid var(--accent)}
+.step.key::before{border-color:var(--gold)}
+.step b{display:block}
+.step .d{color:var(--ink2);font-size:.95rem}
+figure{margin:16px 0;text-align:center}
+figure img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff;padding:6px}
+figcaption{font-size:.86rem;color:var(--ink2);margin-top:6px;line-height:1.8}
+.callout{border-right:4px solid var(--gold);background:var(--gold-soft);padding:12px 16px;border-radius:8px;margin:14px 0}
+.callout.g{border-color:var(--good);background:var(--good-soft)}
+.callout.w{border-color:var(--warn);background:var(--warn-soft)}
+ul{margin:.4rem 0;padding-right:1.3rem} li{margin:.25rem 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:720px){.two,.tiles{grid-template-columns:1fr 1fr} header.cover,section{padding:20px 18px} h1{font-size:1.4rem}}
+.num{direction:ltr;unicode-bidi:isolate}
+footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:24px}
+.papers{display:grid;gap:10px;margin-top:16px}
+.pcard{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:#fbfbf9}
+.pcard .entitle{margin:.2rem 0 0;font-size:.95rem}
+.ptag{font-weight:700;color:var(--accent);font-size:.9rem}.ptag.g{color:var(--good)}
+.tile .v sup{font-size:.6em}
+@page{size:A4 portrait;margin:16mm 14mm 16mm 14mm}
+@media print{
+  html{font-size:10.5pt}
+  body{background:#fff;line-height:1.8;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page{max-width:none;margin:0;padding:0}
+  header.cover,section{border:none;border-radius:0;padding:0;margin:0 0 6mm 0;background:#fff}
+  header.cover{padding-top:4mm}
+  section{break-before:auto;margin-bottom:5mm;padding-top:2mm;border-top:1px solid #e3e1da}
+  h2,h3{break-after:avoid;page-break-after:avoid}
+  h3+ul,h3+p{break-before:avoid}
+  h1{font-size:17pt} h2{font-size:13.5pt;break-after:avoid} h3{font-size:11.5pt;break-after:avoid}
+  .tiles{grid-template-columns:repeat(3,1fr);gap:3mm}
+  .tile{padding:3mm 4mm}.tile .v{font-size:14pt}.tile .l{font-size:8.8pt}
+  figure{margin:4mm 0;break-inside:avoid}
+  figure img{max-height:78mm;width:auto;max-width:100%;border:none;padding:0}
+  figcaption{font-size:8.8pt}
+  table{font-size:8.8pt;break-inside:auto} tr{break-inside:avoid} th,td{padding:4px 6px}
+  .two{grid-template-columns:1fr 1fr}
+  .callout,.tile,.pcard{break-inside:avoid}
+  .tl{padding-right:30px;margin-right:2px} .step,li{break-inside:avoid}
+  table{break-inside:avoid}
+  footer{margin-top:6mm}
+  tr:hover td{background:none}
+}
+</style>
+<style>
+.eq{direction:ltr;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:1.04rem;background:#f7f8fb;border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:10px 0;line-height:2}
+.eq small{display:block;font-family:"Vazirmatn",sans-serif;direction:rtl;color:var(--ink2);font-size:.82rem;line-height:1.8;margin-top:4px}
+.calc{direction:ltr;text-align:left;font-family:"Courier New",monospace;font-size:.88rem;background:#fbfaf6;border:1px dashed #d8d3c4;border-radius:8px;padding:10px 14px;margin:10px 0;line-height:1.75;white-space:pre-wrap}
+td.l,.l{text-align:left;direction:ltr;font-family:Georgia,serif}
+.src{color:var(--muted);font-size:.84rem}
+.ok{color:var(--good);font-weight:700}.no{color:#9a3412;font-weight:700}
+.stepbox{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0;background:#fcfcfa}
+.stepbox b.h{color:var(--accent)}
+@media print{.eq,.calc{font-size:9.3pt;padding:5px 8px;break-inside:avoid}.stepbox{break-inside:avoid}}
+</style>
+</head>
+<body>
+<style>
+.m{direction:ltr;unicode-bidi:isolate;font-family:Georgia,"Times New Roman",serif;white-space:nowrap}
+.eq{direction:ltr;text-align:left;unicode-bidi:isolate}
+.eq .lab{float:right;color:var(--muted);font-family:"Vazirmatn",sans-serif;direction:rtl}
+.eq small{text-align:right}
+td.m,th.m{white-space:normal;text-align:left}
+.lvl{display:inline-block;padding:1px 10px;border-radius:999px;font-size:.82rem;font-weight:700;margin-left:6px}
+.lvl.a{background:var(--accent-soft);color:var(--accent)}.lvl.b{background:var(--gold-soft);color:var(--gold)}.lvl.c{background:var(--good-soft);color:var(--good)}
+</style>
+<div class="page">
+<header class="cover">
+  <div class="kicker">مدل نهایی برای تأیید پیش از محاسبات</div>
+  <h1>مدل کوانتومی گسیلنده‌ی کنار آنتن سه‌نانومیله‌ای، مستقیم از تابع گرین (کوانتش میدان در محیط پراتلاف به روش Welsch)، بدون مدهای شبه‌بهنجار و بدون برازش</h1>
+  <span class="entitle">Final model: emitter coupled to the gold three-nanorod antenna, built directly from the classical Green tensor (Dung–Knöll–Welsch quantization), without quasinormal modes or fitting</span>
+  <div class="meta">امین حسین صدیدی، سید محمدپارسا مولائی طبری؛ استاد راهنما: دکتر مالک باقری هارونی؛ دانشگاه اصفهان؛ آذر ۱۴۰۵</div>
+  <div class="badges"><span class="badge">یک هامیلتونی دقیق</span><span class="badge o">سه تابع گرین، سه نقش</span><span class="badge g">سه سطح حل: مارکوفی، غیرمارکوفی، گسسته‌ی دقیق</span></div>
+</header>
+
+<section>
+  <h2><span class="n">۰</span>ایده‌ی مدل در چند جمله</h2>
+  <ul>
+    <li>میدان الکترومغناطیسی در حضور طلا و محیط، به روش Welsch کوانتیده می‌شود. همه‌ی اثر نانوساختار در <b>تابع گرین کلاسیک</b> <span class="m">G(r, r′; ω)</span> جمع می‌شود که با BEM محاسبه شده است.</li>
+    <li>گسیلنده فقط با <b>یک ترکیب</b> از میدان در هر بسامد جفت می‌شود (میدان متمرکز روی گسیلنده). قدرت این جفت‌شدگی، یعنی چگالی طیفی <span class="m">J(ω)</span>، مستقیماً از <span class="m">Im G(r₀, r₀; ω)</span> می‌آید. پس <b>هم آهنگ پورسل و هم ثابت جفت‌شدگی</b> از تابع گرین تعیین می‌شوند.</li>
+    <li>میدان لیزر در محل گسیلنده (فرودی + پراکنده از نانومیله‌ها) و میدانی که آشکارساز می‌بیند، هر کدام از یک تابع گرین دیگر به دست می‌آیند.</li>
+    <li>هیچ مد آنتنی تعریف و هیچ برازشی انجام نمی‌شود. هر پارامتر مدل یک خروجی مستقیم BEM است، پس اثر هر پارامتر هندسی تا نتیجه‌ی آخر قابل‌ردیابی است.</li>
+    <li>رژیم جفت‌شدگی (ضعیف یا قوی، مارکوفی یا غیرمارکوفی) <b>فرض نمی‌شود</b>؛ از خود تابع گرین برای هر هندسه محاسبه می‌شود و سطح حل بر همان اساس انتخاب و آزموده می‌شود.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">۱</span>سامانه و فرض‌ها</h2>
+  <table>
+    <tr><th>جزء</th><th>توصیف</th></tr>
+    <tr><td>نانوساختار</td><td>سه نانومیله‌ی طلا (ضریب دی‌الکتریک وابسته به بسامد، جانسون و کریستی) در محیط همگن با <span class="m">n = 1.5</span>؛ همه‌ی اثرش در <span class="m">G(r, r′; ω)</span></td></tr>
+    <tr><td>گسیلنده</td><td>دوترازی، <span class="m">|g⟩, |e⟩</span>، بسامد گذار <span class="m">ω<sub>e</sub></span> (طول‌موج ۱۵۵۰ nm)، گشتاور دوقطبی <span class="m">d = d ê</span> در مکان <span class="m">r₀</span> (پایه: مرکز گاف، <span class="m">ê = x̂</span>)</td></tr>
+    <tr><td>اندازه‌ی دوقطبی</td><td>از طول عمر ذاتی در محیط: <span class="m">τ₀ = 2 ns → d ≈ 63 D</span></td></tr>
+    <tr><td>ناهمدوسی خالص</td><td>آهنگ <span class="m">γ*</span> (پایه: ۱ و ۱۰ µeV)</td></tr>
+    <tr><td>لیزر</td><td>پالس کلاسیک گاوسی، پهنای کامل شدت <span class="m">τ<sub>p</sub></span>، مساحت π برای میدان <b>موضعی</b>، تابش از <span class="m">+z</span> با قطبش x</td></tr>
+    <tr><td>آشکارسازی</td><td>عدسی با روزنه‌ی عددی NA در سمت <span class="m">+z</span></td></tr>
+  </table>
+  <p><b>تقریب‌ها</b> (همه در بخش ۸ آزموده یا برآورد می‌شوند):</p>
+  <ol>
+    <li>تقریب دوقطبی برای گسیلنده (اندازه‌ی گسیلنده در برابر مقیاس تغییر میدان در گاف).</li>
+    <li>تقریب موج چرخان (RWA) برای برهم‌کنش گسیلنده با میدان کوانتیده و با لیزر.</li>
+    <li>دمای صفر برای میدان (در ۰.۸ eV تعداد فوتون گرمایی صفر است).</li>
+    <li>پاسخ موضعی و کلاسیک طلا (برای گاف‌های بزرگ‌تر از حدود ۲ nm معتبر).</li>
+    <li>ناهمدوسی خالص به‌صورت نوفه‌ی سفید (لیندبلاد).</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="n">۲</span>کوانتش میدان و هامیلتونی دقیق</h2>
+  <h3>۲-۱. عملگر میدان در محیط پراتلاف (Welsch)</h3>
+  <div class="eq">Ê(r) = ∫₀^∞ dω Ê(r, ω) + h.c.<br>
+  Ê(r, ω) = i √(ħ / πε₀) (ω² / c²) ∫ d³r′ √(Im ε(r′, ω)) G(r, r′; ω) · f̂(r′, ω)<br>
+  [ f̂<sub>i</sub>(r, ω), f̂<sub>j</sub><sup>†</sup>(r′, ω′) ] = δ<sub>ij</sub> δ(r − r′) δ(ω − ω′)
+  <small><span class="m">f̂(r, ω)</span>: عملگرهای بوزونی میدان-ماده (تحریک‌های قطبش محیط و میدان با هم). ساختار هندسی فقط از راه <span class="m">G</span> و <span class="m">ε(r, ω)</span> وارد می‌شود.</small></div>
+  <h3>۲-۲. هامیلتونی کل</h3>
+  <div class="eq">H = ∫d³r ∫₀^∞ dω ħω f̂<sup>†</sup>(r, ω)·f̂(r, ω) + ħω<sub>e</sub> σ<sup>+</sup>σ<sup>−</sup> − d̂ · Ê(r₀) − d̂ · E<sub>L</sub>(r₀, t)
+  <small>جمله‌ی اول: میدان-ماده؛ جمله‌ی دوم: گسیلنده؛ جمله‌ی سوم: جفت‌شدگی با میدان کوانتیده؛ جمله‌ی چهارم: رانش لیزر کلاسیک با میدان <b>موضعی</b> در محل گسیلنده (بخش ۴).</small></div>
+  <h3>۲-۳. میدان متمرکز روی گسیلنده</h3>
+  <p>با تعریف عملگر بوزونی</p>
+  <div class="eq">b̂(ω) = (1 / √J(ω)) · (ω² / c²) √(1 / πħε₀) ∫ d³r′ √(Im ε(r′, ω)) [ d · G(r₀, r′; ω) ] · f̂(r′, ω) ,   [ b̂(ω), b̂<sup>†</sup>(ω′) ] = δ(ω − ω′)</div>
+  <p>و با اتحاد تابع گرین</p>
+  <div class="eq">∫ d³s Im ε(s, ω) G(r, s; ω) · G<sup>*</sup>(s, r′; ω) = (c² / ω²) Im G(r, r′; ω)</div>
+  <p>گسیلنده فقط با <span class="m">b̂(ω)</span> جفت می‌شود و بقیه‌ی درجات آزادی میدان از آن جدا می‌شوند. در تقریب موج چرخان:</p>
+  <div class="eq"><span class="lab">(۱)</span>H = ħω<sub>e</sub> σ<sup>+</sup>σ<sup>−</sup> + ∫ dω ħω b̂<sup>†</sup>(ω) b̂(ω) + ħ ∫ dω √J(ω) [ σ<sup>+</sup> b̂(ω) + b̂<sup>†</sup>(ω) σ<sup>−</sup> ] + ħ/2 [ Ω<sub>loc</sub>(t) e<sup>−iω<sub>L</sub>t</sup> σ<sup>+</sup> + h.c. ]</div>
+  <h3>۲-۴. چگالی طیفی: هم پورسل، هم ثابت جفت‌شدگی</h3>
+  <div class="eq"><span class="lab">(۲)</span>J(ω) = (ω² / πħε₀c²) d · Im G(r₀, r₀; ω) · d = (Γ₀(ω) / 2π) [ 1 + Im G<sub>s</sub>(ω) ]
+  <small><span class="m">Γ₀(ω) = Γ₀ (ω / ω<sub>e</sub>)³</span>: آهنگ گسیل در محیط همگن؛ <span class="m">Im G<sub>s</sub></span>: بخش پراکنده‌ی بهنجار تابع گرین (ستون <span class="m">ImG_x_c</span> خروجی BEM). ثابت جفت‌شدگی گسیلنده با میدان در بسامد ω برابر <span class="m">√J(ω)</span> است؛ آهنگ پورسل مقدار <span class="m">2πJ</span> در بسامد گسیلنده است. هر دو از یک کمیت.</small></div>
+  <div class="eq"><span class="lab">(۳)</span>Γ(ω<sub>e</sub>) = 2π J(ω<sub>e</sub>) = Γ₀ F<sub>p</sub> ,   F<sub>p</sub> = 1 + Im G<sub>s</sub>(ω<sub>e</sub>)<br>
+  δ(ω<sub>e</sub>) = P ∫ dω J(ω) / (ω<sub>e</sub> − ω) = − (Γ₀ / 2) Re G<sub>s</sub>(ω<sub>e</sub>)
+  <small><span class="m">δ</span>: جابه‌جایی لمب (سهم محیط همگن در <span class="m">ω<sub>e</sub></span> جذب شده است). BEM خود <span class="m">Re G<sub>s</sub></span> را می‌دهد، پس انتگرال اصلی کوشی روی کل بسامدها لازم نیست.</small></div>
+</section>
+
+<section>
+  <h2><span class="n">۳</span>سه تابع گرین و نقش هر کدام</h2>
+  <table>
+    <tr><th>تابع گرین</th><th>کمیت BEM</th><th>پارامتر مدل</th><th>وضعیت داده</th></tr>
+    <tr><td class="m">G(r₀, r₀; ω)</td><td><span class="m">Im G<sub>s</sub>(ω), Re G<sub>s</sub>(ω)</span></td><td><span class="m">J(ω)</span>، <span class="m">Γ</span>، <span class="m">δ</span>، هسته‌ی حافظه</td><td>موجود برای ۴۴ هندسه، ۴۱ بسامد</td></tr>
+    <tr><td class="m">G(r<sub>det</sub>, r₀; ω)</td><td><span class="m">T(ω)</span>، سهم NA، الگوی تابش</td><td>بازده تابشی <span class="m">η = T / F<sub>p</sub></span>، سهم جمع‌آوری <span class="m">η<sub>NA</sub></span>، عملگر میدان آشکارشده</td><td>شدت موجود؛ فاز میدان دور موجود نیست</td></tr>
+    <tr><td class="m">G(r₀, r<sub>L</sub>; ω)</td><td>میدان موضعی زیر تابش موج تخت</td><td>تقویت میدان لیزر <span class="m">K(ω)</span></td><td>فعلاً از هم‌پاسخی (فقط اندازه)؛ پیشنهاد: اجرای موج تخت BEM (اندازه و فاز)</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="n">۴</span>رانش لیزر: میدان فرودی + میدان پراکنده از نانومیله‌ها</h2>
+  <div class="eq"><span class="lab">(۴)</span>E<sub>L</sub>(r₀, ω) = E<sub>inc</sub>(r₀, ω) + E<sub>scat</sub>(r₀, ω) = K(ω) E<sub>inc</sub>(r₀, ω)<br>
+  K(ω) = [ ê · G(r₀, r<sub>L</sub>; ω) · ê<sub>L</sub> ] / [ ê · G₀(r₀, r<sub>L</sub>; ω) · ê<sub>L</sub> ] ,   r<sub>L</sub> → ∞ در جهت +z
+  <small>با هم‌پاسخی <span class="m">G(r₀, r<sub>L</sub>) = G<sup>T</sup>(r<sub>L</sub>, r₀)</span>، پس <span class="m">|K|²</span> = توان تابیده‌ی گسیلنده در جهت لیزر تقسیم بر همان در محیط همگن. برآورد فعلی در ۱۵۵۰ nm: <span class="m">|K| = 13.1</span>.</small></div>
+  <div class="eq"><span class="lab">(۵)</span>Ω<sub>loc</sub>(t) = ∫ dω/2π  e<sup>−i(ω−ω<sub>L</sub>)t</sup> K(ω) Ω<sub>inc</sub>(ω) ,   Ω<sub>inc</sub>(t) = d · E<sub>inc</sub>(t) / ħ
+  <small>اگر <span class="m">K</span> در پهنای طیفی پالس ثابت باشد، <span class="m">Ω<sub>loc</sub>(t) = K(ω<sub>L</sub>) Ω<sub>inc</sub>(t)</span>. در غیر این صورت، آنتن مثل یک فیلتر روی پالس عمل می‌کند (برای پالس ۲۰۰ fs: پهنای طیفی حدود ۹ meV در برابر پهنای ساختار <span class="m">J</span> حدود ۶۰ meV). مساحت π برای <span class="m">Ω<sub>loc</sub></span> تعریف می‌شود.</small></div>
+</section>
+
+<section>
+  <h2><span class="n">۵</span>میدان آشکارشده و کمیت‌های اندازه‌گیری</h2>
+  <div class="eq"><span class="lab">(۶)</span>Ê<sub>det</sub><sup>(+)</sup>(r<sub>det</sub>, t) = Ê<sub>free</sub><sup>(+)</sup> + (1/ε₀c²) ∫ dω/2π  ω² G(r<sub>det</sub>, r₀; ω) · d  σ̃<sup>−</sup>(ω) e<sup>−iωt</sup></div>
+  <p>با جمع روی مخروط عدسی، عملگر خروجی (بر حسب <span class="m">√فوتون/ثانیه</span>):</p>
+  <div class="eq"><span class="lab">(۷)</span>â<sub>out</sub>(t) = ∫ dt′ h(t − t′) σ<sup>−</sup>(t′) ,   |h̃(ω)|² = Γ₀(ω) T(ω) η<sub>NA</sub>(ω)
+  <small>در حد مارکوفی <span class="m">â<sub>out</sub>(t) = √(Γ₀ T η<sub>NA</sub>) σ<sup>−</sup>(t)</span>. سهم <span class="m">Γ₀(F<sub>p</sub> − T)</span> در طلا جذب می‌شود و به آشکارساز نمی‌رسد. فاز <span class="m">h̃(ω)</span> فقط وقتی مهم است که طیف گسیل با ساختار <span class="m">T(ω)</span> قابل‌مقایسه باشد.</small></div>
+  <table>
+    <tr><th>کمیت</th><th>تعریف</th></tr>
+    <tr><td>تعداد فوتون آشکارشده در هر پالس</td><td class="m">N = ∫ dt ⟨â<sub>out</sub><sup>†</sup>(t) â<sub>out</sub>(t)⟩</td></tr>
+    <tr><td>همبستگی مرتبه‌ی دوم</td><td class="m">g<sup>(2)</sup>(0) = ∫∫ dt dt′ ⟨â<sup>†</sup>(t) â<sup>†</sup>(t′) â(t′) â(t)⟩ / N²</td></tr>
+    <tr><td>هم‌پوشانی بسته‌ی موج (تمیزناپذیری، مانند گزارش‌های قبلی)</td><td class="m">I = ∫∫ dt dt′ |⟨â<sup>†</sup>(t′) â(t)⟩|² / N²</td></tr>
+    <tr><td>طول عمر و جابه‌جایی خط</td><td class="m">τ = 1/Γ ,  ω<sub>e</sub> + δ</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="n">۶</span>معیار رژیم، مستقیم از تابع گرین (بدون پیش‌فرض)</h2>
+  <div class="eq"><span class="lab">(۸)</span>K<sub>mem</sub>(τ) = ∫ dω J(ω) e<sup>−i(ω − ω<sub>e</sub>)τ</sup>
+  <small>هسته‌ی حافظه: پاسخ میدان پس از گسیل در زمان صفر. زمان حافظه <span class="m">τ<sub>mem</sub></span> مدت لازم برای میرا شدن <span class="m">|K<sub>mem</sub>(τ)|</span> است.</small></div>
+  <table>
+    <tr><th>معیار</th><th>تعریف</th><th>معنی</th></tr>
+    <tr><td>نسبت حافظه</td><td class="m">τ<sub>mem</sub> Γ</td><td>اگر ≪ ۱: گسیل مارکوفی</td></tr>
+    <tr><td>جفت‌شدگی قوی</td><td class="m">R<sub>sc</sub> = 4 Γ<sub>peak</sub> / Δω<sub>J</sub></td><td>اگر ≳ ۱: شکافت رابی؛ <span class="m">Γ<sub>peak</sub> = 2π max J</span>، <span class="m">Δω<sub>J</sub></span> پهنای کامل قله‌ی <span class="m">J</span></td></tr>
+    <tr><td>رانش سریع</td><td class="m">τ<sub>mem</sub> / τ<sub>p</sub> ,  Ω<sub>loc,max</sub> τ<sub>mem</sub></td><td>اگر کوچک نباشد، اتلاف حین پالس به رانش وابسته است</td></tr>
+    <tr><td>یکنواختی رانش</td><td>تغییر <span class="m">|K(ω)|</span> در پهنای طیفی پالس</td><td>اگر بزرگ باشد، <span class="m">K(ω)</span> وابسته به بسامد لازم است</td></tr>
+  </table>
+  <p>این چهار عدد برای هر هندسه محاسبه و گزارش می‌شوند و سطح حل (بخش ۷) بر اساس آن‌ها انتخاب می‌شود.</p>
+</section>
+
+<section>
+  <h2><span class="n">۷</span>حل: سه سطح از یک هامیلتونی</h2>
+  <h3><span class="lvl a">سطح ۱</span>مارکوفی</h3>
+  <div class="eq"><span class="lab">(۹)</span>dρ/dt = −(i/ħ)[ H<sub>e</sub>(t), ρ ] + Γ D[σ<sup>−</sup>]ρ + 2γ* D[σ<sup>+</sup>σ<sup>−</sup>]ρ<br>
+  H<sub>e</sub>(t) = −ħ(ω<sub>L</sub> − ω<sub>e</sub> − δ) σ<sup>+</sup>σ<sup>−</sup> + (ħ/2)[ Ω<sub>loc</sub>(t) σ<sup>+</sup> + h.c. ] ,   D[A]ρ = AρA<sup>†</sup> − ½{A<sup>†</sup>A, ρ}
+  <small>ورودی: <span class="m">Γ</span> و <span class="m">δ</span> از معادله‌ی (۳)، <span class="m">Ω<sub>loc</sub></span> از (۵)، <span class="m">â<sub>out</sub></span> از (۷). همبستگی‌های دوزمانی با قضیه‌ی رگرسیون کوانتومی. معتبر وقتی <span class="m">τ<sub>mem</sub>Γ ≪ 1</span> و <span class="m">R<sub>sc</sub> ≪ 1</span>. برای هر ۴۴ هندسه.</small></div>
+  <h3><span class="lvl b">سطح ۲</span>غیرمارکوفی (هسته‌ی حافظه)</h3>
+  <div class="eq"><span class="lab">(۱۰)</span>dρ/dt = −(i/ħ)[ H<sub>e</sub>(t)|<sub>δ → δ(t) + δ<sub>out</sub></sub> , ρ ] + Γ(t) D[σ<sup>−</sup>]ρ + 2γ* D[σ<sup>+</sup>σ<sup>−</sup>]ρ<br>
+  Γ(t)/2 + iδ(t) = ∫₀<sup>t</sup> dτ K<sub>mem</sub>(τ)   (J فقط درون بازه‌ی محاسبه‌شده؛ δ<sub>out</sub> از معادله‌ی ۱۳)
+  <small>معادله‌ی بدون پیچش زمانی مرتبه‌ی دوم (TCL2). برای <span class="m">t ≫ τ<sub>mem</sub></span> به سطح ۱ می‌رسد. دقیق تا مرتبه‌ی دوم در <span class="m">√J</span>؛ وابستگی اتلاف به رانش حین پالس را نادیده می‌گیرد. برای طرح نهایی و گاف‌های ۱۰ و ۲۰ nm.</small></div>
+  <h3><span class="lvl c">سطح ۳</span>میدان نزدیک گسسته و فضای هیلبرت بریده‌شده (دقیق نسبت به G)</h3>
+  <p>پیوستار <span class="m">b̂(ω)</span> در بازه‌ی محاسبه‌شده به <span class="m">M</span> بازه‌ی بسامدی تقسیم می‌شود:</p>
+  <div class="eq"><span class="lab">(۱۱)</span>b̂<sub>k</sub> = (1/√Δω) ∫<sub>bin k</sub> dω b̂(ω) ,   g<sub>k</sub> = √( J(ω<sub>k</sub>) Δω )<br>
+  H = ħω<sub>e</sub>σ<sup>+</sup>σ<sup>−</sup> + Σ<sub>k</sub> ħω<sub>k</sub> b̂<sub>k</sub><sup>†</sup>b̂<sub>k</sub> + Σ<sub>k</sub> ħg<sub>k</sub>( σ<sup>+</sup>b̂<sub>k</sub> + b̂<sub>k</sub><sup>†</sup>σ<sup>−</sup> ) + (ħ/2)[ Ω<sub>loc</sub>(t) σ<sup>+</sup> + h.c. ]
+  <small>این دقیقاً گسسته شدن میدان نزدیک در روش Welsch است: هر <span class="m">b̂<sub>k</sub></span> یک «مد تابع گرین» با جفت‌شدگی <span class="m">g<sub>k</sub></span> است که مستقیماً از <span class="m">Im G</span> می‌آید؛ هیچ مد شبه‌بهنجار یا برازشی در کار نیست. فضای هیلبرت با حداکثر دو برانگیختگی بریده می‌شود: <span class="m">|g,0⟩, |e,0⟩, |g,1<sub>k</sub>⟩, |e,1<sub>k</sub>⟩, |g,1<sub>k</sub>1<sub>k′</sub>⟩</span> (برای <span class="m">M ≈ 200</span> حدود ۲۰ هزار دامنه). معادله‌ی شرودینگر حل می‌شود؛ <span class="m">γ*</span> با میانگین روی مسیرهای فاز تصادفی. <span class="m">g<sup>(2)</sup></span> و <span class="m">I</span> مستقیماً از دامنه‌های دوفوتونی و تک‌فوتونی نهایی. جفت‌شدگی قوی، غیرمارکوفی و رانش شدید را بدون تقریب می‌بیند.</small></div>
+  <div class="eq"><span class="lab">(۱۲)</span>ċ<sub>e</sub>(t) = − ∫₀<sup>t</sup> dt′ K<sub>mem</sub>(t − t′) c<sub>e</sub>(t′)
+  <small>حالت خاص بدون لیزر و تک‌برانگیختگی (ویگنر-وایسکوف): محک تحلیلی برای آزمون سطح ۳ و همگرایی آن نسبت به <span class="m">M</span>.</small></div>
+  <h3>بازه‌ی بسامد محاسبه‌شده</h3>
+  <p><span class="m">Im G</span> و <span class="m">Re G</span> فقط در ۱۱۰۰ تا ۱۹۰۰ nm موجودند. <span class="m">J</span> بیرون این بازه حافظه‌ای کوتاه‌تر از ۱ fs دارد و فقط یک جابه‌جایی ثابت می‌دهد:</p>
+  <div class="eq"><span class="lab">(۱۳)</span>δ<sub>out</sub> = δ(ω<sub>e</sub>)|<sub>Re G</sub> − P ∫<sub>window</sub> dω J(ω) / (ω<sub>e</sub> − ω)
+  <small>به بسامد گسیلنده افزوده می‌شود؛ سهم آهنگ در <span class="m">ω<sub>e</sub></span> کاملاً درون بازه است. پس هیچ برون‌یابی لازم نیست.</small></div>
+</section>
+
+<section>
+  <h2><span class="n">۸</span>آزمون‌ها پیش از نتایج</h2>
+  <ol>
+    <li>سطح ۳ بدون لیزر و با <span class="m">M</span> افزایشی باید به معادله‌ی (۱۲) و در حد مارکوف به <span class="m">Γ = Γ₀F<sub>p</sub></span> و <span class="m">δ</span> از <span class="m">Re G</span> برسد.</li>
+    <li>همگرایی نسبت به <span class="m">M</span>، بریدن در ۲ یا ۳ برانگیختگی، گام زمانی و تعداد مسیرهای فاز.</li>
+    <li>سطح ۱ و ۲ با سطح ۳ در طرح نهایی؛ اختلاف‌ها همراه با معیارهای بخش ۶ گزارش می‌شوند.</li>
+    <li>حساسیت به مش BEM (h = ۳ و ۴ nm) و به داده‌ی طلا.</li>
+    <li>مقایسه با مدل دومدی قبلی (فقط برای تفسیر).</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="n">۹</span>ردیابی اثر هندسه تا نتیجه‌ی آخر</h2>
+  <div class="eq">هندسه  →  { Im G<sub>s</sub>, Re G<sub>s</sub>, T, η<sub>NA</sub>, K }(ω)  →  { Γ, δ, η, η<sub>NA</sub>, |K|, τ<sub>mem</sub>, R<sub>sc</sub> }  →  { τ, N, g<sup>(2)</sup>(0), I }</div>
+  <table>
+    <tr><th>پارامتر هندسی</th><th>اثر بر تابع گرین</th><th>پارامتر مدل</th></tr>
+    <tr><td>گاف دیمر</td><td>ارتفاع و پهنای قله‌ی <span class="m">Im G</span>، <span class="m">Re G</span></td><td><span class="m">J(ω)</span>، <span class="m">Γ</span>، <span class="m">δ</span>، <span class="m">R<sub>sc</sub></span>، <span class="m">K</span></td></tr>
+    <tr><td>طول بازوها، ضریب شکست محیط</td><td>مکان قله‌ی <span class="m">Im G</span> نسبت به ۱۵۵۰ nm</td><td><span class="m">Γ</span>، <span class="m">δ</span>، <span class="m">τ<sub>mem</sub></span></td></tr>
+    <tr><td>طول، زاویه و مکان میله‌ی سوم</td><td>شکل <span class="m">Im G</span>، الگوی تابش</td><td><span class="m">η</span>، <span class="m">η<sub>NA</sub></span>، جهت‌دهی، <span class="m">K</span></td></tr>
+    <tr><td>مکان و جهت گسیلنده</td><td><span class="m">G(r₀, r₀)</span> در نقطه‌ی دیگر</td><td>همه‌ی پارامترها</td></tr>
+  </table>
+  <p>برای هر هندسه یک ردیف کامل از این زنجیره گزارش می‌شود، تا اثر هر پارامتر هندسی روی هر نتیجه از راه کمیت‌های میانی دیده شود.</p>
+</section>
+
+<section>
+  <h2><span class="n">۱۰</span>تصمیم‌هایی که پیش از محاسبات باید گرفته شوند</h2>
+  <ol>
+    <li><b>سطح‌های حل:</b> پیشنهاد: سطح ۱ برای هر ۴۴ هندسه؛ سطح ۲ و ۳ برای طرح نهایی و گاف‌های ۱۰ و ۲۰ nm.</li>
+    <li><b>آشکارسازی:</b> کل نور تابیده یا فقط مخروط عدسی (<span class="m">NA = 0.9</span> یا <span class="m">1.3</span>)؟ پیشنهاد: <span class="m">NA = 0.9</span> به‌عنوان پایه.</li>
+    <li><b>تقویت میدان لیزر:</b> <span class="m">K</span> ثابت از هم‌پاسخی، یا اجرای موج تخت BEM برای <span class="m">K(ω)</span> با فاز؟ پیشنهاد: اجرای موج تخت (هزینه‌ی کم، یک اجرای BEM برای هر هندسه).</li>
+    <li><b>پالس و ناهمدوسی:</b> <span class="m">τ<sub>p</sub> = 200 fs</span> و <span class="m">γ* = 1, 10 µeV</span> مانند قبل؟</li>
+    <li><b>بررسی جفت‌شدگی قوی:</b> اگر لازم است، یک سری هندسه‌ی جدید با گاف ۲ تا ۱۰ nm و گسیلنده نزدیک سر میله‌ها با BEM اجرا شود (سطح ۳ برای آن‌ها لازم است).</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="n">۱۱</span>منابع</h2>
+  <ol class="en" style="direction:ltr;text-align:left;font-size:.9rem;padding-left:1.4rem">
+    <li>H. T. Dung, L. Knöll, D.-G. Welsch, Phys. Rev. A 62, 053804 (2000); Phys. Rev. A 64, 013804 (2001).</li>
+    <li>S. Scheel, S. Y. Buhmann, "Macroscopic quantum electrodynamics — concepts and applications," Acta Phys. Slovaca 58, 675 (2008).</li>
+    <li>D. Dzsotjan, B. Rousseaux, H. R. Jauslin, G. Colas des Francs, C. Couteau, S. Guérin, "Mode-selective quantization and multimodal effective models for spherically layered systems," Phys. Rev. A 94, 023818 (2016).</li>
+    <li>H.-P. Breuer, F. Petruccione, <i>The Theory of Open Quantum Systems</i>, Oxford University Press (2002), ch. 9–10 (TCL master equation).</li>
+    <li>L. Novotny, B. Hecht, <i>Principles of Nano-Optics</i>, 2nd ed., Cambridge University Press (2012), ch. 8.</li>
+    <li>K. A. Fischer, K. Müller, K. G. Lagoudakis, J. Vučković, New J. Phys. 18, 113053 (2016).</li>
+  </ol>
+</section>
+<footer>مدل نهایی برای تأیید؛ هنوز هیچ محاسبه‌ای بر اساس آن انجام نشده است.</footer>
+</div>
+</body>
+</html>
