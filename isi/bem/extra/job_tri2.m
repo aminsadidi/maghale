@@ -7,15 +7,16 @@ function job_tri2(spec, outdir)
 %    M       mesh-test wavelengths 1310, 1480, 1550, 1660 nm;  otherwise c<K> = chunk K of 1100:20:1900 nm (7 per chunk)
 %    G<nm>   gap between R1 and R2 (default 40);  N<n> refractive index of the host (default 1.5)
 %    P       emitter positions on a line across the gap, x = 0 ... gap/2 - 3 nm (distance to the tip h = gap/2 - x)
+%    E       single rod only: emitter on the rod axis facing the tip of R1, at distances h = 4..40 nm from the tip (labels h<value>)
 %  e.g. 'L270_c3' (dimer), 'L270_R300_A35_Y160_c2' (trimer), 'S_L300_H3_M' (single rod, 3 nm mesh)
 %  Output columns as in job_trimer.
-n = 1.5;  g = 40;  pline = false;  D = 60;  L = 300;  L3 = 0;  A = 35;  X3 = 0;  Y3 = 160;  single = false;  h = 5;  mtest = false;  chunk = 0;
+n = 1.5;  g = 40;  pline = false;  eline = false;  D = 60;  L = 300;  L3 = 0;  A = 35;  X3 = 0;  Y3 = 160;  single = false;  h = 5;  mtest = false;  chunk = 0;
 tok = strsplit(spec, '_');
 for k = 1:numel(tok)
     t = tok{k};  v = str2double(t(2:end));
     switch t(1)
         case 'L', L = v;   case 'R', L3 = v;  case 'A', A = v;  case 'X', X3 = v;  case 'Y', Y3 = v;
-        case 'G', g = v;   case 'N', n = v;   case 'P', pline = true;
+        case 'G', g = v;   case 'N', n = v;   case 'P', pline = true;  case 'E', eline = true;
         case 'S', single = true;  case 'H', h = v;  case 'M', mtest = true;  case 'c', chunk = v;
         otherwise, error('job_tri2: unknown token %s', t);
     end
@@ -48,6 +49,11 @@ if pline
     st = 2;  if g <= 20, st = 1; end
     xs = 0:st:(g / 2 - 3);  pos = [xs(:), 0 * xs(:), 0 * xs(:)];
     plab = arrayfun(@(x) sprintf('h%g', g / 2 - x), xs, 'UniformOutput', false);
+end
+if eline
+    if ~single, error('job_tri2: E (distance line) is for the single rod only'); end
+    hs = [4 6 8 10 12 15 20 25 30 40];  pos = [(-g / 2 + hs(:)), 0 * hs(:), 0 * hs(:)];   % tip of R1 is at x = -g/2
+    plab = arrayfun(@(x) sprintf('h%g', x), hs, 'UniformOutput', false);
 end
 np = size(pos, 1);
 pt = compoint(p, pos, op);
