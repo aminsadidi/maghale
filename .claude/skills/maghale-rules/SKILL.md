@@ -88,7 +88,7 @@ This file is the project's memory. It holds everything the users and the supervi
   - Solution levels: (1) Markov, (2) TCL2 memory kernel, (3) near field discretized in frequency (g_k = √(J(ω_k)Δω)) with the Hilbert space truncated at 2 excitations. Level 3 uses a **non-uniform frequency grid** (fine near ω_e, coarse far away; plan A), with convergence tests.
   - Outside the BEM window (1100-1900 nm), use δ_out from Re G. No extrapolation.
 - (2026-11-22) Emitter intrinsic lifetime **τ₀ = 1.5 ns** (in the host), λ_e = 1550 nm, dipole x at the gap centre (other positions for sensitivity). Defaults until changed: pulse 200 fs Gaussian π (local field), laser on the shifted line, γ* = 1 and 10 µeV, NA 0.9 (1.3 for comparison).
-- (2026-11-22) **Apply the same model to several structures: the three-rod antenna and a single nanorod** (the dimer as the intermediate case). The single rod needs a full-spectrum BEM run (`job_tri2` with `S_L<L>_H3_c1..c6`). Its length and emitter position are still to be confirmed by the user.
+- (2026-11-22) **Supervisor's next study (basis for the paper if the results are good):** with one model, (a) a single nanorod with the emitter facing its tip, with the emitter-tip distance varied; (b) two collinear nanorods tip to tip, with the emitter at the centre and the gap varied; (c) the three-rod antenna. Draw each geometry correctly (to scale). New BEM runs go on GitHub (`bem-extra` workflow, `job_tri2`: `S` = single rod, `G` = gap, `P` = emitter line).
 - Emitter material and size: a telecom quantum dot (choose material and size, then report g2(0), indistinguishability and dynamics). The supervisor will send a file with A and Γ to use.
 
 ### Tamm-plasmon study (with Prof. Paternò)
@@ -98,4 +98,5 @@ This file is the project's memory. It holds everything the users and the supervi
 
 ## Change log
 - 2026-11-22 Skill created from the full conversation history.
+- 2026-11-22 Supervisor's single rod / dimer / trimer distance study recorded (section 7).
 - 2026-11-22 Added section 6: the supervisor's way of thinking about modelling (from the chat of 2026-11-22); physics decisions moved to section 7.
