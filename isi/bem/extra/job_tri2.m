@@ -5,24 +5,27 @@ function job_tri2(spec, outdir)
 %    R<nm>   length of R3 (no R token: no R3);  A<deg> angle of R3 (default 35);  X<nm>, Y<nm> centre of R3 (0, 160)
 %    S       single rod (R1 only);  H<nm> mesh size of R1/R2 (default 5; R3 uses 1.4 H)
 %    M       mesh-test wavelengths 1310, 1480, 1550, 1660 nm;  otherwise c<K> = chunk K of 1100:20:1900 nm (7 per chunk)
+%    k<j>    with c<K>: only sub-chunk j = 1..3 of chunk K (wavelengths 1-3, 4-5, 6-7 of it) - for runs that hit the time limit
 %    G<nm>   gap between R1 and R2 (default 40);  N<n> refractive index of the host (default 1.5)
 %    P       emitter positions on a line across the gap, x = 0 ... gap/2 - 3 nm (distance to the tip h = gap/2 - x)
 %    E       single rod only: emitter on the rod axis facing the tip of R1, at distances h = 4..40 nm from the tip (labels h<value>)
 %  e.g. 'L270_c3' (dimer), 'L270_R300_A35_Y160_c2' (trimer), 'S_L300_H3_M' (single rod, 3 nm mesh)
 %  Output columns as in job_trimer.
-n = 1.5;  g = 40;  pline = false;  eline = false;  D = 60;  L = 300;  L3 = 0;  A = 35;  X3 = 0;  Y3 = 160;  single = false;  h = 5;  mtest = false;  chunk = 0;
+n = 1.5;  g = 40;  pline = false;  eline = false;  D = 60;  L = 300;  L3 = 0;  A = 35;  X3 = 0;  Y3 = 160;  single = false;  h = 5;  mtest = false;  chunk = 0;  sub = 0;
 tok = strsplit(spec, '_');
 for k = 1:numel(tok)
     t = tok{k};  v = str2double(t(2:end));
     switch t(1)
         case 'L', L = v;   case 'R', L3 = v;  case 'A', A = v;  case 'X', X3 = v;  case 'Y', Y3 = v;
         case 'G', g = v;   case 'N', n = v;   case 'P', pline = true;  case 'E', eline = true;
-        case 'S', single = true;  case 'H', h = v;  case 'M', mtest = true;  case 'c', chunk = v;
+        case 'S', single = true;  case 'H', h = v;  case 'M', mtest = true;  case 'c', chunk = v;  case 'k', sub = v;
         otherwise, error('job_tri2: unknown token %s', t);
     end
 end
 if mtest, lam = [1310 1480 1550 1660];
-else, lall = 1100:20:1900;  nper = 7;  lam = lall((chunk - 1) * nper + 1:min(chunk * nper, numel(lall))); end
+else, lall = 1100:20:1900;  nper = 7;  lam = lall((chunk - 1) * nper + 1:min(chunk * nper, numel(lall)));
+    if sub > 0, sk = {1:3, 4:5, 6:7};  sk = sk{sub};  lam = lam(sk(sk <= numel(lam))); end   % k<j>: third j of chunk c (3+2+2 wavelengths)
+end
 pinf = trisphere(1444, 2);
 op = bemoptions('sim', 'ret', 'interp', 'curv', 'pinfty', pinf);
 gtab = 'gold.dat';  if max(lam) > 1937, gtab = fullfile(fileparts(mfilename('fullpath')), 'gold_jcx.dat'); end
