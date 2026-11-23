@@ -51,6 +51,8 @@ This file is the project's memory. It holds everything the users and the supervi
 
 ## 5. Running simulations (lab PC, laptop, GitHub)
 
+- (2026-11-23) **Do not poll long runs often (it wastes the user's tokens).** Estimate the total remaining time, check once at about half of it (fix failures then), then once more at the expected end. No 2-hour waiter loops or frequent status messages.
+
 - (2026-11-04) **Give one comprehensive script that runs everything needed** (all checks, all cases) for days if necessary. Never hand out a series of short runs that each need a new start.
 - The lab kit must: download everything at the start and then work fully offline; detect MATLAB, Lumerical and COMSOL and their licences, and use what exists; run smoke tests first; predict the remaining time from measured steps without loading the CPU; resume after a restart; package the results as a zip. The kit lives in `labkit/` and the update zips in the repo root.
 - Supervisor's PC: Windows 10, Xeon 6 cores / 12 threads, 64 GB RAM, MATLAB R2018b + MNPBEM, Lumerical v241 (FDTD), no COMSOL. The user may run it for up to a week. Users' laptop: HP ProBook 645 G4, Ryzen 5 Pro 2500U, 32 GB.
