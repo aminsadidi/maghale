@@ -97,6 +97,7 @@ This file is the project's memory. It holds everything the users and the supervi
 ### Tamm-plasmon study (with Prof. Paternò)
 - Meep 3D FDTD is the validated tool. Draw conclusions from **full-device runs only**, not the zeroth-order cascade. Use realisation-mean spectra and paired seeds. P = 0.8 µm cells (P = 0.3 µm gives grating artefacts).
 - State the grid sensitivity of island films honestly. The round-8 convergence check: dip shift +61 nm vs +66 nm (5 nm vs 3.3 nm grid).
+- (2026-11-23) The supervisor approved the English Tamm report (`tamm/report/tamm_report_en.pdf`); it is being sent to Prof. Paternò as a reply in his thread (his reply of 2026-11-05 said "go ahead").
 - Lumerical is not needed for the Tamm work. The Lumerical priority is nanorod campaign 3 on the supervisor's PC (`lab_update_c3.zip` → `C3.bat`).
 
 ## Change log
